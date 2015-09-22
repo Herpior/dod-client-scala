@@ -1,0 +1,38 @@
+v0.395
+	added ability to open colorpicker by double clicking
+	fixed bug with line tool where using rulers could draw line out of bounds
+	fixed bug not allowing the bottom layer to be deleted
+	fixed cursor being sometimes visible in the doodle you are describing
+	made prompts more user friendly
+	fixed bugs causing colours not to load properly
+v0.390
+	improved handling and usage of color codes
+v0.385
+	removed bug making it impossible to submit doodles
+	removed bug that broke submitted doodles
+	starting to describe pings description
+	added .txt to the end of backup names again
+v0.370
+	added ability to split layers
+	added option to automatically login
+	added logout button
+	undo and redo also save the doodle after 20 seconds
+	removed .txt from the end of backup name, backups from older versions work by removing .txt
+v0.365
+	layer list will get a scrollbar if there are too many layers to fit on the screen
+	fixed bug where saved doodle would not load on some computers
+v0.360
+	added finer zooming
+	fixed bugs when using line tool outside the drawing area
+	added dot in middle of drawing cursor
+v0.350
+	changed panning to middle mouse button
+	changed picking color from doodle to alt+right mouse button
+	added ctrl+shift+Z redo hotkey
+	removed a faulty line simplifying feature
+	added color picker
+	added color slots
+	added ability to load colors from file
+	
+v0.300
+	fixed bug that prevented users from logging in...

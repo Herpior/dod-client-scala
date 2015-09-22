@@ -1,0 +1,291 @@
+package dmodel
+
+import collection.mutable.Buffer
+import collection.mutable.Stack
+import java.awt.image.BufferedImage
+import java.awt.Color
+
+trait DoodlePart{
+  def distFrom(point:Coord):Double
+  def getLines:Array[BasicLine]
+}
+
+class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
+  //var cornerx = 0.0
+  //var cornery = 0.0
+  def maxLen = 520-cornerx-15*coeff
+  var text = ""
+  var font = 0
+  var coeff = 1.0
+  //var size = 1.0
+  //var color = "#000"
+  def distFrom(point:Coord) = {
+    this.toMultiLine.distFrom(point)
+  }
+  def toMultiLine:MultiLine={
+    var offsetx = 0.0
+    var offsety = 0.0
+    var lines = new MultiLine
+    for(c<-text){
+      val l = Fonts.getLetter(c, font)
+      //println(l.xs(0).mkString(","))
+      for(i<-l.coords){
+        val stroke = new BasicLine(color,size)
+        stroke.setCoords(i.toBuffer)
+        //stroke.xs ++= l.xs(i).map(z=>cornerx+(z + offsetx)*coeff)
+        //stroke.ys ++= l.ys(i).map(z=>cornery+(z + offsety)*coeff)
+        lines.addLine( stroke )
+      }
+      offsetx += l.l
+      if(offsetx*coeff>maxLen){
+        offsetx = 0
+        offsety += 25
+      }
+      if((offsety)*coeff+cornery>390)
+        return lines
+    }
+    //println("instroke "+this.cornerx)
+    lines
+  }
+  override def getLines = this.toMultiLine.getLines
+  //def toNextLinee={
+   // val n = new nextLinee
+   // this.getNextLines.foreach{ x => n.strookes += x }
+  //}
+}
+
+class BezierLine(val color:Color, val size:Double) extends DoodlePart{
+  //var size = 1.0
+  //var color = "#000"
+  private val coords = Array.fill(4)(Coord(0,0))
+  require (coords.length==4)
+  //val xs = Array(0.0,0.0,0.0,0.0)
+  //val ys = Array(0.0,0.0,0.0,0.0)
+  /*var x2 = 0.0
+  var y2 = 0.0
+  var x3 = 0.0
+  var y3 = 0.0
+  var x4 = 0.0
+  var y4 = 0.0*/
+  def getCoord (ind:Int)={
+    if(ind>=0&&ind<4)
+    coords(ind) else coords(0)
+  }
+  def setCoord(ind:Int,place:Coord){
+    if(ind>=0&&ind<4)
+    coords(ind) = place
+  }
+  def distFrom(point:Coord)={
+    this.coords.map(_.dist(point)).sorted.head
+  }
+  def getLines : Array[BasicLine]= {
+    if(coords.forall(_==coords(0))){
+      val st = new BasicLine(color,size)
+      st.setCoords( Array(coords(0)) )
+      return st.getLines
+    }
+    val cs = Bezier.curve(coords(0),coords(1),coords(2),coords(3))
+    val res = new BasicLine(color,size)
+    res.setCoords (cs.map { c => Coord(math.round(c.x*2)/2.0,math.round(c.y*2)/2.0) })
+    //res.xs = xys._1.map(x=>math.round(2*x)/2.0)
+    //res.ys = xys._2.map(y=>math.round(2*y)/2.0)
+    Array(res)
+  }
+}
+class MultiLine extends DoodlePart{
+  private var lines = Buffer[BasicLine]()
+  def distFrom(point:Coord)={
+    lines.map(_.distFrom(point)).sorted.head
+  }
+  def apply(index:Int)={
+    lines(index)
+  }
+  def length={
+    lines.length
+  }
+  def isEmpty={
+    lines.isEmpty
+  }
+  def setLines(arr:Array[BasicLine]){
+    lines = arr.toBuffer
+  }
+  def addLine(line:BasicLine){
+    lines += line
+  }
+  def getLines={
+    lines.toArray
+  }
+  def getLast={
+    if(lines.isEmpty)None
+    else Some(lines.last)
+  }
+  /*def lineType={
+    "multi"
+  }*/
+  //def first(color:String,size:Double,x0:Double,y0:Double){
+  //  lines += new BasicLine(color,size){
+  //    xs += x0
+  //    ys += y0
+  //  }
+  //}
+  def compress {
+    val res = Buffer[BasicLine]()
+    val nonempty = lines.filter { !_.getCoords.isEmpty }
+    if(nonempty.isEmpty)return
+    var curr = nonempty(0)
+    var cc = curr.getCoords.map(_.rounded(2))
+    for(st<-nonempty.drop(1)){
+      val sc = st.getCoords.map(_.rounded(2))
+      if( st.size==curr.size &&
+          st.color == curr.color &&
+          cc.last == sc.head)
+      {
+        curr.setCoords( cc ++ sc.drop(1) )
+        cc=curr.getCoords
+      } else {
+        res += curr
+        curr = st
+        cc = sc
+      }
+    }
+    res += curr
+    lines = res.flatMap(_.compress)//remove to keep accuracy
+    //lines = res
+    //println(res.mkString("\n"))
+  }
+}
+
+class BasicLine(val color:Color, val size:Double) extends DoodlePart {
+  private var coords = Buffer[Coord]()
+  def distFrom(point:Coord)={
+    this.getCoords.map(_.dist(point)).sorted.head
+  }
+  def setCoords(buf:Buffer[Coord]){ coords = buf }
+  def setCoords(arr:Array[Coord]){ coords = arr.toBuffer }
+  def getCoords = coords.toArray
+  def addCoord(c:Coord){ coords += c }
+  def getLines = Array(this)
+  def getLast ={this.coords.last}
+  def getLastOption ={this.coords.lastOption}
+  def getLastLine = {if(coords.length>1) Some(new BasicLine(color,size){this.setCoords(coords.takeRight(2))}) else None}
+  def setLast(coord:Coord){
+    this.coords(coords.length-1) = coord
+  }
+  def setCoord(ind:Int,coord:Coord){
+    if(ind>=0&&ind<coords.length)
+      coords(ind)=coord
+  }
+  
+  def compress = {
+    var pc = coords(0).rounded(2)
+    val lines = Buffer[BasicLine]()
+    var tc = new BasicLine(this.color,this.size)//Buffer[Coord](pc)
+    tc.addCoord(pc)
+    var pk = 10.0
+    //var ppk = 10.0
+    for(i<- coords){
+      val c = i.rounded(2)//Coord(math.round(i.x*2)/2.0,math.round(i.y*2)/2.0)
+      //val x = math.round(xs(i)*2)/2.0
+      //val y = math.round(ys(i)*2)/2.0
+      val k = pc.angle(c)
+      val comp = math.abs(Angle.compare(pk,k))
+      //val comp2 = math.abs(Angle.compare(ppk,k))
+      if(pc==c/*||(comp<math.Pi/32&&this.size==1)*/){ 
+        //ppk = pk
+      }
+      else {
+        tc.addCoord( c )
+        if(comp>math.Pi*31/32){
+          lines += tc
+          tc = new BasicLine(this.color,this.size)
+          tc.addCoord( c )
+        }
+        //ppk = pk
+        pk = k
+      }
+      pc = c
+    }
+    if(tc.getLastOption != Some(pc)){
+      tc.addCoord(pc)
+    }
+    //this.setCoords(tc)
+    lines += tc
+    //println(lines.length)
+    lines.toArray
+  }
+  
+  override def toString = {
+    "{\"path\":["+coords.map{
+    c=>
+      val tx = math.round(c.x*2)/2.0
+      val x = if(math.round(tx)/1.0 == tx)math.round(tx).toString else tx.toString
+      val ty = math.round(c.y*2)/2.0
+      val y = if(math.round(ty)/1.0 == ty)math.round(ty).toString else ty.toString
+      x+","+y
+    }.mkString(",")+"],\"size\":"+size.toInt+",\"color\":\""+Colors.toHexString(color)+"\"}"
+  }
+}
+class JsonLine extends DoodlePart {
+  var color:String = _
+  var size:Double = _
+  var path:Array[Double]= Array()
+  def distFrom(point:Coord)={
+    this.toBasicLine.distFrom(point)
+  }
+  def getLines = {
+    Array(this.toBasicLine)
+  }
+  def toBasicLine={
+    val res = new BasicLine(Colors.toColor(this.color),this.size)
+    val buf = Buffer[Coord]()
+    for(i<-0 until this.path.length/2){
+      buf += Coord(this.path(i*2),this.path(i*2+1))
+    }
+    res.setCoords(buf)
+    res
+  }
+}
+/*class Linee extends DoodlePart{
+  var line = Buffer[Strooke]()
+  
+  
+  def getLines = line.toArray
+}*/
+
+/*class CC[T] {
+  def unapply(a:Option[Any]):Option[T] = if (a.isEmpty) {
+    None
+  } else {
+    Some(a.get.asInstanceOf[T])
+  }
+}
+
+object M extends CC[Map[String, Any]]
+object L extends CC[List[Any]]
+object S extends CC[String]
+object D extends CC[Double]
+object B extends CC[Boolean]*/
+
+class Response {//TODO: what is this Response class?
+  var descriptor:Map[String, JsonLine] = _
+}
+
+class JsonDoodle {
+  var version:Int = _
+  var doodle_id:String = _
+  var user_id:String = _
+  var date:String = _
+  var time:Int = _
+  var count:Int = _
+  var width:Int = _
+  var height:Int = _
+  var ext:String = _
+  var url:String =_
+  var strokes:Array[JsonLine] = Array()
+  
+  def getStrokes:Array[JsonLine] = if(strokes.isEmpty)http.HttpHandler.getDoodle(url).getStrokes else strokes
+  
+  //def print = println(this)
+  override def toString ="version "+version+". doodle_id "+doodle_id+". user_id "+user_id+". date "+date+". time "+time+
+      ". count "+count+". width "+width+". height "+height+". ext "+ext+". strookes "+strokes.take(10).mkString(", ")
+}

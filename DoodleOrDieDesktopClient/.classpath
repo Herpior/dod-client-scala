@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="view/DrawingPanel.scala|view/CondimentPanel.scala|view/DrawingPanel2.scala|view/LoginPanel.scala" kind="src" path="src"/>
+	<classpathentry kind="src" path="resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="httpclient-4.5.jar"/>
+	<classpathentry kind="lib" path="httpcore-4.4.1.jar"/>
+	<classpathentry kind="lib" path="scala-swing_2.11-1.0.1.jar"/>
+	<classpathentry kind="lib" path="commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="gson-2.3.1.jar"/>
+	<classpathentry kind="lib" path="scala-library-2.11.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
