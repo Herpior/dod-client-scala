@@ -8,6 +8,8 @@ import java.awt.Color
 trait DoodlePart{
   def distFrom(point:Coord):Double
   def getLines:Array[BasicLine]
+  def length2:Double = getLines.foldLeft(0.0)(_+_.length2)
+  def selection:DoodlePart
 }
 
 class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
@@ -52,6 +54,13 @@ class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) ex
    // val n = new nextLinee
    // this.getNextLines.foreach{ x => n.strookes += x }
   //}
+  def selection = {
+    val res = new TextLine(cornerx,cornery, Colors.inverse(color), 1)
+    res.text = text
+    res.font = font
+    res.coeff = coeff
+    res
+  }
 }
 
 class BezierLine(val color:Color, val size:Double) extends DoodlePart{
@@ -67,6 +76,11 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
   var y3 = 0.0
   var x4 = 0.0
   var y4 = 0.0*/
+  def getCoordAt(dist:Double):Coord={
+    if(dist<=0)return coords.head
+    if(dist>=1)return coords.last
+    Bezier.pointAt(dist,coords(0),coords(1),coords(2),coords(3))
+  }
   def getCoord (ind:Int)={
     if(ind>=0&&ind<4)
     coords(ind) else coords(0)
@@ -76,31 +90,45 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
     coords(ind) = place
   }
   def distFrom(point:Coord)={
-    this.coords.map(_.dist(point)).sorted.head
+    (this.coords++this.getLine(color,size).getCoords).map(_.dist(point)).sorted.head
   }
-  def getLines : Array[BasicLine]= {
+  def getLine(color1:Color,size1:Double):BasicLine={
     if(coords.forall(_==coords(0))){
-      val st = new BasicLine(color,size)
+      val st = new BasicLine(color1,size1)
       st.setCoords( Array(coords(0)) )
-      return st.getLines
+      return st
     }
     val cs = Bezier.curve(coords(0),coords(1),coords(2),coords(3))
-    val res = new BasicLine(color,size)
+    val res = new BasicLine(color1,size1)
     res.setCoords (cs.map { c => Coord(math.round(c.x*2)/2.0,math.round(c.y*2)/2.0) })
+    res
+  }
+  def getLines : Array[BasicLine]= {
+    val res = this.getLine(color,size)
     //res.xs = xys._1.map(x=>math.round(2*x)/2.0)
     //res.ys = xys._2.map(y=>math.round(2*y)/2.0)
     Array(res)
+  }
+  def selection = {
+    val res = new MultiLine
+    res.addLine(this.getLine(Colors.inverse(color),1))
+    val line = new BasicLine(Color.black,1)
+    line.setCoords(coords)
+    res.addLine(line)
+    res
   }
 }
 class MultiLine extends DoodlePart{
   private var lines = Buffer[BasicLine]()
   def distFrom(point:Coord)={
-    lines.map(_.distFrom(point)).sorted.head
+    val sorted = lines.map(_.distFrom(point)).sorted
+    if(sorted.length>0)sorted.head
+    else 500
   }
   def apply(index:Int)={
     lines(index)
   }
-  def length={
+  def size={
     lines.length
   }
   def isEmpty={
@@ -153,9 +181,27 @@ class MultiLine extends DoodlePart{
     //lines = res
     //println(res.mkString("\n"))
   }
+  def selection = {
+    val res = new MultiLine
+    lines.foreach { x => 
+      val line = new BasicLine(Colors.inverse(x.color),1)
+      line.setCoords(x.getCoords)
+      res.addLine(line)}
+    res
+  }
 }
 
 class BasicLine(val color:Color, val size:Double) extends DoodlePart {
+  override def length2:Double = {
+    if(coords.length==0) return 0.0
+    var last = coords.head
+    var len = 0.0
+    for(c<-coords.drop(1)){
+      len += last.dist(c)
+      last = c
+    }
+    len
+  }
   private var coords = Buffer[Coord]()
   def distFrom(point:Coord)={
     this.getCoords.map(_.dist(point)).sorted.head
@@ -224,6 +270,11 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
       x+","+y
     }.mkString(",")+"],\"size\":"+size.toInt+",\"color\":\""+Colors.toHexString(color)+"\"}"
   }
+  def selection = {
+    val line = new BasicLine(Colors.inverse(this.color),1)
+    line.setCoords(this.getCoords)
+    line
+  }
 }
 class JsonLine extends DoodlePart {
   var color:String = _
@@ -243,6 +294,9 @@ class JsonLine extends DoodlePart {
     }
     res.setCoords(buf)
     res
+  }
+  def selection = {
+    this.toBasicLine.selection
   }
 }
 /*class Linee extends DoodlePart{

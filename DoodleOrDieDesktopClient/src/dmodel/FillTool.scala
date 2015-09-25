@@ -15,6 +15,39 @@ object FillTool {
       //s.xs += x
       //s.ys += y
   }*/
+  def combineBezier(first:BezierLine,second:BezierLine,mods:Int,res:MultiLine){
+    val len = math.max(first.length2,second.length2)
+    var max = 0
+    for(i<-0 to len.toInt){
+      val t = 1.0/i
+      val dist = first.getCoordAt(t).dist(second.getCoordAt(t)).toInt
+      if(dist>max)max = dist
+    }
+    var tmp = 0.0
+    val mid = (math.abs(first.size+second.size)/2).toInt
+    val n = (2*max/mid).toInt
+    val colors = if(mods/512%2==1)Colors.linearcolor(n,true,first.color,second.color) else Colors.linearcolor(n,false,first.color,second.color)
+    for(i<- 0 until n){
+      val in = i*1.0/n//tmp/max
+      val nin = 1-in
+      val color = colors(i)
+      val size = mid//(in*first.size + nin*second.size).toInt
+      //tmp += size/2
+      val c0 = (first.getCoord(0)*in+second.getCoord(0)*nin)
+      val c1 = (first.getCoord(1)*in+second.getCoord(1)*nin)
+      val c2 = (first.getCoord(2)*in+second.getCoord(2)*nin)
+      val c3 = (first.getCoord(3)*in+second.getCoord(3)*nin)
+      val bez = new BezierLine(color,size)
+      bez.setCoord(0, c0)
+      bez.setCoord(1, c1)
+      bez.setCoord(2, c2)
+      bez.setCoord(3, c3)
+      res.addLine(bez.getLine(color, size))
+    }
+  }
+  def linearFill(first:DoodlePart,second:DoodlePart,res:MultiLine){
+    //TODO make this work maybe
+  }
   def addGradient(next:MultiLine,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int){
     //val size = side.bsize
     val size = (sizeo+1)/2*2
