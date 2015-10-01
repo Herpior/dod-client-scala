@@ -197,7 +197,7 @@ object HttpHandler {
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
-  def ping{
+  def ping={
     var f :Future[Boolean] = Future{
       val post = new PingPost(chain,cookie)
       val in = postHttp(post)
