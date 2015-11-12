@@ -6,12 +6,16 @@ class Layer() {
   val redos = Buffer[DoodlePart]()
   //var img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB)
   //var thumb = new BufferedImage(200,150,BufferedImage.TYPE_INT_ARGB)
-  private val strokes = Buffer[DoodlePart]()
-  private var visible = true
+  protected val strokes = Buffer[DoodlePart]()
+  protected var visible = true
   private var selected = false
   
   def isVisible = visible
   def isSelected = selected
+  
+  def pressPoint(coord:Coord){}
+  def dragPoint(coord:Coord){}
+  def releasePoint {}
   
   def select = selected = !selected
   def visibility = visible = !visible
@@ -65,10 +69,77 @@ class Layer() {
     upper.setVisibility(false)
     upper
   }
-  def getStrokes={
+  def getStrokes(posting:Boolean)={
     if(visible)strokes.toArray else Array[DoodlePart]()
   }
   def getThumb={
     strokes.toArray
+  }
+}
+
+class MatrixLayer(private val orig:Layer) extends Layer {
+  
+  private var points = Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Magic.doodleSize,Coord(0,Magic.doodleSize.y))
+  private var edges = new BasicLine(Magic.red,1){this.setCoords(points++Array(points.head))}
+  private var ind = -1
+  
+  override def pressPoint(coord:Coord) {
+    val pts = points.map(c=>c.dist(coord)).zipWithIndex
+    val res = pts.sortBy(_._1).head
+    if (res._1<50){
+      ind = res._2
+    } else ind = -1
+  }
+  override def dragPoint(coord:Coord) {
+    if(ind>=0){
+      setPoint(ind, coord)
+    }
+  }
+  override def releasePoint{
+    ind = -1
+  }
+  
+  override def burn {
+    undo
+  }
+  override def undo {
+    strokes.clear
+    strokes ++= orig.getThumb
+    points = Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Coord(0,Magic.doodleSize.y),Magic.doodleSize)
+    edges.setCoords(points++Array(points.head))
+  }
+  override def load(doodle:JsonDoodle){
+  }
+  override def load(arr:Array[JsonLine]){
+  }
+  override def getStrokes(posting:Boolean)={
+    if(posting) {
+      if(visible)strokes.toArray else Array[DoodlePart]()
+    }
+    else {
+      if(visible)strokes.toArray++Array(edges) else Array[DoodlePart]()
+    }
+  }
+  override def add(stroke:DoodlePart){
+  }
+  def setPoint(ind:Int, c:Coord) {
+    if(ind>=0&&ind<4) {
+      points(ind) = c
+      recalculate
+      edges.setCoords(points++Array(points.head))
+    }
+  }
+  private def recalculate {
+    strokes.clear
+    val transformation = Matrix.transferPoint(Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Magic.doodleSize,Coord(0,Magic.doodleSize.y)), points)
+    strokes ++= orig.getThumb.map{
+      s1 =>
+        s1.transform(transformation)
+    }
+  }
+  def normal = {
+    val res = new Layer
+    strokes.foreach { stroke => res.add(stroke) }
+    res
   }
 }

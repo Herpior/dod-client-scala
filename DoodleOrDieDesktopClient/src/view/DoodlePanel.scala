@@ -115,7 +115,7 @@ class DoodlePanel extends Panel {
     val c = Coord(0,0)-offset
     g.fillRect(0, 0, img.getWidth, img.getHeight)
     //LineDrawer.redraw(img, model.getBot)
-    model.getBot.flatMap { x => x.getStrokes }.foreach{dp=>
+    model.getBot.flatMap { x => x.getStrokes(true) }.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)
     }
     botImg = img
@@ -124,7 +124,7 @@ class DoodlePanel extends Panel {
     val img = createImg
     val g = img.createGraphics()
     //LineDrawer.redraw(img, model.getMid)
-    model.getMid.getStrokes.foreach{dp=>
+    model.getMid.getStrokes(false).foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)
     }
     midImg = img
@@ -133,7 +133,7 @@ class DoodlePanel extends Panel {
     val img = createImg
     val g = img.createGraphics()
     //LineDrawer.redraw(img, model.getTop)
-    model.getTop.flatMap { x => x.getStrokes }.foreach{dp=>
+    model.getTop.flatMap { x => x.getStrokes(true) }.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)
     }
     topImg = img
@@ -242,7 +242,7 @@ class DoodlePanel extends Panel {
     val g = img.createGraphics()
     model.getLayers.foreach{
       lay=>
-        lay.getStrokes.foreach { 
+        lay.getStrokes(true).foreach { 
           stro =>
             LineDrawer.drawDoodlePart(g,stro,8,Coord(0,0),true)
           }

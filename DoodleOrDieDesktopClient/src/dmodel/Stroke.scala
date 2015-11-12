@@ -8,9 +8,10 @@ import java.awt.Color
 trait DoodlePart{
   def distFrom(point:Coord):Double
   def getLines:Array[BasicLine]
+  def transform(transformation:Coord=>Coord):DoodlePart
 }
 
-class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
+/*class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
   //var cornerx = 0.0
   //var cornery = 0.0
   def maxLen = 520-cornerx-15*coeff
@@ -52,7 +53,7 @@ class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) ex
    // val n = new nextLinee
    // this.getNextLines.foreach{ x => n.strookes += x }
   //}
-}
+}*/
 
 class BezierLine(val color:Color, val size:Double) extends DoodlePart{
   //var size = 1.0
@@ -67,6 +68,11 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
   var y3 = 0.0
   var x4 = 0.0
   var y4 = 0.0*/
+  def transform (transformation:Coord=>Coord):BezierLine = {
+    val next = new BezierLine(this.color,this.size)
+    next.setCoords(this.coords.map(c=>transformation(c)))
+    next
+  }
   def getCoord (ind:Int)={
     if(ind>=0&&ind<4)
     coords(ind) else coords(0)
@@ -74,6 +80,12 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
   def setCoord(ind:Int,place:Coord){
     if(ind>=0&&ind<4)
     coords(ind) = place
+  }
+  def setCoords(places:Array[Coord]){
+    val maxi = math.min( places.length,4)
+    for(i<-0 until maxi){
+      coords(i) = places(i)
+    }
   }
   def distFrom(point:Coord)={
     this.coords.map(_.dist(point)).sorted.head
@@ -94,6 +106,11 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
 }
 class MultiLine extends DoodlePart{
   private var lines = Buffer[BasicLine]()
+  def transform (transformation:Coord=>Coord):MultiLine = {
+    val next = new MultiLine
+    next.setLines(this.lines.map ( line => line.transform(transformation)))
+    next
+  }
   def distFrom(point:Coord)={
     lines.map(_.distFrom(point)).sorted.head
   }
@@ -108,6 +125,9 @@ class MultiLine extends DoodlePart{
   }
   def setLines(arr:Array[BasicLine]){
     lines = arr.toBuffer
+  }
+  def setLines(arr:Buffer[BasicLine]){
+    lines = arr
   }
   def addLine(line:BasicLine){
     lines += line
@@ -157,6 +177,11 @@ class MultiLine extends DoodlePart{
 
 class BasicLine(val color:Color, val size:Double) extends DoodlePart {
   private var coords = Buffer[Coord]()
+  def transform (transformation:Coord=>Coord):BasicLine = {
+    val next = new BasicLine(this.color,this.size)
+    next.setCoords(this.coords.map(c=>transformation(c)))
+    next
+  }
   def distFrom(point:Coord)={
     this.getCoords.map(_.dist(point)).sorted.head
   }
@@ -226,9 +251,15 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
   }
 }
 class JsonLine extends DoodlePart {
+  
   var color:String = _
   var size:Double = _
   var path:Array[Double]= Array()
+  
+  def transform (transformation:Coord=>Coord):BasicLine = {
+    val next = this.toBasicLine
+    next.transform(transformation)
+  }
   def distFrom(point:Coord)={
     this.toBasicLine.distFrom(point)
   }
