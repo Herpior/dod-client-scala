@@ -1,20 +1,29 @@
 package http
 
+import collection.mutable.Map
+import java.util.ArrayList
+import org.apache.http.client.entity.UrlEncodedFormEntity
+import org.apache.http.NameValuePair
+import org.apache.http.message.BasicNameValuePair
+
 
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
 import dmodel.BasicLine
 
-class DodPost(s:String,ext:String,ref:String,cookie:String) extends HttpPost("http"+s+"://doodleordie.com/"+ext){
-    this.addHeader("Origin","http://doodleordie.com")
-    this.addHeader("Accept-Encoding","gzip,deflate")
-    this.addHeader("x-js-ver","7f183e22")
+class DefaultPost(url:String,ref:String, cookie:String) extends HttpPost(url){
+    if(cookie.length>0)this.addHeader("Cookie",cookie)
+    if(ref.length()>0)this.addHeader("Referer",ref)
+    this.addHeader("Accept-Encoding","gzip")//,deflate")
     this.addHeader("Accept-Language","en-GB,en-US;q=0.8,en;q=0.6")
     this.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.103 Safari/537.36")
-    this.addHeader("Referer","http"+s+"://doodleordie.com/"+ref)
+  
+}
+class DodPost(s:String,ext:String,ref:String,cookie:String) extends DefaultPost("http"+s+"://doodleordie.com/"+ext,"http"+s+"://doodleordie.com/"+ref,cookie){
+    this.addHeader("Origin","http://doodleordie.com")
+    this.addHeader("x-js-ver","7f183e22")
     this.addHeader("X-Requested-With","XMLHttpRequest")
     this.addHeader("Connection","keep-alive")
-    this.addHeader("Cookie",cookie)
   //"""-H "Origin: http://doodleordie.com" 
   //   -H "Accept-Encoding: gzip,deflate"      
   //   -H "x-js-ver: 7f183e22" 
@@ -25,6 +34,15 @@ class DodPost(s:String,ext:String,ref:String,cookie:String) extends HttpPost("ht
   //   -H "Referer: http://doodleordie.com/play" 
   //   -H "X-Requested-With: XMLHttpRequest" 
   //   -H "Connection: keep-alive""""
+}
+class TwitterPost(username:String,password:Array[Char],input:Map[String,String],cookie:String) extends DefaultPost("https://api.twitter.com/oauth/authorize","https://api.twitter.com/oauth/authorize?oauth_token="+input("oauth_token"),cookie){
+  val nameValuePairs = new ArrayList[NameValuePair](1)
+  nameValuePairs.add(new BasicNameValuePair("authenticity_token", input("authenticity_token")))
+  nameValuePairs.add(new BasicNameValuePair("oauth_token", input("oauth_token")))
+  nameValuePairs.add(new BasicNameValuePair("redirect_after_login", input("redirect_after_login")))
+  nameValuePairs.add(new BasicNameValuePair("session[username_or_email]", username))
+  nameValuePairs.add(new BasicNameValuePair("session[password]", password.mkString))
+  this.setEntity(new UrlEncodedFormEntity(nameValuePairs))
 }
 class PlayPost(ext:String,cookie:String) extends DodPost("",ext,"play",cookie){
   this.addHeader("Accept","*/*")
@@ -60,11 +78,6 @@ class DescPost(chain:String,description:String,cookie:String)  extends PlayPost(
     this.setEntity(new StringEntity("{\"description\":\""+desc+"\"}"))
     
 }
-
-import java.util.ArrayList
-import org.apache.http.client.entity.UrlEncodedFormEntity
-import org.apache.http.NameValuePair
-import org.apache.http.message.BasicNameValuePair
 
 class LoginPost(password:Array[Char],username:String,cookie:String) extends DodPost("s","signin","signin",cookie){
   this.addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")

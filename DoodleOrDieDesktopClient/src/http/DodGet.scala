@@ -2,18 +2,20 @@ package http
 
 import org.apache.http.client.methods.HttpGet
 
-class DodGet(ext:String,ref:String,cookie:String)  extends HttpGet("http://doodleordie.com/"+ext){
-    //this.addHeader("Origin","http://doodleordie.com")
-    this.addHeader("Accept-Encoding","gzip,deflate")//,sdch?
-    this.addHeader("x-js-ver","7f183e22")
+class DefaultGet(url:String,ref:String,cookie:String) extends HttpGet(url){
+    this.addHeader("Accept-Encoding","gzip") //,deflate")//,sdch?
     this.addHeader("Accept-Language","en-GB,en-US;q=0.8,en;q=0.6")
     this.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.103 Safari/537.36")
-    this.addHeader("Content-Type","application/json")
+    this.addHeader("Referer",ref)
+    this.addHeader("Cookie",cookie)
     this.addHeader("Accept","*/*")
-    this.addHeader("Referer","http://doodleordie.com/"+ref)
+}
+class DodGet(ext:String,ref:String,cookie:String)  extends DefaultGet("http://doodleordie.com/"+ext,"http://doodleordie.com/"+ref,cookie){
+    //this.addHeader("Origin","http://doodleordie.com")
+    this.addHeader("x-js-ver","7f183e22")
+    this.addHeader("Content-Type","application/json")
     this.addHeader("X-Requested-With","XMLHttpRequest")
     this.addHeader("Connection","keep-alive")
-    this.addHeader("Cookie",cookie)
 }
 
 class MainGet(cookie:String) extends DodGet("","",cookie){
