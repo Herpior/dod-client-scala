@@ -136,6 +136,12 @@ object HttpHandler {
     //false
   }
   def logout {
+    var get = new DodGet("bye","",cookie)
+    val in = getHttp(get)
+    
+    println("HttpHandler logout")
+    println("in:")
+    println(in.mkString("\n"))
     cid = ""
     room = "global"
     chain = ""
@@ -189,6 +195,9 @@ object HttpHandler {
     false//TODO make facebook login
   }
   def twitterLogin(user:String,pw:Array[Char])={
+    println("HttpHandler twitterLogin")
+    print("cid: ")
+    println(cid)
     val get = new DodGet("auth/twitter?returnTo=%2Fsignin/signin","signin",cookie)
     val in = getHttp(get)
     val inputs = io.AuthParse.parseTwitter(in)
@@ -196,7 +205,7 @@ object HttpHandler {
     val in2 = postHttp(post)
     println("HttpHandler twitterLogin")
     println("in2:")
-    //println(in2.mkString("\n"))
+    println(in2.mkString("\n"))
     val callback = io.AuthParse.parseTwitterCallback(in2)
     if(callback.length()>0){
       println(callback)
@@ -204,10 +213,10 @@ object HttpHandler {
       //text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8 //        <------
       val in3 = getHttp(get2)
     println("HttpHandler twitterLogin")
-    println("in2:")
-    //println(in3.mkString("\n"))
-    //val get3 = new MainGet(cookie)
-    //  getHttp(get3)
+    println("in3:")
+    println(in3.mkString("\n"))
+    val get3 = new MainGet(cookie)
+      getHttp(get3)
     !cid.isEmpty()
     } else false
     //println(in2.mkString("\n"))
