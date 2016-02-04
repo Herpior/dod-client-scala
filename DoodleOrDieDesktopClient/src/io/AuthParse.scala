@@ -20,16 +20,16 @@ object AuthParse {
             value = param.trim().drop(7).takeWhile { _!='"' }
           }
         }
-        println(name)
-        println(value)
+        //println(name)
+        //println(value)
         if ((name=="authenticity_token" || name=="redirect_after_login" || name =="oauth_token")
             && value.length()>0){
           inputs(name)=value
         }
       }
     }
-    println("AuthParse parseTwitter")
-    println(inputs.mkString("\n"))
+    //println("AuthParse parseTwitter")
+    //println(inputs.mkString("\n"))
     inputs
   }
   def parseTwitterCallback(in:Array[String]):String = {

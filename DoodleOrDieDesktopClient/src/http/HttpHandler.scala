@@ -64,8 +64,8 @@ object HttpHandler {
   
   try{
     addDodCookie("cid",io.Crypt.decipherFrom("login"))
-    println(httpCookieStore.getCookies)
-  }catch{case e:Throwable=>println("load cid failed")}
+    //println(httpCookieStore.getCookies)
+  }catch{case e:Throwable=>/*println("load cid failed")*/}
   
   //private var _conn = ""
   private var chain = ""
@@ -102,13 +102,13 @@ object HttpHandler {
         }
         else new java.util.Scanner(response.getEntity.getContent)
     val str = Buffer[String]()
-    println()
+    /*println()
     println("HttpHandler getHttp")
     println(" post headers")
     println(post.getAllHeaders.mkString("\n"))
     println(" response headers")
     println(response.getAllHeaders.mkString("\n"))
-    println("post: "+post.getClass)//remove
+    println("post: "+post.getClass)//remove*/
     while(in.hasNext){
       str+=(in.nextLine())
     }
@@ -122,12 +122,12 @@ object HttpHandler {
     //cooky.find { x => x.takeWhile { c => c!='=' }.trim =="cid"}.foreach(s=>addDodCookie("cid",s))//cid = s)
     //cooky.find { x => x.takeWhile { c => c!='=' }.trim =="__conn"}.foreach(s=>addDodCookie("_conn",s))//_conn = s)
     
-    println()
+    /*println()
     println("HttpHandler getHttp")
     println(" get headers")
     println(get.getAllHeaders.mkString("\n"))
     println(" response headers")
-    println(response.getAllHeaders.mkString("\n"))
+    println(response.getAllHeaders.mkString("\n"))*/
     val in = 
         if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding())){
           new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent))
@@ -185,7 +185,7 @@ object HttpHandler {
     //false
   }
   def logout {
-    println(httpCookieStore.getCookies)
+    //println(httpCookieStore.getCookies)
     var get = new DodGet("bye","")
      getHttp(get)
     room = "global"
@@ -193,10 +193,10 @@ object HttpHandler {
     auth = new dmodel.JsonSkips
     val get3 = new MainGet()
     val in =  getHttp(get3)
-    println("HttpHandler logout")
-    println("in:")
+    //println("HttpHandler logout")
+    //println("in:")
     //println(in.mkString("\n"))
-    println(httpCookieStore.toString())
+    //println(httpCookieStore.toString())
   }
   def login(password:Array[Char],username:String):Boolean={
     
@@ -246,38 +246,35 @@ object HttpHandler {
     false//TODO make facebook login
   }
   def twitterLogin(user:String,pw:Array[Char])={
-    println("HttpHandler twitterLogin")
-    print("cid: ")
-    println(cid)
-    //println(cookie)
+    val prepost = new DefaultPost("https://twitter.com/logout","https://twitter.com/")
+    val prein = postHttp(prepost)
+    
     val get = new DodGet("auth/twitter?returnTo=%2Fsignin/signin","signin")
     val in = getHttp(get)
-    println("HttpHandler twitterLogin")
-    print("cid: ")
-    println(cid)
-    //println(cookie)
+    
     val inputs = io.AuthParse.parseTwitter(in)
     val post = new TwitterPost(user,pw,inputs)
     val in2 = postHttp(post)
-    println("HttpHandler twitterLogin")
-    print("cid: ")
-    println(cid)
-    println()
-    println("HttpHandler twitterLogin")
-    println("in2:")
+    
+    //println("HttpHandler twitterLogin")
+    //println("in2:")
     //println(in2.mkString("\n"))
+    
     val callback = io.AuthParse.parseTwitterCallback(in2)
     if(callback.length()>0){
-      println(callback)
+      //println(callback)
+      
       val get2 = new DodGet(callback.drop("http://doodleordie.com/".length),"")
       //text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8 //        <------
       val in3 = getHttp(get2)
-    println("HttpHandler twitterLogin")
-    println("in3:")
-    //println(in3.mkString("\n"))
-    val get3 = new MainGet()
+      
+      //println("HttpHandler twitterLogin")
+      //println("in3:")
+      //println(in3.mkString("\n"))
+      
+      val get3 = new MainGet()
       getHttp(get3)
-    !cid.isEmpty
+      !cid.isEmpty
     } else false
     //println(in2.mkString("\n"))
     //false//TODO make twitter login work //TODO find out why does it work
@@ -293,15 +290,15 @@ object HttpHandler {
     //
   }
   def hasCid = {
-    println(cid)
-    httpCookieStore.getCookies.find { cookie => cookie.getName=="cid" }.foreach{
+    //println(cid)
+    /*httpCookieStore.getCookies.find { cookie => cookie.getName=="cid" }.foreach{
       x=> println(x.getDomain)
       println(x.getExpiryDate)
       println(x.getPath)
       println(x.getPorts)
       println(x.getVersion)
       println(!cid.isEmpty)
-    }
+    }*/
     
     !cid.isEmpty//this.cid!=null&&this.cid.length()>0
   }
