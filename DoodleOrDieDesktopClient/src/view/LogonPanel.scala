@@ -149,7 +149,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
         case _ => twitterButt
       }
       sigLabel.text = "Sign in with Facebook"
-      unLabel.text = "Username or e-mail"
+      unLabel.text = "E-mail"
       status = 2
       this.revalidate()
       this.repaint()

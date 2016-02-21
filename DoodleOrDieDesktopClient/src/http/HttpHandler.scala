@@ -175,7 +175,7 @@ object HttpHandler {
   def submitDesc(desc:String)={
     val post = new DescPost(chain,desc)
     val in = postHttp(post)
-    //while(in.hasNext){
+    println(in.mkString("\n"))//while(in.hasNext){
       //println(in.nextLine())
     //}
     //while(out.hasNext){
@@ -261,7 +261,9 @@ object HttpHandler {
     driver.findElementById("pass").sendKeys(pw)
     driver.findElementByName("login").click()
     }catch{
-      case e:Throwable=>return false
+      case e:Throwable=>
+        driver.close()
+        return false
     }
     //println("facelogin")
     //println(driver.getTitle)
@@ -271,7 +273,7 @@ object HttpHandler {
       addDodCookie("cid",driver.manage().getCookieNamed("cid").getValue)
     }
     catch{
-      case e:NullPointerException => println(e)
+      case e:NullPointerException => 
     }
     driver.close()
     //use selenium
@@ -287,26 +289,28 @@ object HttpHandler {
     driver.getBrowserVersion().setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.103 Safari/537.36")
     driver.get("https://doodleordie.com/auth/twitter?returnTo=%2Fsignin")
     //driver.get("https://www.facebook.com/dialog/oauth?response_type=code&redirect_uri=http%3A%2F%2Fdoodleordie.com%2Fauth%2Ffacebook%2Fcallback&client_id=281697128537109")
-    println("twitterlogin")
-    println(driver.getTitle)
-    println(driver.getCurrentUrl)
-    println(driver.getPageSource)
+    //println("twitterlogin")
+    //println(driver.getTitle)
+    //println(driver.getCurrentUrl)
+    //println(driver.getPageSource)
     try{
     driver.findElementById("username_or_email").sendKeys(user)
     driver.findElementById("password").sendKeys(pw)
     driver.findElementById("allow").click()
     }catch{
-      case e:Throwable=>return false
+      case e:Throwable=>
+        driver.close()
+        return false
     }
-    println("twitterlogin")
-    println(driver.getTitle)
+    //println("twitterlogin")
+    //println(driver.getTitle)
     println(driver.getCurrentUrl)
     //println(driver.getPageSource)
     try{
       addDodCookie("cid",driver.manage().getCookieNamed("cid").getValue)
     }
     catch{
-      case e:NullPointerException => println(e)
+      case e:NullPointerException => 
     }
     driver.close()
     //use selenium
