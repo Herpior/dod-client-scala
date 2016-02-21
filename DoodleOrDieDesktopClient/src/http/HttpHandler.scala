@@ -134,7 +134,7 @@ object HttpHandler {
         }
         else new java.util.Scanner(response.getEntity.getContent)
     val str = Buffer[String]()
-    println("get: "+get.getClass)
+    //println("get: "+get.getClass)
     while(in.hasNext){
       str+=(in.nextLine())
     }
@@ -242,10 +242,76 @@ object HttpHandler {
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
-  def faceLogin(user:String,pw:Array[Char])={
-    false//TODO make facebook login
+  def faceLogin(user:String,pw:Array[Char]):Boolean={
+    import org.openqa.selenium.WebDriver
+    import org.openqa.selenium.htmlunit.HtmlUnitDriver
+    import org.openqa.selenium.remote.DesiredCapabilities
+    val caps = new DesiredCapabilities
+    caps.setJavascriptEnabled(true)
+    val driver = new HtmlUnitDriver()
+    driver.getBrowserVersion().setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.103 Safari/537.36")
+    driver.get("https://doodleordie.com/auth/facebook?returnTo=%2Fsignin")
+    //driver.get("https://www.facebook.com/dialog/oauth?response_type=code&redirect_uri=http%3A%2F%2Fdoodleordie.com%2Fauth%2Ffacebook%2Fcallback&client_id=281697128537109")
+    //println("facelogin")
+    //println(driver.getTitle)
+    //println(driver.getCurrentUrl)
+    //println(driver.getPageSource)
+    try{
+    driver.findElementById("email").sendKeys(user)
+    driver.findElementById("pass").sendKeys(pw)
+    driver.findElementByName("login").click()
+    }catch{
+      case e:Throwable=>return false
+    }
+    //println("facelogin")
+    //println(driver.getTitle)
+    //println(driver.getCurrentUrl)
+    //println(driver.getPageSource)
+    try{
+      addDodCookie("cid",driver.manage().getCookieNamed("cid").getValue)
+    }
+    catch{
+      case e:NullPointerException => println(e)
+    }
+    driver.close()
+    //use selenium
+    !cid.isEmpty//false//TODO make face login work
   }
-  def twitterLogin(user:String,pw:Array[Char])={
+  def twitterLogin(user:String,pw:Array[Char]):Boolean={
+    import org.openqa.selenium.WebDriver
+    import org.openqa.selenium.htmlunit.HtmlUnitDriver
+    import org.openqa.selenium.remote.DesiredCapabilities
+    val caps = new DesiredCapabilities
+    caps.setJavascriptEnabled(true)
+    val driver = new HtmlUnitDriver()
+    driver.getBrowserVersion().setUserAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.103 Safari/537.36")
+    driver.get("https://doodleordie.com/auth/twitter?returnTo=%2Fsignin")
+    //driver.get("https://www.facebook.com/dialog/oauth?response_type=code&redirect_uri=http%3A%2F%2Fdoodleordie.com%2Fauth%2Ffacebook%2Fcallback&client_id=281697128537109")
+    println("twitterlogin")
+    println(driver.getTitle)
+    println(driver.getCurrentUrl)
+    println(driver.getPageSource)
+    try{
+    driver.findElementById("username_or_email").sendKeys(user)
+    driver.findElementById("password").sendKeys(pw)
+    driver.findElementById("allow").click()
+    }catch{
+      case e:Throwable=>return false
+    }
+    println("twitterlogin")
+    println(driver.getTitle)
+    println(driver.getCurrentUrl)
+    //println(driver.getPageSource)
+    try{
+      addDodCookie("cid",driver.manage().getCookieNamed("cid").getValue)
+    }
+    catch{
+      case e:NullPointerException => println(e)
+    }
+    driver.close()
+    //use selenium
+    !cid.isEmpty
+    /*
     val prepost = new DefaultPost("https://twitter.com/logout","https://twitter.com/")
     val prein = postHttp(prepost)
     
@@ -265,8 +331,10 @@ object HttpHandler {
       //println(callback)
       
       val get2 = new DodGet(callback.drop("http://doodleordie.com/".length),"")
+      * 
+      */
       //text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8 //        <------
-      val in3 = getHttp(get2)
+      /*val in3 = getHttp(get2)
       
       //println("HttpHandler twitterLogin")
       //println("in3:")
@@ -278,6 +346,8 @@ object HttpHandler {
     } else false
     //println(in2.mkString("\n"))
     //false//TODO make twitter login work //TODO find out why does it work
+     * 
+     */
   }
   def debugGet(ext:String,ref:String)={
     val get = new DefaultGet(ext,ref)

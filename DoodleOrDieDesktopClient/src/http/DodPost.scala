@@ -34,7 +34,17 @@ class DodPost(s:String,ext:String,ref:String) extends DefaultPost("http"+s+"://d
   //   -H "Referer: http://doodleordie.com/play" 
   //   -H "X-Requested-With: XMLHttpRequest" 
   //   -H "Connection: keep-alive""""
-}
+}/*
+* facebook is shitty and too secure to login like this
+class FacePost(username:String,password:Array[Char],input:Map[String,String])extends DefaultPost("https://www.facebook.com/login.php?login_attempt=1&next=https%3A%2F%2Fwww.facebook.com%2Fv2.0%2Fdialog%2Foauth%3Fredirect_uri%3Dhttp%253A%252F%252Fdoodleordie.com%252Fauth%252Ffacebook%252Fcallback%26response_type%3Dcode%26client_id%3D281697128537109%26ret%3Dlogin&lwv=100",""){
+  val nameValuePairs = new ArrayList[NameValuePair](1)
+  nameValuePairs.add(new BasicNameValuePair("lsd", input("lsd")))
+  nameValuePairs.add(new BasicNameValuePair("api_key", "281697128537109"))
+  nameValuePairs.add(new BasicNameValuePair("redirect_after_login", input("redirect_after_login")))
+  nameValuePairs.add(new BasicNameValuePair("email", username))
+  nameValuePairs.add(new BasicNameValuePair("pass", password.mkString))
+  this.setEntity(new UrlEncodedFormEntity(nameValuePairs))
+}*/
 class TwitterPost(username:String,password:Array[Char],input:Map[String,String]) extends DefaultPost("https://api.twitter.com/oauth/authorize","https://api.twitter.com/oauth/authorize?oauth_token="+input("oauth_token")){
   val nameValuePairs = new ArrayList[NameValuePair](1)
   nameValuePairs.add(new BasicNameValuePair("authenticity_token", input("authenticity_token")))
