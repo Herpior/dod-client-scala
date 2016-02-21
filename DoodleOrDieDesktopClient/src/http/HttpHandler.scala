@@ -175,7 +175,7 @@ object HttpHandler {
   def submitDesc(desc:String)={
     val post = new DescPost(chain,desc)
     val in = postHttp(post)
-    println(in.mkString("\n"))//while(in.hasNext){
+    //println(in.mkString("\n"))//while(in.hasNext){
       //println(in.nextLine())
     //}
     //while(out.hasNext){
@@ -304,7 +304,7 @@ object HttpHandler {
     }
     //println("twitterlogin")
     //println(driver.getTitle)
-    println(driver.getCurrentUrl)
+    //println(driver.getCurrentUrl)//improve error message with the url?
     //println(driver.getPageSource)
     try{
       addDodCookie("cid",driver.manage().getCookieNamed("cid").getValue)
