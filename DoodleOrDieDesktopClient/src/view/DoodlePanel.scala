@@ -81,7 +81,13 @@ class DoodlePanel extends Panel {
     //g.setColor(Magic.red)
     //val points = model.pers.getPoints
     //points.foreach(p=>g.fillOval(p.x-1, p.y-1, 3, 3))
-    val col = model.tools.getColor
+    
+    //draw selected line if any
+    
+    model.selected.foreach{ml=>LineDrawer.drawDoodlePart(g,ml.selection,getZoom,offset,true)}
+    //draw the cursor
+    
+    //val col = model.tools.getColor
     //val invert = dmodel.Colors.inverse(col)
     g.setColor(Magic.black)
     val bsize = (model.tools.getSize*getZoom).toInt

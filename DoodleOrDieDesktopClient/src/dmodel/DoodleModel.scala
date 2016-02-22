@@ -12,6 +12,8 @@ class DoodleModel {
   private var bezierLine:Option[BezierLine] = None
   private def matrix:Boolean = this.layers.getCurrent.isInstanceOf[MatrixLayer]
   //private var textLine:Option[TextLine] = None
+  private var hoveringLine:Option[DoodlePart] = None
+  private var hoveringLine2:Option[DoodlePart] = None
   
   private var bezier = false
   
@@ -25,8 +27,9 @@ class DoodleModel {
   //private var color = "#000000"
   //private var color2 = "#000000"
   
+  def selected = (hoveringLine ++ hoveringLine2).toArray
   //def isWriting = textLine.isDefined
-  def isDrawing = multiLine.isDefined
+  def isDrawing = multiLine.isDefined || hoveringLine2.isDefined
   def isBezier = bezier && bezierLine.isDefined
   def isMatrix = {
     matrix
@@ -155,6 +158,53 @@ class DoodleModel {
   //---------\\
   def toLocalStorage{
     io.LocalStorage.printFile(layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
+  }
+  //---------\\
+  def select(place:Coord,mods:Int,first:Boolean){
+    val strokes = if(mods/256%2==1) {
+      this.getLayers.flatMap(_.getStrokes(false))
+    }
+    else this.getMid.getStrokes(false)
+    if(strokes.length<1)return
+    var curr = strokes(0)
+    var best = curr.distFrom(place)
+    for(s<-strokes){
+      val dist = s.distFrom(place)
+      if(dist<best){
+        best = dist
+        curr = s
+      }
+    }
+    if(best<10){
+      if(first)hoveringLine = Some(curr)
+      else hoveringLine2 = Some(curr)
+    } else {
+      if(first) hoveringLine = None
+      else hoveringLine2 = None
+    }
+  }
+  def unselect{
+    hoveringLine = None
+    hoveringLine2 = None
+  }
+  //---------\\
+  def lineFill(mods:Int){
+    //println("linefill model")
+    if(this.hoveringLine.isDefined && this.hoveringLine2.isDefined){
+      //println("both found")
+      val res = new MultiLine
+      val line1 = this.hoveringLine.get
+      val line2 = this.hoveringLine2.get
+      if(line1.isInstanceOf[BezierLine] && line2.isInstanceOf[BezierLine]){
+        //println("both bez")
+        FillTool.combineBezier(line1.asInstanceOf[BezierLine], line2.asInstanceOf[BezierLine], mods, res)
+      }
+      else {
+        FillTool.linearFill(line1,line2,res)
+      }
+    layers.getCurrent.add(res)
+    }
+    unselect
   }
   //---------\\
   def startBezier(place:Coord,mods:Int){
