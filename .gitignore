@@ -1,5 +1,11 @@
+# Eclipse
+.settings
+.cache
+.project
+.classpath
+bin
+
 */backup.*
 */bin/
 */login1
 */login2
-*/.cache
