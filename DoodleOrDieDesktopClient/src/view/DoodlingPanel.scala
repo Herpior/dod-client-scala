@@ -252,7 +252,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.O =>
           if(Magic.authorized){
             if(e.modifiers/128%2==1){
-              val text = Dialog.showInput(doodle, "ls string", "open", Dialog.Message.Question, null, List[String](), "")
+              val text = Dialog.showInput(doodle, "file path", "open", Dialog.Message.Question, null, List[String](), "")
               text.foreach { x => 
                 doodle.model.loadFrom(x,private_id)
                 doodle.redrawMid
