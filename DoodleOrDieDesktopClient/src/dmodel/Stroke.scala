@@ -222,7 +222,8 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
     next
   }
   def distFrom(point:Coord)={
-    this.getCoords.map(_.dist(point)).sorted.head
+    if(this.coords.length==0){500}
+    else {this.getCoords.map(_.dist(point)).sorted.head}
   }
   def setCoords(buf:Buffer[Coord]){ coords = buf }
   def setCoords(arr:Array[Coord]){ coords = arr.toBuffer }
