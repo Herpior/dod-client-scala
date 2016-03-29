@@ -60,7 +60,7 @@ object LocalStorage {
   }
   def readArray(path:String)={
     val source = scala.io.Source.fromFile(path)("UTF-8")
-    val res = source.mkString.split(",")
+    val res = source.mkString.split(";")//(",(?=([^\\(]*\\([^\\)]*\\))*[^\(]*$)", -1);//split(",")
     source.close()
     res
   }
@@ -68,7 +68,7 @@ object LocalStorage {
     //println(arr.mkString(","))
     printToFile(new File(path))
   {p=>
-    val st = arr.mkString(",")
+    val st = arr.mkString(";")
     p.write(st)}
   }/*
   def storePw(cid:String){
@@ -90,7 +90,7 @@ object LocalStorage {
        res.path = pieces(0).toArray.map { x => vmap(x)/2.0 }
        if(res.path.length%2==1)res.path = res.path.drop(1)
        res.size = if(pieces.length>1)vmap(pieces(1)(0))/2 else 1
-       res.color = if(pieces.length>2)"#"+pieces(2)else "#000"
+       res.color = if(pieces.length>2 && pieces(2).take(3)=="gba") "r"+pieces(2) else if(pieces.length>2) "#"+pieces(2)else "#000"
        //res.toBasicLine
        res
       }

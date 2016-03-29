@@ -5,7 +5,8 @@ import collection.mutable.Buffer
 
 object Colors {
 
-  def toHexString(color:Color)={
+  def toHexString(color:Color):String={
+    if(color.getAlpha!=255)return toRGBAString(color)
     var r = Integer.toHexString(color.getRed())
     var g = Integer.toHexString(color.getGreen())
     var b = Integer.toHexString(color.getBlue())
@@ -20,6 +21,9 @@ object Colors {
       
     "#"+r+""+g+""+b
   }
+  def toRGBAString(color:Color)={
+    "rgba("+color.getRed()+","+color.getGreen()+","+color.getBlue()+","+color.getAlpha()/255.0+")"
+  }
   /*def toHexString(color:javafx.scene.paint.Color)={
     var r = Integer.toHexString((color.getRed()*255).toInt)
     var g = Integer.toHexString((color.getGreen()*255).toInt)
@@ -29,10 +33,17 @@ object Colors {
       if(b.length()<2)b="0"+b
     "#"+r+""+g+""+b
   }*/
-  def toColor(string:String)={
+  def toColor(string:String):Color = {
     var str = string.toLowerCase
+    //println(string.take(4))
     if(string.headOption.exists { _=='#' }){
       str = str.tail
+    } else if(str.take(4)=="rgba"){
+      val txt = str.drop(5).dropRight(1)
+      //println(str+" = "+string)
+      val parts = txt.split(",")
+      if(parts.size!=4)return Color.BLACK//println("fails")
+      return new Color(parts(0).toInt,parts(1).toInt,parts(2).toInt,(parts(3).toDouble*255).toInt)
     }
     val hexa = str.forall(c=>Magic.hexa.exists { x => x==c })
     /*if(hexa && str.length()==6){
@@ -75,6 +86,13 @@ object Colors {
       if(g.length()<2)g="0"+g
       if(b.length()<2)b="0"+b
     "#"+r+""+g+""+b*/
+  }
+  def smudge(first:Color,second:Color, add:Color=Color.WHITE, opacity:Double=0) :Color = {
+    val red = ((first.getRed+second.getRed)*0.5*(1-opacity)+opacity*add.getRed).toInt
+    val green = ((first.getGreen+second.getGreen)*0.5*(1-opacity)+opacity*add.getGreen).toInt
+    val blue = ((first.getBlue+second.getBlue)*0.5*(1-opacity)+opacity*add.getBlue).toInt
+    
+    return new Color(red,green,blue)
   }
   def linearcolor(n:Int,rgb:Boolean,fcolor:Color,bcolor:Color) :Array[Color] = {
     val first = fcolor//Color.decode(fcolor)

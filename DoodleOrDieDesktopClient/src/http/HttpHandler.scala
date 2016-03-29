@@ -29,17 +29,21 @@ object HttpHandler {
 
   //val classLoader = getClass().getClassLoader();
   //println("lol")
-  val url = getClass.getResource("/jssecacerts")
+  val url = getClass.getResource("jssecacerts")
+  //println(url)
   val keystore = new File(url.getFile())
+  //println(keystore)
   val sslcontext = SSLContexts.custom()
                 .loadTrustMaterial(keystore, "changeit".toCharArray(),
                         new TrustSelfSignedStrategy())
                 .build();
+  //println(sslcontext)
   val sslsf = new SSLConnectionSocketFactory(
                 sslcontext,
                 Array( "TLSv1" ),
                 null,
                 SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+  //println(sslsf)
   val httpCookieStore = new BasicCookieStore();
   val globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build(); 
   val client = HttpClients.custom()
@@ -162,7 +166,7 @@ object HttpHandler {
     //val out = new java.util.Scanner(post.getEntity.getContent)
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
-//    println(in.mkString("\n, "))
+    //println(doodle.mkString("\n, "))
     //while(in.hasNext){
       //println(in.nextLine())
     //}
