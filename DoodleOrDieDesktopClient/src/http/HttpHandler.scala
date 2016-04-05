@@ -1,6 +1,6 @@
 package http
 
-import org.apache.http.impl.client.HttpClients
+import org.apache.http.impl.client.{HttpClients, CloseableHttpClient}
 import org.apache.http.client.methods.HttpGet
 import scala.concurrent.Future
 import view._
@@ -19,10 +19,12 @@ object HttpHandler {
 
   //val classLoader = getClass().getClassLoader();
   //println("lol")
-  val url = getClass.getResource("/jssecacerts")
+  private var client :CloseableHttpClient = null//HttpClients.custom().build()
+  try{
+  val url = getClass.getResource("/dodcacerts")
   val keystore = new File(url.getFile())
   val sslcontext = SSLContexts.custom()
-                .loadTrustMaterial(keystore, "changeit".toCharArray(),
+                .loadTrustMaterial(keystore, "RpcQNp1tTSifL6aGqAtt".toCharArray(),
                         new TrustSelfSignedStrategy())
                 .build();
   val sslsf = new SSLConnectionSocketFactory(
@@ -30,9 +32,15 @@ object HttpHandler {
                 Array( "TLSv1" ),
                 null,
                 SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-  val client = HttpClients.custom()
+  client = HttpClients.custom()
                 .setSSLSocketFactory(sslsf)
                 .build();//HttpClientBuilder.create().build();//new DefaultHttpClient
+  } catch {
+    case e: NullPointerException => throw e
+    case e => 
+      println(e)
+      throw e
+  }
   private def cookie = if(cid.isEmpty())_conn else if(_conn.isEmpty)cid else Array(cid,_conn).mkString(";")//
   def cook = cookie
   private var cid = try{
