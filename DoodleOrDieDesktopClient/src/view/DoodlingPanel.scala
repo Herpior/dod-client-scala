@@ -139,6 +139,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       doodle.model.setColor(e.color,e.index)
     case e: ToolChangeEvent =>
       doodle.model.setState(e.tool)*/
+    case e:MouseExited =>
+      doodle.model.unselect
     case e:MouseWheelMoved =>
       if(e.modifiers/128%2==1)doodle.zoomin(e.rotation)
       else doodle.zoomin(e.rotation*4)
@@ -222,21 +224,26 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key8 =>
           if(Magic.authorized)tools.model.number(7)
+      doodle.model.unselect
             //doodle.model.setSize(tools.model.getSize)
         case Key.H =>
           if(Magic.authorized)tools.model.tool(4)//->perspect
+      doodle.model.unselect
           //doodle.model.setState(8)
         case Key.M =>
           //doodle.model.matrixLayer //TODO maybe add this eventually
         
         case Key.J =>//->undefined
           if(Magic.authorized)tools.model.tool(5)
+      doodle.model.unselect
           //doodle.model.setState(9)
         case Key.U =>
           tools.model.tool(1)//draw->line
+      doodle.model.unselect
           //doodle.model.setState(0)
         case Key.I =>
           if(Magic.authorized)tools.model.tool(2)//line->bez
+      doodle.model.unselect
           //doodle.model.setState(1)
         case Key.P =>
           if(e.modifiers/128%2==1){
@@ -265,11 +272,13 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             }
             else {
               tools.model.tool(3)//bezier->fill
+      doodle.model.unselect
               //doodle.model.setState(2)
             }
           }
         case Key.L =>
           if(Magic.authorized)tools.model.tool(7)//bezier2->undefined
+      doodle.model.unselect
           //doodle.model.setState(7)
         //case Key.P =>
           //tools.model.tool(3)//gradient fill
@@ -284,6 +293,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
         case Key.K =>
           if(Magic.authorized)tools.model.tool(6)//perspective set->undefined
+      doodle.model.unselect
           //doodle.model.setState(6)
         case Key.Enter =>
           if(e.modifiers /128%2==1){
@@ -318,6 +328,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
           else{
             tools.model.tool(0)//->draw
+      doodle.model.unselect
           }
         case Key.F =>
           if(e.modifiers==128) {
@@ -384,6 +395,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               doodle.model.dragBezier(2,place,mods)
               doodle.redrawDrawing
             }
+        case 5|6 =>//edit
+          if(Magic.authorized){
+              val place = doodle.getCoord(e.point.getX, e.point.getY)
+              val mods = e.modifiers
+              doodle.model.select(place,mods,true)
+            }
         case _ =>
       }
       doodle.setCursor(e.point.getX, e.point.getY)
@@ -430,7 +447,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             } else if(mods/128%2==1){
               pers3 = Some(getX(e),getY(e))
             } else pers = (getX(e),getY(e))*/
-          case 5 =>
+          case 5|6 =>//edit
+          if(Magic.authorized){
+              val place = doodle.getCoord(e.point.getX, e.point.getY)
+              val mods = e.modifiers
+              doodle.model.select(place,mods,false)
+            }
             //if(Magic.authorized)doodle.model.dragPerspective(place, mods)
             /*if(doodle.model.isWriting){
               doodle.model.stopWriting
@@ -450,7 +472,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               println("click "+nexttext.cornerx)*/
             }*/
           //  this.addStrooke
-          case 6 =>
+          //case 6 =>
             //doodle.model.startMatrix(place,mods)
             /*
             val x = this.getX(e)
@@ -563,8 +585,19 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               doodle.repaint
             }
           case 4 =>//perspective set
-            if(Magic.authorized)doodle.model.dragPerspective(place, mods)
-          case _ =>
+            if(Magic.authorized){
+              doodle.model.dragPerspective(place, mods)
+              }
+          case 6 =>//line fill
+            if(Magic.authorized){
+              //println("auth line fill panel")
+              //val place = doodle.getCoord(e.point.getX, e.point.getY)
+              //val mods = e.modifiers
+              doodle.model.lineFill(mods)
+              doodle.redrawLastMid
+            }
+          case _ => 
+            println("case x doodling panel")
         }
        doodle.model.addTime((System.nanoTime()-check)/10000)
        savetimer.start()
@@ -604,10 +637,16 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               doodle.redrawDrawing
               doodle.repaint
             }
-          case 5 =>//pers
+          case 4 =>//pers
             if(Magic.authorized)doodle.model.dragPerspective(place, mods)
-          //case 6 =>//perspective set
-            //dragLine(e)
+          case 5 =>//edit
+            //TODO make this edit lines maybe?
+          case 6 =>//edit
+            if(Magic.authorized){
+              val place = doodle.getCoord(e.point.getX, e.point.getY)
+              val mods = e.modifiers
+              doodle.model.select(place,mods,false)
+            }
           case 2 =>//bezier2
             if(Magic.authorized){
               if(doodle.model.isBezier){
