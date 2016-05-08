@@ -24,6 +24,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       skip
       }}
 
+  
+                        controller.Timer(2*60*60*1000){
+                          http.HttpHandler.ping
+                        }.start
+  
   /*val groups = http.HttpHandler.getGroupList.getGroups
   val roomChanger = new ComboBox(groups){
     this.background = Magic.white
