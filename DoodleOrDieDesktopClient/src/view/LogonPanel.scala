@@ -20,10 +20,24 @@ class LogonPanel extends /*BoxPanel(Orientation.Vertical)*/FlowPanel with Window
   def test2(x:Color){println(dmodel.Colors.toHexString(x))}
   test.open()*/
   
-  val sign = new SignonPanel(this)
+  private val sign = new SignonPanel(this)
   this.listenTo(sign)
-  this.reactions+={
-    case e:ReplaceEvent=>
+  this.listenTo(this.keys)
+  this.listenTo(sign.keys)
+  //this.listenTo(sign.autoButt.keys)
+  //this.listenTo(sign.unField.keys)
+  this.reactions +={
+    /*case e:KeyPressed if e.key == Key.T =>
+      http.HttpHandler.twitterGet()
+    case e:KeyPressed if e.key == Key.N =>
+          val text = Dialog.showInput(this, "url extension", "open", Dialog.Message.Question, null, List[String](), "http://doodleordie.com/")
+          text.foreach { x => 
+            val ref = Dialog.showInput(this, "ref", "open", Dialog.Message.Question, null, List[String](), "http://doodleordie.com/")
+            ref.foreach { y =>
+              http.HttpHandler.debugGet(x,y)
+            }
+          }*/
+    case e:ReplaceEvent =>
       if(e.source==sign)this.publish(new ReplaceEvent(e.replacement,this))
   }
   def continue = sign.continue
@@ -58,7 +72,7 @@ class LogonPanel extends /*BoxPanel(Orientation.Vertical)*/FlowPanel with Window
   
 }
 class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
-  
+  private var status = 0
   this.border =  Swing.EmptyBorder(30,30,30,30)//new Border
   this.background = Color.WHITE
   this.preferredSize = new Dimension(600,600)
@@ -69,21 +83,33 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   val autoButt = new RadioButton("Sign in automatically"){
     this.background = Magic.white
   }
-  val singButt = new Button("Sign In"){
-    this.background = Magic.buttColor
-    this.preferredSize = new Dimension(900, 40)
-    this.maximumSize = new Dimension(1900, 40)
-    this.contentAreaFilled = true
-    this.minimumSize = this.preferredSize
-    this.font = font20
-    this.foreground = Color.WHITE
+  val twitterButt = new LoginButton("Sign in with Twitter"){
+    this.action=Action("Sign in with Twitter"){
+    switchToTwitter
+    }
+  }
+  val faceButt = new LoginButton("Sign in with Facebook"){
+    this.action=Action("Sign in with Facebook"){
+    switchToFace
+    }
+  }
+  val normalButt = new LoginButton("Sign in normally"){
+    this.action=Action("Sign in normally"){
+    switchToNormal
+    }
+  }
+  val singButt = new LoginButton("Sign In"){
     this.action=Action("Sign in"){
     continue
   }}
-  this.contents += new Label("Sign in"){this.font = font20}
+  val unLabel = new Label("Username"){this.font = font20}
+  val sigLabel = new Label("Sign in"){this.font = font20}
+  this.contents += sigLabel
   this.contents += new Label(" "){this.font = font20}
-  this.contents += new Label(" "){this.font = font20}
-  this.contents += new Label("Username"){this.font = font20}
+  this.contents += faceButt
+  this.contents += twitterButt
+  //this.contents += new Label(" "){this.font = font20}
+  this.contents += unLabel
   unField.preferredSize = new Dimension(900, 50)
   unField.maximumSize = new Dimension(1900, 50)
   unField.font = font20
@@ -99,7 +125,51 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   this.contents += singButt
   this.contents += autoButt
   
-  
+  def switchToTwitter {
+    val index = this.contents.indexOf(twitterButt)
+    //this.contents -= twitterButt
+    if(index>0 && status != 1){
+      this.contents(index) = status match{
+        case 0 => normalButt
+        case _ => faceButt
+      }
+      sigLabel.text = "Sign in with Twitter"
+      unLabel.text = "Username or e-mail"
+      status = 1
+      this.revalidate()
+      this.repaint()
+    }
+  }
+  def switchToFace{
+    val index = this.contents.indexOf(faceButt)
+    //this.contents -= twitterButt
+    if(index>0 && status != 2){
+      this.contents(index) = status match{
+        case 0 => normalButt
+        case _ => twitterButt
+      }
+      sigLabel.text = "Sign in with Facebook"
+      unLabel.text = "E-mail"
+      status = 2
+      this.revalidate()
+      this.repaint()
+    }
+  }
+  def switchToNormal{
+    val index = this.contents.indexOf(normalButt)
+    //this.contents -= twitterButt
+    if(index>0 && status != 0){
+      this.contents(index) = status match{
+        case 1 => twitterButt
+        case _ => faceButt
+      }
+      sigLabel.text = "Sign in"
+      unLabel.text = "Username"
+      status = 0
+      this.revalidate()
+      this.repaint()
+    }
+  }
   def continue {
     //println(HttpHandler.cook)
 /*      val next = new LoadingPanel(Future(HttpHandler.state.toPlayPanel),owner)
@@ -107,9 +177,11 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       this.publish(e)
     } else {*/
       val next = new LoadingPanel(Future{
+        status match {
+          case 0 =>
         if(HttpHandler.login(pwField.password, unField.text)&&HttpHandler.hasCid){
           if(this.autoButt.selected){
-            println("saving cid in logonpanel")
+            //println("saving cid in logonpanel")
             HttpHandler.saveCid
           }
           //HttpHandler.getSkips
@@ -120,6 +192,38 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
           Dialog.showMessage(owner, "most likely an error in username or password", "failed to login", Dialog.Message.Warning, null)
           this.pwField.text = ""
           owner
+        }
+          case 1 =>
+        if(HttpHandler.twitterLogin(unField.text, pwField.password)&&HttpHandler.hasCid){
+          if(this.autoButt.selected){
+            //println("saving cid in logonpanel")
+            HttpHandler.saveCid
+          }
+          //HttpHandler.getSkips
+          val state = HttpHandler.state
+          //if(!HttpHandler.getAuth) Dialog.showMessage(owner, "Upgrade to super to get full access to features", "advertisement", Dialog.Message.Info, null)
+          state.toPlayPanel
+        } else {
+          Dialog.showMessage(owner, "most likely an error in username or password", "failed to login", Dialog.Message.Warning, null)
+          this.pwField.text = ""
+          owner
+        }
+        
+          case _ =>
+        if(HttpHandler.faceLogin(unField.text, pwField.password)&&HttpHandler.hasCid){
+          if(this.autoButt.selected){
+            //println("saving cid in logonpanel")
+            HttpHandler.saveCid
+          }
+          //HttpHandler.getSkips
+          val state = HttpHandler.state
+          //if(!HttpHandler.getAuth) Dialog.showMessage(owner, "Upgrade to super to get full access to features", "advertisement", Dialog.Message.Info, null)
+          state.toPlayPanel
+        } else {
+          Dialog.showMessage(owner, "most likely an error in username or password", "failed to login", Dialog.Message.Warning, null)
+          this.pwField.text = ""
+          owner
+        }
         }
         },owner)
       val e = new ReplaceEvent(next,this)

@@ -223,6 +223,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           //doodle.model.setState(8)
         case Key.M =>
           //doodle.model.matrixLayer //TODO maybe add this eventually
+        
         case Key.J =>//->undefined
           if(Magic.authorized)tools.model.tool(5)
           //doodle.model.setState(9)
@@ -247,7 +248,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.O =>
           if(Magic.authorized){
             if(e.modifiers/128%2==1){
-              val text = Dialog.showInput(doodle, "ls string", "open", Dialog.Message.Question, null, List[String](), "")
+              val text = Dialog.showInput(doodle, "file path", "open", Dialog.Message.Question, null, List[String](), "")
               text.foreach { x => 
                 doodle.model.loadFrom(x,private_id)
                 doodle.redrawMid
