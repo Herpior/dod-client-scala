@@ -177,6 +177,7 @@ class ToolPanel/*(model:ToolModel)*/ extends Panel{
         g.drawImage(Icons.getBez,125,offy-2,null)
         g.drawImage(Icons.getFill,175,offy-2,null)
         g.drawImage(Icons.getPers,25,offy+48,null)
+        g.drawImage(Icons.getBezFill,125,offy+48,null)
         g.setColor(Magic.buttColor)
         
         offy += 100
