@@ -10,7 +10,8 @@ class DoodleModel {
   
   private var multiLine:Option[MultiLine] = None
   private var bezierLine:Option[BezierLine] = None
-  private var textLine:Option[TextLine] = None
+  private def matrix:Boolean = this.layers.getCurrent.isInstanceOf[MatrixLayer]
+  //private var textLine:Option[TextLine] = None
   private var hoveringLine:Option[DoodlePart] = None
   private var hoveringLine2:Option[DoodlePart] = None
   
@@ -27,9 +28,12 @@ class DoodleModel {
   //private var color2 = "#000000"
   
   def selected = (hoveringLine ++ hoveringLine2).toArray
-  def isWriting = textLine.isDefined
+  //def isWriting = textLine.isDefined
   def isDrawing = multiLine.isDefined || hoveringLine2.isDefined
   def isBezier = bezier && bezierLine.isDefined
+  def isMatrix = {
+    matrix
+  }
   //---------\\
   def addTime(time:Long){
     //println(painttime)
@@ -56,13 +60,13 @@ class DoodleModel {
   }
   //---------\\
   def getDrawing = {
-    (bezierLine++textLine++multiLine).toArray
+    (bezierLine/*++textLine*/++multiLine).toArray
   }
   def getLast = {
     multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
   }
   def getLastMid = {
-    val strokes = layers.getCurrent.getStrokes//(current).getStrokes
+    val strokes = layers.getCurrent.getStrokes(false)//(current).getStrokes
     strokes.lastOption
   }
   def getLayers = {
@@ -83,7 +87,7 @@ class DoodleModel {
       case e=>e.printStackTrace}
   }
   def submit={
-    HttpHandler.submitDoodle(this.getPaintPercentage, this.getPaintTime.toInt, layers.toArray.flatMap(_.getStrokes.flatMap(_.getLines)))
+    HttpHandler.submitDoodle(this.getPaintPercentage, this.getPaintTime.toInt, layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)))
   }
   //---------\\
   def getPaintPercentage={
@@ -153,14 +157,14 @@ class DoodleModel {
   }
   //---------\\
   def toLocalStorage{
-    io.LocalStorage.printFile(layers.toArray.flatMap(_.getStrokes.flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
+    io.LocalStorage.printFile(layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
   }
   //---------\\
   def select(place:Coord,mods:Int,first:Boolean){
     val strokes = if(mods/256%2==1) {
-      this.getLayers.flatMap(_.getStrokes)
+      this.getLayers.flatMap(_.getStrokes(false))
     }
-    else this.getMid.getStrokes
+    else this.getMid.getStrokes(false)
     if(strokes.length<1)return
     var curr = strokes(0)
     var best = curr.distFrom(place)
@@ -320,14 +324,19 @@ class DoodleModel {
   def stopWriting{
     ???
   }*/
+  
   //---------\\
-  /*def startMatrix(place:Coord,mods:Int){
-    ???
+  def matrixLayer {
+    if(!matrix)this.layers.addMatrixLayer(this.layers.getCurrent)
+    else this.layers.finaliseMatrix
+  }
+  def startMatrix(place:Coord,mods:Int){
+    layers.getCurrent.pressPoint(place)
   }
   def dragMatrix(place:Coord,mods:Int){
-    ???
+    layers.getCurrent.dragPoint(place)
   }
-  def stopMatrix(place:Coord,mods:Int){
-    ???
-  }*/
+  def stopMatrix{
+    layers.getCurrent.releasePoint
+  }
 }

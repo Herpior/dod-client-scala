@@ -15,7 +15,7 @@ object LineDrawer {
     //println("alpha: "+alp)
     val g = img.createGraphics
     layers.foreach{
-      l=>l.getStrokes.foreach { x =>
+      l=>l.getStrokes(true).foreach { x =>
         LineDrawer.drawDoodlePart(g, x, 200.0/Magic.x, Coord(0,0), true)
       }
     }

@@ -231,8 +231,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       doodle.model.unselect
           //doodle.model.setState(8)
         case Key.M =>
-          //doodle.model.matrixLayer //TODO maybe add this eventually
-        
+          if(Magic.authorized && e.modifiers/128%2==1) {
+            doodle.model.matrixLayer //TODO maybe add this eventually
+            doodle.redrawAll
+            doodle.repaint()
+            layers.reset
+          }
         case Key.J =>//->undefined
           if(Magic.authorized)tools.model.tool(5)
       doodle.model.unselect
@@ -416,7 +420,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       }
       val place = doodle.getCoord(e.point.getX, e.point.getY)
       val mods = e.modifiers
-      if((mods/1024)%2==1 && !doodle.model.isDrawing){
+      if((mods/1024)%2==1 && doodle.model.isMatrix){
+        doodle.model.startMatrix(place, mods)
+        doodle.redrawMid
+      }
+      else if((mods/1024)%2==1 && !doodle.model.isDrawing){
         //this.drawing = true
         check = System.nanoTime()
         tools.model.getState match {
@@ -536,7 +544,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     case e:MouseReleased=>
       val place = doodle.getCoord(e.point.getX, e.point.getY)
       val mods = e.modifiers
-      if(e.modifiers/1024%2==0 && doodle.model.isDrawing){
+      if((mods/1024)%2==0 && doodle.model.isMatrix){
+        doodle.model.stopMatrix
+        doodle.redrawMid
+      }
+      else if(e.modifiers/1024%2==0 && doodle.model.isDrawing){
         //this.drawing = false
         tools.model.getState match {
           case 0|1 =>//draw//line
@@ -607,7 +619,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //savetimer.stop()
       val place = doodle.getCoord(e.point.getX, e.point.getY)
       val mods = e.modifiers
-      if((e.modifiers/1024)%2==1){
+      if((mods/1024)%2==1 && doodle.model.isMatrix){
+        doodle.model.dragMatrix(place, mods)
+        doodle.redrawMid
+        doodle.repaint
+      }
+      else if((e.modifiers/1024)%2==1){
         tools.model.getState match {
           case 0 =>//draw
             if((e.modifiers/512)%2==1){

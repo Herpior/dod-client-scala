@@ -8,7 +8,7 @@ import concurrent.ExecutionContext.Implicits.global
 
 object DoodleWindow extends SimpleSwingApplication {
   
-  val ver = "v0.410"
+  val ver = "v0.425"
 
   def top = new MainFrame {
     this.title = "Doodle or Die"

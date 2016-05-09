@@ -1,6 +1,7 @@
 # Eclipse
 .settings
 .cache
+.cache-main
 .project
 .classpath
 bin

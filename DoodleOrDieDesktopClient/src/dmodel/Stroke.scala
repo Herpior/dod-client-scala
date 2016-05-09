@@ -8,11 +8,12 @@ import java.awt.Color
 trait DoodlePart{
   def distFrom(point:Coord):Double
   def getLines:Array[BasicLine]
+  def transform(transformation:Coord=>Coord):DoodlePart
   def length2:Double = getLines.foldLeft(0.0)(_+_.length2)
   def selection:DoodlePart
 }
 
-class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
+/*class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
   //var cornerx = 0.0
   //var cornery = 0.0
   def maxLen = 520-cornerx-15*coeff
@@ -54,14 +55,7 @@ class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) ex
    // val n = new nextLinee
    // this.getNextLines.foreach{ x => n.strookes += x }
   //}
-  def selection = {
-    val res = new TextLine(cornerx,cornery, Colors.inverse(color), 1)
-    res.text = text
-    res.font = font
-    res.coeff = coeff
-    res
-  }
-}
+}*/
 
 class BezierLine(val color:Color, val size:Double) extends DoodlePart{
   //var size = 1.0
@@ -76,6 +70,11 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
   var y3 = 0.0
   var x4 = 0.0
   var y4 = 0.0*/
+  def transform (transformation:Coord=>Coord):BezierLine = {
+    val next = new BezierLine(this.color,this.size)
+    next.setCoords(this.coords.map(c=>transformation(c)))
+    next
+  }
   def getCoordAt(dist:Double):Coord={
     if(dist<=0)return coords.head
     if(dist>=1)return coords.last
@@ -88,6 +87,12 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
   def setCoord(ind:Int,place:Coord){
     if(ind>=0&&ind<4)
     coords(ind) = place
+  }
+  def setCoords(places:Array[Coord]){
+    val maxi = math.min( places.length,4)
+    for(i<-0 until maxi){
+      coords(i) = places(i)
+    }
   }
   def distFrom(point:Coord)={
     (this.coords++this.getLine(color,size).getCoords).map(_.dist(point)).sorted.head
@@ -118,8 +123,15 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
     res
   }
 }
+
+
 class MultiLine extends DoodlePart{
   private var lines = Buffer[BasicLine]()
+  def transform (transformation:Coord=>Coord):MultiLine = {
+    val next = new MultiLine
+    next.setLines(this.lines.map ( line => line.transform(transformation)))
+    next
+  }
   def distFrom(point:Coord)={
     val sorted = lines.map(_.distFrom(point)).sorted
     if(sorted.length>0)sorted.head
@@ -136,6 +148,9 @@ class MultiLine extends DoodlePart{
   }
   def setLines(arr:Array[BasicLine]){
     lines = arr.toBuffer
+  }
+  def setLines(arr:Buffer[BasicLine]){
+    lines = arr
   }
   def addLine(line:BasicLine){
     lines += line
@@ -203,8 +218,14 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
     len
   }
   private var coords = Buffer[Coord]()
+  def transform (transformation:Coord=>Coord):BasicLine = {
+    val next = new BasicLine(this.color,this.size)
+    next.setCoords(this.coords.map(c=>transformation(c)))
+    next
+  }
   def distFrom(point:Coord)={
-    this.getCoords.map(_.dist(point)).sorted.head
+    if(this.coords.length==0){500}
+    else {this.getCoords.map(_.dist(point)).sorted.head}
   }
   def setCoords(buf:Buffer[Coord]){ coords = buf }
   def setCoords(arr:Array[Coord]){ coords = arr.toBuffer }
@@ -221,13 +242,29 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
     if(ind>=0&&ind<coords.length)
       coords(ind)=coord
   }
-  
+  /*
+  def clip = {
+    val lines = Buffer[BasicLine]()
+    var tc = new BasicLine(this.color,this.size)
+    for(edge <- coords.sliding(2)){
+      val prevcoord = edge(0)
+      val currcoord = edge(1)
+      if(prevcoord.x<0 || prevcoord.y<0){
+         
+      }
+      tc.addCoord(prevcoord)
+    }
+    //if(tc.getLastOption != Some(pc)){
+    //  tc.addCoord(pc)
+    //}
+  }
+  */
   def compress = {
     var pc = coords(0).rounded(2)
     val lines = Buffer[BasicLine]()
     var tc = new BasicLine(this.color,this.size)//Buffer[Coord](pc)
     tc.addCoord(pc)
-    var pk = 10.0
+    var pk = 10.0//pk = previous angle
     //var ppk = 10.0
     for(i<- coords){
       val c = i.rounded(2)//Coord(math.round(i.x*2)/2.0,math.round(i.y*2)/2.0)
@@ -237,15 +274,19 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
       val comp = math.abs(Angle.compare(pk,k))
       //val comp2 = math.abs(Angle.compare(ppk,k))
       if(pc==c/*||(comp<math.Pi/32&&this.size==1)*/){ 
+        //there are two coordinates at the same point, keep the previous angle and don't add the same coordinate again
         //ppk = pk
       }
       else {
-        tc.addCoord( c )
+        //if there is a very sharp corner, JOIN_ROUND will fail to create a round edge that I need this to have
+        //to prevent this, duplicate the coordinate at the corner.
+        //this will notice sharp corners one coordinate later than the corner so we add previous coordinate pc to the line.
         if(comp>math.Pi*31/32){
-          lines += tc
-          tc = new BasicLine(this.color,this.size)
-          tc.addCoord( c )
+          //lines += tc
+          //tc = new BasicLine(this.color,this.size)
+          tc.addCoord( pc )
         }
+        tc.addCoord( c )
         //ppk = pk
         pk = k
       }
@@ -277,9 +318,15 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
   }
 }
 class JsonLine extends DoodlePart {
+  
   var color:String = _
   var size:Double = _
   var path:Array[Double]= Array()
+  
+  def transform (transformation:Coord=>Coord):BasicLine = {
+    val next = this.toBasicLine
+    next.transform(transformation)
+  }
   def distFrom(point:Coord)={
     this.toBasicLine.distFrom(point)
   }

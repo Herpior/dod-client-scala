@@ -76,6 +76,17 @@ class LayerList {
       }
   }
   def addLayer{addLayer(new Layer)}
+  def addMatrixLayer(orig:Layer){
+    addLayer(new MatrixLayer(orig))
+    layerUp
+    }
+  def finaliseMatrix{
+    if(this.getCurrent.isInstanceOf[MatrixLayer]){
+      val res = this.getCurrent.asInstanceOf[MatrixLayer].normal
+      removeLayer
+      addLayer(res)
+    }
+  }
   def addLayer(added:Layer){//TODO: check that this works properly!!
     val risky = layers.drop(ind+1)
     //layers --= risky
@@ -84,14 +95,22 @@ class LayerList {
     layers ++= risky
   }
   def layerUp{
-    if(ind+1<layers.length) current += 1
+    if(ind+1<layers.length) {
+      //finaliseMatrix
+      current += 1
+    }
   }
   def layerDown{
-    if(ind>0) current -= 1
+    if(ind>0) {
+      //finaliseMatrix
+      current -= 1
+    }
   }
   def setCurrent(index:Int){
-    if(index>=0&&index<size)
-    current = index
+    if(index>=0&&index<size){
+      //finaliseMatrix
+      current = index
+    }
   }
   
 }
