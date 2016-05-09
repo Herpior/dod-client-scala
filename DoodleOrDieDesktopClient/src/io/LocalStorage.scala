@@ -50,13 +50,18 @@ object LocalStorage {
     p.write(st)}
   }
   def decryptFrom(path:String,chain:String)={
+    val encrypted = loadFrom(path,chain)
+    decrypt(encrypted,chain)
+  }
+  def loadFrom(path:String,chain:String)={
     val ensource = scala.io.Source.fromFile(path)("UTF-8")
     //println(path)
     //println(System.getProperty("file.encoding"))
     //println(ensource.isEmpty)
-    val encrypted = try ensource.mkString finally ensource.close()
-    ensource.close
-    decrypt(encrypted,chain)
+    val lines = try ensource.mkString finally ensource.close()
+    //ensource.close
+    lines
+    
   }
   def readArray(path:String)={
     val source = scala.io.Source.fromFile(path)("UTF-8")

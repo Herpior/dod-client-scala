@@ -245,6 +245,7 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
   /*
   //clips off parts of line outside the canvas
   //duplicates some points, use compress afterwards
+  //TODO make it work
   def clip = {
     val lines = Buffer[BasicLine]()
     var tc = new BasicLine(this.color,this.size)
@@ -353,8 +354,9 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
     line
   }
 }
-class JsonLine extends DoodlePart {
+class JsonLine extends DoodlePart with JsonStroke {
   
+  var linetype = "basic"
   var color:String = _
   var size:Double = _
   var path:Array[Double]= Array()
@@ -369,6 +371,7 @@ class JsonLine extends DoodlePart {
   def getLines = {
     Array(this.toBasicLine)
   }
+  def toDoodlePart = toBasicLine
   def toBasicLine={
     val res = new BasicLine(Colors.toColor(this.color),this.size)
     val buf = Buffer[Coord]()

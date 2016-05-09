@@ -18,6 +18,18 @@ object JsonParse {
     //doodle.print
     targ
   }
+  def parseSave(jsfile:String)={
+    val gson = new Gson
+    //println(jsfile)
+    //val red = new JsonParser
+    val reader = new BufferedReader(new StringReader(jsfile))
+    //reader.setLenient(true)
+    val targ = gson.fromJson(reader,classOf[JsonSave])
+    //targ.print
+    //println("end")
+    //doodle.print
+    targ
+  }
   def parseState(jsfile:String)={
     val gson = new Gson
     //println(jsfile)
