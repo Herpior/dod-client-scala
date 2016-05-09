@@ -6,13 +6,13 @@ import java.awt.Color
 object LineTool {
 
   def startLine(next:MultiLine,color:Color,size:Int,place:Coord,mods:Int){
-        if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
+        //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
           next.addLine(new BasicLine(color,size){
             this.addCoord(place)
           })
-        } else {
-          next.addLine(new BasicLine(color,size))
-        }
+        //} else {
+        //  next.addLine(new BasicLine(color,size))
+        //}
   }
   /*def addLine(e:MouseEvent){
     
@@ -23,11 +23,11 @@ object LineTool {
       val last = next.getCoords
       val len = last.length
       if(len<=1){
-        if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
+        //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
           next.addCoord(place)
           //last.xs+=x
           //last.ys+=y
-        }
+        //}
       } else {
         if(mods/128%2==1){
           val c0 = last(len-2)
@@ -42,9 +42,9 @@ object LineTool {
           val c2 = c0+xy
           if(c2>=Coord(0)&&c2<=Magic.doodleSize)next.setLast(c2)
         } else {
-          if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
+          //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
             next.setLast(place)
-          }
+          //}
         }
         //last.xs(len-1) = x
         //last.ys(len-1) = y
@@ -63,7 +63,7 @@ object LineTool {
   def addLine(next:MultiLine,color:Color,size:Int,place:Coord,mods:Int){
     //val x = e.point.getX+(side.offsetX*zoom)
     //val y = e.point.getY+(side.offsetY*zoom)
-    if(place.x>=0 && place.x<= Magic.x && place.y >= 0 && place.y <= Magic.y){
+    //if(place.x>=0 && place.x<= Magic.x && place.y >= 0 && place.y <= Magic.y){
       if(next.getLines.isEmpty){
         next.addLine(new BasicLine(color,size){
           this.addCoord(place)
@@ -75,7 +75,7 @@ object LineTool {
           this.addCoord(place)
         })
       }
-    }else{ 
+    /*}else{ 
       if(next.getLast.exists { x => !x.getCoords.isEmpty }){
         
         if(mods/128%2==1){
@@ -85,6 +85,6 @@ object LineTool {
         }
         else next.addLine(new BasicLine(color,size))
       }
-    }
+    }*/
   }
 }

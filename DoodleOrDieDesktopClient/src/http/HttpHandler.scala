@@ -68,8 +68,7 @@ object HttpHandler {
   
   try{
     addDodCookie("cid",io.Crypt.decipherFrom("login"))
-    //println(httpCookieStore.getCookies)
-  }catch{case e:Throwable=>/*println("load cid failed")*/}
+  }catch{case e:Throwable=>println("load cid failed - "+e.getLocalizedMessage)}
   
   //private var _conn = ""
   private var chain = ""
@@ -82,6 +81,7 @@ object HttpHandler {
     def getChain = chain
     def getGroup = room
     def getAuth = auth.isSuper
+    def loggedIn = auth.skipsPerDuration>0//very weird way to figure out if logged in
   
     def saveCid {
     cid.foreach { x => io.Crypt.encipherTo(x, "login") }
@@ -377,7 +377,6 @@ object HttpHandler {
       println(x.getVersion)
       println(!cid.isEmpty)
     }*/
-    
     !cid.isEmpty//this.cid!=null&&this.cid.length()>0
   }
   def state={

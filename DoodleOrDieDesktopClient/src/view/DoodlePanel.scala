@@ -68,7 +68,7 @@ class DoodlePanel extends Panel {
     g.drawImage(midImg,0,0,null)
     g.drawImage(drawImg,0,0,null)
     g.drawImage(topImg,0,0,null)
-    g.setColor(Magic.bgColor)
+    g.setColor(Magic.bgColorAlpha)
     val off = offset
     val canvas = Magic.doodleSize*getZoom
     val inv = Coord(getWidth,getHeight)-off-canvas

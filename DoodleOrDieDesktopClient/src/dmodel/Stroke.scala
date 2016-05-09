@@ -192,7 +192,7 @@ class MultiLine extends DoodlePart{
       }
     }
     res += curr
-    lines = res.flatMap(_.compress)//remove to keep accuracy
+    lines = res/*.map(_.clip)*/.flatMap(_.compress)//remove to keep accuracy
     //lines = res
     //println(res.mkString("\n"))
   }
@@ -243,23 +243,59 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
       coords(ind)=coord
   }
   /*
+  //clips off parts of line outside the canvas
+  //duplicates some points, use compress afterwards
   def clip = {
     val lines = Buffer[BasicLine]()
     var tc = new BasicLine(this.color,this.size)
     for(edge <- coords.sliding(2)){
-      val prevcoord = edge(0)
-      val currcoord = edge(1)
-      if(prevcoord.x<0 || prevcoord.y<0){
-         
+      var prevcoord = edge(0)
+      var currcoord = edge(1)
+      var coeff = 1.0
+      def prevXOut = prevcoord.x<0  || prevcoord.x>Magic.x
+      def prevYOut = prevcoord.y<0  || prevcoord.y>Magic.y
+      def currXOut = currcoord.x<0  || currcoord.x>Magic.x
+      def currYOut = currcoord.y<0  || currcoord.y>Magic.y
+      
+      if((prevcoord.x<0 && currcoord.x<0) || (prevcoord.y<0 && currcoord.y<0) ||
+      (prevcoord.x>Magic.x && currcoord.x>Magic.x) || (prevcoord.y>Magic.y && currcoord.y>Magic.y)) {
+        //no way they intersect the canvas
       }
-      tc.addCoord(prevcoord)
+      else {
+        if(prevXOut){
+          val moveto = if(prevcoord.x<0) 0 else Magic.x
+          coeff = (prevcoord.x-moveto)/(currcoord.x-prevcoord.x)//(currcoord.x-moveto)/(currcoord.x-prevcoord.x)
+          //println(coeff)
+          prevcoord = prevcoord*(1-coeff)+currcoord*(1-coeff)
+        }/*
+        if(prevYOut){
+          val moveto = if(prevcoord.y<0) 0 else Magic.y
+          coeff = (currcoord.y-moveto)/(currcoord.y-prevcoord.y)
+          println(coeff)
+          prevcoord = prevcoord*coeff+currcoord*(1-coeff)
+        }*/
+        if(!prevXOut && !prevYOut) tc.addCoord(prevcoord)
+        /*
+        if(currXOut){
+          val moveto = if(currcoord.x<0) 0 else Magic.x
+          coeff = (prevcoord.x-moveto)/(prevcoord.x-currcoord.x)
+          println(coeff)
+          currcoord = currcoord*coeff+prevcoord*(1-coeff)
+        }
+        if(currYOut){
+          val moveto = if(currcoord.y<0) 0 else Magic.y
+          coeff = (prevcoord.y-moveto)/(prevcoord.y-currcoord.y)
+          println(coeff)
+          currcoord = currcoord*coeff+prevcoord*(1-coeff)
+        }*/
+        if(!currXOut && !currYOut) tc.addCoord(currcoord)
+      }
     }
-    //if(tc.getLastOption != Some(pc)){
-    //  tc.addCoord(pc)
-    //}
-  }
-  */
-  def compress = {
+    tc
+  }*/
+  
+  def compress : Array[BasicLine] = {
+    if (coords.length == 0) return Array()
     var pc = coords(0).rounded(2)
     val lines = Buffer[BasicLine]()
     var tc = new BasicLine(this.color,this.size)//Buffer[Coord](pc)

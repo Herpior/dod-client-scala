@@ -21,7 +21,7 @@ object DoodleWindow extends SimpleSwingApplication {
       new LoadingPanel(Future{
         //http.HttpHandler.getSkips
         val state = http.HttpHandler.state
-        if(http.HttpHandler.getAuth)
+        if(http.HttpHandler.loggedIn)
         state.toPlayPanel
         else new LogonPanel},new LogonPanel)
     } else new LogonPanel

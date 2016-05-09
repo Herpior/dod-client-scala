@@ -13,6 +13,7 @@ object Magic {
   val thumbZoom = thumbX.toDouble/x
   val doodleSize = new Coord(x,y)
   val bgColor = Color.decode("#b7e4f4")
+  val bgColorAlpha = new Color(183,228,244,127)
   val buttColor = Color.decode("#4cb9dd")
   val white = Color.white
   val red = Color.decode("#b94cdd")
