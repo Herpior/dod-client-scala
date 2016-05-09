@@ -38,6 +38,15 @@ case class Coord(val x:Double,val y:Double) {
   def rounded(accuracy:Int)={
     Coord(round(this.x*accuracy)/accuracy.toDouble,round(this.y*accuracy)/accuracy.toDouble)
   }
+  def toArray={
+    Array(x, y)
+  }
+  def toJson={
+    val json = new JsonCoord
+    json.x = x
+    json.y = y
+    json
+  }
   override def toString={
     "("+x+", "+y+")"
   }

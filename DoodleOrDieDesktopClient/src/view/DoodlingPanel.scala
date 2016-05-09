@@ -77,7 +77,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   //val doodleControl = new DrawingController(doodle,tools,layers)
   //val toolControl = new ToolController(tools)
   
-  doodle.model.loadFrom("backup."+group_id/*http.HttpHandler.getGroup*/+".txt",private_id)
+  doodle.model.loadFrom("save."+group_id/*http.HttpHandler.getGroup*/+".txt",private_id)
   //println("backup."+group_id/*http.HttpHandler.getGroup*/+".txt")
                 //doodle.redrawMid
   

@@ -49,11 +49,20 @@ object LocalStorage {
     val st = chain+"""\r"""+transform(strokes)+"""\r"""+pt
     p.write(st)}
   }
+  def saveTo(json:String,chain:String,pt:Int){
+    printToFile(new File("save."+chain+".txt"))
+  {p=>
+    val st = json
+    p.write(st)}
+  }
   def decryptFrom(path:String,chain:String)={
-    val encrypted = loadFrom(path,chain)
+    val encrypted = loadFrom(path)
     decrypt(encrypted,chain)
   }
-  def loadFrom(path:String,chain:String)={
+  def loadSave(chain:String)={
+    loadFrom("save."+chain+".txt")
+  }
+  def loadFrom(path:String)={
     val ensource = scala.io.Source.fromFile(path)("UTF-8")
     //println(path)
     //println(System.getProperty("file.encoding"))

@@ -39,6 +39,10 @@ class Layer() {
     redos.clear()
     //println(redos.length)
   }
+  def addStrokes(adding:Array[DoodlePart]){
+    strokes ++= adding
+    redos.clear()
+  }
   def undo {
     if(strokes.length>0){
       redos += strokes.last

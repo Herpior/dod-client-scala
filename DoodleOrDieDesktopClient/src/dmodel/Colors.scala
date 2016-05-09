@@ -34,6 +34,7 @@ object Colors {
     "#"+r+""+g+""+b
   }*/
   def toColor(string:String):Color = {
+    if(string==null){return Color.black}
     var str = string.toLowerCase
     //println(string.take(4))
     if(string.headOption.exists { _=='#' }){

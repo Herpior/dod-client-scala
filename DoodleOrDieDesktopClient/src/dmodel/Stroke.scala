@@ -11,6 +11,7 @@ trait DoodlePart{
   def transform(transformation:Coord=>Coord):DoodlePart
   def length2:Double = getLines.foldLeft(0.0)(_+_.length2)
   def selection:DoodlePart
+  def toJson:JsonStroke
 }
 
 /*class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
@@ -57,7 +58,7 @@ trait DoodlePart{
   //}
 }*/
 
-class BezierLine(val color:Color, val size:Double) extends DoodlePart{
+class BezierLine(val color:Color, val size:Double) extends DoodlePart {
   //var size = 1.0
   //var color = "#000"
   private val coords = Array.fill(4)(Coord(0,0))
@@ -121,6 +122,14 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart{
     line.setCoords(coords)
     res.addLine(line)
     res
+  }
+  def toJson = {
+    val json = new JsonStroke
+    json.color = Colors.toHexString(color)
+    json.size = size
+    json.coords = coords.map(_.toJson)
+    json.linetype = "bezier"
+    json
   }
 }
 
@@ -203,6 +212,13 @@ class MultiLine extends DoodlePart{
       line.setCoords(x.getCoords)
       res.addLine(line)}
     res
+  }
+  
+  def toJson = {
+    val json = new JsonStroke
+    json.strokes = this.getLines.map(_.toJsonLine)
+    json.linetype = "multi"
+    json
   }
 }
 
@@ -353,10 +369,24 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
     line.setCoords(this.getCoords)
     line
   }
+  def toJson = {
+    val json = new JsonStroke
+    json.color = Colors.toHexString(color)
+    json.size = size
+    json.path = this.coords.flatMap(_.toArray).toArray
+    json.linetype = "basic"
+    json
+  }
+  def toJsonLine = {
+    val json = new JsonLine
+    json.color = Colors.toHexString(color)
+    json.size = size
+    json.path = this.coords.flatMap(_.toArray).toArray
+    json
+  }
 }
-class JsonLine extends DoodlePart with JsonStroke {
+class JsonLine extends DoodlePart {
   
-  var linetype = "basic"
   var color:String = _
   var size:Double = _
   var path:Array[Double]= Array()
@@ -383,6 +413,14 @@ class JsonLine extends DoodlePart with JsonStroke {
   }
   def selection = {
     this.toBasicLine.selection
+  }
+  def toJson = {
+    val res = new JsonStroke
+    res.color = color
+    res.linetype = "basic"
+    res.path = path
+    res.size = size
+    res
   }
 }
 /*class Linee extends DoodlePart{

@@ -2,6 +2,7 @@ package dmodel
 
 import collection.mutable.Buffer
 import http.HttpHandler
+import io.LocalStorage
 
 class DoodleModel {
   val layers = new LayerList//Buffer(new Layer)
@@ -78,9 +79,11 @@ class DoodleModel {
   }
   def loadFrom(path:String,chain:String){
     try{
-      val loaded = io.LocalStorage.decryptFrom(path,chain)
-      layers.getCurrent/*(this.current)*/.load(loaded._1)
-      painttime=loaded._2
+      val loaded = io.LocalStorage.loadSave(chain)//.decryptFrom(path,chain)
+      val parsed = JsonParse.parseSave(loaded)
+      layers.load(parsed)
+      //layers.getCurrent/*(this.current)*/.load(loaded._1)
+      painttime=parsed.time
     }
     catch{
       case e:java.io.FileNotFoundException=>
@@ -88,6 +91,9 @@ class DoodleModel {
   }
   def submit={
     HttpHandler.submitDoodle(this.getPaintPercentage, this.getPaintTime.toInt, layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)))
+  }
+  def save={
+    LocalStorage.saveTo(layers.toJson(this.getPaintTime), http.HttpHandler.getChain, getPaintTime)
   }
   //---------\\
   def getPaintPercentage={

@@ -112,5 +112,11 @@ class LayerList {
       current = index
     }
   }
+  def load(save:JsonSave){
+    layers ++= save.getLayers
+  }
+  def toJson(time:Int) = {
+    JsonParse.writeSave(this.toArray, time)
+  }
   
 }

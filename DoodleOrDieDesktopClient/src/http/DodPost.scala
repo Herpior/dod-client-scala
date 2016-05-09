@@ -85,7 +85,6 @@ class DescPost(chain:String,description:String)  extends PlayPost("api/game/subm
     
     val desc = description.take(140).replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("/","&#47;").replaceAll("\"","&quot;")
     //println(desc)
-    //val desc = "äö 💪Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing Testing"
     this.setEntity(new StringEntity("{\"description\":\""+desc+"\"}","UTF-8"))
     
 }
