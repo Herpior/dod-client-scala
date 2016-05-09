@@ -52,6 +52,17 @@ object LineDrawer {
       drawDoodlePart(g,dp,2,new Coord(0,0),false)
     }
   }
+  def drawDoodlePartLast(g:Graphics2D,dp:DoodlePart,czoom:Double,offs:Coord,antialiasing:Boolean){
+    try {
+      val last = dp.getLines.last
+      val coords = last.getCoords.takeRight(2)
+      val line = new BasicLine(last.color,last.size){this.setCoords(coords)}
+      drawDoodlePart(g, line, czoom, offs, antialiasing)
+    }
+    catch {
+      case e => e.printStackTrace
+    }
+  }
   def drawDoodlePart(g:Graphics2D,dp:DoodlePart,czoom:Double,offs:Coord,antialiasing:Boolean){
     if(antialiasing)g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     else g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)

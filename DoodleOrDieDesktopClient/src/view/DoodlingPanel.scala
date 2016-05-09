@@ -77,7 +77,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   //val doodleControl = new DrawingController(doodle,tools,layers)
   //val toolControl = new ToolController(tools)
   
-  doodle.model.loadFrom("save."+group_id/*http.HttpHandler.getGroup*/+".txt",private_id)
+  doodle.model.loadFrom(private_id)
   //println("backup."+group_id/*http.HttpHandler.getGroup*/+".txt")
                 //doodle.redrawMid
   
@@ -266,7 +266,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             if(e.modifiers/128%2==1){
               val text = Dialog.showInput(doodle, "file path", "open", Dialog.Message.Question, null, List[String](), "")
               text.foreach { x => 
-                doodle.model.loadFrom(x,private_id)
+                doodle.model.decryptFrom(x,private_id)
                 doodle.redrawMid
                 layers.reset
                 //val t = new java.util.Scanner(new File(x))
@@ -624,16 +624,18 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.redrawMid
         doodle.repaint
       }
-      else if((e.modifiers/1024)%2==1){
+      else if((mods/1024)%2==1){
         tools.model.getState match {
           case 0 =>//draw
-            if((e.modifiers/512)%2==1){
+            if((e.modifiers/512)%2==1 ){
               doodle.model.dragLine(place,mods)
               doodle.redrawDrawing
             }
             else {
               doodle.model.addLine(place,mods)
-              doodle.redrawLast//Drawing
+              println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
+              if(tools.model.getColor.getAlpha==255) doodle.redrawLast
+              else doodle.redrawDrawing
             }
             doodle.repaint
           case 1 =>//line

@@ -70,10 +70,15 @@ object LineTool {
         })
       } else {
         val last = next.getLines.last
-        next.addLine(new BasicLine(color,size){
-          last.getLastOption.foreach(c=>this.addCoord(c))
-          this.addCoord(place)
-        })
+        if(last.color == color && last.size == size){
+          last.addCoord(place)
+        }
+        else{
+          next.addLine(new BasicLine(color,size){
+            last.getLastOption.foreach(c=>this.addCoord(c))
+            this.addCoord(place)
+          })
+        }
       }
     /*}else{ 
       if(next.getLast.exists { x => !x.getCoords.isEmpty }){

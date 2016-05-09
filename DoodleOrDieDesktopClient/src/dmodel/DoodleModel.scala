@@ -77,13 +77,22 @@ class DoodleModel {
   def load(loaded:JsonDoodle){
     layers.head.load(loaded)
   }
-  def loadFrom(path:String,chain:String){
+  def loadFrom(chain:String){
     try{
       val loaded = io.LocalStorage.loadSave(chain)//.decryptFrom(path,chain)
       val parsed = JsonParse.parseSave(loaded)
       layers.load(parsed)
       //layers.getCurrent/*(this.current)*/.load(loaded._1)
       painttime=parsed.time
+    }
+    catch{
+      case e:java.io.FileNotFoundException=>
+      case e=>e.printStackTrace}
+  }
+  def decryptFrom(path:String,chain:String){
+    try{
+      val loaded = io.LocalStorage.decryptFrom(path,chain)
+      layers.getCurrent/*(this.current)*/.load(loaded._1)
     }
     catch{
       case e:java.io.FileNotFoundException=>

@@ -72,11 +72,11 @@ class DoodlePanel extends Panel {
     val off = offset
     val canvas = Magic.doodleSize*getZoom
     val inv = Coord(getWidth,getHeight)-off-canvas
-    g.fillRect(0, 0, off.x.toInt, this.getHeight)
+    g.fillRect(0, off.y.toInt, off.x.toInt, canvas.y.toInt) 
     g.fillRect(0, 0, this.getWidth , off.y.toInt)
     
     g.fillRect(0, off.y.toInt+canvas.y.toInt, getWidth, inv.y.toInt+1)
-    g.fillRect(off.x.toInt+canvas.x.toInt, 0, inv.x.toInt+1, getHeight)
+    g.fillRect(off.x.toInt+canvas.x.toInt, off.y.toInt, inv.x.toInt+1, canvas.y.toInt)
     
     //g.setColor(Magic.red)
     //val points = model.pers.getPoints
@@ -179,7 +179,7 @@ class DoodlePanel extends Panel {
   def redrawLast{
     val g = drawImg.createGraphics()
     model.getLast.foreach{dp=>
-      LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)
+      LineDrawer.drawDoodlePartLast(g,dp,getZoom,offset,true)
     }
   }
   def redrawLastMid{

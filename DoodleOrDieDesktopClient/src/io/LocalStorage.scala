@@ -94,7 +94,7 @@ object LocalStorage {
     //println(chain.length+" - "+parts.head.head)
     //println(chain +" = "+parts.headOption+parts.headOption.map(_.toString().equals(chain)/*http.HttpHandler.getChain*/))
     //println(parts.headOption)
-    if(parts.headOption.exists(_.equals(chain)||parts.headOption.exists(_.length<=1)/*http.HttpHandler.getChain*/)){
+   // if(parts.headOption.exists(_.equals(chain)||parts.headOption.exists(_.length<=1)/*http.HttpHandler.getChain*/)){
       val strokes = if(parts.length<2)parts(0) else parts(1)
       val starr = strokes/*.replaceAll("\\\\", "")*//*.replaceAll("nfff","nffffff")*/.split("\\\\t")
       val doodle = starr.map { x =>
@@ -116,9 +116,9 @@ object LocalStorage {
               )
       catch{case e:Throwable=>e.printStackTrace()}
       (doodle,pt)
-    } else {
+    /*} else {
       (Array[JsonLine](),0)
-    }
+    }*/
   }
   
   
