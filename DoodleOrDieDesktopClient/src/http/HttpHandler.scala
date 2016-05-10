@@ -29,7 +29,7 @@ object HttpHandler {
 
   //val classLoader = getClass().getClassLoader();
   //println("lol")
-  val url = getClass.getResource("jssecacerts")
+  val url = getClass.getResource("/jssecacerts")
   //println(url)
   val keystore = new File(url.getFile())
   //println(keystore)
