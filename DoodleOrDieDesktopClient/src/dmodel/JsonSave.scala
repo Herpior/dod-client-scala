@@ -13,6 +13,7 @@ class JsonSave {
       layer =>
         val tmp = new Layer
         tmp.addStrokes(layer.strokes.map(_.toDoodlePart))
+        try{tmp.setVisibility(layer.visible)}catch{case e:NullPointerException=>tmp.setVisibility(true)}
         buf += tmp
     }
     buf
@@ -24,15 +25,17 @@ class JsonSave {
 
 class JsonLayer {
   var strokes:Array[JsonStroke] = Array()
+  var visible:Boolean = _
 }
 class JsonStroke {
   var linetype:String=_
-  var strokes:Array[JsonLine] = Array()
-  var coords:Array[JsonCoord] = Array.fill(4)(new JsonCoord)
-  var path:Array[Double] = Array()
+  var strokes:Array[JsonLine] = _
+  var coords:Array[JsonCoord] = _
+  var path:Array[Double] = _
   var color:String = _
   var size:Double = _
   def toDoodlePart:DoodlePart = {
+    try{
     linetype match {
       case "multi" =>
         val res = new MultiLine
@@ -49,6 +52,11 @@ class JsonStroke {
         tmp.path = path
         tmp.size = size
         tmp.toDoodlePart
+    }
+    } catch {
+      case e => 
+        e.printStackTrace()
+        new MultiLine
     }
   }
 }/*

@@ -17,14 +17,14 @@ class LayerPanel(layer:Layer) extends Panel {
   def redraw{
     val img = createImg
     val g = thumb.createGraphics()
-    layer.getStrokes(false).foreach{dp=>
+    layer.getThumb.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,Magic.thumbZoom,Coord(0,0),true)
     }
   } 
   def redrawLast{
     val img = createImg
     val g = thumb.createGraphics()
-    layer.getStrokes(false).lastOption.foreach{dp=>
+    layer.getThumb.lastOption.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,Magic.thumbZoom,Coord(0,0),true)
     }
   }

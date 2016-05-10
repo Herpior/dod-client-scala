@@ -187,7 +187,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.model.colorleft
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.S =>
-          if(e.modifiers == 128) doodle.model.toLocalStorage
+          if(e.modifiers == 128) {
+            doodle.model.save//toLocalStorage
+          }
           else {
             tools.model.colordown
             //doodle.model.setColor(tools.model.getColor(0),0)
@@ -633,7 +635,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             }
             else {
               doodle.model.addLine(place,mods)
-              println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
+              //println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
               if(tools.model.getColor.getAlpha==255) doodle.redrawLast
               else doodle.redrawDrawing
             }

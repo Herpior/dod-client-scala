@@ -53,16 +53,16 @@ object FillTool {
     val size = (sizeo+1)/2*2
     val n = if(vertical) (Magic.y*2)/size else (Magic.x*2)/size
     val interval = if(size>32)if(vertical) Magic.y/n else Magic.x/n else size/2
-    println("n:"+n)
+    //println("n:"+n)
     val colors = if(mods/512%2==1)Colors.linearcolor(n,true,color1,color2) else Colors.linearcolor(n,false,color1,color2)
     for(i<- 0 until n){
       if(vertical){
         val y = size/2+interval*i//Magic.y*i/(n-1)
-        println("y:"+y)
+        //println("y:"+y)
         next.addLine(new BasicLine(colors(i), size){ this.setCoords(Array(new Coord(0,y), new Coord(Magic.x, y))) })
       } else {
         val x = size/2+interval*i//size/2*(i+1)//Magic.x*i/(n-1)
-        println("x:"+x)
+        //println("x:"+x)
         next.addLine(new BasicLine(colors(i), size){ this.setCoords(Array(new Coord(x,0), new Coord(x, Magic.y))) })
       }
     }

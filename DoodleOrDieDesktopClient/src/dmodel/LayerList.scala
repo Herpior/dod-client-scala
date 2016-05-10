@@ -113,7 +113,7 @@ class LayerList {
     }
   }
   def load(save:JsonSave){
-    if(size==1 && layers.head.getStrokes(true).length==0) layers = save.getLayers
+    if(size==1 && layers.head.getThumb.length==0) layers = save.getLayers
     else layers ++= save.getLayers
     current = size-1
   }

@@ -103,9 +103,11 @@ object Colors {
     val fr = first.getRed//RGB
     val fg = first.getGreen
     val fb = first.getBlue
+    val fa = first.getAlpha
     val lr = last.getRed
     val lg = last.getGreen
     val lb = last.getBlue
+    val la = last.getAlpha
     val fhsb = Color.RGBtoHSB(fr, fg, fb, null)
     val lhsb = Color.RGBtoHSB(lr, lg, lb, null)
     val hf = if(fr==fg && fg==fb) lhsb(0) else fhsb(0)
@@ -118,25 +120,25 @@ object Colors {
     if(math.abs(dh)>0.5){
       dh = if(dh>0)-1+dh else 1+dh
     }
-    if(!rgb)
-    for(i<-0 until n){
-      val coeff = i*1.0/(n-1)
-      val negef = 1-coeff
-      var hh = (hf+dh*negef).toFloat
-      while(hh>1)hh-=1
-      while(hh<0)hh+=1
-      val ss = (sf*coeff+sl*negef).toFloat
-      val bb = (bf*coeff+bl*negef).toFloat
-      val colr = Color.getHSBColor(hh, ss, bb)
-      /*var r = Integer.toHexString(colr.getRed())
-      var g = Integer.toHexString(colr.getGreen())
-      var b = Integer.toHexString(colr.getBlue())
-      if(r.length()<2)r="0"+r
-      if(g.length()<2)g="0"+g
-      if(b.length()<2)b="0"+b
-      buf += "#"+r+""+g+""+b*/
-      buf += colr
-    }
+    if(!rgb) for(i<-0 until n){
+        val coeff = i*1.0/(n-1)
+        val negef = 1-coeff
+        var hh = (hf+dh*negef).toFloat
+        while(hh>1)hh-=1
+        while(hh<0)hh+=1
+        val ss = (sf*coeff+sl*negef).toFloat
+        val bb = (bf*coeff+bl*negef).toFloat
+        val aa = (fa*coeff+la*negef).toInt
+        val colr = Color.getHSBColor(hh, ss, bb)
+        /*var r = Integer.toHexString(colr.getRed())
+        var g = Integer.toHexString(colr.getGreen())
+        var b = Integer.toHexString(colr.getBlue())
+        if(r.length()<2)r="0"+r
+        if(g.length()<2)g="0"+g
+        if(b.length()<2)b="0"+b
+        buf += "#"+r+""+g+""+b*/
+        buf += new Color(colr.getRed,colr.getGreen,colr.getBlue, aa)
+      }
     else for(i<-0 until n){
       val coeff = i*1.0/(n-1)
       //print(coeff+" -> ")
@@ -144,7 +146,8 @@ object Colors {
       val r = (fr*coeff+lr*negef).toInt
       val g = (fg*coeff+lg*negef).toInt
       val b = (fb*coeff+lb*negef).toInt
-      buf += new Color(r,g,b)
+      val a = (fa*coeff+la*negef).toInt
+      buf += new Color(r,g,b,a)
       /*var r = Integer.toHexString(math.round(fr*coeff+lr*negef).toInt)
       var g = Integer.toHexString(math.round(fg*coeff+lg*negef).toInt)
       var b = Integer.toHexString(math.round(fb*coeff+lb*negef).toInt)

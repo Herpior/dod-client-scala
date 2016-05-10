@@ -91,7 +91,8 @@ object JsonParse {
     layers.foreach{
       layer =>
         val jsonlayer = new JsonLayer
-        jsonlayer.strokes = layer.getStrokes(true).map(_.toJson)
+        jsonlayer.strokes = layer.getThumb.map(_.toJson)
+        jsonlayer.visible = layer.isVisible
         buf += jsonlayer
     }
     save.layers = buf.toArray

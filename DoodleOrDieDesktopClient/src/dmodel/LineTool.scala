@@ -40,7 +40,8 @@ object LineTool {
               else Angle.getCoord(math.round(Angle.angle(dc.x,dc.y)/Pi*4)*Pi/4,dlen)
               //println("coord: "+xy+" mods ="+mods)
           val c2 = c0+xy
-          if(c2>=Coord(0)&&c2<=Magic.doodleSize)next.setLast(c2)
+          //if(c2>=Coord(0)&&c2<=Magic.doodleSize)
+          next.setLast(c2)
         } else {
           //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
             next.setLast(place)
