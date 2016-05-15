@@ -6,9 +6,10 @@ import java.io.StringReader
 import java.io.BufferedReader
 
 object JsonParse {
+    val gson = new Gson
 
   def parseDoodle(jsfile:String)={
-    val gson = new Gson
+    //val gson = new Gson
     //println(jsfile)
     //val red = new JsonParser
     val reader = new BufferedReader(new StringReader(jsfile))
@@ -20,7 +21,7 @@ object JsonParse {
     targ
   }
   def parseSave(jsfile:String)={
-    val gson = new Gson
+    //val gson = new Gson
     //println(jsfile)
     //val red = new JsonParser
     val reader = new BufferedReader(new StringReader(jsfile))
@@ -32,7 +33,7 @@ object JsonParse {
     targ
   }
   def parseState(jsfile:String)={
-    val gson = new Gson
+    //val gson = new Gson
     //println(jsfile)
     //val red = new JsonParser
     val reader = new BufferedReader(new StringReader(jsfile))
@@ -44,7 +45,7 @@ object JsonParse {
     targ
   }
   def parseOk(jsfile:String):JsonOk={
-    val gson = new Gson
+    //val gson = new Gson
     //println(jsfile)
     //val red = new JsonParser
     val reader = new BufferedReader(new StringReader(jsfile))
@@ -60,7 +61,7 @@ object JsonParse {
     //doodle.print
   }
   def parseSkips(jsfile:String)={
-    val gson = new Gson
+    //val gson = new Gson
     val reader = new BufferedReader(new StringReader(jsfile))
     //reader.setLenient(true)
     val targ = gson.fromJson(reader,classOf[JsonSkips])
@@ -76,7 +77,7 @@ object JsonParse {
   def testParse={
     val str = "{\"linetype\":\"bezier\",\"size\":5}"
     val str2 = "{\"linetype\":\"multi\",\"strokes\":[]}"
-    val gson = new Gson
+    //val gson = new Gson
     val reader = new BufferedReader(new StringReader(str))
     val reader2 = new BufferedReader(new StringReader(str2))
     val targ = gson.fromJson(reader,classOf[JsonStroke])
@@ -85,7 +86,8 @@ object JsonParse {
     println(targ2.toDoodlePart.getClass)
   }
   def writeSave(layers:Array[Layer], time:Int)={
-    val gson = new Gson
+    //val gson = new Gson
+    //var before = System.nanoTime
     val save = new JsonSave
     val buf = collection.mutable.Buffer[JsonLayer]()
     layers.foreach{
@@ -99,7 +101,15 @@ object JsonParse {
     save.version = 425
     save.time = time
     save.doodle_id = http.HttpHandler.state.private_id
+    //var after = System.nanoTime
+    //print("other "+(after-before))
+    
+    //before = System.nanoTime
+    //val res = 
     gson.toJson(save)//, new java.io.FileWriter("layersfile.json"))
+    //after = System.nanoTime
+    //print("tojson "+(after-before))
+    //res
   }
 }
 

@@ -109,6 +109,20 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       )
   }
   
+  override def logout {
+    doodle.save
+    this.publish(
+          new view.ReplaceEvent(
+              new view.LoadingPanel(
+                  Future{
+                      http.HttpHandler.logout
+                      new LogonPanel
+                  },this
+              ),this
+          )
+      )
+  }
+  
   val savetimer = Timer(10000,false){
     Future(doodle.save)
   }
