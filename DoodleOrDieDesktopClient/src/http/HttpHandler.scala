@@ -33,7 +33,6 @@ object HttpHandler {
   val httpCookieStore = new BasicCookieStore();
   try{
     val url = getClass.getResource("/dodcacerts")
-    println(url)
     val keystore = new File(url.getFile())
     val sslcontext = SSLContexts.custom()
                   .loadTrustMaterial(keystore, "RpcQNp1tTSifL6aGqAtt".toCharArray(),
