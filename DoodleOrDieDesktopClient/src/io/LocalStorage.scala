@@ -34,14 +34,13 @@ object LocalStorage {
     values(math.min(math.max((d*2).toInt,0),1039))
   }
   def printToFile(f: java.io.File)(op: java.io.BufferedWriter => Unit) {
-     f.getParentFile().mkdirs();
+     try{f.getParentFile().mkdirs()}catch{case e:Throwable=>}
      val out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
-    new java.io.FileOutputStream(f), "UTF-8"));
+    new java.io.FileOutputStream(f), "UTF-8"))
   try {
     op(out)
-    //out.write(aString);
   } finally {
-    out.close();
+    out.close()
   }
 }
   def printFile(strokes:Array[BasicLine],chain:String,pt:Int,path:String){
@@ -75,7 +74,7 @@ object LocalStorage {
   }
   def readArray(path:String)={
     val source = scala.io.Source.fromFile(path)("UTF-8")
-    val res = source.mkString.split(";")//(",(?=([^\\(]*\\([^\\)]*\\))*[^\(]*$)", -1);//split(",")
+    val res = source.mkString.split(",")//(",(?=([^\\(]*\\([^\\)]*\\))*[^\(]*$)", -1)//split(",")
     source.close()
     res
   }
@@ -83,7 +82,7 @@ object LocalStorage {
     //println(arr.mkString(","))
     printToFile(new File(path))
   {p=>
-    val st = arr.mkString(";")
+    val st = arr.mkString(",")
     p.write(st)}
   }/*
   def storePw(cid:String){

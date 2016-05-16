@@ -24,8 +24,7 @@ object ToolModel {
   private def load = {
     val loaded = try io.LocalStorage.readArray("colours").map { x => Colors.toColor(x) }
                  catch{
-                   case e:Throwable=>
-                     e.printStackTrace()
+                   case e:java.lang.NumberFormatException=>
                      normal
                  }
     val empty = Array.fill(16*8)(Color.black)
@@ -98,12 +97,12 @@ object ToolModel {
   
   
   def setColor(colorr:String){
-    if(colorr.length<3||colorr.length>7|| !Magic.authorized) return
+    if(colorr.length<3||colorr.length>9|| !Magic.authorized) return
     val col = if(colorr.head != '#')"#"+colorr.toLowerCase() else colorr.toLowerCase()
     if(!col.tail.forall(c=>Magic.hexa.contains(c))) return
     try{
       colors(colorpicker)=Colors.toColor(col)
-      io.LocalStorage.storeArray(colors.map(color=>Colors.toHexString(color)), "colours")
+      io.LocalStorage.storeArray(colors.map(color=>Colors.toHexRGBA(color)), "colours")
     }catch{
       case e=>e.printStackTrace
     }
@@ -113,7 +112,7 @@ object ToolModel {
   def setColor(color:Color){
     if(Magic.authorized){
       colors(colorpicker)= color
-      io.LocalStorage.storeArray(colors.map(color=>Colors.toHexString(color)), "colours")
+      io.LocalStorage.storeArray(colors.map(color=>Colors.toHexRGBA(color)), "colours")
       repaint
     }
   }
