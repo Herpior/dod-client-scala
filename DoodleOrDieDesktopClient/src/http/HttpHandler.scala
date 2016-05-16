@@ -1,6 +1,6 @@
 package http
 
-import org.apache.http.impl.client.HttpClients
+import org.apache.http.impl.client.{HttpClients, CloseableHttpClient}
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.methods.HttpGet
 import scala.concurrent.Future
@@ -29,28 +29,38 @@ object HttpHandler {
 
   //val classLoader = getClass().getClassLoader();
   //println("lol")
-  val url = getClass.getResource("/jssecacerts")
-  //println(url)
-  val keystore = new File(url.getFile())
-  //println(keystore)
-  val sslcontext = SSLContexts.custom()
-                .loadTrustMaterial(keystore, "changeit".toCharArray(),
-                        new TrustSelfSignedStrategy())
-                .build();
-  //println(sslcontext)
-  val sslsf = new SSLConnectionSocketFactory(
-                sslcontext,
-                Array( "TLSv1" ),
-                null,
-                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-  //println(sslsf)
+  private var client :CloseableHttpClient = null//HttpClients.custom().build()
   val httpCookieStore = new BasicCookieStore();
-  val globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build(); 
-  val client = HttpClients.custom()
-                .setSSLSocketFactory(sslsf)
-                .setDefaultRequestConfig(globalConfig)
-                .setDefaultCookieStore(httpCookieStore)
-                .build();//HttpClientBuilder.create().build();//new DefaultHttpClient .setParameter(ClientPNames.COOKIE_POLICY,CookiePolicy.BROWSER_COMPATIBILITY);
+  try{
+    val url = getClass.getResource("/dodcacerts")
+    println(url)
+    val keystore = new File(url.getFile())
+    val sslcontext = SSLContexts.custom()
+                  .loadTrustMaterial(keystore, "RpcQNp1tTSifL6aGqAtt".toCharArray(),
+                          new TrustSelfSignedStrategy())
+                  .build();
+    //println(sslcontext)
+    val sslsf = new SSLConnectionSocketFactory(
+                  sslcontext,
+                  Array( "TLSv1" ),
+                  null,
+                  SSLConnectionSocketFactory.getDefaultHostnameVerifier());
+    //println(sslsf)
+    val globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build(); 
+    client = HttpClients.custom()
+                  .setSSLSocketFactory(sslsf)
+                  .setDefaultRequestConfig(globalConfig)
+                  .setDefaultCookieStore(httpCookieStore)
+                  .build();//HttpClientBuilder.create().build();//new DefaultHttpClient .setParameter(ClientPNames.COOKIE_POLICY,CookiePolicy.BROWSER_COMPATIBILITY);
+    
+    } catch {
+      case e: NullPointerException => throw e
+      case e => 
+        println(e)
+        throw e
+  }
+  
+  
   //val uriBuilder = new URIBuilder()
   //uriBuilder.setParameter(params.ClientPNames.COOKIE_POLICY,params.CookiePolicy.BROWSER_COMPATIBILITY);
   //private def cookie = Array(cid,_conn).filter(_.trim.nonEmpty).mkString(";")//if(cid.isEmpty())_conn else if(_conn.isEmpty)cid else Array(cid,_conn).mkString(";")//

@@ -74,18 +74,9 @@ object JsonParse {
     val targ = gson.fromJson(reader,classOf[JsonGroups])
     targ
   }
-  def testParse={
-    val str = "{\"linetype\":\"bezier\",\"size\":5}"
-    val str2 = "{\"linetype\":\"multi\",\"strokes\":[]}"
-    //val gson = new Gson
-    val reader = new BufferedReader(new StringReader(str))
-    val reader2 = new BufferedReader(new StringReader(str2))
-    val targ = gson.fromJson(reader,classOf[JsonStroke])
-    println(targ.toDoodlePart.getClass)
-    val targ2 = gson.fromJson(reader2,classOf[JsonStroke])
-    println(targ2.toDoodlePart.getClass)
-  }
   def writeSave(layers:Array[Layer], time:Int)={
+    //Don't use, too slow and adds useless extra values
+    
     //val gson = new Gson
     //var before = System.nanoTime
     val save = new JsonSave

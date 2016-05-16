@@ -92,7 +92,8 @@ class DoodleModel {
   def decryptFrom(path:String,chain:String){
     try{
       val loaded = io.LocalStorage.decryptFrom(path,chain)
-      layers.getCurrent/*(this.current)*/.load(loaded._1)
+      layers/*.getCurrent(this.current)*/.addLayers(loaded._1)
+      addTime(loaded._2)
     }
     catch{
       case e:java.io.FileNotFoundException=>

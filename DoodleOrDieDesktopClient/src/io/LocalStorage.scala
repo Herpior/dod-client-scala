@@ -88,7 +88,15 @@ object LocalStorage {
   def storePw(cid:String){
     Crypt.encipherTo(cid, "/login")
   }*/
-  def decrypt(str:String,chain:String)={
+  def decrypt(str:String,chain:String):(Array[dmodel.Layer], Int)={
+    str.headOption.foreach{ c=>
+      if (c=='{'){
+        val doodle = dmodel.JsonParse.parseSave(str)
+        val layers = doodle.getDoodleLayers
+        val pt = doodle.getTime
+        return (layers.toArray, pt)
+      }
+    }
     val parts = str.replaceAll("\"", "").split("\\\\r")
     //println("-1goTDRQ-f".toLowerCase.equals(parts.headOption.get.trim))
     //println(chain.length+" - "+parts.head.head)
@@ -115,7 +123,9 @@ object LocalStorage {
               parts(2).trim()
               )
       catch{case e:Throwable=>e.printStackTrace()}
-      (doodle,pt)
+      val layer = new dmodel.Layer
+      layer.load(doodle)
+      (Array(layer),pt)
     /*} else {
       (Array[JsonLine](),0)
     }*/

@@ -93,6 +93,10 @@ class LayerList {
     layers = layers.take(ind+1)
     layers += added
     layers ++= risky
+    current += 1
+  }
+  def addLayers(adding:Array[Layer]){
+    adding.foreach { l => addLayer(l) }
   }
   def layerUp{
     if(ind+1<layers.length) {
