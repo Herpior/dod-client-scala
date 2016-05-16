@@ -50,4 +50,14 @@ case class Coord(val x:Double,val y:Double) {
   override def toString={
     "("+x+", "+y+")"
   }
+  def toJsonString = {
+    val xx = if(x%1==0)math.round(x).toString else x.toString
+    val yy = if(y%1==0)math.round(y).toString else y.toString
+    "{\"x\":"+xx+",\"y\":"+yy+"}"
+  }
+  def toShortJsonString = {
+    val xx = if(x%1==0)(x).toInt.toString else x.toString
+    val yy = if(y%1==0)(y).toInt.toString else y.toString
+    xx+","+yy
+  }
 }

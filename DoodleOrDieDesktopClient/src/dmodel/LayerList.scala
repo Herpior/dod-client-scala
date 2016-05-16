@@ -113,12 +113,18 @@ class LayerList {
     }
   }
   def load(save:JsonSave){
-    if(size==1 && layers.head.getThumb.length==0) layers = save.getLayers
-    else layers ++= save.getLayers
+    if(size==1 && layers.head.getThumb.length==0) layers = save.getDoodleLayers
+    else layers ++= save.getDoodleLayers
     current = size-1
   }
   def toJson(time:Int) = {
     JsonParse.writeSave(this.toArray, time)
   }
+  def toJsonString(time:Int) = {
+    "{\"version\":"+view.DoodleWindow.version+",\"doodle_id\":"+http.HttpHandler.getChain+",\"time\":"+time+",\"layers\":["+this.layers.map(_.toJsonString).mkString(",")+"]}"
+   }
+  def toShortJsonString(time:Int) = {
+    "{\"v\":"+view.DoodleWindow.version+",\"d\":"+http.HttpHandler.getChain+",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
+   }
   
 }

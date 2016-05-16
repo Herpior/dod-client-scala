@@ -21,6 +21,25 @@ object Colors {
       
     "#"+r+""+g+""+b
   }
+  def toHexRGBA(color:Color):String={
+    val alpha = color.getAlpha()
+    var r = Integer.toHexString(color.getRed())
+    var g = Integer.toHexString(color.getGreen())
+    var b = Integer.toHexString(color.getBlue())
+    var a = Integer.toHexString(alpha)
+      if(r.length()<2)r="0"+r
+      if(g.length()<2)g="0"+g
+      if(b.length()<2)b="0"+b
+      if(a.length()<2)a="0"+a
+      if(r(0)==r(1)&&g(0)==g(1)&&b(0)==b(1)&&alpha==255){
+        r=r(0)+""
+        g=g(0)+""
+        b=b(0)+""
+      }
+      
+    if(alpha==255)"#"+r+""+g+""+b
+    else "#"+r+""+g+""+b+""+a
+  }
   def toRGBAString(color:Color)={
     "rgba("+color.getRed()+","+color.getGreen()+","+color.getBlue()+","+color.getAlpha()/255.0+")"
   }
@@ -57,6 +76,12 @@ object Colors {
       val g=Integer.parseInt(str(1)+""+str(1),16)
       val b=Integer.parseInt(str(2)+""+str(2),16)
       new Color(r, g, b)
+    } else if(hexa && str.length==8){
+      val r=Integer.parseInt(str(0)+""+str(1),16)
+      val g=Integer.parseInt(str(2)+""+str(3),16)
+      val b=Integer.parseInt(str(4)+""+str(5),16)
+      val a=Integer.parseInt(str(6)+""+str(7),16)
+      new Color(r, g, b, a)
     } else Color.decode(string)
   }/*
   def toColor(awtColor:Color)={

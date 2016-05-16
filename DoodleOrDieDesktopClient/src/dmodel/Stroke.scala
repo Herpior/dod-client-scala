@@ -12,6 +12,8 @@ trait DoodlePart{
   def length2:Double = getLines.foldLeft(0.0)(_+_.length2)
   def selection:DoodlePart
   def toJson:JsonStroke
+  def toJsonString:String
+  def toShortJsonString:String
 }
 
 /*class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
@@ -131,6 +133,14 @@ class BezierLine(val color:Color, val size:Double) extends DoodlePart {
     json.linetype = "bezier"
     json
   }
+  def toJsonString = {
+    val sizestr = if(size%1==0)size.toInt.toString else size.toString
+    "{\"linetype\":\"bezier\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"coords\":["+coords.map(_.toJsonString).mkString(",")+"]}"
+  }
+  def toShortJsonString = {
+    val sizestr = if(size%1==0)size.toInt.toString else size.toString
+    "{\"l\":\"b\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}"
+  }
 }
 
 
@@ -219,6 +229,24 @@ class MultiLine extends DoodlePart{
     json.strokes = this.getLines.map(_.toJsonLine)
     json.linetype = "multi"
     json
+  }
+  def toJsonString = {
+    //val lines = this.getLines
+    if(lines.length == 1) {
+      lines.head.toJsonString
+    }
+    else {
+      "{\"linetype\":\"multi\",\"strokes\":["+lines.map(_.toJsonString).mkString(",")+"]}"
+    }
+  }
+  def toShortJsonString = {
+    //val lines = this.getLines
+    if(lines.length == 1) {
+      lines.head.toShortJsonString
+    }
+    else {
+      "{\"l\":\"m\",\"ss\":["+lines.map(_.toShortJsonString).mkString(",")+"]}"
+    }
   }
 }
 
@@ -384,6 +412,14 @@ class BasicLine(val color:Color, val size:Double) extends DoodlePart {
     json.path = this.coords.flatMap(_.toArray).toArray
     json
   }
+  def toJsonString = {
+    val sizestr = if(size%1==0)size.toInt.toString else size.toString
+    "{\"linetype\":\"basic\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.toShortJsonString).mkString(",")+"]}"
+  }
+  def toShortJsonString = {
+    val sizestr = if(size%1==0)size.toInt.toString else size.toString
+    "{\"l\":\"n\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}"
+  }
 }
 class JsonLine extends DoodlePart {
   
@@ -421,6 +457,14 @@ class JsonLine extends DoodlePart {
     res.path = path
     res.size = size
     res
+  }
+  def toJsonString = {
+    val sizestr = if(size%1==0)size.toInt.toString else size.toString
+    "{\"linetype\":\"json\",\"color\":"+color+",\"size\":"+sizestr+",\"path\":["+path.mkString(",")+"]}"
+  }
+  def toShortJsonString = {
+    val sizestr = if(size%1==0)size.toInt.toString else size.toString
+    "{\"l\":\"j\",\"c\":"+color+",\"s\":"+sizestr+",\"p\":["+path.mkString(",")+"]}"
   }
 }
 /*class Linee extends DoodlePart{

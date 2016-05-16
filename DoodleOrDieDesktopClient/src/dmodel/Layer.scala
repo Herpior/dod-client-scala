@@ -79,6 +79,12 @@ class Layer() {
   def getThumb={
     strokes.toArray
   }
+  def toJsonString = {
+    "{\"strokes\":["+this.strokes.map(_.toJsonString).mkString(",")+"],\"visible\":"+visible+"}"
+  }
+  def toShortJsonString = {
+    "{\"s\":["+this.strokes.map(_.toShortJsonString).mkString(",")+"],\"v\":"+visible+"}"
+  }
 }
 
 class MatrixLayer(private val orig:Layer) extends Layer {
