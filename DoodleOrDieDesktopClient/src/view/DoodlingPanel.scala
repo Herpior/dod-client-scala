@@ -627,7 +627,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           case _ => 
             println("case x doodling panel")
         }
-       doodle.model.addTime((System.nanoTime()-check)/10000)
+       doodle.model.addTime((System.nanoTime()-check)/100000)
        savetimer.start()
        Future(layers.reset)
       }

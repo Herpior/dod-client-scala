@@ -59,7 +59,7 @@ class JsonLayer {
 class JsonStroke {
   var linetype:String=_
   var strokes:Array[JsonLine] = _
-  var coords:Array[JsonCoord] = _
+  var coords:Array[JsonCoord] = Array()
   var path:Array[Double] = _
   var color:String = _
   var size:Double = _
@@ -80,7 +80,7 @@ class JsonStroke {
         val res = new MultiLine
         strokes.foreach { x => res.addLine(x.toBasicLine) }
         res
-      case "bezier"|"m" =>
+      case "bezier"|"b" =>
         val javacolor = Colors.toColor(color)
         val res = new BezierLine(javacolor,size)
         var newcoords = coords.map(x=>x.toCoord)
