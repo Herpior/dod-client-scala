@@ -34,6 +34,7 @@ object LocalStorage {
     values(math.min(math.max((d*2).toInt,0),1039))
   }
   def printToFile(f: java.io.File)(op: java.io.BufferedWriter => Unit) {
+     f.getParentFile().mkdirs();
      val out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
     new java.io.FileOutputStream(f), "UTF-8"));
   try {
@@ -49,8 +50,8 @@ object LocalStorage {
     val st = chain+"""\r"""+transform(strokes)+"""\r"""+pt
     p.write(st)}
   }
-  def saveTo(json:String,chain:String,pt:Int){
-    printToFile(new File("save."+chain+".txt"))
+  def saveTo(json:String,chain:String){
+    printToFile(new File("saves/save."+chain+".txt"))
   {p=>
     val st = json
     p.write(st)}
@@ -60,7 +61,7 @@ object LocalStorage {
     decrypt(encrypted,chain)
   }
   def loadSave(chain:String)={
-    loadFrom("save."+chain+".txt")
+    loadFrom("saves/save."+chain+".txt")
   }
   def loadFrom(path:String)={
     val ensource = scala.io.Source.fromFile(path)("UTF-8")
