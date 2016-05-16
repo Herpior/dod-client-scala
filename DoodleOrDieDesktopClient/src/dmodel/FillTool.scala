@@ -27,7 +27,7 @@ object FillTool {
     val mid = (math.abs(first.size+second.size)/2).toInt
     val n = (2*max/mid).toInt
     val colors = if(mods/512%2==1)Colors.linearcolor(n,true,first.color,second.color) else Colors.linearcolor(n,false,first.color,second.color)
-    for(i<- 0 until n){
+    for(i<- 1 until n){
       val in = i*1.0/n//tmp/max
       val nin = 1-in
       val color = colors(i)

@@ -58,16 +58,20 @@ class JsonLayer {
 }
 class JsonStroke {
   var linetype:String=_
-  var strokes:Array[JsonLine] = _
+  var strokes:Array[JsonStroke] = _
   var coords:Array[JsonCoord] = Array()
   var path:Array[Double] = _
   var color:String = _
   var size:Double = _
   var l:String=_
-  var ss:Array[JsonLine]=_
+  var ss:Array[JsonStroke]=_
   var p:Array[Double] = _
   var c:String = _
   var s:Double = _
+  
+  def getLines = {
+    toDoodlePart.getLines
+  }
   def toDoodlePart:DoodlePart = {
     try{
     linetype = linetype match { case ""|null => l case x => x }
@@ -78,7 +82,7 @@ class JsonStroke {
     linetype match {
       case "multi"|"m" =>
         val res = new MultiLine
-        strokes.foreach { x => res.addLine(x.toBasicLine) }
+        res.setLines(strokes.flatMap(_.getLines))
         res
       case "bezier"|"b" =>
         val javacolor = Colors.toColor(color)

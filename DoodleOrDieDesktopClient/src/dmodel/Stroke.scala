@@ -226,7 +226,7 @@ class MultiLine extends DoodlePart{
   
   def toJson = {
     val json = new JsonStroke
-    json.strokes = this.getLines.map(_.toJsonLine)
+    json.strokes = this.getLines.map(_.toJson)
     json.linetype = "multi"
     json
   }
