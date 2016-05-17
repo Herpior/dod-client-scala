@@ -81,6 +81,7 @@ class LayerListPanel(model:LayerList) extends Panel{
         if(x>=0&&x<40){
           //println("layerlist curr"+model.ind)
           this.model.addLayer
+          publish(new RepaintEvent)
           //println("layerlist curr"+model.ind)
           Future(this.reset)
         }else if(x>=40&&x<86){

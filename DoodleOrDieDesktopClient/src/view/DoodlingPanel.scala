@@ -78,6 +78,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   //val toolControl = new ToolController(tools)
   
   doodle.model.loadFrom(private_id)
+  //doodle.redrawAll
   //println("backup."+group_id/*http.HttpHandler.getGroup*/+".txt")
                 //doodle.redrawMid
   
@@ -283,7 +284,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               val text = Dialog.showInput(doodle, "file path", "open", Dialog.Message.Question, null, List[String](), "")
               text.foreach { x => 
                 doodle.model.decryptFrom(x,private_id)
-                doodle.redrawMid
+                doodle.redrawAll
                 layers.reset
                 //val t = new java.util.Scanner(new File(x))
                 //while(t.hasNext()){
@@ -307,7 +308,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(e.modifiers == 512){
             savetimer.stop()
             doodle.model.layers.split
-            doodle.redrawTop
+            doodle.redrawAll
             Future(layers.reset)
             savetimer.start()
           }
@@ -373,6 +374,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(e.modifiers==128) {
           //println("layerlist curr"+doodle.model.layers.ind)
             doodle.model.addLayer
+            doodle.redrawLayerUp
           //println("layerlist curr"+doodle.model.layers.ind)
           }
           else {
