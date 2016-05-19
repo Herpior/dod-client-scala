@@ -26,6 +26,8 @@ class ToolPanel/*(model:ToolModel)*/ extends Panel{
   this.preferredSize = this.minimumSize
   this.minimumSize = new Dimension(300,450)
   
+  def isReady = this.model.isReady
+  
   //val model = new ToolModel
   
   //this.visible = true

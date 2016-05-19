@@ -91,8 +91,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   this.listenTo(desc.phraseLabel.keys)
   
   def submit{
-    doodle.model.save
-    this.publish(
+    if(tools.model.isReady){
+      doodle.model.save
+      this.publish(
           new view.ReplaceEvent(
               new view.LoadingPanel(
                   Future{
@@ -108,6 +109,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               ),this
           )
       )
+    }
   }
   
   override def logout {
