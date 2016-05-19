@@ -90,7 +90,7 @@ class DoodlePanel extends Panel {
     //val col = model.tools.getColor
     //val invert = dmodel.Colors.inverse(col)
     g.setColor(Magic.black)
-    val bsize = (model.tools.getSize*getZoom).toInt
+    val bsize = max(2,(model.tools.getSize*getZoom)).toInt
     g.drawOval(cursorX-bsize/2, cursorY-bsize/2, bsize, bsize)
     /*
     g.setColor(Color.black)

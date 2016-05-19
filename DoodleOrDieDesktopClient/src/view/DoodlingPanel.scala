@@ -91,7 +91,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   this.listenTo(desc.phraseLabel.keys)
   
   def submit{
-    doodle.model.toLocalStorage
+    doodle.model.save
     this.publish(
           new view.ReplaceEvent(
               new view.LoadingPanel(
@@ -652,7 +652,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             else {
               doodle.model.addLine(place,mods)
               //println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
-              if(tools.model.getColor.getAlpha==255) doodle.redrawLast
+              if(tools.model.getColor.getAlpha==255 || Magic.faster) doodle.redrawLast
               else doodle.redrawDrawing
             }
             doodle.repaint

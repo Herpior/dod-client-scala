@@ -6,6 +6,7 @@ import swing.Label
 object Magic {
 
   def authorized = http.HttpHandler.getAuth
+  val faster = false // if true will make semitransparent lines faster but look worse when drawing
   val x = 520
   val y = 390
   val thumbX = 60//100
