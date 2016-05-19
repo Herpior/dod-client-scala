@@ -119,4 +119,7 @@ object ToolModel {
       repaint
     }
   }
+  def clickReady(){
+    ready = !ready
+  }
 }

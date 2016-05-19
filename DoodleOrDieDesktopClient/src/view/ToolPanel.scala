@@ -188,6 +188,13 @@ class ToolPanel/*(model:ToolModel)*/ extends Panel{
         g.setColor(Magic.white)
         g.setFont(Magic.font20)
         g.drawString("Submit!", 90, offy+35)
+        
+        offy += 100
+        
+        g.drawRoundRect(25, offy, 30, 30, 4, 4)
+        if(isReady) g.drawImage(Icons.getCheck,30,offy+5,null)
+        g.setFont(Magic.font20.deriveFont(java.awt.Font.BOLD,18))
+        g.drawString("Ready to submit", 70, offy+20)
       }
       
       
@@ -307,7 +314,17 @@ class ToolPanel/*(model:ToolModel)*/ extends Panel{
               //println("submit "+y)
                 publish(new controller.SubmitEvent)
             }
-            /*else if(y<770){
+            else if(y<480){
+              if(x<200&&x>0)
+              println("submit "+y)
+            }
+            else if(y<520){
+              if(x<200&&x>0){
+                model.clickReady
+                this.repaint()
+              }
+            }/*
+            else if(y<530){
               mini = false
               val xx = magicX-(x*magicX/200).toInt
               val yy = magicY-((y-620)*magicY/150).toInt
