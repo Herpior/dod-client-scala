@@ -210,7 +210,7 @@ class DoodlePanel extends Panel {
   def pickColor(x:Int,y:Int,mods:Int)={
     //Todo some mod for picking color from whole image
     if(x>0&&y>0 && x<this.midImg.getWidth&&y<this.midImg.getHeight)
-    Some(new Color(this.midImg.getRGB(x, y))) else None
+    Some(new Color(this.midImg.getRGB(x, y),true)) else None
   }
   def offset = {
     //val z = (-1/(zoom/2)+1)
