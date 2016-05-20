@@ -12,7 +12,7 @@ object ToolModel {
   private var colorpicker = 0
   private var colorpicker2 = 0
   private var state = 0
-  private var ready = true
+  private var ready = Magic.readyDefault
   
   def isReady = this.ready
   def maxsize = if(Magic.authorized)200 else 100
