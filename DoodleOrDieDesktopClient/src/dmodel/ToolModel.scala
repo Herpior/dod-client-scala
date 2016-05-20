@@ -24,6 +24,7 @@ object ToolModel {
   private val normal = Array(
           "#000000","#6d6f71","#0791cd","#699c41","#f47e20","#d6163b","#6e1a11","#f8ded7",
           "#ffffff","#d1d3d4","#73cff2","#9bcc66","#ffec00","#f180aa","#812468","#8e684c").map { x => Colors.toColor(x) }
+  def initReady = ready = Magic.readyDefault
   private def load = {
     val loaded = try io.LocalStorage.readArray("colours").map { x => Colors.toColor(x) }
                  catch{

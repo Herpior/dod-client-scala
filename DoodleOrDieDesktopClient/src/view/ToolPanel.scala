@@ -22,6 +22,7 @@ import javafx.scene.control.ColorPicker
 
 class ToolPanel/*(model:ToolModel)*/ extends Panel{
   val model = ToolModel
+  model.initReady
   this.minimumSize = new Dimension(250,450)
   this.preferredSize = this.minimumSize
   this.minimumSize = new Dimension(300,450)

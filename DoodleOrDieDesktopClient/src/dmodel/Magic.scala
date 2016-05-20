@@ -7,7 +7,7 @@ object Magic {
 
   def authorized = http.HttpHandler.getAuth
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
-  val readyDefault = false //default for ready checkbox
+  val readyDefault = true//false //default for ready checkbox
   val x = 520
   val y = 390
   val thumbX = 60//100
