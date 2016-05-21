@@ -28,7 +28,7 @@ object ToolModel {
   private def load = {
     val loaded = try io.LocalStorage.readArray("colours").map { x => Colors.toColor(x) }
                  catch{
-                   case e:java.lang.NumberFormatException=>
+                   case e:Throwable=>
                      normal
                  }
     val empty = Array.fill(16*8)(Color.black)
