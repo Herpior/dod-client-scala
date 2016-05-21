@@ -178,56 +178,26 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     } else {*/
       if(unField.text.length()==0 || pwField.password.length==0) {
         Dialog.showMessage(owner, "Username or password field empty", "failed to login", Dialog.Message.Warning, null)
-        return Unit
+        return
       }
       val next = new LoadingPanel(Future{
-        status match {
+        val success = status match {
           case 0 =>
-        if(HttpHandler.login(pwField.password, unField.text)&&HttpHandler.hasCid){
-          if(this.autoButt.selected){
-            //println("saving cid in logonpanel")
-            HttpHandler.saveCid
-          }
-          //HttpHandler.getSkips
-          val state = HttpHandler.state
-          //if(!HttpHandler.getAuth) Dialog.showMessage(owner, "Upgrade to super to get full access to features", "advertisement", Dialog.Message.Info, null)
-          state.toPlayPanel
-        } else {
-          Dialog.showMessage(owner, "most likely an error in username or password", "failed to login", Dialog.Message.Warning, null)
-          this.pwField.text = ""
-          owner
-        }
+            HttpHandler.login(pwField.password, unField.text)
           case 1 =>
-        if(HttpHandler.twitterLogin(unField.text, pwField.password)&&HttpHandler.hasCid){
-          if(this.autoButt.selected){
-            //println("saving cid in logonpanel")
-            HttpHandler.saveCid
-          }
-          //HttpHandler.getSkips
-          val state = HttpHandler.state
-          //if(!HttpHandler.getAuth) Dialog.showMessage(owner, "Upgrade to super to get full access to features", "advertisement", Dialog.Message.Info, null)
-          state.toPlayPanel
-        } else {
-          Dialog.showMessage(owner, "most likely an error in username or password", "failed to login", Dialog.Message.Warning, null)
-          this.pwField.text = ""
-          owner
-        }
-        
+            HttpHandler.twitterLogin(unField.text, pwField.password)
           case _ =>
-        if(HttpHandler.faceLogin(unField.text, pwField.password)&&HttpHandler.hasCid){
+            HttpHandler.faceLogin(unField.text, pwField.password)
+        }
+        if(success && HttpHandler.hasCid){
           if(this.autoButt.selected){
-            //println("saving cid in logonpanel")
             HttpHandler.saveCid
           }
-          //HttpHandler.getSkips
           val state = HttpHandler.state
-          //if(!HttpHandler.getAuth) Dialog.showMessage(owner, "Upgrade to super to get full access to features", "advertisement", Dialog.Message.Info, null)
           state.toPlayPanel
         } else {
           Dialog.showMessage(owner, "most likely an error in username or password", "failed to login", Dialog.Message.Warning, null)
-          this.pwField.text = ""
           owner
-        }
         }
         },owner)
       val e = new ReplaceEvent(next,this)
