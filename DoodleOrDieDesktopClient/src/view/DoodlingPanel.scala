@@ -15,6 +15,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   val skipButt = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
+    this.opaque = true
+    this.borderPainted = false
     //this.border = Swing.EmptyBorder//(0)
     //this.font = Magic.font20.deriveFont(15f)
     //this.contentAreaFilled = false

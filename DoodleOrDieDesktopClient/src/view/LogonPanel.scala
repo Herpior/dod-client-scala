@@ -176,6 +176,10 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       val e = new ReplaceEvent(next,this)
       this.publish(e)
     } else {*/
+      if(unField.text.length()==0 || pwField.password.length==0) {
+        Dialog.showMessage(owner, "Username or password field empty", "failed to login", Dialog.Message.Warning, null)
+        return Unit
+      }
       val next = new LoadingPanel(Future{
         status match {
           case 0 =>
@@ -231,6 +235,22 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     //}
     //println(HttpHandler.cook)
   }
+  
+  //this.listenTo(this.keys)
+  this.listenTo(unField.keys)
+  this.listenTo(this.singButt.keys)
+  this.listenTo(this.pwField.keys)
+  reactions += {
+    
+    case e:KeyPressed if e.key == Key.Enter =>
+      continue
+  }
+  
+  controller.Timer(100,false){
+  unField.requestFocusInWindow()
+  }.start
+  
+  
 }
 
 /*class PasswordFieldo extends PasswordField{

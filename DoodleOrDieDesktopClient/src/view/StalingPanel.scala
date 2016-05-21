@@ -16,6 +16,8 @@ class StalingPanel extends BoxPanel(Orientation.Vertical) with PlayPanel{
   val showButt = new Button{
     this.background = Magic.buttColor
     this.foreground = Magic.white
+    this.opaque = true
+    this.borderPainted = false
     this.contentAreaFilled = true
     //this.text = "Show me the next chain!"
     this.action = Action("Show me the next chain!"){

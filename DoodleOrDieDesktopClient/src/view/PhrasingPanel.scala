@@ -15,6 +15,8 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   val skipButt = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
+    this.opaque = true
+    this.borderPainted = false
     this.action = Action("skip"){
       //this.icon = Icons.getSkip
       skip
@@ -96,6 +98,8 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
     this.font = Magic.font20
     this.background = Magic.buttColor
     this.foreground = Magic.white
+    this.opaque = true
+    this.borderPainted = false
     this.action = new Action("Submit"){
       def apply()=submit
     }

@@ -15,4 +15,6 @@ class LoginButton(text:String) extends Button(text){
     this.minimumSize = this.preferredSize
     this.font = Magic.font20
     this.foreground = Color.WHITE
+    this.opaque = true
+    //this.borderPainted = false
 }
