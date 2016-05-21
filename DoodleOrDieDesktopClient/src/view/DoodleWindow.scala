@@ -3,6 +3,7 @@ package view
 import scala.swing._
 import event.WindowOpened
 import scala.swing.event.WindowClosing
+import scala.swing.event.UIElementResized
 import concurrent.Future
 import concurrent.ExecutionContext.Implicits.global
 
@@ -42,6 +43,8 @@ object DoodleWindow extends SimpleSwingApplication {
     */
     this.listenTo(screen)
     reactions +={
+      case e:UIElementResized=>
+        this.preferredSize = this.bounds.getSize
       case e:ReplaceEvent=>
         screen = e.replacement
         this.contents = screen

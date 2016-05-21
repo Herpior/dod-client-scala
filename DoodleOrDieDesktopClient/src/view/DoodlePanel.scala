@@ -116,7 +116,7 @@ class DoodlePanel extends Panel {
     redrawDrawing
   }
   def redrawBot{ //TODO change to clearRect based solution? that won't bug when area size changes
-    val img = createImg
+    val img = createImg  //or graphics.setComposite(AlphaComposite.Clear); graphics.fillRect(0, 0, SIZE, SIZE); graphics.setComposite(AlphaComposite.SrcOver);
     val g = img.createGraphics()
     g.setColor(Magic.bgColor)
     g.fillRect(0, 0, img.getWidth, img.getHeight)
