@@ -115,12 +115,15 @@ class DoodlePanel extends Panel {
     redrawMid
     redrawDrawing
   }
-  def redrawBot{
+  def redrawBot{ //TODO change to clearRect based solution? that won't bug when area size changes
     val img = createImg
     val g = img.createGraphics()
-    g.setColor(Magic.white)
-    val c = Coord(0,0)-offset
+    g.setColor(Magic.bgColor)
     g.fillRect(0, 0, img.getWidth, img.getHeight)
+    val off = offset
+    val canvas = Magic.doodleSize*getZoom
+    g.setColor(Magic.white)
+    g.fillRect(off.x.toInt, off.y.toInt, canvas.x.toInt, canvas.y.toInt)
     //LineDrawer.redraw(img, model.getBot)
     model.getBot.flatMap { x => x.getStrokes(true) }.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)
