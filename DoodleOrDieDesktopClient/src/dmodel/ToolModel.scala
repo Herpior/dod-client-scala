@@ -49,7 +49,7 @@ object ToolModel {
   def colorIndex2 = colorpicker2
   def changingSize = slider
   //def colorIndex2 = colorpicker2
-  def getColor(ind:Int) = if(ind<1)colors(colorIndex) else colors(colorIndex2)
+  //def getColor(ind:Int) = if(ind<1)getColors(colorIndex) else getColors(colorIndex2)
   def repaint{
     //nothing probably
   }
@@ -95,8 +95,8 @@ object ToolModel {
   }
           
   def getSize = nextsize
-  def getColor = colors(colorpicker)
-  def getColor2 = colors(colorpicker2)
+  def getColor = getColors(colorpicker)
+  def getColor2 = getColors(colorpicker2)
   def getState = state
   
   

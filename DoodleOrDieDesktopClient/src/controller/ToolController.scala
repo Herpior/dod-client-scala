@@ -91,7 +91,7 @@ class ToolController(tools:ToolPanel)extends Reactor{
                     //tools.publish(new ColorChangeEvent(model.getColor(0),0))
                 
                   if(e.modifiers/128%2==1 && Magic.authorized){
-                    val dres = Dialog.showInput(tools, "Set a new color", "color", Dialog.Message.Question, null, Nil, model.getColor(0))
+                    val dres = Dialog.showInput(tools, "Set a new color", "color", Dialog.Message.Question, null, Nil, model.getColor)
                     dres.foreach(col => model.setColor(col))
                   }
                 }
