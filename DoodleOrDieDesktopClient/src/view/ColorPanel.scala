@@ -10,12 +10,12 @@ import java.awt.RenderingHints
 import dmodel.Colors
 import dmodel.Coord
 import dmodel.Magic
-import dmodel.ToolModel
+import dmodel.ColorModel
 //import javafx.scene.control.ColorPicker
 
 class ColorPanel extends Panel {
   
-  val model = ToolModel
+  val model = ColorModel
   this.preferredSize = new Dimension(250, 130)
   this.minimumSize = new Dimension(200, 130)
   this.maximumSize = preferredSize

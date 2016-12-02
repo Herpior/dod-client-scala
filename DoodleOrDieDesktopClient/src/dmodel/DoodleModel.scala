@@ -224,7 +224,7 @@ class DoodleModel {
   }
   //---------\\
   def startBezier(place:Coord,mods:Int){
-    val bez = new BezierLine(tools.getColor,SizeModel.getSize)
+    val bez = new BezierLine(ColorModel.getColor,SizeModel.getSize)
     val guide = new MultiLine
     BezierTool.startBezier(bez, guide, place, mods)
     this.bezierLine = Some(bez)
@@ -249,7 +249,7 @@ class DoodleModel {
   //---------\\
   def startLine(place:Coord,mods:Int){
     val stroke = new MultiLine
-    LineTool.startLine(stroke, tools.getColor, SizeModel.getSize, place, mods)
+    LineTool.startLine(stroke, ColorModel.getColor, SizeModel.getSize, place, mods)
     multiLine = Some(stroke)
   }
   def dragLine(place:Coord,mods:Int){
@@ -264,7 +264,7 @@ class DoodleModel {
   def addLine(place:Coord,mods:Int){
     multiLine.foreach{
       next =>
-        LineTool.addLine(next, tools.getColor, SizeModel.getSize, place, mods)
+        LineTool.addLine(next, ColorModel.getColor, SizeModel.getSize, place, mods)
     }
   }
   /*def addLinePoint{
@@ -286,7 +286,7 @@ class DoodleModel {
   //---------\\
   def startGradient(place:Coord,mods:Int){
     val stroke = new MultiLine
-    LineTool.startLine(stroke, tools.getColor, 1, place, mods)
+    LineTool.startLine(stroke, ColorModel.getColor, 1, place, mods)
     multiLine = Some(stroke)
   }
   def fillGradient(border:java.awt.image.BufferedImage,place:Coord,mods:Int){
@@ -299,7 +299,7 @@ class DoodleModel {
     } catch {
       case e:Throwable=> mods/64%2==0
     }
-    FillTool.fillGradient(next, border, tools.getColor, tools.getColor2, SizeModel.getSize, vertical, place, mods)
+    FillTool.fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, mods)
     layers.getCurrent.add(next)
     multiLine=None
   }
@@ -313,7 +313,7 @@ class DoodleModel {
     } catch {
       case e:Throwable=> mods/64%2==0
     }
-    FillTool.addGradient(next, tools.getColor, tools.getColor2, SizeModel.getSize, vertical, place, mods)
+    FillTool.addGradient(next, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, mods)
     layers.getCurrent.add(next)
     multiLine=None
   }

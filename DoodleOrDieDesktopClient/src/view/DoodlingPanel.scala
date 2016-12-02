@@ -8,6 +8,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import controller._
 import dmodel.Magic
 import dmodel.SizeModel
+import dmodel.ColorModel
 import io.Icons
 
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean,random:Boolean) extends BorderPanel with PlayPanel{
@@ -201,21 +202,21 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       } else*/
       e.key match {
         case Key.W =>
-          tools.model.colorup
+          ColorModel.colorUp
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.A =>
-          tools.model.colorleft
+          ColorModel.colorLeft
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.S =>
           if(e.modifiers == 128) {
             doodle.model.save//toLocalStorage
           }
           else {
-            tools.model.colordown
+            ColorModel.colorDown
             //doodle.model.setColor(tools.model.getColor(0),0)
           }
         case Key.D =>
-          tools.model.colorright
+          ColorModel.colorRight
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.Q =>
           SizeModel.sizeDown
@@ -545,7 +546,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(mods/512%2==1){
             if(Magic.authorized){
               val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt,mods)
-              color.foreach(c=>tools.model.setColor(c))
+              color.foreach(c=>ColorModel.setColor(c))
               tools.repaint
             }
           } else if(mods/128==1){
@@ -657,7 +658,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             else {
               doodle.model.addLine(place,mods)
               //println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
-              if(tools.model.getColor.getAlpha==255 || Magic.faster) doodle.redrawLast
+              if(ColorModel.getColor.getAlpha==255 || Magic.faster) doodle.redrawLast
               else doodle.redrawDrawing
             }
             doodle.repaint
