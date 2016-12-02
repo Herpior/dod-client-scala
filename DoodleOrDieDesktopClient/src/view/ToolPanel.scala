@@ -1,8 +1,6 @@
 package view
 
-import scala.swing.Panel
-
-//import view.ToolPanel
+import scala.swing.BoxPanel
 import scala.swing.Reactor
 import swing.event._
 import swing.Dialog
@@ -10,6 +8,7 @@ import dmodel.Coord
 import dmodel.Magic
 import dmodel.Colors
 import scala.swing.Dimension
+import scala.swing.Orientation
 import java.awt.Font
 import java.awt.BasicStroke
 import java.awt.Color
@@ -20,7 +19,7 @@ import dmodel.ToolModel
 import io.Icons
 import javafx.scene.control.ColorPicker
 
-class ToolPanel/*(model:ToolModel)*/ extends Panel{
+class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
   val model = ToolModel
   model.initReady
   this.minimumSize = new Dimension(250,450)
@@ -28,6 +27,8 @@ class ToolPanel/*(model:ToolModel)*/ extends Panel{
   this.minimumSize = new Dimension(300,450)
   
   def isReady = this.model.isReady
+  
+  this.contents += new SizePanel
   
   //val model = new ToolModel
   
@@ -88,53 +89,7 @@ class ToolPanel/*(model:ToolModel)*/ extends Panel{
         //g.fillRect(0, 0, size.getWidth.toInt, size.getHeight.toInt)
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
         //println("why")
-        g.setColor(Magic.buttColor)
-        for(y<-0 to 1){
-          for(x<-0 to 3){
-            g.fillOval(x*50+30, y*50+offy, 40, 40)
-          }
-        }
-        
-        g.setColor(Color.WHITE)
-        g.setFont(g.getFont.deriveFont(Font.BOLD))
-        g.drawString("XXS", 14+25, 29)
-        g.drawString("XS", 68+25, 29)
-        g.drawString("S", 122+25, 29)
-        g.drawString("M", 171+25, 29)
-        g.drawString("L", 22+25, 79)
-        g.drawString("XL", 69+25, 79)
-        g.drawString("XXL", 116+25, 79)
-        g.drawString("XXXL", 160+25, 79)
-        val sizein = model.sizes.indexOf(model.getSize)
-        if(sizein > -1){
-          val x = sizein % 4
-          val y = sizein / 4
-          g.setColor(Color.WHITE)
-          g.fillOval(x*50+30, y*50+offy, 40, 40)
-          g.setColor(Magic.buttColor)
-          val b = 24+offy
-          val t = 50+b
-          sizein match{
-            case 0 => g.drawString("XXS", 14+25, b)
-            case 1 => g.drawString("XS", 68+25, b)
-            case 2 => g.drawString("S", 122+25, b)
-            case 3 => g.drawString("M", 171+25, b)
-            case 4 => g.drawString("L", 22+25, t)
-            case 5 => g.drawString("XL", 69+25, t)
-            case 6 => g.drawString("XXL", 116+25, t)
-            case 7 => g.drawString("XXXL", 160+25, t)
-          } 
-        } 
-        offy+=105
-        val size = this.model.getSize
-        g.setColor(Magic.buttColor)
-        g.fillRect(25, offy+12, 200, 6)
-        //g.fillOval(155, 155, 40, 40)
-        g.setColor(Color.WHITE)
-        g.fillOval(size.toInt+10, offy, 30, 30)
-        g.setColor(Magic.buttColor)
-        val offset = size.toInt.toString().length()*3
-        g.drawString(""+size, size+25-offset, offy+19)
+        offy += 105
         
           val wid = 230/model.rowl
           val hei = 120/model.rows
