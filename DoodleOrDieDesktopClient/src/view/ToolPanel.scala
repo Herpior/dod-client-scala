@@ -78,13 +78,13 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
               }
             }else if(y<275){
               
-            }else */if(y<375){
+            }else */ /*if(y<375){
               val x1 = x+3
               if(x1>0&&x1<200){
                 model.tool( x1/50+(y.toInt-275)/50*4 )
                 publish(new controller.ToolChangeEvent(model.getState))
               }
-            }else if(y<430){
+            }else*/ if(y<430){
               if(x<200&&x>0)
               //println("submit "+y)
                 publish(new controller.SubmitEvent)

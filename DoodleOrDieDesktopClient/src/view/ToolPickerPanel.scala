@@ -3,6 +3,7 @@ package view
 
 import scala.swing.Panel
 import scala.swing.Dimension
+import scala.swing.event._
 import java.awt.BasicStroke
 import java.awt.Graphics2D
 import java.awt.RenderingHints
@@ -38,6 +39,19 @@ class ToolPickerPanel extends Panel {
     g.drawImage(Icons.getPers,25,offy+48,null)
     g.drawImage(Icons.getBezFill,125,offy+48,null)
     g.setColor(Magic.buttColor)
+  }
+  
+  this.listenTo(mouse.clicks)
+  
+  this.reactions += {
+    case e:MouseReleased =>
+      val x = e.point.getX.toInt-25+3
+      val y = e.point.getY.toInt
+      if(x>0&&x<200){
+        model.tool( x/50+y/50*4 )
+        publish(new controller.ToolChangeEvent(model.getState))
+        repaint()
+      }
   }
 
 }
