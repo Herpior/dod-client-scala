@@ -13,6 +13,8 @@ import io.Icons
 class SubmitPanel extends Panel {
 
   val model = ToolModel
+  model.initReady
+  
   this.preferredSize = new Dimension(250, 200)
   this.minimumSize = preferredSize
   this.maximumSize = preferredSize

@@ -2,6 +2,7 @@ package view
 
 import scala.swing.Panel
 import scala.swing.Dimension
+import scala.swing.event._
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
@@ -19,7 +20,7 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
   this.background = Magic.bgColor
 
   override def paintComponent(g:Graphics2D){
-    //super.paintComponent(g)
+    super.paintComponent(g)
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     var offy = 5
     val buttHalf = 25
@@ -73,6 +74,60 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
     val offset = size.toInt.toString().length()*3
     g.drawString(""+size, size+25-offset, offy+19)
     
+  }
+  
+  this.listenTo(mouse.clicks)
+  this.listenTo(mouse.moves)
+  this.reactions += {
+    
+        case e:MouseDragged =>
+          val x = e.point.getX-25
+          val y = e.point.getY
+          if(model.changingSize){
+            model.setSize(x.toInt)
+            publish(new controller.SizeChangeEvent(model.getSize))
+            //this.nextsize = min(max(x.toInt,1),200)
+            repaint
+          }
+        case e:MousePressed =>
+          val x = e.point.getX-25
+          val y = e.point.getY
+          //println(e.modifiers)
+          if(y>110 && y<140){
+            model.setSize(x.toInt)
+            model.pressSlider
+            publish(new controller.SizeChangeEvent(model.getSize))
+            repaint
+          }
+        case e:MouseReleased => 
+          val x = e.point.getX.toInt-25
+          val y = e.point.getY
+          //println(y)
+          if(model.changingSize){
+            //model.setSize(x.toInt)
+            model.releaseSlider
+            //publish(new SizeChangeEvent(model.getSize))
+            //repaint()
+          }
+          if(y<50){
+              x/50 match {
+                case 0 => model.setSize(1)
+                case 1 => model.setSize(3)
+                case 2 => model.setSize(5)
+                case _ => model.setSize(10)
+              }
+              publish(new controller.SizeChangeEvent(model.getSize))
+              repaint()
+            }else if(y<110){
+              x/50 match {
+                case 0 => model.setSize(25)
+                case 1 => model.setSize(50)
+                case 2 => model.setSize(100)
+                case _ => if(Magic.authorized)model.setSize(200)
+              }
+              publish(new controller.SizeChangeEvent(model.getSize))
+              repaint()
+            }
   }
 
 }

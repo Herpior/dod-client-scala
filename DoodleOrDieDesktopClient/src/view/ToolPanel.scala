@@ -5,97 +5,25 @@ import scala.swing.Dialog
 import scala.swing.Dimension
 import scala.swing.event._
 import scala.swing.Orientation
-import scala.swing.Reactor
+//import scala.swing.Reactor
 import javafx.scene.control.ColorPicker
 import dmodel.Coord
 import dmodel.Magic
 import dmodel.ToolModel
 
 class ToolPanel extends BoxPanel(Orientation.Vertical){
-  val model = ToolModel
-  model.initReady
-  this.minimumSize = new Dimension(250,450)
-  this.preferredSize = this.minimumSize
-  this.minimumSize = new Dimension(300,450)
-  this.background = Magic.bgColor
   
-  //def isReady = this.model.isReady
+  val model = ToolModel
+  
+  this.minimumSize = new Dimension(200,450)
+  this.preferredSize = new Dimension(250,450)
+  this.maximumSize = new Dimension(300,4500)
+  this.background = Magic.bgColor
   
   this.contents += new SizePanel
   this.contents += new ColorPanel
   this.contents += new ToolPickerPanel
   this.contents += new SubmitPanel
-  
-  //val model = new ToolModel
-  
-  //this.visible = true
-  //this.revalidate()
-  //private var magicX = 520
-  //private var magicY = 390
-  //private var colorpicker = 0
-  //private var colorpicker2 = 0
-  //private var zoom = 2.0
-  //private var state = 0
-  //private var thumbs = Array[BufferedImage]()
-  
-  
-  
-      //def zoomval = zoom
-      //def bstate = state
-      
-      
-      //val sizes = Vector(1,3,5,10,25,50,100,200)
-      //this.contents += new Panel{this.preferredSize = new Dimension(300,780)}
-  /*def addThumb(index:Int) = {
-        this.thumbs = this.thumbs.take(index)++
-    Array(new BufferedImage(200,150,BufferedImage.TYPE_INT_ARGB))++
-        this.thumbs.drop(index)
-  }*/
-      
-      /*def zoomin(num:Int) = {
-        val changed = (zoom*(math.pow(2,-num))*10).toInt/10.0
-        if(changed>=0.5 && changed<=32) zoom = changed
-        val z = (-1/(zoom/2)+1)
-          offX = (260*z).toInt //0.5->-2, 1-> -1, 2->0, 4->0.5, 8->0.75
-          offY = (195*z).toInt // -1/z+1
-        this.publish(new ZoomEvent)
-        repaint
-      }*/
-      /*def setPoint(x:Int,y:Int){
-        pointX = min(max(x,0),magicX)
-        pointY = min(max(y,0),magicY)
-        this.publish(new ZoomEvent)
-        repaint
-      }*/
-      /*def move(dirx:Double,diry:Double) = {
-        pointX = min(max(pointX-dirx,0),magicX)
-        pointY = min(max(pointY-diry,0),magicY)
-        this.publish(new ZoomEvent)
-        repaint
-      }*/
-      /*def setthumb(layer:Int,img:BufferedImage){
-        thumbs(layer) = img
-      }*/
-  /*
-      override def paintComponent(g:Graphics2D){
-    var offy = 5
-      //showPicker
-        super.paintComponent(g)
-        //g.setColor(bgc)
-        //g.fillRect(0, 0, size.getWidth.toInt, size.getHeight.toInt)
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
-        //println("why")
-        offy += 105
-        
-        offy += 40
-            
-        offy += 130
-        
-        offy += 100
-        
-      }*/
-      
-      
       
 
 //class ToolController(tools:ToolPanel)extends Reactor{
@@ -104,22 +32,6 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
   //val model = model
   
       this.reactions += {
-        case e:MouseDragged =>
-          val x = e.point.getX-25
-          val y = e.point.getY
-          if(model.changingSize){
-            model.setSize(x.toInt)
-            publish(new controller.SizeChangeEvent(model.getSize))
-            //this.nextsize = min(max(x.toInt,1),200)
-            repaint
-          }
-          /*if(mini){
-              val xx = magicX-(x*magicX/200).toInt
-              val yy = magicY-((y-620)*magicY/150).toInt
-              this.setPoint(xx, yy)
-              this.publish(new ZoomEvent)
-              repaint
-          }*/
         case e:MouseClicked =>
           val y = e.point.getY
           //println(e.modifiers+" mods toolpanel")
@@ -128,16 +40,7 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
                     dres.foreach(col => model.setColor(col))
                     this.repaint()
                   }
-        case e:MousePressed =>
-          val x = e.point.getX-25
-          val y = e.point.getY
-          //println(e.modifiers)
-          if(y>110 && y<140){
-            model.setSize(x.toInt)
-            model.pressSlider
-            publish(new controller.SizeChangeEvent(model.getSize))
-            repaint
-          }  /*else if(y>620&&y<770){
+          /*else if(y>620&&y<770){
               mini = true
               val xx = magicX-(x*magicX/200).toInt
               val yy = magicY-((y-620)*magicY/150).toInt
@@ -149,32 +52,16 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
           val x = e.point.getX.toInt-25
           val y = e.point.getY
           //println(y)
-          if(model.changingSize){
-            model.setSize(x.toInt)
+          /*if(model.changingSize){
+            //model.setSize(x.toInt)
             model.releaseSlider
             //publish(new SizeChangeEvent(model.getSize))
-            repaint()
+            //repaint()
           }/*else if(mini){
             mini = false
           }*/
-          else {
-            if(y<50){
-              x/50 match {
-                case 0 => model.setSize(1)
-                case 1 => model.setSize(3)
-                case 2 => model.setSize(5)
-                case _ => model.setSize(10)
-              }
-              //publish(new SizeChangeEvent(model.getSize))
-            }else if(y<110){
-              x/50 match {
-                case 0 => model.setSize(25)
-                case 1 => model.setSize(50)
-                case 2 => model.setSize(100)
-                case _ => if(Magic.authorized)model.setSize(200)
-              }
-              //publish(new SizeChangeEvent(model.getSize))
-            }else if(y<140){
+          else {*/
+            if(y<140){
               model.setSize(x.toInt)
               model.releaseSlider
             //publish(new SizeChangeEvent(model.getSize))
@@ -229,7 +116,7 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
               this.publish(new ZoomEvent)
               this.setPoint(xx, yy)
             }*/
-        }
+        //}
         repaint
       }
 //}
