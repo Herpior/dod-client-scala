@@ -2,6 +2,7 @@ package view
 
 import scala.swing.Panel
 import scala.swing.Dimension
+import scala.swing.event._
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Graphics2D
@@ -21,6 +22,7 @@ class SubmitPanel extends Panel {
   this.background = Magic.bgColor
   
   override def paintComponent(g:Graphics2D){
+    super.paintComponent(g)
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     var offy = 0
     
@@ -38,6 +40,23 @@ class SubmitPanel extends Panel {
     if(model.isReady) g.drawImage(Icons.getCheck,30,offy+5,null)
     g.setFont(Magic.font20.deriveFont(java.awt.Font.BOLD,18))
     g.drawString("Ready to submit", 70, offy+20)
+  }
+  
+  this.listenTo(mouse.clicks)
+  
+  this.reactions += {
+    case e:MouseReleased =>
+      val x = e.point.getX.toInt-25
+      val y = e.point.getY.toInt
+      //println("submit "+x+" "+y)
+      
+      if(y<70 && x<200 && x>0){
+        publish(new controller.SubmitEvent)
+      }
+      else if(y>=100 && y<130 && x<200 && x>0){
+        model.clickReady
+        this.repaint()
+      }
   }
   
 }

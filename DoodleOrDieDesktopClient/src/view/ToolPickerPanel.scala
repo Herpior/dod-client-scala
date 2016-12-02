@@ -20,6 +20,7 @@ class ToolPickerPanel extends Panel {
   this.background = Magic.bgColor
   
   override def paintComponent(g:Graphics2D){
+    super.paintComponent(g)
     var offy = 0
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
   
