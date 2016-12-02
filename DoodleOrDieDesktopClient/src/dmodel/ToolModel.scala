@@ -79,11 +79,16 @@ object ToolModel {
     repaint
   }
   def secondaryColor(coord:Coord,bounds:Coord){
-    if(Magic.authorized)colorpicker2 = min(colors.length-1,max(0,(coord.y.toInt*rows/bounds.y.toInt*rowl+coord.x.toInt*rowl/bounds.x.toInt).toInt))
+    val index = coord.y.toInt*rows/bounds.y.toInt *rowl + coord.x.toInt*rowl/bounds.x.toInt
+    if(Magic.authorized && index>=0 && index<getColors.length)colorpicker2 = index
+    //min(getColors.length-1,max(0,(coord.y.toInt*rows/bounds.y.toInt*rowl+coord.x.toInt*rowl/bounds.x.toInt).toInt))
   }
   def primaryColor(coord:Coord,bounds:Coord){
-    colorpicker =  min(colors.length-1,max(0,(coord.y.toInt*rows/bounds.y.toInt*rowl+coord.x.toInt*rowl/bounds.x.toInt).toInt))
-    colorpicker2 = min(colors.length-1,max(0,(coord.y.toInt*rows/bounds.y.toInt*rowl+coord.x.toInt*rowl/bounds.x.toInt).toInt))
+    val index = coord.y.toInt*rows/bounds.y.toInt *rowl + coord.x.toInt*rowl/bounds.x.toInt
+    if(index>=0 && index<getColors.length){
+      colorpicker =  index
+      colorpicker2 = index
+    }
   }
   def number(num:Int) = if(num>=0 && num<8){
     if(num<7||Magic.authorized)
