@@ -2,7 +2,8 @@ package view
 
 import scala.swing.Panel
 import scala.swing.Dimension
-//import java.awt.BasicStroke
+import java.awt.BasicStroke
+import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import dmodel.Magic
@@ -21,7 +22,8 @@ class SubmitPanel extends Panel {
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     var offy = 0
     
-    g.setColor(Magic.buttColor)
+    if(model.isReady) g.setColor(Magic.buttColor)
+    else g.setColor(Color.LIGHT_GRAY)
     g.fillRoundRect(25, offy, 200, 50, 15, 15)
     g.setColor(Magic.white)
     g.setFont(Magic.font20)
@@ -29,6 +31,7 @@ class SubmitPanel extends Panel {
     
     offy += 100
     
+    g.setStroke(new BasicStroke(2))
     g.drawRoundRect(25, offy, 30, 30, 4, 4)
     if(model.isReady) g.drawImage(Icons.getCheck,30,offy+5,null)
     g.setFont(Magic.font20.deriveFont(java.awt.Font.BOLD,18))
