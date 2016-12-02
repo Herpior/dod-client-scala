@@ -29,6 +29,7 @@ class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
   def isReady = this.model.isReady
   
   this.contents += new SizePanel
+  this.contents += new ColorPanel
   
   //val model = new ToolModel
   
@@ -91,33 +92,7 @@ class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
         //println("why")
         offy += 105
         
-          val wid = 230/model.rowl
-          val hei = 120/model.rows
-          val inter = hei/20
-          val inter2 = inter/2
-          val colors = model.getColors
-          offy += 40
-          var currx = 0
-          var curry = 0
-          var old = Magic.white
-        for(i<-colors.indices){
-          g.setColor(colors(i))
-          val x = 10+(i%model.rowl)*wid+inter2
-          val y = offy+(i/model.rowl)*hei+inter2
-          g.fillRoundRect(x, y, wid-inter, hei-inter, wid/4, wid/4)
-          if(i == model.colorIndex){
-            currx = x
-            curry = y
-            old = g.getColor
-          }
-        }
-            val c = Colors.inverse(old)
-            val c2 = if(old.getRed+old.getBlue+old.getGreen>255*1.5) Color.BLACK else Color.WHITE
-            g.setColor(c2)
-            g.setStroke(new BasicStroke(1))
-            g.drawRoundRect(currx+1, curry+1, wid-inter-2, hei-inter-2, wid/4, wid/4)
-            g.setColor(c)
-            g.drawRoundRect(currx, curry, wid-inter, hei-inter, wid/4, wid/4)
+        offy += 40
             
         offy += 130
             

@@ -2,7 +2,6 @@ package view
 
 import scala.swing.Panel
 import scala.swing.Dimension
-import scala.swing.Orientation
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
@@ -21,7 +20,7 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
 
   override def paintComponent(g:Graphics2D){
     super.paintComponent(g)
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     var offy = 5
     val buttHalf = 25
     val buttWidth = buttHalf*2
