@@ -143,6 +143,10 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   
   
   def submit{
+    if(real.text.length()<6){
+      Dialog.showMessage(this, "The description is too short", "Error", Dialog.Message.Error, null)
+      return
+    }
     this.publish(
           new view.ReplaceEvent(
               new view.LoadingPanel(
