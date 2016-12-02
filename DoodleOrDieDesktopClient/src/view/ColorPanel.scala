@@ -2,10 +2,10 @@ package view
 
 import scala.swing.Panel
 import scala.swing.Dimension
+import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.RenderingHints
-import java.awt.BasicStroke
 import dmodel.Colors
 import dmodel.Magic
 import dmodel.ToolModel
@@ -14,7 +14,7 @@ class ColorPanel extends Panel {
   
   val model = ToolModel
   this.preferredSize = new Dimension(250, 130)
-  this.minimumSize = preferredSize
+  this.minimumSize = new Dimension(200, 130)
   this.maximumSize = preferredSize
   this.background = Magic.bgColor
   

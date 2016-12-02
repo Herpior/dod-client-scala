@@ -30,6 +30,7 @@ class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
   
   this.contents += new SizePanel
   this.contents += new ColorPanel
+  this.contents += new ToolPickerPanel
   
   //val model = new ToolModel
   
@@ -95,26 +96,10 @@ class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
         offy += 40
             
         offy += 130
-            
-        g.setColor(Magic.buttColor)
-        g.setStroke(new BasicStroke(2))
-        for(i<-0 to 7){
-          g.fillRoundRect(28+i*200/4-i/4*200, offy+i/4*50, 44, 44, 4, 4)
-        }
-        g.setColor(Magic.white)
-        val state = model.getState
-        //println("srtat: "+state)
-        g.drawRoundRect(28+state*200/4-state/4*200, offy+state/4*50, 44, 44, 4, 4)
-        g.drawImage(Icons.getPen,24,offy-3,null)
-        g.drawImage(Icons.getLine,75,offy-2,null)
-        g.drawImage(Icons.getBez,125,offy-2,null)
-        g.drawImage(Icons.getFill,175,offy-2,null)
-        g.drawImage(Icons.getPers,25,offy+48,null)
-        g.drawImage(Icons.getBezFill,125,offy+48,null)
-        g.setColor(Magic.buttColor)
         
         offy += 100
         
+        g.setColor(Magic.buttColor)
         g.fillRoundRect(25, offy, 200, 50, 15, 15)
         g.setColor(Magic.white)
         g.setFont(Magic.font20)
