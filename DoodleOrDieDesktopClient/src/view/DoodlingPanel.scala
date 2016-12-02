@@ -1,13 +1,14 @@
 package view
 
 import scala.swing._
-import BorderPanel.Position._
-import controller._
-import dmodel.Magic
-import io.Icons
-import swing.event._
+import scala.swing.event._
+import scala.swing.BorderPanel.Position._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import controller._
+import dmodel.Magic
+import dmodel.SizeModel
+import io.Icons
 
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean,random:Boolean) extends BorderPanel with PlayPanel{
 
@@ -217,34 +218,34 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.model.colorright
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.Q =>
-          tools.model.sizedown
+          SizeModel.sizeDown
             //doodle.model.setSize(tools.model.getSize)
         case Key.E =>
-          tools.model.sizeup
+          SizeModel.sizeUp
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key1 =>
-          tools.model.number(0)
+          SizeModel.number(0)
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key2 =>
-          tools.model.number(1)
+          SizeModel.number(1)
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key3 =>
-          tools.model.number(2)
+          SizeModel.number(2)
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key4 =>
-          tools.model.number(3)
+          SizeModel.number(3)
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key5 =>
-          tools.model.number(4)
+          SizeModel.number(4)
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key6 =>
-          tools.model.number(5)
+          SizeModel.number(5)
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key7 =>
-          tools.model.number(6)
+          SizeModel.number(6)
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key8 =>
-          if(Magic.authorized)tools.model.number(7)
+          if(Magic.authorized)SizeModel.number(7)
       doodle.model.unselect
             //doodle.model.setSize(tools.model.getSize)
         case Key.H =>

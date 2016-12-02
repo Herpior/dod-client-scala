@@ -1,18 +1,19 @@
 package view
 
 import scala.swing._
-import dmodel.LineDrawer
-import dmodel.DoodleModel
-import dmodel.DoodlePart
-import dmodel.Coord
-import dmodel.Magic
 import java.awt.RenderingHints
 import java.awt.BasicStroke
 import java.awt.Color
 import java.awt.image.BufferedImage
-import java.io.File
-//import java.awt.Cursor
 import java.awt.Toolkit
+import java.io.File
+import dmodel.LineDrawer
+import dmodel.DoodleModel
+import dmodel.SizeModel
+import dmodel.DoodlePart
+import dmodel.Coord
+import dmodel.Magic
+//import java.awt.Cursor
 import math.{max,min}
 
 class DoodlePanel extends Panel {
@@ -90,7 +91,7 @@ class DoodlePanel extends Panel {
     //val col = model.tools.getColor
     //val invert = dmodel.Colors.inverse(col)
     g.setColor(Magic.black)
-    val bsize = max(2,(model.tools.getSize*getZoom)).toInt
+    val bsize = max(2,(SizeModel.getSize*getZoom)).toInt
     g.drawOval(cursorX-bsize/2, cursorY-bsize/2, bsize, bsize)
     /*
     g.setColor(Color.black)

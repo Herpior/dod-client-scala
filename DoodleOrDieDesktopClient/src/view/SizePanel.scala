@@ -8,12 +8,12 @@ import java.awt.Font
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import dmodel.Magic
-import dmodel.ToolModel
+import dmodel.SizeModel
 
 
 class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertical)*/ {
   
-  val model = ToolModel
+  val model = SizeModel
   this.preferredSize = new Dimension(250, 150)
   this.minimumSize = preferredSize
   this.maximumSize = preferredSize

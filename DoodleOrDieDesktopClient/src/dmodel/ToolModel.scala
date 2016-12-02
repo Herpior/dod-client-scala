@@ -6,8 +6,6 @@ import collection.mutable.Buffer
 
 object ToolModel {
 
-  private var nextsize = 25
-  private var slider = false
   private var mini = false
   private var colorpicker = 0
   private var colorpicker2 = 0
@@ -15,16 +13,15 @@ object ToolModel {
   private var ready = Magic.readyDefault
   
   def isReady = this.ready
-  def maxsize = if(Magic.authorized)200 else 100
+  def initReady = ready = Magic.readyDefault
+  
   def colorsize = this.getColors.length
   //val rows = 5
   def rows = if(Magic.authorized)8 else 2
   //val nrows = 2
-  val sizes = Vector(1,3,5,10,25,50,100,200)
   private val normal = Array(
           "#000000","#6d6f71","#0791cd","#699c41","#f47e20","#d6163b","#6e1a11","#f8ded7",
           "#ffffff","#d1d3d4","#73cff2","#9bcc66","#ffec00","#f180aa","#812468","#8e684c").map { x => Colors.toColor(x) }
-  def initReady = ready = Magic.readyDefault
   private def load = {
     val loaded = try io.LocalStorage.readArray("colours").map { x => Colors.toColor(x) }
                  catch{
@@ -47,20 +44,10 @@ object ToolModel {
   def rowl = colorsize/rows//(colors.length/rows)
   def colorIndex = colorpicker
   def colorIndex2 = colorpicker2
-  def changingSize = slider
   //def colorIndex2 = colorpicker2
   //def getColor(ind:Int) = if(ind<1)getColors(colorIndex) else getColors(colorIndex2)
   def repaint{
     //nothing probably
-  }
-  def setSize(size:Int){ nextsize = min(max(size,1),sizes.last) }
-  def pressSlider{ slider = true}
-  def releaseSlider{ slider = false}
-  def sizeup = if(this.nextsize < maxsize) {
-    this.nextsize += 1
-  }
-  def sizedown = if(this.nextsize>1){
-    this.nextsize -= 1
   }
   def colorup =  if(colorpicker>=rowl){
     colorpicker -= rowl
@@ -90,17 +77,11 @@ object ToolModel {
       colorpicker2 = index
     }
   }
-  def number(num:Int) = if(num>=0 && num<8){
-    if(num<7||Magic.authorized)
-    nextsize = sizes(num)
-    repaint
-  }
   def tool(n:Int){
     if(n<2||Magic.authorized)
     state=n
   }
           
-  def getSize = nextsize
   def getColor = getColors(colorpicker)
   def getColor2 = getColors(colorpicker2)
   def getState = state

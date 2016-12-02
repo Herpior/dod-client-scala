@@ -224,7 +224,7 @@ class DoodleModel {
   }
   //---------\\
   def startBezier(place:Coord,mods:Int){
-    val bez = new BezierLine(tools.getColor,tools.getSize)
+    val bez = new BezierLine(tools.getColor,SizeModel.getSize)
     val guide = new MultiLine
     BezierTool.startBezier(bez, guide, place, mods)
     this.bezierLine = Some(bez)
@@ -249,7 +249,7 @@ class DoodleModel {
   //---------\\
   def startLine(place:Coord,mods:Int){
     val stroke = new MultiLine
-    LineTool.startLine(stroke, tools.getColor, tools.getSize, place, mods)
+    LineTool.startLine(stroke, tools.getColor, SizeModel.getSize, place, mods)
     multiLine = Some(stroke)
   }
   def dragLine(place:Coord,mods:Int){
@@ -264,7 +264,7 @@ class DoodleModel {
   def addLine(place:Coord,mods:Int){
     multiLine.foreach{
       next =>
-        LineTool.addLine(next, tools.getColor, tools.getSize, place, mods)
+        LineTool.addLine(next, tools.getColor, SizeModel.getSize, place, mods)
     }
   }
   /*def addLinePoint{
@@ -299,7 +299,7 @@ class DoodleModel {
     } catch {
       case e:Throwable=> mods/64%2==0
     }
-    FillTool.fillGradient(next, border, tools.getColor, tools.getColor2, tools.getSize, vertical, place, mods)
+    FillTool.fillGradient(next, border, tools.getColor, tools.getColor2, SizeModel.getSize, vertical, place, mods)
     layers.getCurrent.add(next)
     multiLine=None
   }
@@ -313,7 +313,7 @@ class DoodleModel {
     } catch {
       case e:Throwable=> mods/64%2==0
     }
-    FillTool.addGradient(next, tools.getColor, tools.getColor2, tools.getSize, vertical, place, mods)
+    FillTool.addGradient(next, tools.getColor, tools.getColor2, SizeModel.getSize, vertical, place, mods)
     layers.getCurrent.add(next)
     multiLine=None
   }
