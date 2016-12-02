@@ -6,8 +6,6 @@ import scala.swing.Dimension
 import scala.swing.event._
 import scala.swing.Orientation
 //import scala.swing.Reactor
-import javafx.scene.control.ColorPicker
-import dmodel.Coord
 import dmodel.Magic
 import dmodel.ToolModel
 
@@ -32,14 +30,6 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
   //val model = model
   
       this.reactions += {
-        case e:MouseClicked =>
-          val y = e.point.getY
-          //println(e.modifiers+" mods toolpanel")
-          if(e.clicks>1 && y>148&&y<269 && e.modifiers == 0 && Magic.authorized){
-                    val dres = swing.ColorChooser.showDialog(this,"pick a color",model.getColor)//(0))//Dialog.showInput(this, "Set a new color", "color", Dialog.Message.Question, null, Nil, Colors.toHexString(model.getColor(0)))
-                    dres.foreach(col => model.setColor(col))
-                    this.repaint()
-                  }
           /*else if(y>620&&y<770){
               mini = true
               val xx = magicX-(x*magicX/200).toInt
@@ -61,14 +51,14 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
             mini = false
           }*/
           else {*/
-            if(y<140){
+            /*if(y<140){
               model.setSize(x.toInt)
               model.releaseSlider
             //publish(new SizeChangeEvent(model.getSize))
             }else if(y<148){
               
             }
-            else if(y<269){
+            else */ /*if(y<269){
               if(x> -20 && x<205){
                 //println(e.modifiers+" -> "+e.modifiers/4096%2)
                 if(e.modifiers/256%2==1){
@@ -88,7 +78,7 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
               }
             }else if(y<275){
               
-            }else if(y<375){
+            }else */if(y<375){
               val x1 = x+3
               if(x1>0&&x1<200){
                 model.tool( x1/50+(y.toInt-275)/50*4 )

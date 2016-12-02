@@ -83,6 +83,7 @@ object ToolModel {
   }
   def primaryColor(coord:Coord,bounds:Coord){
     colorpicker =  min(colors.length-1,max(0,(coord.y.toInt*rows/bounds.y.toInt*rowl+coord.x.toInt*rowl/bounds.x.toInt).toInt))
+    colorpicker2 = min(colors.length-1,max(0,(coord.y.toInt*rows/bounds.y.toInt*rowl+coord.x.toInt*rowl/bounds.x.toInt).toInt))
   }
   def number(num:Int) = if(num>=0 && num<8){
     if(num<7||Magic.authorized)
