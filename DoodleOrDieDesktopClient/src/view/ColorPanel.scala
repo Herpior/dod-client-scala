@@ -19,7 +19,7 @@ class ColorPanel extends Panel {
   this.background = Magic.bgColor
   
   override def paintComponent(g:Graphics2D){
-    super.paintComponent(g)
+    //super.paintComponent(g)
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
   
     var offy = 0

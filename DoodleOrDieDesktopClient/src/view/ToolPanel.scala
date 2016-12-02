@@ -1,36 +1,30 @@
 package view
 
 import scala.swing.BoxPanel
+import scala.swing.Dialog
+import scala.swing.Dimension
+import scala.swing.event._
+import scala.swing.Orientation
 import scala.swing.Reactor
-import swing.event._
-import swing.Dialog
+import javafx.scene.control.ColorPicker
 import dmodel.Coord
 import dmodel.Magic
-import dmodel.Colors
-import scala.swing.Dimension
-import scala.swing.Orientation
-import java.awt.Font
-import java.awt.BasicStroke
-import java.awt.Color
-import java.awt.Graphics2D
-import java.awt.RenderingHints
-import dmodel.Magic
 import dmodel.ToolModel
-import io.Icons
-import javafx.scene.control.ColorPicker
 
-class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
+class ToolPanel extends BoxPanel(Orientation.Vertical){
   val model = ToolModel
   model.initReady
   this.minimumSize = new Dimension(250,450)
   this.preferredSize = this.minimumSize
   this.minimumSize = new Dimension(300,450)
+  this.background = Magic.bgColor
   
-  def isReady = this.model.isReady
+  //def isReady = this.model.isReady
   
   this.contents += new SizePanel
   this.contents += new ColorPanel
   this.contents += new ToolPickerPanel
+  this.contents += new SubmitPanel
   
   //val model = new ToolModel
   
@@ -82,10 +76,10 @@ class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
       /*def setthumb(layer:Int,img:BufferedImage){
         thumbs(layer) = img
       }*/
+  /*
       override def paintComponent(g:Graphics2D){
     var offy = 5
       //showPicker
-        this.background = Magic.bgColor
         super.paintComponent(g)
         //g.setColor(bgc)
         //g.fillRect(0, 0, size.getWidth.toInt, size.getHeight.toInt)
@@ -99,19 +93,7 @@ class ToolPanel/*(model:ToolModel)*/ extends BoxPanel(Orientation.Vertical){
         
         offy += 100
         
-        g.setColor(Magic.buttColor)
-        g.fillRoundRect(25, offy, 200, 50, 15, 15)
-        g.setColor(Magic.white)
-        g.setFont(Magic.font20)
-        g.drawString("Submit!", 90, offy+35)
-        
-        offy += 100
-        
-        g.drawRoundRect(25, offy, 30, 30, 4, 4)
-        if(isReady) g.drawImage(Icons.getCheck,30,offy+5,null)
-        g.setFont(Magic.font20.deriveFont(java.awt.Font.BOLD,18))
-        g.drawString("Ready to submit", 70, offy+20)
-      }
+      }*/
       
       
       

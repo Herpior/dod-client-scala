@@ -13,13 +13,15 @@ import io.Icons
 class ToolPickerPanel extends Panel {
   
   val model = ToolModel
-  this.preferredSize = new Dimension(250, 150)
+  this.preferredSize = new Dimension(250, 100)
   this.minimumSize = preferredSize
   this.maximumSize = preferredSize
   this.background = Magic.bgColor
   
   override def paintComponent(g:Graphics2D){
     var offy = 0
+    g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
+  
     g.setColor(Magic.buttColor)
     g.setStroke(new BasicStroke(2))
     for(i<-0 to 7){
