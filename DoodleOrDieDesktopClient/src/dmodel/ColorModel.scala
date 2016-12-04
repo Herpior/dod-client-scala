@@ -58,11 +58,17 @@ object ColorModel {
   }
   def secondaryColor(coord:Coord,bounds:Coord){
     val index = coord.y.toInt*rows/bounds.y.toInt *rowl + coord.x.toInt*rowl/bounds.x.toInt
-    if(Magic.authorized && index>=0 && index<colorSize)colorpicker2 = index
+    secondaryColor(index)
     //min(getColors.length-1,max(0,(coord.y.toInt*rows/bounds.y.toInt*rowl+coord.x.toInt*rowl/bounds.x.toInt).toInt))
+  }
+  def secondaryColor(index:Int){
+    if(Magic.authorized && index>=0 && index<colorSize)colorpicker2 = index
   }
   def primaryColor(coord:Coord,bounds:Coord){
     val index = coord.y.toInt*rows/bounds.y.toInt *rowl + coord.x.toInt*rowl/bounds.x.toInt
+    primaryColor(index)
+  }
+  def primaryColor(index:Int){
     if(index>=0 && index<colorSize){
       colorpicker =  index
       colorpicker2 = index
