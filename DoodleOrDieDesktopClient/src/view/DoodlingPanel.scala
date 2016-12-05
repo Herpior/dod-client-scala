@@ -423,7 +423,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               doodle.model.dragBezier(2,place,mods)
               doodle.redrawDrawing
             }
-        case 5|6 =>//edit
+        case 7 =>//edit
           if(Magic.authorized){
               val place = doodle.getCoord(e.point.getX, e.point.getY)
               val mods = e.modifiers
@@ -479,7 +479,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             } else if(mods/128%2==1){
               pers3 = Some(getX(e),getY(e))
             } else pers = (getX(e),getY(e))*/
-          case 5|6 =>//edit
+          case 7 =>//edit
           if(Magic.authorized){
               val place = doodle.getCoord(e.point.getX, e.point.getY)
               val mods = e.modifiers
@@ -624,7 +624,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             if(Magic.authorized){
               doodle.model.dragPerspective(place, mods)
               }
-          case 6 =>//line fill
+          case 7 =>//line fill
             if(Magic.authorized){
               //println("auth line fill panel")
               //val place = doodle.getCoord(e.point.getX, e.point.getY)
@@ -682,9 +682,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             }
           case 4 =>//pers
             if(Magic.authorized)doodle.model.dragPerspective(place, mods)
-          case 5 =>//edit
-            //TODO make this edit lines maybe?
-          case 6 =>//edit
+          case 7 =>//edit
             if(Magic.authorized){
               val place = doodle.getCoord(e.point.getX, e.point.getY)
               val mods = e.modifiers
