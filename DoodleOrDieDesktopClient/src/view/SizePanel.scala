@@ -1,8 +1,9 @@
 package view
 
-import scala.swing.Panel
+import scala.swing.BoxPanel
 import scala.swing.Dimension
 import scala.swing.event._
+import scala.swing.Orientation
 import java.awt.Color
 import java.awt.Font
 import java.awt.Graphics2D
@@ -11,19 +12,21 @@ import dmodel.Magic
 import dmodel.SizeModel
 
 
-class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertical)*/ {
+class SizePanel extends BoxPanel(Orientation.Vertical){
   
   val model = SizeModel
-  this.preferredSize = new Dimension(250, 150)
-  this.minimumSize = preferredSize
-  this.maximumSize = preferredSize
+  this.preferredSize = new Dimension(200, 150)
   this.background = Magic.bgColor
-
+  val grid = new SizeGrid
+  this.contents += grid
+  
+  this.listenTo(grid)
+  
   override def paintComponent(g:Graphics2D){
     super.paintComponent(g)
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     var offy = 5
-    val buttHalf = 25
+    /*val buttHalf = 25
     val buttWidth = buttHalf*2
     val b = buttHalf+offy
     val t = 2*buttHalf+b
@@ -61,7 +64,7 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
         case 6 => g.drawString("XXL", 116+buttHalf, t)
         case 7 => g.drawString("XXXL", 160+buttHalf, t)
       } 
-    } 
+    } */
     
     offy+=105
     val size = this.model.getSize
@@ -79,13 +82,18 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
   this.listenTo(mouse.clicks)
   this.listenTo(mouse.moves)
   this.reactions += {
+    case e:controller.SizeChangeEvent =>
+      grid.checkNewSize
+      this.repaint()
     
         case e:MouseDragged =>
           val x = e.point.getX-25
           val y = e.point.getY
           if(model.changingSize){
             model.setSize(x.toInt)
-            publish(new controller.SizeChangeEvent(model.getSize))
+      grid.checkNewSize
+            
+            //publish(new controller.SizeChangeEvent(model.getSize))
             //this.nextsize = min(max(x.toInt,1),200)
             repaint
           }
@@ -96,7 +104,8 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
           if(y>110 && y<140){
             model.setSize(x.toInt)
             model.pressSlider
-            publish(new controller.SizeChangeEvent(model.getSize))
+      grid.checkNewSize
+            //publish(new controller.SizeChangeEvent(model.getSize))
             repaint
           }
         case e:MouseReleased => 
@@ -108,7 +117,7 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
             model.releaseSlider
             //publish(new SizeChangeEvent(model.getSize))
             //repaint()
-          }
+          }/*
           if(y<50){
               x/50 match {
                 case 0 => model.setSize(1)
@@ -127,7 +136,7 @@ class SizePanel/*(model:ToolModel)*/ extends Panel/*BoxPanel(Orientation.Vertica
               }
               publish(new controller.SizeChangeEvent(model.getSize))
               repaint()
-            }
+            }*/
   }
 
 }
