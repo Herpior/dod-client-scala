@@ -17,13 +17,14 @@ import dmodel.ColorModel
 
 class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
   
-  val ht = math.max(this.rows*12, 80)
+  val ht = math.max(this.rows*12, 80)//+10
   
   val model = ColorModel
   this.preferredSize = new Dimension(200, ht)
   this.minimumSize = new Dimension(200, ht)
   this.maximumSize = preferredSize
   this.background = Magic.bgColor
+  //this.border = Swing.EmptyBorder(5, 0, 5, 0)
   
   private val bordero = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.WHITE, 1), BorderFactory.createLineBorder(Color.BLACK, 1))
   private val colors = model.getColors //only used for the button creation loop, possibly outdated later. maybe change something?

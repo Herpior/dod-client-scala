@@ -1,7 +1,8 @@
 
 package view
 
-import scala.swing.Panel
+import scala.swing.Action
+import scala.swing.GridPanel
 import scala.swing.Dimension
 import scala.swing.event._
 import java.awt.BasicStroke
@@ -11,14 +12,37 @@ import dmodel.Magic
 import dmodel.ToolModel
 import io.Icons
 
-class ToolPickerPanel extends Panel {
+class ToolPickerPanel extends GridPanel(2, 4) {
   
   val model = ToolModel
-  this.preferredSize = new Dimension(250, 100)
+  this.preferredSize = new Dimension(200, 100)
   this.minimumSize = preferredSize
   this.maximumSize = preferredSize
   this.background = Magic.bgColor
   
+  val icons = Array(Icons.getPen, Icons.getLine, Icons.getBez, Icons.getFill, 
+                    Icons.getPers, Icons.getPen, Icons.getPen, Icons.getBezFill)
+  val buttons = Array.ofDim[ToolButton](8)
+  for(i<-0 until 8){
+    buttons(i) = new ToolButton(icons(i)){
+      this.action = new Action(""){
+        def apply() = click(i)
+      }
+    }
+  }
+  
+  this.contents ++= buttons
+  
+  def click(i:Int){
+    model.tool(i)
+    buttons.foreach{ x => x.borderPainted = false}
+    buttons(model.getState).borderPainted = true
+    //publish(new controller.ToolChangeEvent(model.getState))
+  }
+  
+  click(0)
+  
+  /*
   override def paintComponent(g:Graphics2D){
     super.paintComponent(g)
     var offy = 0
@@ -33,7 +57,7 @@ class ToolPickerPanel extends Panel {
     val state = model.getState
     //println("srtat: "+state)
     g.drawRoundRect(28+state*200/4-state/4*200, offy+state/4*50, 44, 44, 4, 4)
-    g.drawImage(Icons.getPen,24,offy-3,null)
+    g.drawImage(,24,offy-3,null)
     g.drawImage(Icons.getLine,75,offy-2,null)
     g.drawImage(Icons.getBez,125,offy-2,null)
     g.drawImage(Icons.getFill,175,offy-2,null)
@@ -53,6 +77,6 @@ class ToolPickerPanel extends Panel {
         publish(new controller.ToolChangeEvent(model.getState))
         repaint()
       }
-  }
+  }*/
 
 }
