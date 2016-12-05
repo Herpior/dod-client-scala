@@ -57,7 +57,7 @@ class SizeSlider extends Panel{
       //if(changingSize){
         SizeModel.setSize(size)
         publish(new controller.SizeChangeEvent(SizeModel.getSize))
-        repaint
+        //repaint
         //this.nextsize = min(max(x.toInt,1),200)
       //}
     case e:MousePressed =>
@@ -65,6 +65,6 @@ class SizeSlider extends Panel{
       val size = sizeFromX(x)
       SizeModel.setSize(size)
       publish(new controller.SizeChangeEvent(SizeModel.getSize))
-      repaint
+      //repaint
   }
 }

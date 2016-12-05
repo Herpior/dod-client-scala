@@ -23,6 +23,7 @@ class SizePanel extends BoxPanel(Orientation.Vertical){
   this.contents += slider
   
   this.listenTo(grid)
+  this.listenTo(slider)
   grid.checkNewSize
   
   

@@ -14,7 +14,7 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
   val model = ToolModel
   
   this.minimumSize = new Dimension(200,450)
-  this.preferredSize = new Dimension(250,450)
+  this.preferredSize = new Dimension(200,450)
   this.maximumSize = new Dimension(300,4500)
   this.background = Magic.bgColor
   
