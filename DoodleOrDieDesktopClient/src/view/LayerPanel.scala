@@ -5,48 +5,31 @@ import java.awt.BasicStroke
 import java.awt.image.BufferedImage
 import java.awt.Color
 import dmodel.Magic
-import dmodel.Layer
-import dmodel.LineDrawer
-import dmodel.Coord
+import dmodel.LayerList
 
-class LayerPanel(layer:Layer) extends Panel {
+class LayerPanel(model:LayerList) extends BoxPanel(Orientation.Vertical) {
+  
+  this.background = Magic.bgColor
 
-  private var thumb = createImg
+  val tools = new LayerToolPanel(model)
+  val list = new LayerListPanel(model)
   
-  
-  def redraw{
-    val img = createImg
-    val g = thumb.createGraphics()
-    layer.getThumb.foreach{dp=>
-      LineDrawer.drawDoodlePart(g,dp,Magic.thumbZoom,Coord(0,0),true)
+  this.contents += tools
+  this.contents += new ScrollPane(list){
+    this.minimumSize=new Dimension(150,400)
+    this.horizontalScrollBarPolicy = scala.swing.ScrollPane.BarPolicy.Never
     }
-  } 
-  def redrawLast{
-    val img = createImg
-    val g = thumb.createGraphics()
-    layer.getThumb.lastOption.foreach{dp=>
-      LineDrawer.drawDoodlePart(g,dp,Magic.thumbZoom,Coord(0,0),true)
-    }
-  }
   
-  def createImg = {
-    new BufferedImage(Magic.thumbX,Magic.thumbY,BufferedImage.TYPE_INT_ARGB)
-  }
+  def reset = list.reset
   
-  override def paintComponent(g:Graphics2D) {
-    
-        //TODO fix the thingy -v
-        //g.setStroke(new BasicStroke(1))
-        g.setColor(Color.WHITE)
-        g.fillRect(0, 0, Magic.thumbX, Magic.thumbY)
-        g.drawImage(thumb, 0,0,null)
-        //g.setColor(Magic.buttColor)
-        //g.drawRect(24, 619, 202, 152)
-        //g.drawRect(26+(offset.x*200/Magic.x), 621+(offset.y*150/Magic.y), (400/zoom).toInt-2, (300/zoom).toInt-2)
-        //g.setColor(Color.WHITE)
-        //g.drawRect(25, 620, 200, 150)
-        //g.drawRect(27+(offset.x*200/Magic.x), 622+(offset.y*150/Magic.y), (400/zoom).toInt-4, (300/zoom).toInt-4)
-        
+  this.listenTo(tools)
+  this.listenTo(list)
+  this.deafTo(this)
+  
+  this.reactions += {
+    case e:RepaintEvent=>
+      list.reset
+      publish(new RepaintEvent)
   }
   
 }

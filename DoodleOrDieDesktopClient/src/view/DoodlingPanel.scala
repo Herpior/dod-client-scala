@@ -70,10 +70,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     }
   }
   val tools = new ToolPanel
-  val layers = new LayerListPanel(doodle.model.layers)
+  val layers = new LayerPanel(doodle.model.layers)
   val extra = if(finish) "DRAW (last step): " else "DRAW: "
   desc.setPhrase( extra+phrase )//,extra)
-  layout(new ScrollPane(layers)) = West
+  layout(layers) = West
   layout(desc) = North
   layout(doodle) = Center
   layout(new ScrollPane(tools)) = East
