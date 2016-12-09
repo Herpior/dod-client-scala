@@ -22,14 +22,15 @@ class LayerPanel(model:LayerList) extends BoxPanel(Orientation.Vertical) {
   
   def reset = list.reset
   
+  this.deafTo(this)
   this.listenTo(tools)
   this.listenTo(list)
-  this.deafTo(this)
   
   this.reactions += {
     case e:RepaintEvent=>
       list.reset
       publish(new RepaintEvent)
+      this.repaint
   }
   
 }

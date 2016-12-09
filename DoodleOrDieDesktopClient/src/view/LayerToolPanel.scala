@@ -7,12 +7,80 @@ import java.awt.RenderingHints
 import dmodel.Magic
 import dmodel.LayerList
 
-class LayerToolPanel(model:LayerList) extends Panel{
-  this.preferredSize = new Dimension(150, 20)
-  this.preferredSize = new Dimension(150, 25)
+class LayerToolPanel(model:LayerList) extends GridPanel(2,3){
+//  this.preferredSize = new Dimension(150, 45)
+  this.preferredSize = new Dimension(150, 45)
   this.maximumSize = this.preferredSize
   this.background = Magic.bgColor
+  private val parent = this
   
+  def publishRepaint = this.publish(new RepaintEvent)
+  
+  val addButt = new LayerButton{
+    this.action = new Action("Add"){
+      def apply() = {
+        model.addLayer
+        publishRepaint
+      }
+    }
+  }
+  val mergeButt = new LayerButton{
+    this.action = new Action("Merge"){
+      def apply() = {
+        val input = Dialog.showOptions(parent, "Are you sure you want to merge layer?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
+        if(input == Dialog.Result.Yes){
+          model.mergeLayer
+          publishRepaint
+        }
+      }
+    }
+  }
+  val remoButt = new LayerButton{
+    this.action = new Action("Remove"){
+      def apply() = {
+        val input = Dialog.showOptions(parent, "Are you sure you want to remove layer? this can't be undone.", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
+        if(input == Dialog.Result.Yes){
+          model.removeLayer
+          publishRepaint
+        }
+      }
+    }
+  }
+  val undoButt = new LayerButton{
+    this.action = new Action("Undo"){
+      def apply() = {
+        model.undo
+        publishRepaint
+      }
+    }
+  }
+  val redoButt = new LayerButton{
+    this.action = new Action("Redo"){
+      def apply() = {
+        model.redo
+        publishRepaint
+      }
+    }
+  }
+  val burnButt = new LayerButton{
+    this.action = new Action("Burn"){
+      def apply() = {
+        val input = Dialog.showOptions(parent, "Are you sure you want to clear layer?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
+        if(input == Dialog.Result.Yes){
+          model.burn
+          publishRepaint
+        }
+      }
+    }
+  }
+  
+  this.contents += addButt
+  this.contents += mergeButt
+  this.contents += remoButt
+  this.contents += undoButt
+  this.contents += redoButt
+  this.contents += burnButt
+  /*
   override def paintComponent(g:Graphics2D){
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     g.setColor(Magic.bgColor)
@@ -26,15 +94,14 @@ class LayerToolPanel(model:LayerList) extends Panel{
     g.drawString("add", 10, 15)
     g.drawString("merge", 45, 15)
     g.drawString("remove", 92, 15)//TODO undo and redo butts
-  }
+  }*/
+  /*
   this.listenTo(mouse.clicks)
   this.reactions += {
     case e:MouseReleased =>
         val x = e.point.getX
         if(x>=0&&x<40){
           //println("layerlist curr"+model.ind)
-          this.model.addLayer
-          publish(new RepaintEvent)
           //println("layerlist curr"+model.ind)
         }else if(x>=40&&x<86){
           this.model.mergeLayer
@@ -44,4 +111,5 @@ class LayerToolPanel(model:LayerList) extends Panel{
           publish(new RepaintEvent)
         }
   }
+  */
 }

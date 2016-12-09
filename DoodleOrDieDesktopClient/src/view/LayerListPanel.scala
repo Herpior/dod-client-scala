@@ -56,7 +56,7 @@ class LayerListPanel(model:LayerList) extends Panel{
     this.maximumSize = new Dimension(200, ht)
     current = model.getCurrent
     this.revalidate()
-    repaint
+    this.repaint
   }
   
   private var last = 0

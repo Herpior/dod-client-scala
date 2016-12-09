@@ -151,6 +151,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     case e:RepaintEvent=>
       doodle.redrawAll
       doodle.repaint
+      layers.reset
     case e:SubmitEvent=>
       this.submit
     /*case e:SizeChangeEvent =>
