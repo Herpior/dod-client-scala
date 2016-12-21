@@ -15,9 +15,9 @@ class SubmitPanel extends FlowPanel {
   val model = ToolModel
   model.initReady
   
-  //this.preferredSize = new Dimension(250, 200)
-  //this.minimumSize = preferredSize
-  //this.maximumSize = preferredSize
+  this.preferredSize = new Dimension(200, 100)
+  this.minimumSize = preferredSize
+  this.maximumSize = preferredSize
   this.background = Magic.bgColor
   
   val submitButt = new Button("submit"){
