@@ -15,7 +15,7 @@ object ColorModel {
   
   def colorSize = this.getColors.length
   //val rows = 5
-  def rows = if(Magic.authorized)8 else 2
+  def rows = if(Magic.authorized)Magic.rows else 2
   //val nrows = 2
   private val normal = Array(
           "#000000","#6d6f71","#0791cd","#699c41","#f47e20","#d6163b","#6e1a11","#f8ded7",
@@ -26,8 +26,8 @@ object ColorModel {
                    case e:Throwable=>
                      normal
                  }
-    val empty = Array.fill(16*8)(Color.black)
-    for(i<-0 until min(loaded.length, 16*8)){
+    val empty = Array.fill(16*Magic.rows)(Color.black)
+    for(i<-0 until min(loaded.length, 16*Magic.rows)){
       val tmp = loaded(i)
       empty(i)=tmp
     }

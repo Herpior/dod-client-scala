@@ -10,6 +10,7 @@ object Magic {
   val readyDefault = false //default for ready checkbox
   val x = 520
   val y = 390
+  val rows = 16
   val thumbX = 60//100
   val thumbY = 45//75
   val thumbZoom = thumbX.toDouble/x

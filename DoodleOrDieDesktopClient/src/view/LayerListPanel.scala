@@ -44,6 +44,7 @@ class LayerListPanel(model:LayerList) extends Panel{
         g.fillRect(offx, 5+offy, 20, 20)
         g.fillRect(offx, 30+offy, 20, 20)
         g.setColor(Magic.white)
+        g.setFont(g.getFont.deriveFont(java.awt.Font.BOLD))
         g.drawString("visible", offx+25, 20+offy)
         if(layer.isVisible)g.drawImage(Icons.getVisible,offx,5+offy,null)
         g.drawString("selected", offx+25, 45+offy)
