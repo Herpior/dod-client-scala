@@ -37,6 +37,8 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
       this.borderPainted = false 
       override def paintComponent(g:Graphics2D){
         this.background = ColorModel.getColors(i)
+        if(ColorModel.colorIndex == i) this.borderPainted = true 
+        else this.borderPainted = false
         //if color is not opaque, draw checkerboards
         if(this.background.getAlpha<255){
           g.setColor(Color.WHITE)
@@ -73,13 +75,15 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
   
   def selectPrimary(i:Int){
     model.primaryColor(i)
-    buttons.foreach { x => x.borderPainted = false }
-    buttons(i).borderPainted = true
+    //buttons.foreach { x => x.borderPainted = false }
+    //buttons(i).borderPainted = true
+    this.repaint()
   }
   def selectSecondary(i:Int){
     model.secondaryColor(i)
-    buttons.foreach { x => x.borderPainted = false }
-    buttons(i).borderPainted = true
+    //buttons.foreach { x => x.borderPainted = false }
+    //buttons(i).borderPainted = true
+    this.repaint()
   }
   def openPicker(i:Int){
     val dres = swing.ColorChooser.showDialog(this,"pick a color",model.getColor)//(0))

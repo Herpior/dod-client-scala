@@ -26,13 +26,18 @@ class SizePanel extends BoxPanel(Orientation.Vertical){
   this.listenTo(slider)
   grid.checkNewSize
   
+  override def paintComponent(g:java.awt.Graphics2D){
+    grid.checkNewSize
+    super.paintComponent(g)
+  }
   
   this.listenTo(mouse.clicks)
   this.listenTo(mouse.moves)
   this.reactions += {
     case e:controller.SizeChangeEvent =>
-      grid.checkNewSize
-      slider.repaint()
+      //grid.checkNewSize
+      //slider.repaint()
+      this.repaint
   }
 
 }

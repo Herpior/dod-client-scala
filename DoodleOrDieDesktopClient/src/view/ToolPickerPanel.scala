@@ -31,12 +31,17 @@ class ToolPickerPanel extends GridPanel(2, 4) {
     }
   }
   
+  override def paintComponent(g:java.awt.Graphics2D){
+    buttons.foreach{ x => x.borderPainted = false}
+    buttons(model.getState).borderPainted = true
+    super.paintComponent(g)
+  }
+  
   this.contents ++= buttons
   
   def click(i:Int){
     model.tool(i)
-    buttons.foreach{ x => x.borderPainted = false}
-    buttons(model.getState).borderPainted = true
+    this.repaint
     //publish(new controller.ToolChangeEvent(model.getState))
   }
   
