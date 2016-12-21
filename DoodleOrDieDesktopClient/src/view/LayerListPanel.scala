@@ -24,16 +24,19 @@ class LayerListPanel(model:LayerList) extends Panel{
   this.background = Magic.bgColor
   controller.Timer(100,false)(reset).start //might fail if loading the save file takes too long?
   
+  private var thumbs = model.toArray.map { layer => (layer, LineDrawer.thumb(layer)) }.toMap
+  
   override def paintComponent(g:Graphics2D){
     super.paintComponent(g)
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     var offy = 0
     val offx = Magic.thumbX+10
     g.setStroke(new BasicStroke(3))
-    model.toArray.reverse.foreach{
-      layer=>
+    model.toArray.indices.reverse.foreach{
+      i=>
+        val layer = model.toArray(i)
+        val img = thumbs.getOrElse(layer, LineDrawer.thumb(layer))
         g.setColor(Magic.red)
-        val img = LineDrawer.thumb(layer)
         g.drawImage(img, 5, 5+offy, null)
         if(layer == current)g.drawRect(4, 4+offy, Magic.thumbX+2, Magic.thumbY+2)
         //g.setStroke(new BasicStroke(1))
@@ -50,11 +53,17 @@ class LayerListPanel(model:LayerList) extends Panel{
   }
   
   def reset = {
-    val ht = model.toArray.length*(5+Magic.thumbY)
+    val layers = model.toArray
+    val ht = layers.length*(5+Magic.thumbY)
+    this.current = model.getCurrent
+    this.thumbs = layers.map { 
+      layer => 
+        val thumb = if(layer!=this.current) thumbs.getOrElse(layer, LineDrawer.thumb(layer)) else LineDrawer.thumb(layer)
+        (layer, thumb) 
+      }.toMap
     this.minimumSize = new Dimension(150, ht)
     this.preferredSize = this.minimumSize
     this.maximumSize = new Dimension(200, ht)
-    current = model.getCurrent
     this.revalidate()
     this.repaint
   }
