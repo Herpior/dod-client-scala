@@ -1,6 +1,7 @@
 package view
 
 import scala.swing.BoxPanel
+import scala.swing.ScrollPane
 import scala.swing.Dialog
 import scala.swing.Dimension
 import scala.swing.event._
@@ -9,13 +10,10 @@ import scala.swing.Orientation
 import dmodel.Magic
 import dmodel.ToolModel
 
-class ToolPanel extends BoxPanel(Orientation.Vertical){
+class ToolPanel extends ScrollPane {
   
   val model = ToolModel
   
-  this.minimumSize = new Dimension(200,500)
-  this.preferredSize = new Dimension(210,550)
-  this.maximumSize = new Dimension(300,4500)
   this.background = Magic.bgColor
   
   val sizeP = new SizePanel
@@ -23,11 +21,17 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
   val toolP = new ToolPickerPanel
   val submitP = new SubmitPanel
   
-  this.contents += sizeP
-  this.contents += colorP
-  this.contents += toolP
-  this.contents += submitP
-      
+  val box = new BoxPanel(Orientation.Vertical) {
+    this.background = Magic.bgColor
+    this.minimumSize = new Dimension(200,550)
+    this.preferredSize = new Dimension(210,550)
+    this.maximumSize = preferredSize
+    this.contents += sizeP
+    this.contents += colorP
+    this.contents += toolP
+    this.contents += submitP
+  }
+  this.contents = box
 
 
       

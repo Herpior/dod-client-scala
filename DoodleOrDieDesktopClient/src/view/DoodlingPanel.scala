@@ -69,14 +69,14 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       }) = Center
     }
   }
-  val tools = new ToolPanel
+  private var tools = new ToolPanel
   val layers = new LayerPanel(doodle.model.layers)
   val extra = if(finish) "DRAW (last step): " else "DRAW: "
   desc.setPhrase( extra+phrase )//,extra)
   layout(layers) = West
   layout(desc) = North
   layout(doodle) = Center
-  layout(new ScrollPane(tools)) = East
+  layout(tools) = East
   
   //val doodleControl = new DrawingController(doodle,tools,layers)
   //val toolControl = new ToolController(tools)
@@ -98,11 +98,21 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   layers.contents.foreach{x=>this.listenTo(x.keys)}
   layers.tools.contents.foreach{x=>this.listenTo(x.keys)}
   
-  tools.sizeP.contents.foreach{x=>this.listenTo(x.keys)}
-  tools.sizeP.grid.contents.foreach{x=>this.listenTo(x.keys)}
-  tools.colorP.contents.foreach{x=>this.listenTo(x.keys)}
-  tools.toolP.contents.foreach{x=>this.listenTo(x.keys)}
-  tools.submitP.contents.foreach{x=>this.listenTo(x.keys)}
+  def listenToTools{
+    tools.sizeP.contents.foreach{x=>this.listenTo(x.keys)}
+    tools.sizeP.grid.contents.foreach{x=>this.listenTo(x.keys)}
+    tools.colorP.contents.foreach{x=>this.listenTo(x.keys)}
+    tools.toolP.contents.foreach{x=>this.listenTo(x.keys)}
+    tools.submitP.contents.foreach{x=>this.listenTo(x.keys)}
+  }  
+  def deafToTools{
+    tools.sizeP.contents.foreach{x=>this.deafTo(x.keys)}
+    tools.sizeP.grid.contents.foreach{x=>this.deafTo(x.keys)}
+    tools.colorP.contents.foreach{x=>this.deafTo(x.keys)}
+    tools.toolP.contents.foreach{x=>this.deafTo(x.keys)}
+    tools.submitP.contents.foreach{x=>this.deafTo(x.keys)}
+  }
+  listenToTools
   
   
   def submit{
@@ -213,11 +223,14 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         }
       } else*/
       e.key match {
+        
         case Key.W =>
           ColorModel.colorUp
+          tools.colorP.repaint()
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.A =>
           ColorModel.colorLeft
+          tools.colorP.repaint()
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.S =>
           if(e.modifiers == 128) {
@@ -225,45 +238,58 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
           else {
             ColorModel.colorDown
+            tools.colorP.repaint()
             //doodle.model.setColor(tools.model.getColor(0),0)
           }
         case Key.D =>
           ColorModel.colorRight
+          tools.colorP.repaint()
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.Q =>
           SizeModel.sizeDown
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.E =>
           SizeModel.sizeUp
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key1 =>
           SizeModel.number(0)
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key2 =>
           SizeModel.number(1)
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key3 =>
           SizeModel.number(2)
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key4 =>
           SizeModel.number(3)
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key5 =>
           SizeModel.number(4)
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key6 =>
           SizeModel.number(5)
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key7 =>
           SizeModel.number(6)
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.Key8 =>
           if(Magic.authorized)SizeModel.number(7)
       doodle.model.unselect
+          tools.sizeP.repaint()
             //doodle.model.setSize(tools.model.getSize)
         case Key.H =>
           if(Magic.authorized)tools.model.tool(4)//->perspect
       doodle.model.unselect
+          tools.toolP.repaint()
           //doodle.model.setState(8)
         case Key.M =>
           if(Magic.authorized && e.modifiers/128%2==1) {
@@ -275,14 +301,17 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.J =>//->undefined
           if(Magic.authorized)tools.model.tool(5)
       doodle.model.unselect
+          tools.toolP.repaint()
           //doodle.model.setState(9)
         case Key.U =>
           tools.model.tool(1)//draw->line
       doodle.model.unselect
+          tools.toolP.repaint()
           //doodle.model.setState(0)
         case Key.I =>
           if(Magic.authorized)tools.model.tool(2)//line->bez
       doodle.model.unselect
+          tools.toolP.repaint()
           //doodle.model.setState(1)
         case Key.P =>
           if(e.modifiers/128%2==1){
@@ -312,12 +341,14 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             else {
               tools.model.tool(3)//bezier->fill
       doodle.model.unselect
+          tools.toolP.repaint()
               //doodle.model.setState(2)
             }
           }
         case Key.L =>
           if(Magic.authorized)tools.model.tool(7)//bezier2->undefined
       doodle.model.unselect
+          tools.toolP.repaint()
           //doodle.model.setState(7)
         //case Key.P =>
           //tools.model.tool(3)//gradient fill
@@ -332,7 +363,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
         case Key.K =>
           if(Magic.authorized)tools.model.tool(6)//perspective set->undefined
-      doodle.model.unselect
+          doodle.model.unselect
+          tools.toolP.repaint()
           //doodle.model.setState(6)
         case Key.Enter =>
           if(e.modifiers /128%2==1){
@@ -414,8 +446,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         redraw
       }
       current = tmp*/
-      doodle.repaint
-      tools.repaint()
+      
+      //doodle.repaint
+      //tools.repaint()
     case e:MouseMoved =>
       /*if(tools.model.bstate == 1 && !next.strookes.isEmpty){
         dragLine(e)
@@ -559,7 +592,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             if(Magic.authorized){
               val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt,mods)
               color.foreach(c=>ColorModel.setColor(c))
-              tools.repaint()
+              tools.colorP.repaint()
             }
           } else if(mods/128==1){
             doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))

@@ -86,7 +86,7 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
     this.repaint()
   }
   def openPicker(i:Int){
-    val dres = swing.ColorChooser.showDialog(this,"pick a color",model.getColor)//(0))
+    val dres = swing.ColorChooser.showDialog(new swing.Button,"pick a color",model.getColor)//(0))
     //Dialog.showInput(this, "Set a new color", "color", Dialog.Message.Question, null, Nil, Colors.toHexString(model.getColor(0)))
     dres.foreach{
       colr => model.setColor(colr)
