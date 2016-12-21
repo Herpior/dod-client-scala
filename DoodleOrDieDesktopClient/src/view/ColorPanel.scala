@@ -36,6 +36,7 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
       this.border = bordero
       this.borderPainted = false 
       override def paintComponent(g:Graphics2D){
+        this.background = ColorModel.getColors(i)
         //if color is not opaque, draw checkerboards
         if(this.background.getAlpha<255){
           g.setColor(Color.WHITE)
@@ -87,7 +88,13 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
       colr => model.setColor(colr)
       buttons(i).background = model.getColor
     }
+  }/*
+  def resetCurrent{
+    buttons(ColorModel.colorIndex).background = ColorModel.getColor
   }
+  def reset {
+    model.getColors
+  }*/
   
   selectPrimary(0)
  

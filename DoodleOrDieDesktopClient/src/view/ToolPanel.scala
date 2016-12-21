@@ -18,10 +18,15 @@ class ToolPanel extends BoxPanel(Orientation.Vertical){
   this.maximumSize = new Dimension(300,4500)
   this.background = Magic.bgColor
   
-  this.contents += new SizePanel
-  this.contents += new ColorPanel
-  this.contents += new ToolPickerPanel
-  this.contents += new SubmitPanel
+  val sizeP = new SizePanel
+  val colorP = new ColorPanel
+  val toolP = new ToolPickerPanel
+  val submitP = new SubmitPanel
+  
+  this.contents += sizeP
+  this.contents += colorP
+  this.contents += toolP
+  this.contents += submitP
       
 
 

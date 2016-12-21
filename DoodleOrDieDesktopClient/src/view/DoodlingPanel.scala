@@ -89,10 +89,21 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   this.listenTo(this.keys)
   this.listenTo(desc.keys)
   this.listenTo(roomChanger.keys)
+  roomChanger.contents.foreach{x=>this.listenTo(x.keys)}
   this.listenTo(logoutButt.keys)
   //doodleControl.listenTo(txt)
   this.listenTo(skipButt.keys)
   this.listenTo(desc.phraseLabel.keys)
+  
+  layers.contents.foreach{x=>this.listenTo(x.keys)}
+  layers.tools.contents.foreach{x=>this.listenTo(x.keys)}
+  
+  tools.sizeP.contents.foreach{x=>this.listenTo(x.keys)}
+  tools.sizeP.grid.contents.foreach{x=>this.listenTo(x.keys)}
+  tools.colorP.contents.foreach{x=>this.listenTo(x.keys)}
+  tools.toolP.contents.foreach{x=>this.listenTo(x.keys)}
+  tools.submitP.contents.foreach{x=>this.listenTo(x.keys)}
+  
   
   def submit{
     if(tools.model.isReady){
@@ -548,7 +559,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             if(Magic.authorized){
               val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt,mods)
               color.foreach(c=>ColorModel.setColor(c))
-              tools.repaint
+              tools.repaint()
             }
           } else if(mods/128==1){
             doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
