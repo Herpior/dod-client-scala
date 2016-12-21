@@ -7,10 +7,18 @@ import scala.swing.event.UIElementResized
 import concurrent.Future
 import concurrent.ExecutionContext.Implicits.global
 
+import javax.swing.UIManager
+
 object DoodleWindow extends SimpleSwingApplication {
   
   val ver = "v0.450"
   val version = 450
+  
+   try {
+    UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
+   } catch {
+     case e:Throwable => e.printStackTrace();
+   }
 
   def top = new MainFrame {
     this.title = "Doodle or Die"
