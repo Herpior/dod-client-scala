@@ -103,7 +103,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     tools.sizeP.grid.contents.foreach{x=>this.listenTo(x.keys)}
     tools.colorP.contents.foreach{x=>this.listenTo(x.keys)}
     tools.toolP.contents.foreach{x=>this.listenTo(x.keys)}
-    tools.submitP.contents.foreach{x=>this.listenTo(x.keys)}
   }  
   def deafToTools{
     tools.sizeP.contents.foreach{x=>this.deafTo(x.keys)}
@@ -113,6 +112,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     tools.submitP.contents.foreach{x=>this.deafTo(x.keys)}
   }
   listenToTools
+  this.listenTo(tools.submitP)
   
   
   def submit{
@@ -380,12 +380,14 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             savetimer.stop()
             doodle.model.undo
             doodle.redrawMid
+            doodle.repaint()
             Future(layers.reset)
             savetimer.start()
           } else if(e.modifiers==192){
             savetimer.stop()
             doodle.model.redo
             doodle.redrawLastMid
+            doodle.repaint()
             Future(layers.reset)
             savetimer.start()
           }
@@ -394,6 +396,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             savetimer.stop()
             doodle.model.redo
             doodle.redrawLastMid
+            doodle.repaint()
             Future(layers.reset)
             savetimer.start()
           }
