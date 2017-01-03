@@ -18,6 +18,8 @@ object Icons {
   val fill = tk.getImage(getClass().getResource("/fill.png"))
   val bezier = tk.getImage(getClass().getResource("/bezier.png"))
   val bezierfill = tk.getImage(getClass().getResource("/bezierfill.png"))
+  val hand = tk.getImage(getClass().getResource("/hand5.png"))
+  val zoom = tk.getImage(getClass().getResource("/zoom.png"))
   val pers = tk.getImage(getClass().getResource("/pers.png"))
   val eye = tk.getImage(getClass().getResource("/eye.png"))
   val check = tk.getImage(getClass().getResource("/check.png"))
@@ -78,6 +80,8 @@ object Icons {
   def getLine = line//this.lineIcon
   def getFill = fill//this.fillIcon
   def getBez = bezier//this.bezierIcon
+  def getDrag = hand//this.bezierIcon
+  def getZoom = zoom//this.bezierIcon
   def getBezFill = bezierfill//this.bezierIcon
   def getPers = pers//this.persIcon
   //def getSkip = skip//this.skipIcon
