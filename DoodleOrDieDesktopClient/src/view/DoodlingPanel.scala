@@ -485,6 +485,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       doodle.repaint
       
     case e:MousePressed=> 
+      // left = 1024
+      // right = 4096
+      // middle = 2048
+      // shift = 64
+      // ctrl = 128
+      // alt = 512
       savetimer.stop()
       if(!pinged){
         http.HttpHandler.ping
@@ -614,6 +620,17 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }*/
       }
     case e:MouseReleased=>
+      // ^left only = 0
+      // ^middle only = 512
+      // ^right only = 256
+      // left = 1024
+      // middle = 2048
+      // right = 4096
+      // shift = 64
+      // ctrl = 128
+      // alt =  512
+      // alr gr = 640 = alt + ctrl
+      
       val place = doodle.getCoord(e.point.getX, e.point.getY)
       val mods = e.modifiers
       if((mods/1024)%2==0 && doodle.model.isMatrix){

@@ -170,7 +170,7 @@ object HttpHandler {
    * value pt: PaintTime
    * value doodle: array of strokes
    */
-  def submitDoodle(pp:Int,pt:Int,doodle:Array[BasicLine])={//
+  def submitDoodle(pp:Int,pt:Int,doodle:Array[BasicLine]):Boolean={//
     val post = new DoodlePost(room,chain,doodle,pp,pt)//,cookie)
     //val out = new java.util.Scanner(post.getEntity.getContent)
     val in = postHttp(post)
