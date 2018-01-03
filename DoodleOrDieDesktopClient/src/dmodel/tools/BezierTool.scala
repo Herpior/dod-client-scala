@@ -15,16 +15,49 @@ import view.DoodlePanel
 
 object BezierTool extends LineToolClass {
   
+  override def onMouseMove(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(Magic.authorized && state == 2){
+      dragBezier(1, coord, control, shift)
+      dragBezier(2, coord, control, shift)
+      dp.redrawDrawing
+    }
+  }
+  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(Magic.authorized){
+      if(state == 1){
+        dragBezier(3, coord, control, shift)
+      } else {
+        dragBezier(2, coord, control, shift)
+      }
+      dp.redrawDrawing
+      dp.repaint
+    }
+  }
+  override def onMouseUp(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(Magic.authorized){
+      if(state == 1){
+        dragBezier(3, coord, control, shift)
+        state = 2
+      } else {
+        dragBezier(2, coord, control, shift)
+        stopBezier(dp.model)
+        dp.redrawLastMid
+        state = 0
+      }
+      dp.redrawDrawing
+      dp.repaint
+    }
+  }
   override def onMouseDown(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
     if(Magic.authorized){
               if(state == 0){
               //startLine(e)
               startBezier(coord)
+              state = 1
               }
               else{
-                //if(tools.model.getState == 2)doodle.model.dragBezier(3,place,mods)
-                //else 
-                  dragBezier(1, coord, control, shift)
+                dragBezier(1, coord, control, shift)
+                state = 3
               }
               dp.redrawDrawing
               dp.repaint

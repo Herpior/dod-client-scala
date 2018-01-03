@@ -38,12 +38,7 @@ object ToolModel {
             doodle.model.dragBezier(3,place,mods)
             doodle.redrawDrawing*/
         case 2 =>//bezier2
-          if(Magic.authorized){
-              
-              doodle.model.dragBezier(1,place,mods)
-              doodle.model.dragBezier(2,place,mods)
-              doodle.redrawDrawing
-            }
+          
         case 7 =>//edit
           if(Magic.authorized){
               val place = doodle.getCoord(e.point.getX, e.point.getY)
@@ -174,11 +169,7 @@ object ToolModel {
         //this.drawing = false
         tools.model.getState match {
           case 0|1 =>//draw//line
-            
-          /*case 1 =>
-            if(!next.strookes.isEmpty){
-              addStrooke
-          }*/
+           
           /*case 2 =>//bezier
             if(!doodle.model.isBezier){
               doodle.model.dragBezier(1,place,mods)
@@ -200,21 +191,7 @@ object ToolModel {
             }
             //next = new nextLinee
           case 2 =>//bezier2
-            if(Magic.authorized){
-              if(!doodle.model.isBezier){
-                doodle.model.dragBezier(3,place,mods)
-                doodle.model.setBezier
-                //bez = true
-              } else{
-                doodle.model.dragBezier(2,place,mods)
-                doodle.model.stopBezier
-                doodle.redrawLastMid
-                //bez = false
-              }
-              //doodle.redrawMid
-              doodle.redrawDrawing
-              doodle.repaint
-            }
+            
           case 4 =>//perspective set
             if(Magic.authorized){
               doodle.model.dragPerspective(place, mods)
@@ -233,33 +210,17 @@ object ToolModel {
      */
   }
   
-  def mouseDrag(dp:DoodlePanel, point:Coord, left:Boolean, middle:Boolean, right:Boolean, alt:Boolean, ctrl:Boolean, shift:Boolean) {
+  def mouseDragged(dp:DoodlePanel, point:Coord, left:Boolean, middle:Boolean, right:Boolean, alt:Boolean, ctrl:Boolean, shift:Boolean) {
     tool.onMouseDrag(dp, point, left, right, middle, ctrl, alt, shift)
     /*
      
-      if((mods/1024)%2==1 && doodle.model.isMatrix){
-        doodle.model.dragMatrix(place, mods)
-        doodle.redrawMid
-        doodle.repaint
-      }
+      
       else if((mods/1024)%2==1){
         tools.model.getState match {
           case 0 =>//draw
-            if((e.modifiers/512)%2==1 ){
-              doodle.model.dragLine(place,mods)
-              doodle.redrawDrawing
-            }
-            else {
-              doodle.model.addLine(place,mods)
-              //println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
-              if(ColorModel.getColor.getAlpha==255 || Magic.faster) doodle.redrawLast
-              else doodle.redrawDrawing
-            }
-            doodle.repaint
+            
           case 1 =>//line
-            doodle.model.dragLine(place,mods)
-            doodle.redrawDrawing
-            doodle.repaint
+            
           /*case 2 =>//bezier
             if(doodle.model.isBezier){
               doodle.model.dragBezier(2,place,mods)
@@ -283,15 +244,7 @@ object ToolModel {
               doodle.model.select(place,mods,false)
             }
           case 2 =>//bezier2
-            if(Magic.authorized){
-              if(doodle.model.isBezier){
-                doodle.model.dragBezier(2,place,mods)
-              } else {
-                doodle.model.dragBezier(3,place,mods)
-              }
-              doodle.redrawDrawing
-              doodle.repaint
-            }
+            
           case _ =>
         }
       }

@@ -552,6 +552,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       val shift = e.peer.isShiftDown()
       val meta = e.peer.isMetaDown()
 
+      if(left && doodle.model.isMatrix){
+        doodle.model.dragMatrix(place, e.modifiers)
+        doodle.redrawMid
+        doodle.repaint
+      }
+      tools.model.mouseDragged(doodle, place, left, middle, right, alt, ctrl, shift)
 
       doodle.setCursor(e.point.getX(), e.point.getY())
       doodle.repaint

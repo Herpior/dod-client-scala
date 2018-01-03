@@ -161,7 +161,7 @@ class DoodlePanel extends Panel {
     topImg = img
   }
   // redraws the line currently being drawn 
-  // used for lines that redrawLastMid can't be used on
+  // used for lines that redrawLast can't be used on
   // that is, on bezier lines and semitransparent lines
   // it will also clear the drawing layer but there should be a better way to clear it somewhere?
   def redrawDrawing{

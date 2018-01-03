@@ -15,6 +15,11 @@ object LineTool extends LineToolClass
 
 class LineToolClass extends BasicTool {
   
+  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+    dragLine(coord, control, shift)
+    dp.redrawDrawing
+    dp.repaint
+  }
   override def onMouseUp(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     stopLine(coord, dp.model)
     dp.redrawDrawing
@@ -43,6 +48,12 @@ class LineToolClass extends BasicTool {
   
   protected var multiLine:MultiLine = new MultiLine
 
+   
+  def getLast = {
+    //multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
+    multiLine.getLast.flatMap(_.getLastLine)
+  }
+  
   def startLine(color:Color,size:Int,place:Coord){
         //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
           multiLine.addLine(new BasicLine(color,size){
@@ -59,7 +70,7 @@ class LineToolClass extends BasicTool {
   /*def addLine(e:MouseEvent){
     
   }*/
-  def dragLine(place:Coord,mods:Int){
+  def dragLine(place:Coord, control:Boolean, shift:Boolean){
     //var x = getX(e)
     multiLine.getLast.foreach{ next =>
     //var y = getY(e)
@@ -72,14 +83,14 @@ class LineToolClass extends BasicTool {
           //last.ys+=y
         //}
       } else {
-        if(mods/128%2==1){
+        if(control){
           val c0 = last(len-2)
           val dc = place-c0
           //println(place+" - "+c0+" = "+dc)
           val dlen = math.sqrt(dc.x*dc.x+dc.y*dc.y)//place.dist(c0)
           //println(dlen+" <- "+place.dist(c0))
           val xy = 
-              if (mods/64%2==1) Perspective.getCoord(c0,Angle.angle(dc.x,dc.y),dlen)
+              if (shift) Perspective.getCoord(c0,Angle.angle(dc.x,dc.y),dlen)
               else Angle.getCoord(math.round(Angle.angle(dc.x,dc.y)/Pi*4)*Pi/4,dlen)
               //println("coord: "+xy+" mods ="+mods)
           val c2 = c0+xy
