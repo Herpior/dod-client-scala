@@ -120,7 +120,7 @@ object Colors {
     
     return new Color(red,green,blue)
   }
-  def linearcolor(n:Int,rgb:Boolean,fcolor:Color,bcolor:Color) :Array[Color] = {
+  def linearcolor(n:Int,rgb:Boolean,fcolor:Color,bcolor:Color) :Array[Color] = { //TODO: try squaring the colours before interpolation and taking a square root afterwards
     val first = fcolor//Color.decode(fcolor)
     val last =  bcolor//Color.decode(bcolor)
     if(first == last) return Array.fill(n)(bcolor)
