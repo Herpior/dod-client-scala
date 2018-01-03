@@ -186,8 +186,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     case e:MouseExited =>
       doodle.model.unselect
     case e:MouseWheelMoved =>
-      if(e.modifiers/128%2==1)doodle.zoomin(e.rotation)
-      else doodle.zoomin(e.rotation*4)
+      val ctrl = e.peer.isControlDown()
+      if(ctrl)doodle.zoomin(e.rotation*4)
+      else doodle.zoomin(e.rotation)
       doodle.repaint
       //tools.model.zoomin(e.rotation)
           //repaint
