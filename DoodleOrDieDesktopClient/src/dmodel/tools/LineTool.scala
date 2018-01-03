@@ -10,7 +10,16 @@ import dmodel.Perspective
 import dmodel.ColorModel
 import dmodel.SizeModel
 
-object LineTool extends BasicTool {
+object LineTool extends LineToolClass
+
+class LineToolClass extends BasicTool {
+  
+  def getLines() = {
+    multiLine.getLines.toBuffer
+  }
+  def getLastLine() = {
+    multiLine.getLast.flatMap (_.getLastLine)
+  } //  MultiLine.getLast.flatMap()
   
   protected var multiLine:MultiLine = new MultiLine
 

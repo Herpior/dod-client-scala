@@ -60,7 +60,7 @@ trait DoodlePart{
   //}
 }*/
 
-class BezierLine(val color:Color, val size:Double) extends DoodlePart {
+class BezierLine(var color:Color, var size:Double) extends DoodlePart {
   //var size = 1.0
   //var color = "#000"
   private val coords = Array.fill(4)(Coord(0,0))

@@ -4,7 +4,7 @@ import dmodel.Coord
 import dmodel.ColorModel
 import dmodel.SizeModel
 
-object DrawTool extends LineTool {
+object DrawTool extends LineToolClass {
   
   def getLast = {
     //multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
@@ -41,12 +41,12 @@ object DrawTool extends LineTool {
         LineTool.addLinePoint(next)
     }
   }*/
-  def stopLine(place:Coord,mods:Int):Option[MultiLine] = {
+  def stopLine(place:Coord,mods:Int):MultiLine = {
     multiLine.compress
        // this.layers.getCurrent.add(multiLine)
     
     val returning = multiLine
-    multiLine = None
+    multiLine = new MultiLine
     returning
   }
   
