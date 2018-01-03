@@ -1,6 +1,6 @@
 package dmodel.tools
 
-//import Enumeration
+//change this to case classes?
 
 object ToolConfig extends Enumeration {
   type ToolConfig = Value

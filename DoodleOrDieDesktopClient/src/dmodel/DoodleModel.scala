@@ -9,14 +9,15 @@ class DoodleModel {
   val tools = ToolModel
   //private val next = new CurrentLine
   
-  private var multiLine:Option[MultiLine] = None
-  private var bezierLine:Option[BezierLine] = None
+  //private var multiLine:Option[MultiLine] = None
+  //private var bezierLine:Option[BezierLine] = None
+  private val currentLines:Buffer[DoodlePart] = Buffer()
   private def matrix:Boolean = this.layers.getCurrent.isInstanceOf[MatrixLayer]
   //private var textLine:Option[TextLine] = None
   private var hoveringLine:Option[DoodlePart] = None
   private var hoveringLine2:Option[DoodlePart] = None
   
-  private var bezier = false
+  //private var bezier = false
   
   //private var room:String = "global"
   //private var id:String = ""
@@ -30,8 +31,8 @@ class DoodleModel {
   
   def selected = (hoveringLine ++ hoveringLine2).toArray
   //def isWriting = textLine.isDefined
-  def isDrawing = multiLine.isDefined || hoveringLine2.isDefined
-  def isBezier = bezier && bezierLine.isDefined
+  def isDrawing = currentLines.length>0/*multiLine.isDefined*/ || hoveringLine2.isDefined
+  //def isBezier = bezier && bezierLine.isDefined
   def isMatrix = {
     matrix
   }
@@ -50,6 +51,15 @@ class DoodleModel {
   //def getSize = size
   //def getColor = color
   //---------\\
+  def startDrawing(dp:DoodlePart){
+    this.currentLines.clear()
+    this.currentLines += dp
+  }
+  def startDrawing(dps:Array[DoodlePart]){
+    this.currentLines.clear()
+    this.currentLines ++= dps
+  }
+  //---------\\
   def getTop = {
     layers.getTop//drop(current+1).flatMap { x => x.getStrokes }.toArray
   }
@@ -61,10 +71,7 @@ class DoodleModel {
   }
   //---------\\
   def getDrawing = {
-    (bezierLine/*++textLine*/++multiLine).toArray
-  }
-  def getLast = {
-    multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
+    currentLines.toArray//(bezierLine/*++textLine*/++multiLine).toArray
   }
   def getLastMid = {
     val strokes = layers.getCurrent.getStrokes(false)//(current).getStrokes
@@ -202,120 +209,6 @@ class DoodleModel {
   def unselect{
     hoveringLine = None
     hoveringLine2 = None
-  }
-  //---------\\
-  def lineFill(mods:Int){
-    //println("linefill model")
-    if(this.hoveringLine.isDefined && this.hoveringLine2.isDefined){
-      //println("both found")
-      val res = new MultiLine
-      val line1 = this.hoveringLine.get
-      val line2 = this.hoveringLine2.get
-      if(line1.isInstanceOf[BezierLine] && line2.isInstanceOf[BezierLine]){
-        //println("both bez")
-        FillTool.combineBezier(line1.asInstanceOf[BezierLine], line2.asInstanceOf[BezierLine], mods, res)
-      }
-      else {
-        FillTool.linearFill(line1,line2,res)
-      }
-    layers.getCurrent.add(res)
-    }
-    unselect
-  }
-  //---------\\
-  def startBezier(place:Coord,mods:Int){
-    val bez = new BezierLine(ColorModel.getColor,SizeModel.getSize)
-    val guide = new MultiLine
-    BezierTool.startBezier(bez, guide, place, mods)
-    this.bezierLine = Some(bez)
-    this.multiLine = Some(guide)
-  }
-  def setBezier{
-    this.bezier = true
-  }
-  def dragBezier(point:Int,place:Coord,mods:Int){
-    bezierLine.foreach{next =>
-      multiLine.foreach{guide =>
-        BezierTool.dragBezier(point, next, guide, place, mods)
-        }
-      }
-  }
-  def stopBezier{
-    this.bezier = false
-    bezierLine.foreach(next=>this.layers.getCurrent.add(next))
-    bezierLine = None
-    multiLine = None
-  }
-  //---------\\
-  def startLine(place:Coord,mods:Int){
-    val stroke = new MultiLine
-    LineTool.startLine(stroke, ColorModel.getColor, SizeModel.getSize, place, mods)
-    multiLine = Some(stroke)
-  }
-  def dragLine(place:Coord,mods:Int){
-    if(multiLine.isEmpty){
-      startLine(place,mods)
-    }
-    multiLine.foreach(_.getLast.foreach{
-      next =>
-        LineTool.dragLine(next, place, mods)
-    })
-  }
-  def addLine(place:Coord,mods:Int){
-    multiLine.foreach{
-      next =>
-        LineTool.addLine(next, ColorModel.getColor, SizeModel.getSize, place, mods)
-    }
-  }
-  /*def addLinePoint{
-    multiLine.foreach{
-      next =>
-        LineTool.addLinePoint(next)
-    }
-  }*/
-  def stopLine(place:Coord,mods:Int){
-    multiLine.foreach{
-      next =>
-        //if(mods/128%2==0)LineTool.addLine(next,tools.getColor, tools.getSize,place,mods)
-        //else next.getLast.foreach(last =>LineTool.dragLine(last,place,mods))
-        next.compress
-        this.layers.getCurrent.add(next)
-    }
-    multiLine = None
-  }
-  //---------\\
-  def startGradient(place:Coord,mods:Int){
-    val stroke = new MultiLine
-    LineTool.startLine(stroke, ColorModel.getColor, 1, place, mods)
-    multiLine = Some(stroke)
-  }
-  def fillGradient(border:java.awt.image.BufferedImage,place:Coord,mods:Int){
-    val next = new MultiLine
-    val vertical = try{
-      val line = multiLine.get.getLast.get.getCoords
-      val last = line.last
-      val first = line.head
-      math.abs(first.x-last.x)<math.abs(first.y-last.y)
-    } catch {
-      case e:Throwable=> mods/64%2==0
-    }
-    FillTool.fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, mods)
-    layers.getCurrent.add(next)
-    multiLine=None
-  }
-  def addGradient(place:Coord,mods:Int){
-    val next = new MultiLine
-    val vertical = try{
-      val line = multiLine.get.getLast.get.getCoords
-      val last = line.last
-      val first = line.head
-      math.abs(first.x-last.x)<math.abs(first.y-last.y)
-    } catch {
-      case e:Throwable=> mods/64%2==0
-    }
-    FillTool.addGradient(next, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, mods)
-    layers.getCurrent.add(next)
-    multiLine=None
   }
   //---------\\
   /*def startPerspective(place:Coord,mods:Int){
