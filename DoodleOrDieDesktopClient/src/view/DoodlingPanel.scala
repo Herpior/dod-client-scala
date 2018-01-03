@@ -200,6 +200,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           doodle.model.addChar(e.char)
       }*/
     case e:KeyPressed =>
+      val alt = e.peer.isAltDown()
+      val ctrl = e.peer.isControlDown()
+      val shift = e.peer.isShiftDown()
+      // shift = 64
+      // ctrl = 128
+      // alt =  512
       /*if(doodle.model.isWriting){
         //println(e.key)
         if(e.key == Key.BackSpace){
@@ -234,7 +240,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.colorP.repaint()
             //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.S =>
-          if(e.modifiers == 128) {
+          if(ctrl) {
             doodle.model.save//toLocalStorage
           }
           else {
@@ -315,7 +321,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.toolP.repaint()
           //doodle.model.setState(1)
         case Key.P =>
-          if(e.modifiers/128%2==1){
+          if(ctrl){
             doodle.exportImage
           }
         /*case Key.C =>
@@ -328,7 +334,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }*/
         case Key.O =>
           if(Magic.authorized){
-            if(e.modifiers/128%2==1){
+            if(ctrl){
               val text = Dialog.showInput(doodle, "file path", "open", Dialog.Message.Question, null, List[String](), "")
               text.foreach { x => 
                 doodle.model.decryptFrom(x,private_id)
@@ -355,7 +361,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           //tools.model.tool(3)//gradient fill
           //doodle.model.setState(3)
         case Key.G =>
-          if(e.modifiers == 512){
+          if(alt){
             savetimer.stop()
             doodle.model.layers.split
             doodle.redrawAll
@@ -363,28 +369,28 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             savetimer.start()
           }
         case Key.K =>
-          if(Magic.authorized)tools.model.tool(6)//perspective set->undefined
+          if(Magic.authorized) tools.model.tool(6)//perspective set->undefined
           doodle.model.unselect
           tools.toolP.repaint()
           //doodle.model.setState(6)
         case Key.Enter =>
-          if(e.modifiers /128%2==1){
+          if(ctrl){
             doodle.publish(new SubmitEvent)
             //HttpHandler.post(this.layers.flatMap { x => x.strokes.reverse.flatMap{y=>y.getLines} }.toArray)
           }
         case Key.Z =>
-          if(e.modifiers==0){
+          if(!ctrl && !shift && !alt){
             doodle.fullScreen
             //val dir = if(zoom>2) 2 else -2
             //tools.model.zoomin(dir)
-          }else if(e.modifiers==128){
+          }else if(ctrl && !shift){
             savetimer.stop()
             doodle.model.undo
             doodle.redrawMid
             doodle.repaint()
             Future(layers.reset)
             savetimer.start()
-          } else if(e.modifiers==192){
+          } else if(ctrl && shift){
             savetimer.stop()
             doodle.model.redo
             doodle.redrawLastMid
@@ -393,7 +399,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             savetimer.start()
           }
         case Key.Y =>
-          if(e.modifiers == 128){
+          if(ctrl){
             savetimer.stop()
             doodle.model.redo
             doodle.redrawLastMid
@@ -406,12 +412,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       doodle.model.unselect
           }
         case Key.F =>
-          if(e.modifiers==128) {
+          if(ctrl && !alt) {
             doodle.model.mergeLayer
             doodle.redrawMergeDown
             doodle.repaint
           }
-          else if(e.modifiers==512){
+          else if(alt && !ctrl){
             savetimer.stop()
             doodle.model.burn
             //doodle.model.toLocalStorage
@@ -425,7 +431,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
           Future(layers.reset)
         case Key.R =>
-          if(e.modifiers==128) {
+          if(ctrl) {
           //println("layerlist curr"+doodle.model.layers.ind)
             doodle.model.addLayer
             doodle.redrawLayerUp
