@@ -1,5 +1,6 @@
 package dmodel.tools
 import dmodel.Angle
+import dmodel.Magic
 import dmodel.BasicLine
 import dmodel.BezierLine
 import dmodel.ColorModel
@@ -14,7 +15,21 @@ import view.DoodlePanel
 
 object BezierTool extends LineToolClass {
   
-  
+  override def onMouseDown(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(Magic.authorized){
+              if(state == 0){
+              //startLine(e)
+              startBezier(coord)
+              }
+              else{
+                //if(tools.model.getState == 2)doodle.model.dragBezier(3,place,mods)
+                //else 
+                  dragBezier(1, coord, control, shift)
+              }
+              dp.redrawDrawing
+              dp.repaint
+            }
+  }
   override def getLines() = {
     val buf = bezierLine.getLines ++ guideLine.getLines
     buf.toBuffer
@@ -30,9 +45,6 @@ object BezierTool extends LineToolClass {
   private var guideLine: MultiLine = new MultiLine
   
   //def initTool() {}
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
-    val model = dp.model
-  }
   //def onMouseUp(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
   //def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
   //def onMouseMove(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
@@ -40,16 +52,9 @@ object BezierTool extends LineToolClass {
   //def setBezier{
   //  this.bezier = true
   //}
-  def stopBezier(model:DoodleModel){
-    //this.bezier = false
-    model.layers.getCurrent.add(bezierLine)
-    bezierLine = new BezierLine(ColorModel.getColor,SizeModel.getSize)
-    guideLine = new MultiLine
-    multiLine = new MultiLine
-  }
 
   
-  def startBezier(place:Coord,mods:Int){
+  def startBezier(place:Coord){
     //val bez = new BezierLine(ColorModel.getColor,SizeModel.getSize)
     //val guide = new MultiLine
     val bez = bezierLine
@@ -77,10 +82,10 @@ object BezierTool extends LineToolClass {
     */
     dragBezier(pt,e)
   }*/
-  def dragBezier(pt:Int,place:Coord,mods:Int){
+  def dragBezier(pt:Int, place:Coord, ctrl:Boolean, shift:Boolean){
     require(pt>=0 && pt <= 3)
     var coord = place
-      if(mods/128%2==1){
+      if(ctrl){
           pt match{
             case 0 =>
             case 1 | 3 =>
@@ -88,7 +93,7 @@ object BezierTool extends LineToolClass {
               val dc = place-c0
               val len = place.dist(c0)
               val xy = 
-                if (mods/64%2==1) Perspective.getCoord(c0,Angle.angle(dc.x,dc.y),len)
+                if (shift) Perspective.getCoord(c0,Angle.angle(dc.x,dc.y),len)
                 else Angle.getCoord(math.round(Angle.angle(dc.x,dc.y)/Pi*4)*Pi/4,len)
               coord = c0+xy
             case 2 =>
@@ -96,7 +101,7 @@ object BezierTool extends LineToolClass {
               val dc = place-c0
               val len = place.dist(c0)
               val xy = 
-                if (mods/64%2==1) Perspective.getCoord(c0,Angle.angle(dc.x,dc.y),len)
+                if (shift) Perspective.getCoord(c0,Angle.angle(dc.x,dc.y),len)
                 else Angle.getCoord(math.round(Angle.angle(dc.x,dc.y)/Pi*4)*Pi/4,len)
               coord = c0+xy
             case _ =>
@@ -113,4 +118,12 @@ object BezierTool extends LineToolClass {
           
   }
   
+  
+  def stopBezier(model:DoodleModel){
+    //this.bezier = false
+    model.layers.getCurrent.add(bezierLine)
+    bezierLine = new BezierLine(ColorModel.getColor,SizeModel.getSize)
+    guideLine = new MultiLine
+    multiLine = new MultiLine
+  }
 }

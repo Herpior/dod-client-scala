@@ -41,14 +41,6 @@ object DrawTool extends LineToolClass {
         LineTool.addLinePoint(next)
     }
   }*/
-  def stopLine(place:Coord,mods:Int):MultiLine = {
-    multiLine.compress
-       // this.layers.getCurrent.add(multiLine)
-    
-    val returning = multiLine
-    multiLine = new MultiLine
-    returning
-  }
   
   
 }

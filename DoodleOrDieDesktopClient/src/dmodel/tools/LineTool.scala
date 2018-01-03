@@ -9,21 +9,41 @@ import dmodel.MultiLine
 import dmodel.Perspective
 import dmodel.ColorModel
 import dmodel.SizeModel
+import view.DoodlePanel
 
 object LineTool extends LineToolClass
 
 class LineToolClass extends BasicTool {
   
-  def getLines() = {
+  override def onMouseUp(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+    stopLine(coord, dp.model)
+    dp.redrawDrawing
+    dp.redrawLastMid
+    dp.repaint
+  }
+  override def onMouseDown(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+    if(left){
+      startLine(coord)
+      dp.redrawDrawing
+      dp.repaint
+    }
+    else if(right){
+      addLine(ColorModel.getColor, SizeModel.getSize, coord)
+      //doodle.model.dragLine(place,mods)
+      dp.redrawDrawing
+      dp.repaint
+    }
+  }
+  override def getLines() = {
     multiLine.getLines.toBuffer
   }
-  def getLastLine() = {
+  override def getLastLine() = {
     multiLine.getLast.flatMap (_.getLastLine)
   } //  MultiLine.getLast.flatMap()
   
   protected var multiLine:MultiLine = new MultiLine
 
-  def startLine(color:Color,size:Int,place:Coord,mods:Int){
+  def startLine(color:Color,size:Int,place:Coord){
         //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
           multiLine.addLine(new BasicLine(color,size){
             this.addCoord(place)
@@ -33,8 +53,8 @@ class LineToolClass extends BasicTool {
         //}
   }
   
-  def startLine(place:Coord,mods:Int){
-    startLine(ColorModel.getColor, SizeModel.getSize, place, mods)
+  def startLine(place:Coord){
+    startLine(ColorModel.getColor, SizeModel.getSize, place)
   }
   /*def addLine(e:MouseEvent){
     
@@ -84,7 +104,7 @@ class LineToolClass extends BasicTool {
       st.addCoord(st.getCoords.last)
     }
   }*/
-  def addLine(color:Color,size:Int,place:Coord,mods:Int){
+  def addLine(color:Color,size:Int,place:Coord){
     //val x = e.point.getX+(side.offsetX*zoom)
     //val y = e.point.getY+(side.offsetY*zoom)
     //if(place.x>=0 && place.x<= Magic.x && place.y >= 0 && place.y <= Magic.y){
@@ -115,5 +135,13 @@ class LineToolClass extends BasicTool {
         else next.addLine(new BasicLine(color,size))
       }
     }*/
+  }
+  
+  def stopLine(place:Coord, model:dmodel.DoodleModel) {
+    multiLine.compress
+       // this.layers.getCurrent.add(multiLine)
+    
+    model.layers.getCurrent.add(multiLine)
+    multiLine = new MultiLine
   }
 }

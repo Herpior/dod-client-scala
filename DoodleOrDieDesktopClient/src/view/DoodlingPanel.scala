@@ -300,8 +300,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.toolP.repaint()
           //doodle.model.setState(8)
         case Key.M =>
-          if(Magic.authorized && e.modifiers/128%2==1) {
-            doodle.model.matrixLayer //TODO maybe add this eventually
+          if(Magic.authorized && ctrl) {
+            doodle.model.matrixLayer //TODO make this work better
             doodle.redrawAll
             doodle.repaint()
             layers.reset
@@ -325,10 +325,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(ctrl){
             doodle.exportImage
           }
-        /*case Key.C =>
-          if(e.modifiers/128%2==1){
-            doodle.model.copy
+        case Key.C =>
+          if(ctrl){
+            //TODO: implement duplicate layer here
+            //doodle.model.copy
           }
+        /*
         case Key.V =>
           if(e.modifiers/128%2==1){
             doodle.model.paste
@@ -494,7 +496,28 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         http.HttpHandler.ping
         pinged = true
       }
-      tools.model.mousePressed(doodle, place, left, middle, right, alt, ctrl, shift)
+      
+      if(left && doodle.model.isMatrix){
+        doodle.model.startMatrix(place, e.modifiers)
+        doodle.redrawMid
+      }
+      else if(middle){
+        if(ctrl){ //TODO: implement layer moving here
+        }
+        else doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
+      }
+      else if(!left && (alt || ctrl)){ // middle or right click with alt or ctrl, no left button down
+        if(ctrl){
+          if(Magic.authorized){
+            val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt, shift)
+            color.foreach(c=>ColorModel.setColor(c))
+            tools.colorP.repaint()
+          }
+        } else if(alt){
+          doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
+        }
+      }
+      else tools.model.mousePressed(doodle, place, left, middle, right, alt, ctrl, shift)
       
       
     case e:MouseReleased=>
@@ -508,7 +531,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       val shift = e.peer.isShiftDown()
       val meta = e.peer.isMetaDown()
       
-      
+      if(left && doodle.model.isMatrix){
+        doodle.model.stopMatrix
+        doodle.redrawMid
+      }
       tools.model.mouseReleased(doodle, place, left, middle, right, alt, ctrl, shift)
       
       doodle.model.addTime((System.nanoTime()-check)/100000)

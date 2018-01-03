@@ -63,32 +63,16 @@ object ToolModel {
       // shift = 64
       // ctrl = 128
       // alt = 512
-     if((mods/1024)%2==1 && doodle.model.isMatrix){
-        doodle.model.startMatrix(place, mods)
-        doodle.redrawMid
-      }
-      else if((mods/1024)%2==1 && !doodle.model.isDrawing){
+     
+      else if(left && !doodle.model.isDrawing){
         //this.drawing = true
         check = System.nanoTime()
+         
         tools.model.getState match {
           case 0 | 1 => //draw/line
-            doodle.model.startLine(place,mods)
-            doodle.redrawDrawing
-            doodle.repaint
+            
           case 2  =>//bezier
-            if(Magic.authorized){
-              if(!doodle.model.isBezier){
-              //startLine(e)
-              doodle.model.startBezier(place,mods)
-              }
-              else{
-                //if(tools.model.getState == 2)doodle.model.dragBezier(3,place,mods)
-                //else 
-                  doodle.model.dragBezier(1,place,mods)
-              }
-              doodle.redrawDrawing
-              doodle.repaint
-            }
+            
           case 3 =>//grad
             if(Magic.authorized)doodle.model.startGradient(place,mods)
           case 4 =>//setperspective
@@ -145,32 +129,17 @@ object ToolModel {
           case _ =>
         }
       }
-      else if(mods /2048%2==1){
-        doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
-      }
+      
       else if(mods/4096%2==1){
         
         tools.model.getState match{
           case 4 =>
             doodle.model.removePerspective(mods)
           case 1 =>
-            doodle.model.addLine(place,mods)
-            //doodle.model.dragLine(place,mods)
-            doodle.redrawDrawing
-            doodle.repaint
           case _ =>
             
         }
-        if(mods/1024%2==0){
-          if(mods/512%2==1){
-            if(Magic.authorized){
-              val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt,mods)
-              color.foreach(c=>ColorModel.setColor(c))
-              tools.colorP.repaint()
-            }
-          } else if(mods/128==1){
-            doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
-          }
+        
         }
         /*
         
@@ -201,18 +170,11 @@ object ToolModel {
       // alt =  512
       // alr gr = 640 = alt + ctrl
       
-      if((mods/1024)%2==0 && doodle.model.isMatrix){
-        doodle.model.stopMatrix
-        doodle.redrawMid
-      }
       else if(e.modifiers/1024%2==0 && doodle.model.isDrawing){
         //this.drawing = false
         tools.model.getState match {
           case 0|1 =>//draw//line
-            doodle.model.stopLine(place,mods)
-            doodle.redrawDrawing
-            doodle.redrawLastMid
-            doodle.repaint
+            
           /*case 1 =>
             if(!next.strookes.isEmpty){
               addStrooke
