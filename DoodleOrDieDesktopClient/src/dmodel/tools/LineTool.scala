@@ -1,24 +1,38 @@
-package dmodel
+package dmodel.tools
 
 import math.Pi
 import java.awt.Color
+import dmodel.Angle
+import dmodel.BasicLine
+import dmodel.Coord
+import dmodel.MultiLine
+import dmodel.Perspective
+import dmodel.ColorModel
+import dmodel.SizeModel
 
-object LineTool {
+object LineTool extends BasicTool {
+  
+  protected var multiLine:MultiLine = new MultiLine
 
-  def startLine(next:MultiLine,color:Color,size:Int,place:Coord,mods:Int){
+  def startLine(color:Color,size:Int,place:Coord,mods:Int){
         //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
-          next.addLine(new BasicLine(color,size){
+          multiLine.addLine(new BasicLine(color,size){
             this.addCoord(place)
           })
         //} else {
         //  next.addLine(new BasicLine(color,size))
         //}
   }
+  
+  def startLine(place:Coord,mods:Int){
+    startLine(ColorModel.getColor, SizeModel.getSize, place, mods)
+  }
   /*def addLine(e:MouseEvent){
     
   }*/
-  def dragLine(next:BasicLine,place:Coord,mods:Int){
+  def dragLine(place:Coord,mods:Int){
     //var x = getX(e)
+    multiLine.getLast.foreach{ next =>
     //var y = getY(e)
       val last = next.getCoords
       val len = last.length
@@ -52,7 +66,7 @@ object LineTool {
       }
       //next.change(side.bcolor, side.bsize, last.xs.last, last.ys.last, x/zoom, y/zoom)
       //restroke
-    
+    }
   }
   /*
   def addLinePoint(next:MultiLine){
@@ -61,21 +75,21 @@ object LineTool {
       st.addCoord(st.getCoords.last)
     }
   }*/
-  def addLine(next:MultiLine,color:Color,size:Int,place:Coord,mods:Int){
+  def addLine(color:Color,size:Int,place:Coord,mods:Int){
     //val x = e.point.getX+(side.offsetX*zoom)
     //val y = e.point.getY+(side.offsetY*zoom)
     //if(place.x>=0 && place.x<= Magic.x && place.y >= 0 && place.y <= Magic.y){
-      if(next.getLines.isEmpty){
-        next.addLine(new BasicLine(color,size){
+      if(multiLine.getLines.isEmpty){
+        multiLine.addLine(new BasicLine(color,size){
           this.addCoord(place)
         })
       } else {
-        val last = next.getLines.last
+        val last = multiLine.getLines.last
         if(last.color == color && last.size == size){
           last.addCoord(place)
         }
         else{
-          next.addLine(new BasicLine(color,size){
+          multiLine.addLine(new BasicLine(color,size){
             last.getLastOption.foreach(c=>this.addCoord(c))
             this.addCoord(place)
           })

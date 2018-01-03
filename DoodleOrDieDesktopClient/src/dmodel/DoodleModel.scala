@@ -3,6 +3,7 @@ package dmodel
 import collection.mutable.Buffer
 import http.HttpHandler
 import io.LocalStorage
+import dmodel.tools.BasicTool
 
 class DoodleModel {
   val layers = new LayerList//Buffer(new Layer)
@@ -11,7 +12,11 @@ class DoodleModel {
   
   //private var multiLine:Option[MultiLine] = None
   //private var bezierLine:Option[BezierLine] = None
-  private val currentLines:Buffer[DoodlePart] = Buffer()
+  
+  //private val currentLines:Buffer[DoodlePart] = Buffer()
+  
+  private def currentTool:BasicTool = tools.getTool
+  private def currentLines:Buffer[DoodlePart] = currentTool.getLines
   private def matrix:Boolean = this.layers.getCurrent.isInstanceOf[MatrixLayer]
   //private var textLine:Option[TextLine] = None
   private var hoveringLine:Option[DoodlePart] = None
@@ -72,6 +77,10 @@ class DoodleModel {
   //---------\\
   def getDrawing = {
     currentLines.toArray//(bezierLine/*++textLine*/++multiLine).toArray
+  }
+  def getLast = {
+  //  multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
+    currentTool.getLastLine
   }
   def getLastMid = {
     val strokes = layers.getCurrent.getStrokes(false)//(current).getStrokes

@@ -3,6 +3,13 @@ package dmodel.tools
 import java.awt.image.BufferedImage
 import java.awt.Color
 import collection.mutable.Queue
+import dmodel.BezierLine
+import dmodel.MultiLine
+import dmodel.BasicLine
+import dmodel.DoodlePart
+import dmodel.Magic
+import dmodel.Colors
+import dmodel.Coord
 
 object FillTool {
 
@@ -185,7 +192,8 @@ object FillTool {
     //repaint
   }
   
-  
+  /**
+   //TODO: make the bezier gradient thing work
   //---------\\
   def lineFill(mods:Int){
     //println("linefill model")
@@ -239,4 +247,6 @@ object FillTool {
     layers.getCurrent.add(next)
     multiLine=None
   }
+  * 
+  */
 }

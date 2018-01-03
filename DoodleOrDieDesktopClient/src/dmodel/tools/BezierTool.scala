@@ -12,7 +12,7 @@ import dmodel.SizeModel
 import math.Pi
 import view.DoodlePanel
 
-object BezierTool extends dmodel.tools.BasicTool {
+object BezierTool extends BasicTool {
   
   // state 0 = nothing ongoing
   // state 1 = mouse down first time, act like drawing straight line
@@ -30,14 +30,6 @@ object BezierTool extends dmodel.tools.BasicTool {
   //def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
   //def onMouseMove(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
   
-  def startBezier(model:DoodleModel, place:Coord,mods:Int){
-    val bez = new BezierLine(ColorModel.getColor,SizeModel.getSize)
-    val guide = new MultiLine
-    BezierTool.startBezier(bez, guide, place, mods)
-    model.startDrawing(Array(bez, guide))
-    //model.bezierLine = Some(bez)
-    //model.multiLine = Some(guide)
-  }
   //def setBezier{
   //  this.bezier = true
   //}
@@ -56,14 +48,19 @@ object BezierTool extends dmodel.tools.BasicTool {
   }
 
   
-  def startBezier(next:BezierLine,guide:MultiLine,place:Coord,mods:Int){
-    val inverse = Colors.inverse(next.color)
+  def startBezier(place:Coord,mods:Int){
+    val bez = new BezierLine(ColorModel.getColor,SizeModel.getSize)
+    val guide = new MultiLine
+    val inverse = Colors.inverse(bez.color)
     guide.addLine( new BasicLine(inverse,0.1) )
     val s = guide.getLines.head
     for(i <- 0 to 3){
-      next.setCoord(i,place)
+      bez.setCoord(i,place)
       s.addCoord(place)
     }
+    bezierLine = Some(bez)
+    guideLine = Some(guide)
+    //model.startDrawing(Array(bez, guide))
   }
   /*def addBezPt(pt:Int,next:BezierLine,guide:MultiLine,place:Coord,mods:Int){
    /* require(pt>=0 && pt <= 3)
