@@ -155,7 +155,7 @@ object BezierTool extends LineToolClass {
   def stopBezier(model:DoodleModel){
     //this.bezier = false
     model.layers.getCurrent.add(bezierLine)
-    bezierLine = new BezierLine(ColorModel.getColor,SizeModel.getSize)
+    bezierLine = new BezierLine(ColorModel.getColor, 0)
     guideLine = new MultiLine
     multiLine = new MultiLine
   }

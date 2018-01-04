@@ -21,9 +21,20 @@ object FillTool extends LineToolClass{
   //  dp.redrawDrawing
   //  dp.repaint
   //}
+  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+    if(Magic.authorized){
+      dragLine(coord, control, shift)
+      dp.redrawDrawing
+      dp.repaint
+    }
+  }
   override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {}
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(Magic.authorized)startGradient(coord, control, alt, shift)
+    if(Magic.authorized){
+      startGradient(coord, control, alt, shift)
+      dp.redrawDrawing
+      dp.repaint
+    }
   }
   override def onMouseUp(dp:view.DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     if(Magic.authorized){
@@ -34,8 +45,8 @@ object FillTool extends LineToolClass{
       dp.repaint
     }
   }
-  override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?
-  override def getLastLine() = {None} // for drawing one segment of the line
+  //override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?
+  //override def getLastLine() = {None} // for drawing one segment of the line
   /*def startGradient(next:MultiLine,place:Coord,mods:Int){
     //next = new nextLinee
     //next.strookes += new nextStrooke("#000",1)
@@ -240,8 +251,9 @@ object FillTool extends LineToolClass{
   */
   //---------\\
   def startGradient(place:Coord, control:Boolean, alt:Boolean, shift:Boolean){
-    multiLine = new MultiLine
+    //multiLine = new MultiLine
     startLine(ColorModel.getColor, 1, place)
+    //addLine(ColorModel.getColor, 1, place)
   }
   def fillGradient(model:dmodel.DoodleModel, border:java.awt.image.BufferedImage,place:Coord, alt:Boolean, shift:Boolean){
     val next = new MultiLine
@@ -253,7 +265,7 @@ object FillTool extends LineToolClass{
     } catch {
       case e:Throwable=> shift
     }
-    fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)//next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord, alt:Boolean, shift:Boolean
+    fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)
     model.layers.getCurrent.add(next)
     multiLine = new MultiLine
   }
