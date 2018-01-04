@@ -98,11 +98,11 @@ object FillTool extends LineToolClass{
     val colors = Colors.linearcolor(n,!alt,color1,color2)
     for(i<- 0 until n){
       if(vertical){
-        val y = size/2+interval*i//Magic.y*i/(n-1)
+        val y = size/4+interval*i//Magic.y*i/(n-1)
         //println("y:"+y)
         next.addLine(new BasicLine(colors(i), size){ this.setCoords(Array(new Coord(0,y), new Coord(Magic.x, y))) })
       } else {
-        val x = size/2+interval*i//size/2*(i+1)//Magic.x*i/(n-1)
+        val x = size/4+interval*i//size/2*(i+1)//Magic.x*i/(n-1)
         //println("x:"+x)
         next.addLine(new BasicLine(colors(i), size){ this.setCoords(Array(new Coord(x,0), new Coord(x, Magic.y))) })
       }
@@ -166,20 +166,20 @@ object FillTool extends LineToolClass{
     val flood = floodfill(border,(2*place.x).toInt,(2*place.y).toInt)
     val min = flood._2
     val max = flood._3
-    println("min: "+min)
-    println("max: "+max)
+    //println("min: "+min)
+    //println("max: "+max)
     val dc = max-min
     val flooded = flood._1
     //println(flooded.getHeight+" -|- "+flooded.getWidth)
     val color = flooded.getRGB((2*place.x).toInt,(2*place.y).toInt)
     val n = if(vertical) (dc.y.toInt+1)/(size) else (dc.x.toInt+1)/(size)
     val interval = if(size>32)if(vertical) dc.y.toInt/(n) else dc.x.toInt/(n)else size
-    println("n: "+n)
+    //println("n: "+n)
     //next = new nextLinee
     val colors = Colors.linearcolor(n,!alt,color1,color2)
     //println(dy+" = "+y2+"-"+y1)
     for(j<- 0 until n){
-      val o = size/2+interval*j
+      val o = size/4+interval*j
       val tc = min + Coord(o,o)//dc*j/n
       val iterate = if(vertical)2*Magic.x else 2*Magic.y
       var foundArea = false
@@ -208,7 +208,7 @@ object FillTool extends LineToolClass{
               foundArea = false
             }
           } else {
-            println(tc.x+" , "+i)
+            //println(tc.x+" , "+i)
             if(flooded.getRGB(tc.x.toInt,i)==color ){ //previous wasn't in area but this is
               foundArea = true
               iterating = i
@@ -250,6 +250,19 @@ object FillTool extends LineToolClass{
   
   */
   //---------\\
+  private def vertRev(defaultVert:Boolean, defaultRev:Boolean) = {
+    try{
+      val line = multiLine.getLast.get.getCoords
+      val last = line.last
+      val first = line.head
+      val vert = math.abs(first.x-last.x) < math.abs(first.y-last.y)
+      val rever = (vert && first.y < last.y) || (!vert && first.x < last.x)
+      (vert, rever)
+    } catch {
+      case e:Throwable=> (defaultVert, defaultRev)
+    }
+  }
+  //---------\\
   def startGradient(place:Coord, control:Boolean, alt:Boolean, shift:Boolean){
     //multiLine = new MultiLine
     startLine(ColorModel.getColor, 1, place)
@@ -257,29 +270,17 @@ object FillTool extends LineToolClass{
   }
   def fillGradient(model:dmodel.DoodleModel, border:java.awt.image.BufferedImage,place:Coord, alt:Boolean, shift:Boolean){
     val next = new MultiLine
-    val vertical = try{
-      val line = multiLine.getLast.get.getCoords
-      val last = line.last
-      val first = line.head
-      math.abs(first.x-last.x) < math.abs(first.y-last.y)
-    } catch {
-      case e:Throwable=> shift
-    }
-    fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)
+    val (vertical, reverse) = vertRev(shift, false)
+    if(reverse) fillGradient(next, border, ColorModel.getColor2, ColorModel.getColor, SizeModel.getSize, vertical, place, alt, shift)
+    else        fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)
     model.layers.getCurrent.add(next)
     multiLine = new MultiLine
   }
   def addGradient(model:dmodel.DoodleModel, place:Coord, alt:Boolean, shift:Boolean){
     val next = new MultiLine
-    val vertical = try{
-      val line = multiLine.getLast.get.getCoords
-      val last = line.last
-      val first = line.head
-      math.abs(first.x-last.x) < math.abs(first.y-last.y)
-    } catch {
-      case e:Throwable=> shift
-    }
-    addGradient(next, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)
+    val (vertical, reverse) = vertRev(shift, false)
+    if(reverse) addGradient(next, ColorModel.getColor2, ColorModel.getColor, SizeModel.getSize, vertical, place, alt, shift)
+    else        addGradient(next, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)
     model.layers.getCurrent.add(next)
     multiLine = new MultiLine
   }
