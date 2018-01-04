@@ -11,8 +11,12 @@ import dmodel.Magic
 import dmodel.Colors
 import dmodel.Coord
 
-object FillTool {
+object FillTool extends BasicTool{
 
+  
+  
+  override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?
+  override def getLastLine() = {None} // for drawing one segment of the line
   /*def startGradient(next:MultiLine,place:Coord,mods:Int){
     //next = new nextLinee
     //next.strookes += new nextStrooke("#000",1)

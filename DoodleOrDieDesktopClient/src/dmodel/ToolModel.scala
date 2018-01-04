@@ -8,13 +8,16 @@ object ToolModel {
   private var tool:BasicTool = DrawTool
   private var state = 0
   private var ready = Magic.readyDefault
+  private var toolList:Array[BasicTool] = Array(DrawTool, LineTool, BezierTool, FillTool)
   
   def isReady = this.ready
   def initReady {ready = Magic.readyDefault}
   
   def tool(n:Int){
-    if(n<2||Magic.authorized)
-    state=n
+    if(n>=0 && n<=8 && (n<2||Magic.authorized)) {
+      state=n
+      tool = toolList(n)
+    }
     //TODO: change this part completely, to use the tool objects
   }
   def getState = state
@@ -29,8 +32,8 @@ object ToolModel {
     val alt = mod/64%2
   }
   
-  def mouseMoved(dp:DoodlePanel, point:Coord, alt:Boolean, ctrl:Boolean, shift:Boolean) {
-    tool.onMouseMove(dp, point, false, false, false, ctrl, alt, shift)
+  def mouseMoved(dp:DoodlePanel, point:Coord, ctrl:Boolean, alt:Boolean, shift:Boolean) {
+    tool.onMouseMove(dp, point, ctrl, alt, shift)
     /*tools.model.getState match{
         /*case 2 =>
             val place = doodle.getCoord(e.point.getX, e.point.getY)
@@ -49,8 +52,8 @@ object ToolModel {
       }*/
   }
   
-  def mousePressed(dp:DoodlePanel, point:Coord, left:Boolean, middle:Boolean, right:Boolean, alt:Boolean, ctrl:Boolean, shift:Boolean) {
-    tool.onMouseDown(dp, point, left, right, middle, ctrl, alt, shift)
+  def mousePressed(dp:DoodlePanel, point:Coord, button:Int, ctrl:Boolean, alt:Boolean, shift:Boolean) {
+    tool.onMouseDown(dp, point, button, ctrl, alt, shift)
     /*
       // left = 1024
       // right = 4096
@@ -151,8 +154,8 @@ object ToolModel {
      */
   }
   
-  def mouseReleased(dp:DoodlePanel, point:Coord, left:Boolean, middle:Boolean, right:Boolean, alt:Boolean, ctrl:Boolean, shift:Boolean) {
-    tool.onMouseUp(dp, point, left, right, middle, ctrl, alt, shift)
+  def mouseReleased(dp:DoodlePanel, point:Coord, button:Int, ctrl:Boolean, alt:Boolean, shift:Boolean) {
+    tool.onMouseUp(dp, point, button, ctrl, alt, shift)
     /*
      // ^left only = 0
       // ^middle only = 512
@@ -210,8 +213,8 @@ object ToolModel {
      */
   }
   
-  def mouseDragged(dp:DoodlePanel, point:Coord, left:Boolean, middle:Boolean, right:Boolean, alt:Boolean, ctrl:Boolean, shift:Boolean) {
-    tool.onMouseDrag(dp, point, left, right, middle, ctrl, alt, shift)
+  def mouseDragged(dp:DoodlePanel, point:Coord, left:Boolean, middle:Boolean, right:Boolean, ctrl:Boolean, alt:Boolean, shift:Boolean) {
+    tool.onMouseDrag(dp, point, left, middle, right, ctrl, alt, shift)
     /*
      
       

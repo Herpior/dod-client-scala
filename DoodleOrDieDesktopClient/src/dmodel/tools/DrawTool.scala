@@ -8,18 +8,20 @@ import dmodel.Magic
 object DrawTool extends LineToolClass {
  
 
-  override def onMouseDrag(dp:view.DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
-    if(alt){
-      dragLine(coord, control, shift)
-      dp.redrawDrawing
+  override def onMouseDrag(dp:view.DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+    if(left){
+      if(alt){
+        dragLine(coord, control, shift)
+        dp.redrawDrawing
+      }
+      else {
+        addLine(ColorModel.getColor, SizeModel.getSize, coord)
+        //println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
+        if(ColorModel.getColor.getAlpha==255 || Magic.faster) dp.redrawLast
+        else dp.redrawDrawing
+      }
+      dp.repaint
     }
-    else {
-      addLine(ColorModel.getColor, SizeModel.getSize, coord)
-      //println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
-      if(ColorModel.getColor.getAlpha==255 || Magic.faster) dp.redrawLast
-      else dp.redrawDrawing
-    }
-    dp.repaint
   }
   //---------\\
   /*

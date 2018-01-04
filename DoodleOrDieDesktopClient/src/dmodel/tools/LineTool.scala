@@ -15,24 +15,28 @@ object LineTool extends LineToolClass
 
 class LineToolClass extends BasicTool {
   
-  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
-    dragLine(coord, control, shift)
-    dp.redrawDrawing
-    dp.repaint
-  }
-  override def onMouseUp(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
-    stopLine(coord, dp.model)
-    dp.redrawDrawing
-    dp.redrawLastMid
-    dp.repaint
-  }
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(left){
+      dragLine(coord, control, shift)
+      dp.redrawDrawing
+      dp.repaint
+    }
+  }
+  override def onMouseUp(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
+    if(button == 1){
+      stopLine(coord, dp.model)
+      dp.redrawDrawing
+      dp.redrawLastMid
+      dp.repaint
+    }
+  }
+  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
+    if(button == 1){
       startLine(coord)
       dp.redrawDrawing
       dp.repaint
     }
-    else if(right){
+    else if(button == 3){
       addLine(ColorModel.getColor, SizeModel.getSize, coord)
       //doodle.model.dragLine(place,mods)
       dp.redrawDrawing

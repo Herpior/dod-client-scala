@@ -464,15 +464,15 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //tools.repaint()
     case e:MouseMoved =>
       val place = doodle.getCoord(e.point.getX, e.point.getY)
-      val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
-      val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
-      val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
+      //val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
+      //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
+      //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val alt = e.peer.isAltDown()
-      val altgr = e.peer.isAltGraphDown()
       val ctrl = e.peer.isControlDown()
       val shift = e.peer.isShiftDown()
-      val meta = e.peer.isMetaDown()
-      tools.model.mouseMoved(doodle, place, alt, ctrl, shift)
+      //val altgr = e.peer.isAltGraphDown()
+      //val meta = e.peer.isMetaDown()
+      tools.model.mouseMoved(doodle, place, ctrl, alt, shift)
       
       doodle.setCursor(e.point.getX, e.point.getY)
       //curx = e.point.getX.toInt
@@ -481,14 +481,15 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       
     case e:MousePressed=> 
       val place = doodle.getCoord(e.point.getX, e.point.getY)
-      val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
-      val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
-      val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
+      //val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
+      //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
+      //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
+      val button = e.peer.getButton // 1 if left, 2 if middle, 3 if right
       val alt = e.peer.isAltDown()
-      val altgr = e.peer.isAltGraphDown()
       val ctrl = e.peer.isControlDown()
       val shift = e.peer.isShiftDown()
-      val meta = e.peer.isMetaDown()
+      //val altgr = e.peer.isAltGraphDown()
+      //val meta = e.peer.isMetaDown()
       
       savetimer.stop()
       
@@ -497,16 +498,16 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         pinged = true
       }
       
-      if(left && doodle.model.isMatrix){
+      if(button == 1 && doodle.model.isMatrix){
         doodle.model.startMatrix(place, e.modifiers)
         doodle.redrawMid
       }
-      else if(middle){
+      else if(button == 2){ // middle button
         if(ctrl){ //TODO: implement layer moving here
         }
         else doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
       }
-      else if(!left && (alt || ctrl)){ // middle or right click with alt or ctrl, no left button down
+      else if(button > 1 && (alt || ctrl)){ // middle or right click with alt or ctrl, no left button down
         if(ctrl){
           if(Magic.authorized){
             val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt, shift)
@@ -517,25 +518,36 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
         }
       }
-      else tools.model.mousePressed(doodle, place, left, middle, right, alt, ctrl, shift)
+      else tools.model.mousePressed(doodle, place, button, ctrl, alt, shift)
       
       
     case e:MouseReleased=>
+      // ^left only = 0
+      // ^middle only = 512
+      // ^right only = 256
+      // left = 1024
+      // middle = 2048
+      // right = 4096
+      // shift = 64
+      // ctrl = 128
+      // alt =  512
+      // alr gr = 640 = alt + ctrl
       val place = doodle.getCoord(e.point.getX, e.point.getY)
-      val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
-      val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
-      val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
+      //val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
+      //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
+      //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
+      val button = e.peer.getButton // 1 if left, 2 if middle, 3 if right
       val alt = e.peer.isAltDown()
-      val altgr = e.peer.isAltGraphDown()
       val ctrl = e.peer.isControlDown()
       val shift = e.peer.isShiftDown()
-      val meta = e.peer.isMetaDown()
+      //val altgr = e.peer.isAltGraphDown()
+      //val meta = e.peer.isMetaDown()
       
-      if(left && doodle.model.isMatrix){
+      if(button == 1 && doodle.model.isMatrix){
         doodle.model.stopMatrix
         doodle.redrawMid
       }
-      tools.model.mouseReleased(doodle, place, left, middle, right, alt, ctrl, shift)
+      tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
       
       doodle.model.addTime((System.nanoTime()-check)/100000)
       savetimer.start()
@@ -547,17 +559,17 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val alt = e.peer.isAltDown()
-      val altgr = e.peer.isAltGraphDown()
       val ctrl = e.peer.isControlDown()
       val shift = e.peer.isShiftDown()
-      val meta = e.peer.isMetaDown()
+      //val altgr = e.peer.isAltGraphDown()
+      //val meta = e.peer.isMetaDown()
 
       if(left && doodle.model.isMatrix){
         doodle.model.dragMatrix(place, e.modifiers)
         doodle.redrawMid
         doodle.repaint
       }
-      tools.model.mouseDragged(doodle, place, left, middle, right, alt, ctrl, shift)
+      tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)
 
       doodle.setCursor(e.point.getX(), e.point.getY())
       doodle.repaint
