@@ -10,11 +10,30 @@ import dmodel.DoodlePart
 import dmodel.Magic
 import dmodel.Colors
 import dmodel.Coord
+import dmodel.ColorModel
+import dmodel.SizeModel
+import view.DoodlePanel
 
-object FillTool extends BasicTool{
+object FillTool extends LineToolClass{
 
   
-  
+  //override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+  //  dp.redrawDrawing
+  //  dp.repaint
+  //}
+  override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {}
+  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(Magic.authorized)startGradient(coord, control, alt, shift)
+  }
+  override def onMouseUp(dp:view.DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(Magic.authorized){
+      if(control)fillGradient(dp.model, dp.getSelected, coord, alt, shift) //next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int
+      else addGradient(dp.model, coord, alt, shift)
+      dp.redrawLastMid
+      dp.redrawDrawing
+      dp.repaint
+    }
+  }
   override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?
   override def getLastLine() = {None} // for drawing one segment of the line
   /*def startGradient(next:MultiLine,place:Coord,mods:Int){
@@ -59,13 +78,13 @@ object FillTool extends BasicTool{
   def linearFill(first:DoodlePart,second:DoodlePart,res:MultiLine){
     //TODO make this work maybe
   }
-  def addGradient(next:MultiLine,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int){
+  def addGradient(next:MultiLine,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord, alt:Boolean, shift:Boolean){
     //val size = side.bsize
     val size = (sizeo+1)/2*2
     val n = if(vertical) (Magic.y*2)/size else (Magic.x*2)/size
     val interval = if(size>32)if(vertical) Magic.y/n else Magic.x/n else size/2
     //println("n:"+n)
-    val colors = if(mods/512%2==1)Colors.linearcolor(n,true,color1,color2) else Colors.linearcolor(n,false,color1,color2)
+    val colors = Colors.linearcolor(n,!alt,color1,color2)
     for(i<- 0 until n){
       if(vertical){
         val y = size/2+interval*i//Magic.y*i/(n-1)
@@ -126,7 +145,7 @@ object FillTool extends BasicTool{
     (res,c0,c1)
   }
   
-  def fillGradient(next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int){
+  def fillGradient(next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord, alt:Boolean, shift:Boolean){
     //println(x+","+y)
     val size = (sizeo+1)/2*2
     //val img = new BufferedImage(Magic.x*2,Magic.y*2,BufferedImage.TYPE_INT_ARGB)
@@ -146,7 +165,7 @@ object FillTool extends BasicTool{
     val interval = if(size>32)if(vertical) dc.y.toInt/(n) else dc.x.toInt/(n)else size
     println("n: "+n)
     //next = new nextLinee
-    val colors = if(mods/512%2==1)Colors.linearcolor(n,true,color1,color2) else Colors.linearcolor(n,false,color1,color2)
+    val colors = Colors.linearcolor(n,!alt,color1,color2)
     //println(dy+" = "+y2+"-"+y1)
     for(j<- 0 until n){
       val o = size/2+interval*j
@@ -217,40 +236,39 @@ object FillTool extends BasicTool{
     }
     unselect
   }
-  //---------\\
-  def startGradient(place:Coord,mods:Int){
-    val stroke = new MultiLine
-    LineTool.startLine(stroke, ColorModel.getColor, 1, place, mods)
-    multiLine = Some(stroke)
-  }
-  def fillGradient(border:java.awt.image.BufferedImage,place:Coord,mods:Int){
-    val next = new MultiLine
-    val vertical = try{
-      val line = multiLine.get.getLast.get.getCoords
-      val last = line.last
-      val first = line.head
-      math.abs(first.x-last.x)<math.abs(first.y-last.y)
-    } catch {
-      case e:Throwable=> mods/64%2==0
-    }
-    FillTool.fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, mods)
-    layers.getCurrent.add(next)
-    multiLine=None
-  }
-  def addGradient(place:Coord,mods:Int){
-    val next = new MultiLine
-    val vertical = try{
-      val line = multiLine.get.getLast.get.getCoords
-      val last = line.last
-      val first = line.head
-      math.abs(first.x-last.x)<math.abs(first.y-last.y)
-    } catch {
-      case e:Throwable=> mods/64%2==0
-    }
-    FillTool.addGradient(next, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, mods)
-    layers.getCurrent.add(next)
-    multiLine=None
-  }
-  * 
+  
   */
+  //---------\\
+  def startGradient(place:Coord, control:Boolean, alt:Boolean, shift:Boolean){
+    multiLine = new MultiLine
+    startLine(ColorModel.getColor, 1, place)
+  }
+  def fillGradient(model:dmodel.DoodleModel, border:java.awt.image.BufferedImage,place:Coord, alt:Boolean, shift:Boolean){
+    val next = new MultiLine
+    val vertical = try{
+      val line = multiLine.getLast.get.getCoords
+      val last = line.last
+      val first = line.head
+      math.abs(first.x-last.x) < math.abs(first.y-last.y)
+    } catch {
+      case e:Throwable=> shift
+    }
+    fillGradient(next, border, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)//next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord, alt:Boolean, shift:Boolean
+    model.layers.getCurrent.add(next)
+    multiLine = new MultiLine
+  }
+  def addGradient(model:dmodel.DoodleModel, place:Coord, alt:Boolean, shift:Boolean){
+    val next = new MultiLine
+    val vertical = try{
+      val line = multiLine.getLast.get.getCoords
+      val last = line.last
+      val first = line.head
+      math.abs(first.x-last.x) < math.abs(first.y-last.y)
+    } catch {
+      case e:Throwable=> shift
+    }
+    addGradient(next, ColorModel.getColor, ColorModel.getColor2, SizeModel.getSize, vertical, place, alt, shift)
+    model.layers.getCurrent.add(next)
+    multiLine = new MultiLine
+  }
 }

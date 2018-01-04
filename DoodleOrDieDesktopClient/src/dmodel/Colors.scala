@@ -164,23 +164,37 @@ object Colors {
         buf += "#"+r+""+g+""+b*/
         buf += new Color(colr.getRed,colr.getGreen,colr.getBlue, aa)
       }
-    else for(i<-0 until n){
-      val coeff = i*1.0/(n-1)
-      //print(coeff+" -> ")
-      val negef = 1-coeff
-      val r = (fr*coeff+lr*negef).toInt
-      val g = (fg*coeff+lg*negef).toInt
-      val b = (fb*coeff+lb*negef).toInt
-      val a = (fa*coeff+la*negef).toInt
-      buf += new Color(r,g,b,a)
-      /*var r = Integer.toHexString(math.round(fr*coeff+lr*negef).toInt)
-      var g = Integer.toHexString(math.round(fg*coeff+lg*negef).toInt)
-      var b = Integer.toHexString(math.round(fb*coeff+lb*negef).toInt)
-      if(r.length()<2)r="0"+r
-      if(g.length()<2)g="0"+g
-      if(b.length()<2)b="0"+b
-      buf += "#"+r+""+g+""+b*/
-      //print(r+g+b+" -> ")
+    else {
+        val gamma = 2.0 //TODO: move to parameters
+        val negamma = 1/gamma
+        val frg = math.pow(fr,gamma)
+        val fgg = math.pow(fg,gamma)
+        val fbg = math.pow(fb,gamma)
+        val lrg = math.pow(lr,gamma)
+        val lgg = math.pow(lg,gamma)
+        val lbg = math.pow(lb,gamma)
+      
+      for(i<-0 until n){
+        val coeff = i*1.0/(n-1)
+        //print(coeff+" -> ")
+        val negef = 1-coeff
+        val r = math.pow(frg*coeff+lrg*negef, negamma).toInt
+        val g = math.pow(fgg*coeff+lgg*negef, negamma).toInt
+        val b = math.pow(fbg*coeff+lbg*negef, negamma).toInt
+        //val r = (fr*coeff+lr*negef).toInt
+        //val g = (fg*coeff+lg*negef).toInt
+        //val b = (fb*coeff+lb*negef).toInt
+        val a = (fa*coeff+la*negef).toInt
+        buf += new Color(r,g,b,a)
+        /*var r = Integer.toHexString(math.round(fr*coeff+lr*negef).toInt)
+        var g = Integer.toHexString(math.round(fg*coeff+lg*negef).toInt)
+        var b = Integer.toHexString(math.round(fb*coeff+lb*negef).toInt)
+        if(r.length()<2)r="0"+r
+        if(g.length()<2)g="0"+g
+        if(b.length()<2)b="0"+b
+        buf += "#"+r+""+g+""+b*/
+        //print(r+g+b+" -> ")
+      }
     }
     buf.toArray
   }

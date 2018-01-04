@@ -72,7 +72,7 @@ object ToolModel {
           case 2  =>//bezier
             
           case 3 =>//grad
-            if(Magic.authorized)doodle.model.startGradient(place,mods)
+            
           case 4 =>//setperspective
             if(Magic.authorized)doodle.model.dragPerspective(place,mods)
             /*if(mods /512%2==1){
@@ -185,13 +185,7 @@ object ToolModel {
             doodle.redrawDrawing
             doodle.repaint*/
           case 3 =>//gradient fill
-            if(Magic.authorized){
-              if(e.modifiers/128%2 == 1)doodle.model.fillGradient(doodle.getSelected,place,mods)
-              else doodle.model.addGradient(place,mods)
-              doodle.redrawLastMid
-              doodle.redrawDrawing
-              doodle.repaint
-            }
+            
             //next = new nextLinee
           case 2 =>//bezier2
             
