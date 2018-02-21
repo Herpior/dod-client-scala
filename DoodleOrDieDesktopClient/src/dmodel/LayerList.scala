@@ -12,6 +12,7 @@ class LayerList {
   private var current = 0
   
   def ind = current
+  def isMatrix = getCurrent.isMatrix;
   
   def size = layers.length
   //

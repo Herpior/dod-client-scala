@@ -235,11 +235,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.W =>
           ColorModel.colorUp
           tools.colorP.repaint()
-            //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.A =>
           ColorModel.colorLeft
           tools.colorP.repaint()
-            //doodle.model.setColor(tools.model.getColor(0),0)
         case Key.S =>
           if(ctrl) {
             doodle.model.save//toLocalStorage
@@ -247,84 +245,69 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           else {
             ColorModel.colorDown
             tools.colorP.repaint()
-            //doodle.model.setColor(tools.model.getColor(0),0)
           }
         case Key.D =>
           ColorModel.colorRight
           tools.colorP.repaint()
-            //doodle.model.setColor(tools.model.getColor(0),0)
+          
         case Key.Q =>
           SizeModel.sizeDown
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.E =>
           SizeModel.sizeUp
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
+          
         case Key.Key1 =>
           SizeModel.number(0)
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.Key2 =>
           SizeModel.number(1)
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.Key3 =>
           SizeModel.number(2)
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.Key4 =>
           SizeModel.number(3)
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.Key5 =>
           SizeModel.number(4)
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.Key6 =>
           SizeModel.number(5)
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.Key7 =>
           SizeModel.number(6)
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
         case Key.Key8 =>
           if(Magic.authorized)SizeModel.number(7)
       doodle.model.unselect
           tools.sizeP.repaint()
-            //doodle.model.setSize(tools.model.getSize)
+
+        case Key.U =>
+          tools.model.tool(1)//->line
+      doodle.model.unselect
+          tools.toolP.repaint()
+        case Key.I =>
+          if(Magic.authorized)tools.model.tool(2)//->bez
+      doodle.model.unselect
+          tools.toolP.repaint()
         case Key.H =>
           if(Magic.authorized)tools.model.tool(4)//->perspect
       doodle.model.unselect
           tools.toolP.repaint()
-          //doodle.model.setState(8)
-        case Key.M =>
-          if(Magic.authorized && ctrl) {
-            doodle.model.matrixLayer //TODO make this work better
-            doodle.redrawAll
-            doodle.repaint()
-            layers.reset
-          }
-        case Key.J =>//->undefined
-          if(Magic.authorized)tools.model.tool(5)
+        case Key.J =>
+          if(Magic.authorized)tools.model.tool(5)//->zoom
       doodle.model.unselect
           tools.toolP.repaint()
-          //doodle.model.setState(9)
-        case Key.U =>
-          tools.model.tool(1)//draw->line
+        case Key.K =>
+          if(Magic.authorized) tools.model.tool(6)//->hand
       doodle.model.unselect
           tools.toolP.repaint()
-          //doodle.model.setState(0)
-        case Key.I =>
-          if(Magic.authorized)tools.model.tool(2)//line->bez
+        case Key.L =>
+          if(Magic.authorized)tools.model.tool(7)//->undefined
       doodle.model.unselect
           tools.toolP.repaint()
-          //doodle.model.setState(1)
-        case Key.P =>
-          if(ctrl){
-            doodle.exportImage
-          }
+          
         case Key.C =>
           if(ctrl){
             //TODO: implement duplicate layer here
@@ -335,6 +318,13 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(e.modifiers/128%2==1){
             doodle.model.paste
           }*/
+        case Key.M =>
+          if(Magic.authorized && ctrl) {
+            doodle.model.matrixLayer //TODO make this work better
+            doodle.redrawAll
+            doodle.repaint()
+            layers.reset
+          }
         case Key.O =>
           if(Magic.authorized){
             if(ctrl){
@@ -349,20 +339,16 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
                 }
             }
             else {
-              tools.model.tool(3)//bezier->fill
+              tools.model.tool(3)//->fill
       doodle.model.unselect
           tools.toolP.repaint()
-              //doodle.model.setState(2)
             }
           }
-        case Key.L =>
-          if(Magic.authorized)tools.model.tool(7)//bezier2->undefined
-      doodle.model.unselect
-          tools.toolP.repaint()
-          //doodle.model.setState(7)
-        //case Key.P =>
-          //tools.model.tool(3)//gradient fill
-          //doodle.model.setState(3)
+        
+        case Key.P =>
+          if(ctrl){
+            doodle.exportImage
+          }
         case Key.G =>
           if(alt){
             savetimer.stop()
@@ -371,11 +357,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             Future(layers.reset)
             savetimer.start()
           }
-        case Key.K =>
-          if(Magic.authorized) tools.model.tool(6)//perspective set->undefined
-          doodle.model.unselect
-          tools.toolP.repaint()
-          //doodle.model.setState(6)
         case Key.Enter =>
           if(ctrl){
             doodle.publish(new SubmitEvent)
@@ -472,7 +453,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       val shift = e.peer.isShiftDown()
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
-      tools.model.mouseMoved(doodle, place, ctrl, alt, shift)
+      if(doodle.canDraw){ // TODO: panning and zoom don't work with matrixlayers, maybe do something about that? 
+        tools.model.mouseMoved(doodle, place, ctrl, alt, shift)
+      }
       
       doodle.setCursor(e.point.getX, e.point.getY)
       //curx = e.point.getX.toInt
@@ -518,7 +501,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
         }
       }
-      else tools.model.mousePressed(doodle, place, button, ctrl, alt, shift)
+      else if(doodle.canDraw){ 
+        tools.model.mousePressed(doodle, place, button, ctrl, alt, shift)
+      }
       
       
     case e:MouseReleased=>
@@ -547,7 +532,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.model.stopMatrix
         doodle.redrawMid
       }
-      tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
+      if(doodle.canDraw){
+        tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
+      }
       
       doodle.model.addTime((System.nanoTime()-check)/100000)
       savetimer.start()
@@ -569,7 +556,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.redrawMid
         doodle.repaint
       }
-      tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)
+      if(doodle.canDraw){
+        tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)
+      }
 
       doodle.setCursor(e.point.getX(), e.point.getY())
       doodle.repaint

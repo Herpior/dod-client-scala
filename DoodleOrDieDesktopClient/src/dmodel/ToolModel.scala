@@ -8,7 +8,7 @@ object ToolModel {
   private var tool:BasicTool = DrawTool
   private var state = 0
   private var ready = Magic.readyDefault
-  private var toolList:Array[BasicTool] = Array(DrawTool, LineTool, BezierTool, FillTool)
+  private var toolList:Array[BasicTool] = Array(DrawTool, LineTool, BezierTool, FillTool, PerspectiveTool, ZoomTool, HandTool, PerspectiveTool)
   
   def isReady = this.ready
   def initReady {ready = Magic.readyDefault}

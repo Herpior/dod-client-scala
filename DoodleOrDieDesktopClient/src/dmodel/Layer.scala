@@ -12,6 +12,7 @@ class Layer() {
   
   def isVisible = visible
   def isSelected = selected
+  def isMatrix = false
   
   def pressPoint(coord:Coord){}
   def dragPoint(coord:Coord){}
@@ -92,6 +93,8 @@ class MatrixLayer(private val orig:Layer) extends Layer {
   private var points = Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Magic.doodleSize,Coord(0,Magic.doodleSize.y))
   private var edges = new BasicLine(Magic.red,1){this.setCoords(points++Array(points.head))}
   private var ind = -1
+  
+  override def isMatrix = true
   
   override def pressPoint(coord:Coord) {
     val pts = points.map(c=>c.dist(coord)).zipWithIndex

@@ -45,6 +45,7 @@ class DoodlePanel extends Panel {
   def getZoom = zooms(zoomind)
   def getWidth = this.bounds.getWidth.toInt
   def getHeight = this.bounds.getHeight.toInt
+  def canDraw = !this.model.layers.isMatrix
   
   def getSelected = {
     val img = new BufferedImage(Magic.x*2,Magic.y*2,BufferedImage.TYPE_INT_ARGB)
