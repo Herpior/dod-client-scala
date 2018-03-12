@@ -37,7 +37,18 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
       this.borderPainted = false 
       override def paintComponent(g:Graphics2D){
         this.background = ColorModel.getColors(i)
-        if(ColorModel.colorIndex == i) this.borderPainted = true 
+        if(ColorModel.colorIndex == i) {
+          this.borderPainted = true 
+          val borderline = BorderFactory.createLineBorder(Color.cyan);
+          val loweredbevel = BorderFactory.createLoweredBevelBorder();
+          this.border = javax.swing.BorderFactory.createCompoundBorder(borderline, loweredbevel);
+        }
+        else if (ColorModel.colorIndex2 == i) {
+          this.borderPainted = true 
+          val borderline = BorderFactory.createLineBorder(Color.red);
+          val raisedbevel = BorderFactory.createRaisedBevelBorder();
+          this.border = javax.swing.BorderFactory.createCompoundBorder(borderline, raisedbevel);
+        }
         else this.borderPainted = false
         //if color is not opaque, draw checkerboards
         if(this.background.getAlpha<255){
