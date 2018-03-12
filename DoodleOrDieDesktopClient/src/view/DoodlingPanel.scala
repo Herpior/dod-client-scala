@@ -488,7 +488,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       else if(button == 2){ // middle button
         if(ctrl){ //TODO: implement layer moving here
         }
-        else doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
+        else dmodel.tools.HandTool.onMouseDown(doodle, place, button, ctrl, alt, shift)//doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
       }
       else if(button > 1 && (alt || ctrl)){ // middle or right click with alt or ctrl, no left button down
         if(ctrl){
@@ -497,9 +497,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             color.foreach(c=>ColorModel.setColor(c))
             tools.colorP.repaint()
           }
-        } else if(alt){
-          doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
-        }
+        } /*else if(alt){
+          dmodel.tools.HandTool.onMouseDown(doodle, place, button, ctrl, alt, shift) //doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
+        }*/
       }
       else if(doodle.canDraw){ 
         tools.model.mousePressed(doodle, place, button, ctrl, alt, shift)
@@ -532,6 +532,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.model.stopMatrix
         doodle.redrawMid
       }
+      else if(button == 2){
+        dmodel.tools.HandTool.onMouseUp(doodle, place, button, ctrl, alt, shift)
+      }
       if(doodle.canDraw){
         tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
       }
@@ -556,7 +559,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.redrawMid
         doodle.repaint
       }
-      if(doodle.canDraw){
+      else if(middle){
+        dmodel.tools.HandTool.onMouseDrag(doodle, place, left, middle, right, ctrl, alt, shift)
+      }
+      else if(doodle.canDraw){
         tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)
       }
 

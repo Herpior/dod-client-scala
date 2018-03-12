@@ -56,7 +56,7 @@ class DoodlePanel extends Panel {
   }
   
   private var point = magic/2
-  private var tmp = point
+  private var tmp = Coord(0,0)
   
   override def paintComponent(g:Graphics2D){
     if(botImg.getHeight!=this.bounds.getHeight || botImg.getWidth!=this.bounds.getWidth){
@@ -65,20 +65,23 @@ class DoodlePanel extends Panel {
     }
     g.setColor(Magic.bgColor)//(Magic.bgColor)
     g.fillRect(0, 0, getWidth, getHeight)
+    
+    val gx = -(tmp.x*this.getZoom).toInt
+    val gy = -(tmp.y*this.getZoom).toInt
     //this.super.paintComponent(g)
-    g.drawImage(botImg,0,0,null)
-    g.drawImage(midImg,0,0,null)
-    g.drawImage(drawImg,0,0,null)
-    g.drawImage(topImg,0,0,null)
+    g.drawImage(botImg,gx,gy,null)
+    g.drawImage(midImg,gx,gy,null)
+    g.drawImage(drawImg,gx,gy,null)
+    g.drawImage(topImg,gx,gy,null)
     g.setColor(Magic.bgColorAlpha)
     val off = offset
     val canvas = Magic.doodleSize*getZoom
     val inv = Coord(getWidth,getHeight)-off-canvas
-    g.fillRect(0, off.y.toInt, off.x.toInt, canvas.y.toInt) 
-    g.fillRect(0, 0, this.getWidth , off.y.toInt)
+    g.fillRect(gx+0, gy+off.y.toInt, off.x.toInt, canvas.y.toInt) 
+    g.fillRect(gx+0, gy+0, this.getWidth , off.y.toInt)
     
-    g.fillRect(0, off.y.toInt+canvas.y.toInt, getWidth, inv.y.toInt+1)
-    g.fillRect(off.x.toInt+canvas.x.toInt, off.y.toInt, inv.x.toInt+1, canvas.y.toInt)
+    g.fillRect(gx+0, gy+off.y.toInt+canvas.y.toInt, getWidth, inv.y.toInt+1)
+    g.fillRect(gx+off.x.toInt+canvas.x.toInt, gy+off.y.toInt, inv.x.toInt+1, canvas.y.toInt)
     
     //g.setColor(Magic.red)
     //val points = model.pers.getPoints
@@ -225,13 +228,20 @@ class DoodlePanel extends Panel {
     //this.publish(new ZoomEvent)
     redrawAll
   }
-  def prepareMove(coord:Coord){
+  def movePanPoint(coord:Coord){
+    point += coord
+    tmp = Coord(0,0)
+  }
+  def startMove(){
+    tmp = Coord(0,0)
+  }
+  def prepareMove(coord:Coord){ 
     tmp = coord
   }
-  def move(coord:Coord) = {
+  def move1(coord:Coord) = {//deprecated, use hand tool
     val moved = point+(tmp-coord)/getZoom
     point = Coord(max(min(moved.x,Magic.x),0),max(min(moved.y,Magic.y),0))
-    tmp = coord
+    tmp = Coord(0,0)
     //???
   }
   def fullScreen {

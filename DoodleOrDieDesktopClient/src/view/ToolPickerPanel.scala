@@ -21,7 +21,7 @@ class ToolPickerPanel extends GridPanel(2, 4) {
   this.background = Magic.bgColor
   
   val icons = Array(Icons.getPen, Icons.getLine, Icons.getBez, Icons.getFill, 
-                    Icons.getPers, Icons.getDrag, Icons.getZoom, Icons.getBezFill)
+                    Icons.getPers, Icons.getZoom, Icons.getDrag, Icons.getBezFill)
   val buttons = Array.ofDim[ToolButton](8)
   for(i<-0 until 8){
     buttons(i) = new ToolButton(icons(i)){
