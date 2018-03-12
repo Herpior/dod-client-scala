@@ -2,8 +2,6 @@ package dmodel.tools
 import view.DoodlePanel
 import dmodel.Coord
 import dmodel.Magic
-import math.max
-import math.min
 
 object HandTool extends BasicTool { //(Array())
   
@@ -24,8 +22,13 @@ object HandTool extends BasicTool { //(Array())
     //dp.move(coord)
     //previousCoord = coord
     val moved = (tmp-coord)
-    //dp.movePanPoint(moved)
-    dp.prepareMove(moved)
+    if (Magic.fasterPan)
+      dp.prepareMove(moved)
+    else {
+      dp.movePanPoint(moved)
+      dp.redrawAll
+    }
+      
     dp.repaint
     //point = Coord(max(min(moved.x,Magic.x),0),max(min(moved.y,Magic.y),0))
   }

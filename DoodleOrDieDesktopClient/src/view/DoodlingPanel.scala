@@ -535,7 +535,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       else if(button == 2){
         dmodel.tools.HandTool.onMouseUp(doodle, place, button, ctrl, alt, shift)
       }
-      if(doodle.canDraw){
+      else if(doodle.canDraw){
         tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
       }
       

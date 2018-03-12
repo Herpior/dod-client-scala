@@ -1,12 +1,12 @@
 package dmodel
 
 import java.awt.Color
-import swing.Label
 
 object Magic {
 
   def authorized = http.HttpHandler.getAuth
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
+  val fasterPan = true //if true will move only the images when dragging, rather than drawing everything again every pixel
   val readyDefault = false //default for ready checkbox
   val x = 520
   val y = 390
@@ -23,6 +23,6 @@ object Magic {
   val black = Color.decode("#111111")
   val maxChars = 140
   val hexa = "0123456789abcdef"
-  val font20 = new Label(" ").font.deriveFont(java.awt.Font.BOLD,20)
+  val font20 = new swing.Label(" ").font.deriveFont(java.awt.Font.BOLD,20)
   
 }
