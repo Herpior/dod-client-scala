@@ -13,10 +13,12 @@ object ToolModel {
   def isReady = this.ready
   def initReady {ready = Magic.readyDefault}
   
-  def tool(n:Int){
+  def setTool(n:Int){
     if(n>=0 && n<=8 && (n<2||Magic.authorized)) {
+      tool.cleanUp()
       state=n
       tool = toolList(n)
+      tool.initTool()
     }
     //TODO: change this part completely, to use the tool objects
   }

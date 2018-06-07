@@ -169,7 +169,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   listenTo(tools.mouse.wheel)
   listenTo(tools.keys)
   listenTo(tools)
+  listenTo(tools.toolP) //toolchange
   reactions += {
+    case e:ToolChangeEvent=>
+      doodle.redrawDrawing
+      doodle.repaint
     case e:RepaintEvent=>
       doodle.redrawAll
       doodle.repaint
@@ -284,27 +288,27 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.sizeP.repaint()
 
         case Key.U =>
-          tools.model.tool(1)//->line
+          tools.setTool(3)//->line
       doodle.model.unselect
           tools.toolP.repaint()
         case Key.I =>
-          if(Magic.authorized)tools.model.tool(2)//->bez
+          if(Magic.authorized)tools.setTool(3)//->bez
       doodle.model.unselect
           tools.toolP.repaint()
         case Key.H =>
-          if(Magic.authorized)tools.model.tool(4)//->perspect
+          if(Magic.authorized)tools.setTool(3)//->perspect
       doodle.model.unselect
           tools.toolP.repaint()
         case Key.J =>
-          if(Magic.authorized)tools.model.tool(5)//->zoom
+          if(Magic.authorized)tools.setTool(3)//->zoom
       doodle.model.unselect
           tools.toolP.repaint()
         case Key.K =>
-          if(Magic.authorized) tools.model.tool(6)//->hand
+          if(Magic.authorized) tools.setTool(3)//->hand
       doodle.model.unselect
           tools.toolP.repaint()
         case Key.L =>
-          if(Magic.authorized)tools.model.tool(7)//->undefined
+          if(Magic.authorized)tools.setTool(3)//->undefined
       doodle.model.unselect
           tools.toolP.repaint()
           
@@ -339,9 +343,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
                 }
             }
             else {
-              tools.model.tool(3)//->fill
-      doodle.model.unselect
-          tools.toolP.repaint()
+              tools.setTool(3)//->fill
+              doodle.model.unselect
+              tools.toolP.repaint()
             }
           }
         
@@ -392,8 +396,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             savetimer.start()
           }
           else{
-            tools.model.tool(0)//->draw
-      doodle.model.unselect
+            tools.setTool(0)//->draw
+            doodle.model.unselect
           }
         case Key.F =>
           if(ctrl && !alt) {

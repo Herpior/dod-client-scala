@@ -39,10 +39,14 @@ class ToolPickerPanel extends GridPanel(2, 4) {
   
   this.contents ++= buttons
   
-  def click(i:Int){
-    model.tool(i)
+  def setTool(i:Int){
+    model.setTool(i)
+    publish(new controller.ToolChangeEvent(model.getState))
     this.repaint
-    //publish(new controller.ToolChangeEvent(model.getState))
+  }
+  
+  def click(i:Int){
+    this.setTool(i)
   }
   
   click(0)

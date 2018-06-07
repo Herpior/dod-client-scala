@@ -21,6 +21,10 @@ class ToolPanel extends ScrollPane {
   val toolP = new ToolPickerPanel
   val submitP = new SubmitPanel
   
+  def setTool(i:Int) {
+    toolP.setTool(i)
+  }
+  
   val box = new BoxPanel(Orientation.Vertical) {
     this.background = Magic.bgColor
     this.minimumSize = new Dimension(200,550)
@@ -33,6 +37,12 @@ class ToolPanel extends ScrollPane {
   }
   this.contents = box
 
+  this.listenTo(toolP)
+  
+  this.reactions += {
+    case e:controller.ToolChangeEvent =>
+      //tool changed, shouldn't need any actions here for now, but could be useful when the tools can have some gui for configuring them and the gui needs to be swapped
+  }
 
       
 }

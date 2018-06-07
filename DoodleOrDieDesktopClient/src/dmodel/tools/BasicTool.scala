@@ -6,11 +6,8 @@ import collection.mutable.Buffer
 
 abstract class BasicTool {
   
-  def initTool(dp:DoodlePanel) {
-    dp.redrawDrawing
-    dp.repaint
-  }
-  def cleanUp(dp:DoodlePanel) {}
+  def initTool() {}
+  def cleanUp() {}
   def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {}
   def onMouseUp  (dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {}
   def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
