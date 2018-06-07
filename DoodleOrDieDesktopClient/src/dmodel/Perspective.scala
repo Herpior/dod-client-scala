@@ -8,24 +8,55 @@ object Perspective {
   private var pers2 :Option[Coord] = None
   private var pers3 :Option[Coord] = None 
   
-  def setPrimary(coord:Coord){
+  def setPrimary(coord:Coord)={
     pers = coord
+    1
   }
-  def setSecondary(coord:Coord){
+  def setSecondary(coord:Coord)={
     pers2 = Some(coord)
+    2
   }
-  def setTertiary(coord:Coord){
-    pers3 = Some(coord)
+  def setTertiary(coord:Coord)={
+    if(pers2.nonEmpty) {
+      pers3 = Some(coord)
+      3
+    }
+    else setSecondary(coord)
+  }
+  def setVanishingPoint(index:Int, coord:Coord)={
+    if(index == 3) setTertiary(coord)
+    else if(index == 2) setSecondary(coord)
+    else setPrimary(coord)
+  }
+  
+  def getVanishingPoints = {
+    val buf = Buffer(pers)
+    pers2.foreach { x => buf += x }
+    pers3.foreach { x => buf += x }
+    buf
   }
   
   def removePrimary{
-    pers = Magic.doodleSize/2
+    if(pers2.nonEmpty){
+      pers = pers2.get
+      removeSecondary // this will propagate the change to the tertiary vp if one exists
+    }
+    else pers = Magic.doodleSize/2 //uhh I can't delete the last vp so I'll just reset it to the center, maybe it's okay?
   }
   def removeSecondary{
-    pers2 = None
+    if(pers3.nonEmpty){
+      pers2 = pers3
+      removeTertiary
+    }
+    else pers2 = None
   }
   def removeTertiary{
     pers3 = None
+  }
+  def removeVanishingPoint(index:Int)={
+    if(index == 3) removeTertiary
+    else if(index == 2) removeSecondary
+    else removePrimary
   }
   
   def getCoord(orig:Coord,angle:Double,length:Double)={

@@ -32,11 +32,20 @@ case class Coord(val x:Double,val y:Double) {
   def *(multiplier:Double)={
     Coord(this.x*multiplier,this.y*multiplier)
   }
+  def unary_- ={
+    Coord(-this.x,-this.y)
+  }
   def angle(other:Coord)={
     Angle.angle(this.x-other.x, this.y-other.y)
   }
   def rounded(accuracy:Int)={
     Coord(round(this.x*accuracy)/accuracy.toDouble,round(this.y*accuracy)/accuracy.toDouble)
+  }
+  def flip={ //flips x and y
+    Coord(this.y, this.x)
+  }
+  def perpendiculate={ //flips vector 90 degrees
+    Coord(-this.y, this.x)
   }
   def toArray={
     Array(x, y)
