@@ -192,34 +192,6 @@ class DoodleModel {
     io.LocalStorage.printFile(layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
   }
   //---------\\
-  def select(place:Coord,mods:Int,first:Boolean){
-    val strokes = if(mods/256%2==1) {
-      this.getLayers.flatMap(_.getStrokes(false))
-    }
-    else this.getMid.getStrokes(false)
-    if(strokes.length<1)return
-    var curr = strokes(0)
-    var best = curr.distFrom(place)
-    for(s<-strokes){
-      val dist = s.distFrom(place)
-      if(dist<best){
-        best = dist
-        curr = s
-      }
-    }
-    if(best<10){
-      if(first)hoveringLine = Some(curr)
-      else hoveringLine2 = Some(curr)
-    } else {
-      if(first) hoveringLine = None
-      else hoveringLine2 = None
-    }
-  }
-  def unselect{
-    hoveringLine = None
-    hoveringLine2 = None
-  }
-  //---------\\
   /*def startPerspective(place:Coord,mods:Int){
   }*/
   def dragPerspective(place:Coord,mods:Int){
