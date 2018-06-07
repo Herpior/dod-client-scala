@@ -6,6 +6,7 @@ import collection.mutable.Buffer
 
 abstract class BasicTool {
   
+  def isBusy():Boolean = {false}
   def initTool() {}
   def cleanUp() {}
   def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {}

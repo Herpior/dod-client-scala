@@ -188,7 +188,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     case e: ToolChangeEvent =>
       doodle.model.setState(e.tool)*/
     case e:MouseExited =>
-      doodle.model.unselect
+      //doodle.model.unselect
+      //TODO: add support for mouse exited for tools
     case e:MouseWheelMoved =>
       val ctrl = e.peer.isControlDown()
       if(ctrl)doodle.zoomin(e.rotation*4)
@@ -284,32 +285,25 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.sizeP.repaint()
         case Key.Key8 =>
           if(Magic.authorized)SizeModel.number(7)
-      doodle.model.unselect
           tools.sizeP.repaint()
 
         case Key.U =>
           tools.setTool(3)//->line
-      doodle.model.unselect
           tools.toolP.repaint()
         case Key.I =>
           if(Magic.authorized)tools.setTool(3)//->bez
-      doodle.model.unselect
           tools.toolP.repaint()
         case Key.H =>
           if(Magic.authorized)tools.setTool(3)//->perspect
-      doodle.model.unselect
           tools.toolP.repaint()
         case Key.J =>
           if(Magic.authorized)tools.setTool(3)//->zoom
-      doodle.model.unselect
           tools.toolP.repaint()
         case Key.K =>
           if(Magic.authorized) tools.setTool(3)//->hand
-      doodle.model.unselect
           tools.toolP.repaint()
         case Key.L =>
           if(Magic.authorized)tools.setTool(3)//->undefined
-      doodle.model.unselect
           tools.toolP.repaint()
           
         case Key.C =>
@@ -344,7 +338,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             }
             else {
               tools.setTool(3)//->fill
-              doodle.model.unselect
               tools.toolP.repaint()
             }
           }
@@ -397,7 +390,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
           else{
             tools.setTool(0)//->draw
-            doodle.model.unselect
           }
         case Key.F =>
           if(ctrl && !alt) {

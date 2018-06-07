@@ -13,24 +13,33 @@ class SelectToolClass extends BasicTool {
   protected var hovering:Option[DoodlePart] = None // line for visualization
   
   override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
-    select(dp, coord, control, alt)
+    if(select(dp, coord, control, alt)){
+      dp.redrawDrawing
+      dp.repaint
+    }
   }
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     selected = hovering
   }
   override def getLines() = {
     val buf:Buffer[DoodlePart] = Buffer()
-    hovering.foreach { x => buf += x }
-    selected.foreach { x => buf += x }
+    hovering.foreach { x => buf += x.selection }
+    selected.foreach { x => buf += x.selection }
     buf
   }
+  
+  override def cleanUp{
+    hovering = None
+    selected = None
+  }
 
-  def select(dp:DoodlePanel, place:Coord, control:Boolean, alt:Boolean){
+  // returns boolean that tells whether there has been a change and the graphics should be redrawn
+  def select(dp:DoodlePanel, place:Coord, control:Boolean, alt:Boolean):Boolean={
     val strokes = if(alt) {
       dp.model.getLayers.flatMap(_.getStrokes(false))
     }
     else dp.model.getMid.getStrokes(false)
-    if(strokes.length<1)return
+    if(strokes.length<1) return false
     var curr = strokes(0)
     var best = curr.distFrom(place)
     for(s<-strokes){
@@ -40,15 +49,16 @@ class SelectToolClass extends BasicTool {
         curr = s
       }
     }
+    val prev = hovering
     if(best<20){
      hovering = Some(curr)
     } else {
       hovering = None
     }
+    hovering != prev
   }
-  override def cleanUp{
-    hovering = None
-    selected = None
-  }
+  
+  def allSelected = (hovering ++ selected).toArray
+  
   
 }

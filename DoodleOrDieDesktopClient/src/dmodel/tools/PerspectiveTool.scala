@@ -134,4 +134,19 @@ object PerspectiveTool extends BasicTool {
     else false
   }
   
+  //---------\\
+  /* old code from dmodel lol
+  def startPerspective(place:Coord,mods:Int){
+  }
+  def dragPerspective(place:Coord,mods:Int){
+    if(mods/128%2==1)Perspective.setTertiary(place)
+    else if(mods/512%2==1)Perspective.setSecondary(place)
+    else Perspective.setPrimary(place)
+  }
+  def removePerspective(mods:Int){
+    if(mods/128%2==1)Perspective.removeTertiary
+    else if(mods/512%2==1)Perspective.removeSecondary
+    else Perspective.removePrimary
+  }*/
+  
 }

@@ -19,8 +19,6 @@ class DoodleModel {
   private def currentLines:Buffer[DoodlePart] = currentTool.getLines
   private def matrix:Boolean = this.layers.getCurrent.isInstanceOf[MatrixLayer]
   //private var textLine:Option[TextLine] = None
-  private var hoveringLine:Option[DoodlePart] = None
-  private var hoveringLine2:Option[DoodlePart] = None
   
   //private var bezier = false
   
@@ -34,9 +32,8 @@ class DoodleModel {
   //private var color = "#000000"
   //private var color2 = "#000000"
   
-  def selected = (hoveringLine ++ hoveringLine2).toArray
   //def isWriting = textLine.isDefined
-  def isDrawing = currentLines.length>0/*multiLine.isDefined*/ || hoveringLine2.isDefined
+  def isDrawing = tools.getTool.isBusy //currentLines.length>0/*multiLine.isDefined*/ || hoveringLine2.isDefined
   //def isBezier = bezier && bezierLine.isDefined
   def isMatrix = {
     matrix
@@ -44,7 +41,7 @@ class DoodleModel {
   //---------\\
   def addTime(time:Long){
     //println(painttime)
-    painttime += time.toInt
+    painttime += (time/1000).toInt
     if(painttime < 0) painttime = 1000000}
   //def setState(tool:Int) {state = tool}
   //def setSize(next:Int) {size = next}
@@ -190,19 +187,6 @@ class DoodleModel {
   //---------\\
   def toLocalStorage{
     io.LocalStorage.printFile(layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
-  }
-  //---------\\
-  /*def startPerspective(place:Coord,mods:Int){
-  }*/
-  def dragPerspective(place:Coord,mods:Int){
-    if(mods/128%2==1)Perspective.setTertiary(place)
-    else if(mods/512%2==1)Perspective.setSecondary(place)
-    else Perspective.setPrimary(place)
-  }
-  def removePerspective(mods:Int){
-    if(mods/128%2==1)Perspective.removeTertiary
-    else if(mods/512%2==1)Perspective.removeSecondary
-    else Perspective.removePrimary
   }
   //---------\\
   /*def startWriting(place:Coord){

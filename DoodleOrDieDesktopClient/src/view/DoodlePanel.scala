@@ -89,7 +89,7 @@ class DoodlePanel extends Panel {
     
     //draw selected line if any
     
-    model.selected.foreach{ml=>LineDrawer.drawDoodlePart(g,ml.selection,getZoom,offset,true)}
+    //model.selected.foreach{ml=>LineDrawer.drawDoodlePart(g,ml.selection,getZoom,offset,true)}
     //draw the cursor
     
     //val col = model.tools.getColor
