@@ -34,12 +34,12 @@ object PerspectiveTool extends BasicTool {
     if(vps.size == 1) { // cross at the vanishing point
       val vp = vps(0)
       val hori = new BasicLine(Magic.red, 1.0)
-      hori.addCoord(Coord(vp.x, min(0, vp.y)))
-      hori.addCoord(Coord(vp.x, max(Magic.y, vp.y)))
+      hori.addCoord(Coord(vp.x, vp.y-Magic.y))
+      hori.addCoord(Coord(vp.x, vp.y+Magic.y))
       buf += hori 
       val vert = new BasicLine(Magic.red, 1.0)
-      vert.addCoord(Coord(min(0, vp.x), vp.y))
-      vert.addCoord(Coord(max(Magic.x, vp.x), vp.y))
+      vert.addCoord(Coord(vp.x-Magic.x, vp.y))
+      vert.addCoord(Coord(vp.x+Magic.x, vp.y))
       buf += vert 
     }
     else if(vps.size >= 2) { // connect the vanishing points
@@ -53,27 +53,29 @@ object PerspectiveTool extends BasicTool {
       if(vps.size == 2){ // cross between the vanishing points
         val vert = new BasicLine(Magic.red, 1.0)
         val center = (vp1+vp2)/2
-        val slope = difference.perpendiculate/2
+        val slope = difference.perpendiculate
         vert.addCoord(center - slope)
         vert.addCoord(center + slope)
         buf += vert 
       }
       else if(vps.size > 2){ // add the connections to the third vanishing point
         val vp3 = vps(2)
+        val difference2 = (vp1-vp3)
+        val difference3 = (vp2-vp3)
         val line2 = new BasicLine(Magic.red, 1.0)
         line2.addCoord(vp1)
-        line2.addCoord(vp3)
+        line2.addCoord(vp3-difference2)
         buf += line2 
         val line3 = new BasicLine(Magic.red, 1.0)
         line3.addCoord(vp2)
-        line3.addCoord(vp3)
+        line3.addCoord(vp3-difference3)
         buf += line3 
       }
     }
     
     closest.foreach { // dot to show you can drag the vanishing point without using control or alt
       vpi => 
-        val dot = new BasicLine(Magic.white, 1.0)
+        val dot = new BasicLine(Magic.white, 1.5)
         dot.addCoord(vps(vpi-1))
         buf += dot 
     }
