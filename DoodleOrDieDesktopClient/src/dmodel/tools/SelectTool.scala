@@ -29,8 +29,7 @@ class SelectToolClass extends BasicTool {
   }
   
   override def cleanUp{
-    hovering = None
-    selected = None
+    unselect
   }
 
   // returns boolean that tells whether there has been a change and the graphics should be redrawn
@@ -56,6 +55,10 @@ class SelectToolClass extends BasicTool {
       hovering = None
     }
     hovering != prev
+  }
+  def unselect {
+    hovering = None
+    selected = None
   }
   
   def allSelected = (hovering ++ selected).toArray

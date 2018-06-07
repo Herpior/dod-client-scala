@@ -56,54 +56,20 @@ object FillTool extends LineToolClass{
       //s.xs += x
       //s.ys += y
   }*/
-  def combineBezier(first:BezierLine,second:BezierLine,mods:Int,res:MultiLine){
-    val len = math.max(first.length2,second.length2)
-    var max = 0
-    for(i<-0 to len.toInt){
-      val t = 1.0/i
-      val dist = first.getCoordAt(t).dist(second.getCoordAt(t)).toInt
-      if(dist>max)max = dist
-    }
-    var tmp = 0.0
-    val mid = (math.abs(first.size+second.size)/2).toInt
-    val n = (2*max/mid).toInt
-    val colors = if(mods/512%2==1)Colors.linearcolor(n,true,first.color,second.color) else Colors.linearcolor(n,false,first.color,second.color)
-    for(i<- 1 until n){
-      val in = i*1.0/n//tmp/max
-      val nin = 1-in
-      val color = colors(i)
-      val size = mid//(in*first.size + nin*second.size).toInt
-      //tmp += size/2
-      val c0 = (first.getCoord(0)*in+second.getCoord(0)*nin)
-      val c1 = (first.getCoord(1)*in+second.getCoord(1)*nin)
-      val c2 = (first.getCoord(2)*in+second.getCoord(2)*nin)
-      val c3 = (first.getCoord(3)*in+second.getCoord(3)*nin)
-      val bez = new BezierLine(color,size)
-      bez.setCoord(0, c0)
-      bez.setCoord(1, c1)
-      bez.setCoord(2, c2)
-      bez.setCoord(3, c3)
-      res.addLine(bez.getLine(color, size))
-    }
-  }
-  def linearFill(first:DoodlePart,second:DoodlePart,res:MultiLine){
-    //TODO make this work maybe
-  }
+  
+  
   def addGradient(next:MultiLine,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord, alt:Boolean, shift:Boolean){
     //val size = side.bsize
     val size = (sizeo+1)/2*2
     val n = if(vertical) (Magic.y*2)/size else (Magic.x*2)/size
     val interval = if(size>32)if(vertical) Magic.y/n else Magic.x/n else size/2
-    //println("n:"+n)
     val colors = Colors.linearcolor(n,!alt,color1,color2)
     for(i<- 0 until n){
       if(vertical){
         val y = size/4+interval*i//Magic.y*i/(n-1)
-        //println("y:"+y)
         next.addLine(new BasicLine(colors(i), size){ this.setCoords(Array(new Coord(0,y), new Coord(Magic.x, y))) })
       } else {
         val x = size/4+interval*i//size/2*(i+1)//Magic.x*i/(n-1)
-        //println("x:"+x)
         next.addLine(new BasicLine(colors(i), size){ this.setCoords(Array(new Coord(x,0), new Coord(x, Magic.y))) })
       }
     }
@@ -226,29 +192,6 @@ object FillTool extends LineToolClass{
     //repaint
   }
   
-  /**
-   //TODO: make the bezier gradient thing work
-  //---------\\
-  def lineFill(mods:Int){
-    //println("linefill model")
-    if(this.hoveringLine.isDefined && this.hoveringLine2.isDefined){
-      //println("both found")
-      val res = new MultiLine
-      val line1 = this.hoveringLine.get
-      val line2 = this.hoveringLine2.get
-      if(line1.isInstanceOf[BezierLine] && line2.isInstanceOf[BezierLine]){
-        //println("both bez")
-        FillTool.combineBezier(line1.asInstanceOf[BezierLine], line2.asInstanceOf[BezierLine], mods, res)
-      }
-      else {
-        FillTool.linearFill(line1,line2,res)
-      }
-    layers.getCurrent.add(res)
-    }
-    unselect
-  }
-  
-  */
   //---------\\
   private def vertRev(defaultVert:Boolean, defaultRev:Boolean) = {
     try{
