@@ -4,7 +4,7 @@ import java.awt.Color
 
 object Magic {
 
-  def authorized = true //http.HttpHandler.getAuth
+  def authorized = http.HttpHandler.getAuth
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
   val fasterPan = true //if true will move only the images when dragging, rather than drawing everything again every pixel
   val readyDefault = false //default for ready checkbox

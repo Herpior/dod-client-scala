@@ -15,15 +15,25 @@ import view.DoodlePanel
 
 object BezierTool extends LineToolClass {
   
+  
+  // state 0 = nothing ongoing
+  // state 1 = mouse down first time, act like drawing straight line
+  // state 2 = mouse up firsts time, line follows on move
+  // state 3 = mouse down second time, moving the last
+  private var state = 0
+  private var bezierLine: BezierLine = new BezierLine(ColorModel.getColor,SizeModel.getSize)
+  private var guideLine: MultiLine = new MultiLine
+  
+  
   override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(Magic.authorized && state == 2){
+    if(state == 2){
       dragBezier(1, coord, control, shift)
       dragBezier(2, coord, control, shift)
       dp.redrawDrawing
     }
   }
   override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(Magic.authorized && left){
+    if(left){
       if(state == 1){
         dragBezier(3, coord, control, shift)
       } else {
@@ -34,7 +44,7 @@ object BezierTool extends LineToolClass {
     }
   }
   override def onMouseUp(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(Magic.authorized && button == 1){
+    if(button == 1){
       if(state == 1){
         dragBezier(3, coord, control, shift)
         state = 2
@@ -49,7 +59,7 @@ object BezierTool extends LineToolClass {
     }
   }
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(Magic.authorized && button == 1){
+    if(button == 1){
       if(state == 0){
       //startLine(e)
       startBezier(coord)
@@ -67,14 +77,6 @@ object BezierTool extends LineToolClass {
     val buf = bezierLine.getLines ++ guideLine.getLines
     buf.toBuffer
   } //for redrawing the whole line while drawing?
-  
-  // state 0 = nothing ongoing
-  // state 1 = mouse down first time, act like drawing straight line
-  // state 2 = mouse up firsts time, line follows on move
-  // state 3 = mouse down second time, moving the last
-  private var state = 0
-  private var bezierLine: BezierLine = new BezierLine(ColorModel.getColor,SizeModel.getSize)
-  private var guideLine: MultiLine = new MultiLine
   
   //def initTool() {}
   //def onMouseUp(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
@@ -137,7 +139,6 @@ object BezierTool extends LineToolClass {
                 else Angle.getCoord(math.round(Angle.angle(dc.x,dc.y)/Pi*4)*Pi/4,len)
               coord = c0+xy
             case _ =>
-              //println("you dun fucked up dragbezier pt: "+pt)
           }
         }
         bezierLine.setCoord(pt, coord)

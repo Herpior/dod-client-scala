@@ -14,7 +14,7 @@ object ToolModel {
   def initReady {ready = Magic.readyDefault}
   
   def setTool(n:Int){
-    if(n>=0 && n<=8 && (n<2||Magic.authorized)) {
+    if(n>=0 && n<=toolList.size && (n<7||Magic.authorized)) {
       tool.cleanUp()
       state = n
       tool = toolList(n)
