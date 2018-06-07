@@ -4,8 +4,7 @@ import dmodel.Coord
 
 object ZoomTool extends BasicTool { //(Array())
   
-  override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?
-  override def getLastLine() = {None} // for drawing one segment of the line
+  override def getLines() = {collection.mutable.Buffer()}
 
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     val count = if (control) 1 else 4

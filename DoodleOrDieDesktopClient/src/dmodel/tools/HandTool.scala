@@ -8,9 +8,6 @@ object HandTool extends BasicTool { //(Array())
   //private var previousCoord = Coord(0,0) //initiate  0,0 coord, it should be replaced once the mouse is pressed anyways
   //private var point = Magic.doodleSize/2
   private var tmp = Coord(0,0) //point
-  
-  override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?
-  override def getLastLine() = {None} // for drawing one segment of the line
 
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     tmp = coord

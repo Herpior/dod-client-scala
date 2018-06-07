@@ -67,7 +67,6 @@ object BezierTool extends LineToolClass {
     val buf = bezierLine.getLines ++ guideLine.getLines
     buf.toBuffer
   } //for redrawing the whole line while drawing?
-  override def getLastLine() = {None} // for drawing one segment of the line
   
   // state 0 = nothing ongoing
   // state 1 = mouse down first time, act like drawing straight line

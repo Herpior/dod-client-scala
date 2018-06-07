@@ -31,6 +31,7 @@ class LineToolClass extends BasicTool {
     }
   }
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
+    println(button)
     if(button == 1){
       startLine(coord)
       dp.redrawDrawing
