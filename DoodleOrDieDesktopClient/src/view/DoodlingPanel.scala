@@ -486,18 +486,17 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.redrawMid
       }
       else if(button == 2){ // middle button
-        if(ctrl){ //TODO: implement layer moving here
+        if(ctrl){ //TODO: implement layer moving here?
         }
         else dmodel.tools.HandTool.onMouseDown(doodle, place, button, ctrl, alt, shift)//doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
       }
-      else if(button > 1 && (alt || ctrl)){ // middle or right click with alt or ctrl, no left button down
-        if(ctrl){
+      else if(button > 1 && alt){ // middle or right click with alt or ctrl, no left button down
           if(Magic.authorized){
             val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt, shift)
             color.foreach(c=>ColorModel.setColor(c))
             tools.colorP.repaint()
           }
-        } /*else if(alt){
+        /*else if(alt){
           dmodel.tools.HandTool.onMouseDown(doodle, place, button, ctrl, alt, shift) //doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
         }*/
       }
