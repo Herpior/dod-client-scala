@@ -27,8 +27,8 @@ class ToolPanel extends ScrollPane {
   
   val box = new BoxPanel(Orientation.Vertical) {
     this.background = Magic.bgColor
-    this.minimumSize = new Dimension(200,550)
-    this.preferredSize = new Dimension(210,550)
+    this.minimumSize = new Dimension(200,500)
+    this.preferredSize = new Dimension(210,600)
     this.maximumSize = preferredSize
     this.contents += sizeP
     this.contents += colorP

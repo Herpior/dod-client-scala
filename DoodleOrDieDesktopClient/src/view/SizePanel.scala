@@ -21,6 +21,7 @@ class SizePanel extends BoxPanel(Orientation.Vertical){
   val slider = new SizeSlider
   this.contents += grid
   this.contents += slider
+  this.contents += new BoxPanel(Orientation.Vertical){this.preferredSize = new Dimension(200, 5)}
   
   this.listenTo(grid)
   this.listenTo(slider)

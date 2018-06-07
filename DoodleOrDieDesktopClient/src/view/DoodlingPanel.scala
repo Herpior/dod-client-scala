@@ -288,23 +288,17 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.sizeP.repaint()
 
         case Key.U =>
-          tools.setTool(3)//->line
-          tools.toolP.repaint()
+          tools.setTool(1)//->line
         case Key.I =>
-          if(Magic.authorized)tools.setTool(3)//->bez
-          tools.toolP.repaint()
+          tools.setTool(2)//->bez
         case Key.H =>
-          if(Magic.authorized)tools.setTool(3)//->perspect
-          tools.toolP.repaint()
+          tools.setTool(4)//->perspect
         case Key.J =>
-          if(Magic.authorized)tools.setTool(3)//->zoom
-          tools.toolP.repaint()
+          tools.setTool(5)//->zoom
         case Key.K =>
-          if(Magic.authorized) tools.setTool(3)//->hand
-          tools.toolP.repaint()
+          tools.setTool(6)//->hand
         case Key.L =>
-          if(Magic.authorized)tools.setTool(3)//->undefined
-          tools.toolP.repaint()
+          tools.setTool(7)//->undefined
           
         case Key.C =>
           if(ctrl){
@@ -338,7 +332,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             }
             else {
               tools.setTool(3)//->fill
-              tools.toolP.repaint()
             }
           }
         
