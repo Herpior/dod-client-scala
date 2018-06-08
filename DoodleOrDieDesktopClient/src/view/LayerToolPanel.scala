@@ -27,7 +27,7 @@ class LayerToolPanel(model:LayerList) extends GridPanel(2,3){
   val mergeButt = new LayerButton{
     this.action = new Action("Merge"){
       def apply() = {
-        val input = Dialog.showOptions(parent, "Are you sure you want to merge layer?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
+        val input = Dialog.showOptions(parent, "Are you sure you want to merge layer to the layer below?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
         if(input == Dialog.Result.Yes){
           model.mergeLayer
           publishRepaint
@@ -65,7 +65,7 @@ class LayerToolPanel(model:LayerList) extends GridPanel(2,3){
   val burnButt = new LayerButton{
     this.action = new Action("Burn"){
       def apply() = {
-        val input = Dialog.showOptions(parent, "Are you sure you want to clear layer?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
+        val input = Dialog.showOptions(parent, "Are you sure you want to undo everything on the layer?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
         if(input == Dialog.Result.Yes){
           model.burn
           publishRepaint
