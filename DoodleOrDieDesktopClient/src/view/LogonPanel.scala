@@ -98,16 +98,23 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     switchToNormal
     }
   }
+  val cookieButt = new LoginButton("Sign in with a cookie"){
+    this.action=Action("Sign in with a cookie"){
+    switchToCookie
+    }
+  }
   val singButt = new LoginButton("Sign In"){
     this.action=Action("Sign in"){
     continue
   }}
   val unLabel = new Label("Username"){this.font = font20}
+  val pwLabel = new Label("Password"){this.font = font20}
   val sigLabel = new Label("Sign in"){this.font = font20}
   this.contents += sigLabel
   this.contents += new Label(" "){this.font = font20}
   this.contents += faceButt
   this.contents += twitterButt
+  this.contents += cookieButt
   //this.contents += new Label(" "){this.font = font20}
   this.contents += unLabel
   unField.preferredSize = new Dimension(900, 50)
@@ -115,7 +122,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   unField.font = font20
   this.contents += unField
   this.contents += new Label(" "){this.font = font20}
-  this.contents += new Label("Password"){this.font = font20}
+  this.contents += pwLabel
   val pwField = new PasswordField
   pwField.font = font20//.deriveFont(40f)
   pwField.preferredSize = new Dimension(900, 50)
@@ -131,10 +138,12 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     if(index>0 && status != 1){
       this.contents(index) = status match{
         case 0 => normalButt
+        case 3 => cookieButt
         case _ => faceButt
       }
       sigLabel.text = "Sign in with Twitter"
       unLabel.text = "Username or e-mail"
+      pwLabel.text = "Password"
       status = 1
       this.revalidate()
       this.repaint()
@@ -146,11 +155,30 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     if(index>0 && status != 2){
       this.contents(index) = status match{
         case 0 => normalButt
+        case 3 => cookieButt
         case _ => twitterButt
       }
       sigLabel.text = "Sign in with Facebook"
       unLabel.text = "E-mail"
+      pwLabel.text = "Password"
       status = 2
+      this.revalidate()
+      this.repaint()
+    }
+  }
+  def switchToCookie{
+    val index = this.contents.indexOf(cookieButt)
+    //this.contents -= twitterButt
+    if(index>0 && status != 3){
+      this.contents(index) = status match{
+        case 0 => normalButt
+        case 2 => faceButt
+        case _ => twitterButt
+      }
+      sigLabel.text = "Sign in with a cookie"
+      unLabel.text = "just leave this empty"
+      pwLabel.text = "Authentication cookie"
+      status = 3
       this.revalidate()
       this.repaint()
     }
@@ -161,10 +189,12 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     if(index>0 && status != 0){
       this.contents(index) = status match{
         case 1 => twitterButt
+        case 3 => cookieButt
         case _ => faceButt
       }
       sigLabel.text = "Sign in"
       unLabel.text = "Username"
+      pwLabel.text = "Password"
       status = 0
       this.revalidate()
       this.repaint()
@@ -176,18 +206,26 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       val e = new ReplaceEvent(next,this)
       this.publish(e)
     } else {*/
-      if(unField.text.length()==0 || pwField.password.length==0) {
+      if((unField.text.length()==0 && status < 3) || pwField.password.length==0) {
         Dialog.showMessage(owner, "Username or password field empty", "failed to login", Dialog.Message.Warning, null)
         return
       }
       val next = new LoadingPanel(Future{
         val success = status match {
           case 0 =>
-            HttpHandler.login(pwField.password, unField.text)
+            try {
+              HttpHandler.login(pwField.password, unField.text)
+            } catch {
+            case e:javax.net.ssl.SSLHandshakeException=> 
+                Dialog.showMessage(owner, "The SSL cert is probably expired, login using a cookie", "failed to login", Dialog.Message.Warning, null)
+                false
+            }
           case 1 =>
             HttpHandler.twitterLogin(unField.text, pwField.password)
-          case _ =>
+          case 2 =>
             HttpHandler.faceLogin(unField.text, pwField.password)
+          case _ =>
+            HttpHandler.cookieLogin(pwField.password)
         }
         if(success && HttpHandler.hasCid){
           if(this.autoButt.selected){

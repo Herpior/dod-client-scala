@@ -255,6 +255,13 @@ object HttpHandler {
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
+  def cookieLogin(pw:Array[Char]):Boolean={
+    addDodCookie("cid", pw.mkString)
+    val get = new MainGet()
+    val in2 = getHttp(get)
+    
+    !cid.isEmpty
+  }
   def faceLogin(user:String,pw:Array[Char]):Boolean={
     import org.openqa.selenium.WebDriver
     import org.openqa.selenium.htmlunit.HtmlUnitDriver
