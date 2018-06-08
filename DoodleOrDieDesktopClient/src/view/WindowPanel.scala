@@ -22,10 +22,15 @@ trait PlayPanel extends WindowPanel {
       }
   }
   
-  val groups = Future(http.HttpHandler.getGroupList.getGroups)
-    val tmp = new JsonGroup
-    tmp.displayName = "Loading..."
-    tmp._id = "global"
+  val groups = Future( 
+      try {
+        http.HttpHandler.getGroupList.getGroups
+      } catch {
+      case e:NullPointerException=>Array[JsonGroup](new JsonGroup{displayName = "offline"})
+      })
+  val tmp = new JsonGroup
+  tmp.displayName = "Loading..."
+  tmp._id = "global"
     
   private var combo = new ComboBox(List(tmp)){
     this.background = Magic.white

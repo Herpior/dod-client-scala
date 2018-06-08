@@ -85,28 +85,34 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   }
   val twitterButt = new LoginButton("Sign in with Twitter"){
     this.action=Action("Sign in with Twitter"){
-    switchToTwitter
+      switchToTwitter
     }
   }
   val faceButt = new LoginButton("Sign in with Facebook"){
     this.action=Action("Sign in with Facebook"){
-    switchToFace
+      switchToFace
     }
   }
   val normalButt = new LoginButton("Sign in normally"){
     this.action=Action("Sign in normally"){
-    switchToNormal
+      switchToNormal
     }
   }
   val cookieButt = new LoginButton("Sign in with a cookie"){
     this.action=Action("Sign in with a cookie"){
-    switchToCookie
+      switchToCookie
     }
   }
   val singButt = new LoginButton("Sign In"){
     this.action=Action("Sign in"){
-    continue
-  }}
+      continue
+    }
+  }
+  val offButt = new LoginButton("Offline Mode"){
+    this.action=Action("Offline Mode"){
+      offline
+    }
+  }
   val unLabel = new Label("Username"){this.font = font20}
   val pwLabel = new Label("Password"){this.font = font20}
   val sigLabel = new Label("Sign in"){this.font = font20}
@@ -131,6 +137,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   this.contents += new Label(" "){this.font = font20}
   this.contents += singButt
   this.contents += autoButt
+  this.contents += offButt
   
   def switchToTwitter {
     val index = this.contents.indexOf(twitterButt)
@@ -199,6 +206,13 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       this.revalidate()
       this.repaint()
     }
+  }
+  def offline {
+    val next = new LoadingPanel(Future{
+        new DoodlingPanel("offline", "offline", "Offline", false, false)
+        },owner)
+    val e = new ReplaceEvent(next,this)
+      this.publish(e)
   }
   def continue {
     //println(HttpHandler.cook)
