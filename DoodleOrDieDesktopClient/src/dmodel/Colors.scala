@@ -41,7 +41,7 @@ object Colors {
     else "#"+r+""+g+""+b+""+a
   }
   def toRGBAString(color:Color)={
-    "rgba("+color.getRed()+","+color.getGreen()+","+color.getBlue()+","+color.getAlpha()/255.0+")"
+    "rgba("+color.getRed()+","+color.getGreen()+","+color.getBlue()+","+(color.getAlpha()*1000/255.0).round/1000.0+")"
   }
   /*def toHexString(color:javafx.scene.paint.Color)={
     var r = Integer.toHexString((color.getRed()*255).toInt)
@@ -120,7 +120,7 @@ object Colors {
     
     return new Color(red,green,blue)
   }
-  def linearcolor(n:Int,rgb:Boolean,fcolor:Color,bcolor:Color) :Array[Color] = { //TODO: try squaring the colours before interpolation and taking a square root afterwards
+  def linearcolor(n:Int,rgb:Boolean,fcolor:Color,bcolor:Color) :Array[Color] = { 
     val first = fcolor//Color.decode(fcolor)
     val last =  bcolor//Color.decode(bcolor)
     if(first == last) return Array.fill(n)(bcolor)
@@ -165,14 +165,14 @@ object Colors {
         buf += new Color(colr.getRed,colr.getGreen,colr.getBlue, aa)
       }
     else {
-        val gamma = 2.0 //TODO: move to parameters
-        val negamma = 1/gamma
-        val frg = math.pow(fr,gamma)
-        val fgg = math.pow(fg,gamma)
-        val fbg = math.pow(fb,gamma)
-        val lrg = math.pow(lr,gamma)
-        val lgg = math.pow(lg,gamma)
-        val lbg = math.pow(lb,gamma)
+      val gamma = 2.0 //TODO: move to parameters
+      val negamma = 1/gamma
+      val frg = math.pow(fr,gamma)
+      val fgg = math.pow(fg,gamma)
+      val fbg = math.pow(fb,gamma)
+      val lrg = math.pow(lr,gamma)
+      val lgg = math.pow(lg,gamma)
+      val lbg = math.pow(lb,gamma)
       
       for(i<-0 until n){
         val coeff = i*1.0/(n-1)
