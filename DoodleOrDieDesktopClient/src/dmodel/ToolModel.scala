@@ -29,9 +29,6 @@ object ToolModel {
     ready = !ready
   }
   
-  def modDecrypt(mod:Int) = {
-    val alt = mod/64%2
-  }
   
   def mouseMoved(dp:DoodlePanel, point:Coord, ctrl:Boolean, alt:Boolean, shift:Boolean) {
     tool.onMouseMove(dp, point, ctrl, alt, shift)
