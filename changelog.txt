@@ -1,4 +1,20 @@
+v0.501
+  cookie login
+	offline mode
+	error message for when the site cert is expired
+	transparency in submitted doodles is limited to 3 decimals, as it previously wasted a lot more space for little difference
+	non-super players will be able to use bezier curves, fill, perspective ruler, zoom and pan tools
+	added zoom and pan tools
+	max description length is doubled?
+	fill tool direction can be flipped by dragging it to the other direction
+	improved perspective ruler
+	zooming is slower normally and can be sped up by holding control
+	colour mixing is gamma corrected
+	refactored gui and tools, there should not be other differences than that the code is better and maybe less bugs? or more?
+	increased palette size
+v0.444
 	perspective transform
+	mac version
 v0.395
 	added ability to open colorpicker by double clicking
 	fixed bug with line tool where using rulers could draw line out of bounds
@@ -34,6 +50,6 @@ v0.350
 	added color picker
 	added color slots
 	added ability to load colors from file
-	
+
 v0.300
 	fixed bug that prevented users from logging in...

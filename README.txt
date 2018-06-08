@@ -27,9 +27,12 @@ Hotkeys:
   Alt+ F: undo everything on current layer (redoable)
   Y: pencil
   U: Line
-  I: Bezier curve (only for supers)
-  O: (Gradient) fill (only for supers)
-  HJKL: to be added... (only for supers)
+  I: Bezier curve
+  O: fill (Gradient only for supers)
+  H: set perspective ruler
+  J: zoom tool
+  K: hand tool
+  L: bezier fill (only for supers)
   Ctrl+ S: save doodle backup
   Ctrl+ P: export high resolution image
   Ctrl+ Z: undo
@@ -50,16 +53,16 @@ Line:
   hold ctrl to use ruler
   hold ctrl+shift to use perspective ruler
 
-Bezier: (only for supers)
+Bezier: 
   draw a line from the start to end and set the guides after that
   hold ctrl to use ruler
   hold ctrl+shift to use perspective ruler
 
-fill: (only for supers)
+fill:
   draw a line to the direction you want the gradient to change
   hold ctrl to fill area that is limited by current+selected layers
 
-perspective: (only for supers)
+perspective:
   click to set primary vanishing point
   alt click to set second vanishing point
   ctrl click to set third vanishing point
