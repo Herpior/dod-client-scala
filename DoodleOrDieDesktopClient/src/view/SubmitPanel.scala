@@ -15,19 +15,22 @@ class SubmitPanel extends FlowPanel {
   val model = ToolModel
   model.initReady
   
+  if(Magic.offline && !model.isReady) model.clickReady
+  
   this.preferredSize = new Dimension(200, 100)
   this.minimumSize = preferredSize
   this.maximumSize = preferredSize
   this.background = Magic.bgColor
+  val submitButtText = if(Magic.offline)"Save" else "Submit"
   
-  val submitButt = new Button("submit"){
+  val submitButt = new Button(submitButtText){
     this.font = Magic.font20
     this.preferredSize = new Dimension(200, 50)
-    this.background = Color.LIGHT_GRAY//Magic.buttColor
+    this.background = if(model.isReady) Magic.buttColor else Color.LIGHT_GRAY
     this.foreground = Magic.white
     this.opaque = true
     this.borderPainted = false
-    this.action = new Action("Submit"){
+    this.action = new Action(submitButtText){
       def apply()=submit
     }
   }
@@ -44,7 +47,9 @@ class SubmitPanel extends FlowPanel {
     }
   }
   this.contents +=   submitButt
-  this.contents +=   readyButt
+  if(!Magic.offline) {
+    this.contents +=   readyButt
+  }
   
 
   private def submit = {
@@ -52,7 +57,8 @@ class SubmitPanel extends FlowPanel {
   }
   private def clickReady = {
     model.clickReady
-    submitButt.background = if(model.isReady) Magic.buttColor else Color.LIGHT_GRAY//this.repaint()
+    submitButt.background = if(model.isReady) Magic.buttColor else Color.LIGHT_GRAY
+    //submitButt.repaint()
   }
   
 }

@@ -12,9 +12,7 @@ import dmodel.ColorModel
 import io.Icons
 import javax.swing.SwingUtilities
 
-class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean,random:Boolean) extends BorderPanel with PlayPanel{
-  
-  val offline = group_id == "offline"
+class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean) extends BorderPanel with PlayPanel{
 
   val doodle = new DoodlePanel
   val skipButt = new Button{
@@ -77,7 +75,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   val extra = if(finish) "DRAW (last step): " else "DRAW: "
   desc.setPhrase( extra+phrase )//,extra)
   layout(layers) = West
-  if(!offline)layout(desc) = North
+  if(!Magic.offline) layout(desc) = North
   layout(doodle) = Center
   layout(tools) = East
   
@@ -119,7 +117,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   
   
   def submit{
-    if(tools.model.isReady){
+    if(Magic.offline) {
+      doodle.model.save
+      doodle.exportImage
+      return
+    }
+    else if(tools.model.isReady){
       doodle.model.save
       this.publish(
           new view.ReplaceEvent(

@@ -46,7 +46,7 @@ class JsonState {
         require(group_id!=null &&group_id.length>0)
         require(private_id!=null &&private_id.length>0)
         if(starting)phrase = "Start a new chain! Draw anything you want!"
-        new DoodlingPanel(group_id,private_id,getPhrase,finishing,randomizer)
+        new DoodlingPanel(group_id,private_id,getPhrase,finishing)
       case "phrase"=>
         require(group_id!=null &&group_id.length>0)
         require(private_id!=null &&private_id.length>0)

@@ -209,7 +209,8 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   }
   def offline {
     val next = new LoadingPanel(Future{
-        new DoodlingPanel("offline", "offline", "Offline", false, false)
+        Magic.offline = true;
+        new DoodlingPanel("offline", "offline", "Offline", false)
         },owner)
     val e = new ReplaceEvent(next,this)
       this.publish(e)
