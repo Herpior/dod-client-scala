@@ -312,6 +312,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             //TODO: implement duplicate layer here
             //doodle.model.copy
           }
+          else {
+            ConfigDrawingPanel.activate
+          }
         /*
         case Key.V =>
           if(e.modifiers/128%2==1){
@@ -585,7 +588,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     true
   }*/
   controller.Timer(100,false){
-  tools.sizeP.contents(0).requestFocusInWindow()
+    tools.sizeP.contents(0).requestFocusInWindow()
   }.start
   
   this.focusable = true

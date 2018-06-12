@@ -50,4 +50,5 @@ object ConfigDrawingPanel extends Frame {
   }
   
   this.centerOnScreen()
+  xField.requestFocusInWindow()
 }
