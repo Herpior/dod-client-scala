@@ -13,6 +13,8 @@ import io.Icons
 import javax.swing.SwingUtilities
 
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean,random:Boolean) extends BorderPanel with PlayPanel{
+  
+  val offline = group_id == "offline"
 
   val doodle = new DoodlePanel
   val skipButt = new Button{
@@ -75,7 +77,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   val extra = if(finish) "DRAW (last step): " else "DRAW: "
   desc.setPhrase( extra+phrase )//,extra)
   layout(layers) = West
-  layout(desc) = North
+  if(!offline)layout(desc) = North
   layout(doodle) = Center
   layout(tools) = East
   
