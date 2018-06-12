@@ -164,6 +164,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   private var pinged = false
   private var check = 0l
   
+  listenTo(ConfigDrawingPanel)
   listenTo(layers.mouse.wheel)
   listenTo(layers.keys)
   listenTo(layers)

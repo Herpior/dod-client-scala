@@ -21,12 +21,11 @@ object ConfigDrawingPanel extends Frame {
   val xField = new TextField(Magic.doodleSize.x.toInt.toString()){this.preferredSize = new Dimension(50, 20)}
   val yField = new TextField(Magic.doodleSize.y.toInt.toString()){this.preferredSize = new Dimension(50, 20)}
     
-  visible = true
   contents = new FlowPanel {
     this.background = Magic.bgColor
-    contents += new Label("Width: "){}
+    contents += new Label("Width: ")
     contents += xField
-    contents += new Label("Height: "){}
+    contents += new Label("Height: ")
     contents += yField
     contents += new DodButton{action = Action("Ok") {submit}}
     contents += new DodButton{action = Action("Cancel") {confwindow.dispose()}}
@@ -38,10 +37,17 @@ object ConfigDrawingPanel extends Frame {
       val x = xField.text.toInt
       val y = yField.text.toInt
       Magic.setXY(x, y)
+      publish(new RepaintEvent)
       confwindow.dispose()
     } catch {
       case e:Throwable => //TODO warn that this fails 
     }
   }
+  def activate {
+    this.visible = true
+    xField.text = Magic.doodleSize.x.toInt.toString()
+    yField.text = Magic.doodleSize.y.toInt.toString()
+  }
+  
   this.centerOnScreen()
 }
