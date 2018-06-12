@@ -20,7 +20,7 @@ object DoodleWindow extends SimpleSwingApplication {
      case e:Throwable => e.printStackTrace();
    }
 
-  def top = new MainFrame {
+  def top = new MainFrame { //TODO: switch to scalafx? http://www.scalafx.org/ what? why? cmon..
     this.title = "Doodle or Die"
     this.iconImage = io.Icons.getDod//new javax.swing.ImageIcon("favicon.png").getImage
     

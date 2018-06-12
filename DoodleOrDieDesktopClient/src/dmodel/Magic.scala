@@ -8,13 +8,13 @@ object Magic {
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
   val fasterPan = true //if true will move only the images when dragging, rather than drawing everything again every pixel
   val readyDefault = false //default for ready checkbox
-  val x = 520
-  val y = 390
+  var x = 520
+  var y = 390
   val rows = 16
   val thumbX = 60//100
   val thumbY = 45//75
   val thumbZoom = thumbX.toDouble/x
-  val doodleSize = new Coord(x,y)
+  var doodleSize = new Coord(x,y)
   val bgColor = Color.decode("#b7e4f4")
   val bgColorAlpha = new Color(183,228,244,192)
   val buttColor = Color.decode("#4cb9dd")
@@ -26,4 +26,9 @@ object Magic {
   val font20 = new swing.Label(" ").font.deriveFont(java.awt.Font.BOLD,20)
   var offline = false
   
+  def setXY(nx:Int, ny:Int) {
+    x = nx
+    y = ny
+    doodleSize = Coord(x, y)
+  }
 }
