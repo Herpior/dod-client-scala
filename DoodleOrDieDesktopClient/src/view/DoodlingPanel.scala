@@ -29,10 +29,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       skip
       }}
 
-  
-                        controller.Timer(2*60*60*1000){
-                          http.HttpHandler.ping
-                        }.start
+  if(!Magic.offline){
+    controller.Timer(2*60*60*1000){
+      http.HttpHandler.ping
+    }.start
+  }
   
   /*val groups = http.HttpHandler.getGroupList.getGroups
   val roomChanger = new ComboBox(groups){
@@ -583,7 +584,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     true
   }*/
   controller.Timer(100,false){
-  skipButt.requestFocusInWindow()
+  tools.sizeP.contents(0).requestFocusInWindow()
   }.start
   
   this.focusable = true
