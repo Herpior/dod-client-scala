@@ -7,6 +7,8 @@ object Perspective {
   private var pers = Magic.doodleSize/2
   private var pers2 :Option[Coord] = None
   private var pers3 :Option[Coord] = None 
+  private var defaultAng2 = 0.0;
+  private var defaultAng3 = math.Pi/2;
   
   def setPrimary(coord:Coord)={
     pers = coord
@@ -68,7 +70,12 @@ object Perspective {
     val ang3 = if(!pers3.isEmpty){
       val p = pers3.get
       Angle.angle(orig.x-p.x,orig.y-p.y)
-    } else math.Pi/2
+    } else if(!pers2.isEmpty) {
+      val difference = pers - pers2.get
+      val slope = difference.perpendiculate
+      slope.toAngle
+    }
+    else math.Pi/2
     val angs = Array[Double](ang,ang2,ang3,Pi+ang,Pi+ang2,Pi+ang3)
     val buf = Buffer[Double]()
     //println("ang: "+ang/Pi*180)

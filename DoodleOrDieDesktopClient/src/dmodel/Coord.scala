@@ -47,6 +47,9 @@ case class Coord(val x:Double,val y:Double) {
   def perpendiculate={ //flips vector 90 degrees
     Coord(-this.y, this.x)
   }
+  def toAngle={//returns direction as angle in radians
+    math.tan(x/y)
+  }
   def toArray={
     Array(x, y)
   }
