@@ -71,7 +71,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       }) = Center
     }
   }
-  private var tools = new ToolPanel
+  private val tools = new ToolPanel
   val layers = new LayerPanel(doodle.model.layers)
   val extra = if(finish) "DRAW (last step): " else "DRAW: "
   desc.setPhrase( extra+phrase )//,extra)
@@ -82,6 +82,40 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   
   //val doodleControl = new DrawingController(doodle,tools,layers)
   //val toolControl = new ToolController(tools)
+  
+  val lFrame = new DodFrame(layers, Unit=>swapLayerP)
+  val tFrame = new DodFrame(tools, Unit=>swapToolP)
+  private var istf = false
+  private var islf = false
+  def swapToolP {
+    if(istf){
+      tFrame.deactivate
+      layout(tools) = East
+    }
+    else {
+      layout -= tools
+      tFrame.activate
+    }
+    doodle.redrawAll
+    doodle.repaint
+    this.revalidate()
+    istf = !istf
+  }
+  def swapLayerP {
+    if(istf){
+      lFrame.deactivate
+      layout(layers) = West
+    }
+    else {
+      layout -= layers
+      lFrame.activate
+    }
+    doodle.redrawAll
+    doodle.repaint
+    this.revalidate()
+    istf = !istf
+  }
+  
   
   doodle.model.loadFrom(private_id)
   //doodle.redrawAll
@@ -439,6 +473,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             doodle.redrawLayerUp
           }
           Future(layers.reset)
+        case Key.X =>
+          if(ctrl) this.swapLayerP
+          else this.swapToolP
         case _ =>
       }
       //repaint
