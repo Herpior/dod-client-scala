@@ -116,11 +116,25 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   listenToTools
   this.listenTo(tools.submitP)
   
+  def export {
+    val text = Dialog.showInput(doodle, "set percentage", "exported image size", Dialog.Message.Question, null, List[String](), "100%")
+    println(text)
+    text.foreach { x => 
+      try {
+        val xtrim = x.takeWhile { x => x == '.' || (x >= '0' && x <= '9') }
+        val percent = xtrim.toDouble/100
+        doodle.exportImage(percent)
+      }
+      catch {
+        case e:Throwable => 
+      }
+    }
+  }
   
   def submit{
     if(Magic.offline) {
       doodle.model.save
-      doodle.exportImage
+      export
       return
     }
     else if(tools.model.isReady){
@@ -347,7 +361,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         
         case Key.P =>
           if(ctrl){
-            doodle.exportImage
+            export
           }
         case Key.G =>
           if(alt){

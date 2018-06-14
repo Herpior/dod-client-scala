@@ -22,7 +22,6 @@ class DoodlePanel extends Panel {
   this.minimumSize = new Dimension(400,300)
   this.preferredSize = new Dimension(2*Magic.x,2*Magic.y)
   this.maximumSize = new Dimension(4320,3240)
-  val magic = Magic.doodleSize
   val model = new DoodleModel
   private val zooms=Array(
       0.25, 0.3,  0.35, 0.42,
@@ -55,7 +54,7 @@ class DoodlePanel extends Panel {
     img
   }
   
-  private var point = magic/2
+  private var point = Magic.doodleSize/2
   private var tmp = Coord(0,0)
   
   override def paintComponent(g:Graphics2D){
@@ -307,14 +306,14 @@ class DoodlePanel extends Panel {
     }
     successful
   }
-  def exportImage{
-    val img = new BufferedImage((8*magic.x).toInt,(8*magic.y).toInt, BufferedImage.TYPE_INT_ARGB)
+  def exportImage(percent:Double){
+    val img = new BufferedImage((percent*Magic.x).toInt,(percent*Magic.y).toInt, BufferedImage.TYPE_INT_ARGB)
     val g = img.createGraphics()
     model.getLayers.foreach{
       lay=>
         lay.getStrokes(true).foreach { 
           stro =>
-            LineDrawer.drawDoodlePart(g,stro,8,Coord(0,0),true)
+            LineDrawer.drawDoodlePart(g,stro,percent,Coord(0,0),true)
           }
     }
     //var out: java.io.OutputStream = null
