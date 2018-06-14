@@ -1,6 +1,7 @@
 package view
 
 import scala.swing._
+import swing.event.WindowClosing
 import dmodel.Magic
 
 class DodFrame(orig:Component, onClose:Unit=>Unit) extends Frame {
@@ -16,5 +17,9 @@ class DodFrame(orig:Component, onClose:Unit=>Unit) extends Frame {
   def deactivate {
     this.contents = decoy
     this.visible = false
+  }
+  this.reactions += {
+    case e:WindowClosing =>
+      onClose()
   }
 }
