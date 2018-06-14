@@ -152,7 +152,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   
   def export {
     val text = Dialog.showInput(doodle, "set percentage", "exported image size", Dialog.Message.Question, null, List[String](), "100%")
-    println(text)
     text.foreach { x => 
       try {
         val xtrim = x.takeWhile { x => x == '.' || (x >= '0' && x <= '9') }
@@ -167,12 +166,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   
   def submit{
     if(Magic.offline) {
-      doodle.model.save
+      save
       export
       return
     }
     else if(tools.model.isReady){
-      doodle.model.save
+      save
       this.publish(
           new view.ReplaceEvent(
               new view.LoadingPanel(
@@ -191,9 +190,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       )
     }
   }
+  def save{
+    doodle.save(private_id)
+  }
   
   override def logout {
-    doodle.save
+    save
     this.publish(
           new view.ReplaceEvent(
               new view.LoadingPanel(
@@ -207,7 +209,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   }
   
   val savetimer = Timer(10000,false){
-    Future(doodle.save)
+    Future(save)
   }
   private var pinged = false
   private var check = 0l
@@ -300,7 +302,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.colorP.repaint()
         case Key.S =>
           if(ctrl) {
-            doodle.model.save//toLocalStorage
+            save//toLocalStorage
           }
           else {
             ColorModel.colorDown

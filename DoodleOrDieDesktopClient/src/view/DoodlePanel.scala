@@ -106,9 +106,9 @@ class DoodlePanel extends Panel {
     */
     g.fillRect(cursorX, cursorY, 1, 1)
   }
-  def save{
+  def save(chain:String){
     //this.model.toLocalStorage
-    this.model.save//TODO remove either and follow and remove the things this would use?
+    this.model.save(chain)//TODO remove either and follow and remove the things this would use?
   }
   def setCursor(x:Double,y:Double)={
     cursorX = x.toInt

@@ -128,8 +128,8 @@ class LayerList {
   def toJsonString(time:Int) = {
     "{\"version\":"+view.DoodleWindow.version+",\"doodle_id\":"+http.HttpHandler.getChain+",\"time\":"+time+",\"layers\":["+this.layers.map(_.toJsonString).mkString(",")+"]}"
    }
-  def toShortJsonString(time:Int) = {
-    "{\"v\":"+view.DoodleWindow.version+",\"d\":"+http.HttpHandler.getChain+",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
+  def toShortJsonString(time:Int, chain:String) = {
+    "{\"v\":"+view.DoodleWindow.version+",\"d\":"+chain+",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
    }
   
 }

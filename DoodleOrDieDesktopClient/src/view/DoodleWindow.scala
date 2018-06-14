@@ -11,8 +11,8 @@ import javax.swing.UIManager
 
 object DoodleWindow extends SimpleSwingApplication {
   
-  val ver = "v0.450"
-  val version = 450
+  val ver = "v0.497"
+  val version = 497
   
    try {
     UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
@@ -62,7 +62,7 @@ object DoodleWindow extends SimpleSwingApplication {
       case e:WindowClosing =>  //println(e.getClass)
         try{
           if(screen.isInstanceOf[DoodlingPanel]){
-            screen.asInstanceOf[DoodlingPanel].doodle.save
+            screen.asInstanceOf[DoodlingPanel].save
           }
         }
         finally{

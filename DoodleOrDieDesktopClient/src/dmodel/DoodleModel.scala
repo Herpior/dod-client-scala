@@ -115,8 +115,8 @@ class DoodleModel {
   def submit={
     HttpHandler.submitDoodle(this.getPaintPercentage, this.getPaintTime.toInt, layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)))
   }
-  def save={
-    LocalStorage.saveTo(layers.toShortJsonString(this.getPaintTime), http.HttpHandler.getChain)
+  def save(chain:String)={
+    LocalStorage.saveTo(layers.toShortJsonString(this.getPaintTime, chain), chain)
   }
   //---------\\
   def getPaintPercentage={
