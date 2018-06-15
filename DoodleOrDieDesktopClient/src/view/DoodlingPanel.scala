@@ -14,8 +14,9 @@ import javax.swing.SwingUtilities
 
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean) extends BorderPanel with PlayPanel{
 
-  
-  private var pathname = "saves/"+private_id+".png"
+  //val derpPath = Magic..class.getProtectionDomain().getCodeSource().getLocation().getPath();
+  //val decodedPath = java.io.URLDecoder.decode(derpPath, "UTF-8");
+  private var pathname = "./saves/"+private_id+".png"
   private var filename = private_id
   
   val doodle = new DoodlePanel
@@ -164,21 +165,24 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           val fc = new FileChooser //Dialog.showInput(doodle, "set file name", "exported image name", Dialog.Message.Question, null, List[String](), "offline")
           //fc.fileSelectionMode = FileChooser.SelectionMode.FilesOnly
           fc.fileFilter = new io.PngFilter
+          fc.title = "export file"
+          fc.peer.setCurrentDirectory(new java.io.File(this.pathname + ".png").getParentFile)
           val res = fc.showSaveDialog(this)
           if (res != FileChooser.Result.Approve) return
           val file = fc.selectedFile
           filename = file.getName
           pathname = file.getAbsolutePath
           if(!filename.endsWith("png")){
-            pathname = pathname + ".png"
+            //pathname = pathname + ".png"
           }
           else {
             filename = filename.dropRight(4)
+            pathname = pathname.dropRight(4)
           }
-          doodle.exportImage(percent, pathname)
+          doodle.exportImage(percent, pathname + ".png")
           //}
         }
-        else doodle.exportImage(percent, pathname)
+        else doodle.exportImage(percent, pathname + ".png")
       }
       catch {
         case e:Throwable => 
@@ -219,6 +223,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     val fc = new FileChooser //Dialog.showInput(doodle, "set file name", "exported image name", Dialog.Message.Question, null, List[String](), "offline")
     //fc.fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fc.fileFilter = new io.TxtFilter
+    fc.title = "load save"
+    fc.peer.setCurrentDirectory(new java.io.File(this.pathname + ".png").getParentFile)
     val res = fc.showOpenDialog(this)
     if (res != FileChooser.Result.Approve) return
     val file = fc.selectedFile
@@ -228,11 +234,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     if(filename == "offline"){
       filename = file.getName
       pathname = file.getAbsolutePath
-      if(!filename.endsWith("png")){
-        pathname = pathname + ".png"
+      if(!filename.endsWith("txt")){
+        //pathname = pathname + ".png"
       }
       else {
         filename = filename.dropRight(4)
+        pathname = pathname.dropRight(4)
       }
     }
   }
