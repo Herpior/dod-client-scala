@@ -1,4 +1,13 @@
-v0.501
+v0.498
+	saving and loading doodles file chooser starts from the working directory
+	bugfixes
+v0.497
+	saving and loading doodles uses an actual file chooser
+	offline doodles are saved and loaded properly
+	perspective ruler works the same way that the perspective tool shows
+	layer panel and tool panel can be separated into their own little windows by pressing x/ctrl+x
+v0.496
+	freely choose exported image size
 	set drawing area size in offline mode
 	cookie login
 	offline mode
@@ -16,6 +25,32 @@ v0.501
 v0.444
 	perspective transform
 	mac version
+v0.430
+	refactored ui
+	fixed bug allowing too short descriptions to be sent
+	submit button now gray when not enabled
+	left clicking now picks both primary and secondary colours while right click only changes the secondary color 
+v0.425
+	added checkbox to prevent accidental submissions
+	added support for opacity
+	removed constraints to stay within the canvas
+	changed save format into one that contains layer and stroke information properly.
+	as a result, saving is slightly slower, loading is slower and the save files are larger.
+	save files should not overwrite saves of previous prompts
+	save files will be saved in saves folder
+	fixed autologin for normal players
+	cursor should stay visible when using a small brush while zoomed out
+	changed cacerts
+	window size will not change when logging in/submitting/skipping
+	trying to log in with empty username or password will produce error before trying to log in
+	pressing enter on login screen will attempt to log in
+	minor bugfixes
+v0.410	
+	added possibility to login with twitter (still experimental)
+	added possibility to login with facebook (still experimental)
+	unicode characters work in descriptions, (some emoji should work too but the font doesn't really support them)
+	bezier fill for supers
+	ping doodles every 2h
 v0.395
 	added ability to open colorpicker by double clicking
 	fixed bug with line tool where using rulers could draw line out of bounds
