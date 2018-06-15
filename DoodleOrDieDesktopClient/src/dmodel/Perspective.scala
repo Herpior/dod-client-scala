@@ -73,7 +73,8 @@ object Perspective {
     } else if(!pers2.isEmpty) {
       val difference = pers - pers2.get
       val slope = difference.perpendiculate
-      slope.toAngle
+      Angle.angle(slope.x, slope.y)
+      //slope.toAngle
     }
     else math.Pi/2
     val angs = Array[Double](ang,ang2,ang3,Pi+ang,Pi+ang2,Pi+ang3)
