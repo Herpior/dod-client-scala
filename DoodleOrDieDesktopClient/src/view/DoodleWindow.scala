@@ -11,8 +11,8 @@ import javax.swing.UIManager
 
 object DoodleWindow extends SimpleSwingApplication {
   
-  val ver = "v0.497"
-  val version = 497
+  val ver = "v0.498"
+  val version = 498
   
    try {
     UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
