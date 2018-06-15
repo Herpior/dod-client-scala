@@ -29,6 +29,9 @@ object ToolModel {
     ready = !ready
   }
   
+  def isBusy() = {
+    tool.isBusy()
+  }
   
   def mouseMoved(dp:DoodlePanel, point:Coord, ctrl:Boolean, alt:Boolean, shift:Boolean) {
     tool.onMouseMove(dp, point, ctrl, alt, shift)

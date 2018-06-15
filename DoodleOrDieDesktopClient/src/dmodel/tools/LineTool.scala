@@ -15,6 +15,10 @@ object LineTool extends LineToolClass
 
 class LineToolClass extends BasicTool {
   
+  private var drawing = false
+  
+  override def isBusy() = drawing
+  
   override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(left){
       dragLine(coord, control, shift)
@@ -59,13 +63,10 @@ class LineToolClass extends BasicTool {
   }
   
   def startLine(color:Color,size:Int,place:Coord){
-        //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
-          multiLine.addLine(new BasicLine(color,size){
-            this.addCoord(place)
-          })
-        //} else {
-        //  next.addLine(new BasicLine(color,size))
-        //}
+    this.drawing = true
+    multiLine.addLine(new BasicLine(color,size){
+      this.addCoord(place)
+    })
   }
   
   def startLine(place:Coord){
@@ -153,6 +154,7 @@ class LineToolClass extends BasicTool {
   }
   
   def stopLine(place:Coord, model:dmodel.DoodleModel) {
+    this.drawing = false
     multiLine.compress
        // this.layers.getCurrent.add(multiLine)
     

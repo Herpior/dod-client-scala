@@ -13,6 +13,8 @@ object PerspectiveTool extends BasicTool {
   
   private var closest : Option[Int] = None // index of the currently closest vanishing point, the perspective model should keep it in proper range
   
+  override def isBusy() = true
+  
   // show vanishing points as dots, 
   // lines between the dots, or a cross if less than 3 vanishing points
   // with two points, the center line defines the horizon and the other line should cross it in 90 degree angle

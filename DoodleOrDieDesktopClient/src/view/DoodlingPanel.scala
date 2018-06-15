@@ -580,7 +580,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         }
         else dmodel.tools.HandTool.onMouseDown(doodle, place, button, ctrl, alt, shift)//doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
       }
-      else if(button > 1 && alt){ // middle or right click with alt or ctrl, no left button down
+      else if(button > 1 && alt && !tools.model.isBusy ){ // middle or right click with alt or ctrl, no left button down
           if(Magic.authorized){
             val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt, shift)
             color.foreach(c=>ColorModel.setColor(c))
