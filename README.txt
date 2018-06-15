@@ -13,7 +13,7 @@ Upgrading to super is encouraged. It probably helps to keep the Doodle or Die se
 if no shortcuts work, press tab, it should help maybe
 
 shirinking the drawing area should reduce lag if it is noticeable
-making layers that you don't need invisible should also reduce lag
+turning invisible the layers that you don't need visible at the moment should also reduce lag. They should, however, be made visible again if you wish to post them.
 
 doodle saves a backup 20 seconds after the last stroke and when closing the window
 using automatic login will not save your password or username anywhere (just the cookie)
@@ -46,8 +46,9 @@ Hotkeys:
   Ctrl+ Y: redo
   Ctrl+ Shift+Z: redo
   scroll wheel:  zoom
-  Ctrl+ scroll wheel: smoother, slower zoom
-  alt+ right mouse button: select color from image (only for supers)
+  Ctrl+ scroll wheel: faster zoom
+  alt+ right mouse button: select color from layer (only for supers)
+  alt+ shift+ right mouse button: select color from image (only for supers)
   middle mouse button: drag image
 
 Pencil:

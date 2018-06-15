@@ -83,8 +83,10 @@ class DoodlePost(room:String,chain:String,doodle:Array[BasicLine],pp:Int,pt:Int)
 
 class DescPost(chain:String,description:String)  extends PlayPost("api/game/submit/phrase/"+chain){
     
-    val desc = description.take(140).replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("/","&#47;").replaceAll("\"","&quot;")
-    //println(desc)
+    val desc = description//.take(140).replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll("/","&#47;").replaceAll("\"","&quot;")
+    //println(desc.)
+    //println("{\"description\":\""+desc+"\"}")
+    //println(new StringEntity("{\"description\":\""+desc+"\"}","UTF-8"))
     this.setEntity(new StringEntity("{\"description\":\""+desc+"\"}","UTF-8"))
     
 }
