@@ -7,10 +7,12 @@ import dmodel.ColorModel
 import dmodel.Colors
 import dmodel.Coord
 import dmodel.DoodleModel
+import dmodel.DoodlePart
 import dmodel.MultiLine
 import dmodel.Perspective
 import dmodel.SizeModel
 import math.Pi
+import collection.mutable.Buffer
 import view.DoodlePanel
 
 object BezierTool extends LineToolClass {
@@ -73,7 +75,8 @@ object BezierTool extends LineToolClass {
       dp.repaint
     }
   }
-  override def getLines() = {
+  override def getLines() : Buffer[DoodlePart]= {
+    if(state == 0) return Buffer()
     val buf = bezierLine.getLines ++ guideLine.getLines
     buf.toBuffer
   } //for redrawing the whole line while drawing?
