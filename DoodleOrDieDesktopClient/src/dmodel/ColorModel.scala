@@ -45,15 +45,19 @@ object ColorModel {
   //def colorIndex2 = colorpicker2
   //def getColor(ind:Int) = if(ind<1)getColors(colorIndex) else getColors(colorIndex2)
   def colorUp =  if(colorpicker>=rowl){
+    if(colorpicker2 == colorpicker) colorpicker2 -= rowl
     colorpicker -= rowl
   }
   def colorDown = if(colorpicker<rowl*(rows-1)){
+    if(colorpicker2 == colorpicker) colorpicker2 += rowl
     colorpicker += rowl
   } 
   def colorLeft = if(colorpicker>0){
+    if(colorpicker2 == colorpicker) colorpicker2 -= 1
     colorpicker -= 1
   }
   def colorRight = if(colorpicker<colorSize-1){
+    if(colorpicker2 == colorpicker) colorpicker2 += 1
     colorpicker += 1
   }
   def secondaryColor(coord:Coord,bounds:Coord){
