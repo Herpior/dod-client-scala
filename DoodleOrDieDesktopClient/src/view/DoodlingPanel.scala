@@ -14,6 +14,10 @@ import javax.swing.SwingUtilities
 
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean) extends BorderPanel with PlayPanel{
 
+  
+  private var pathname = "saves/"+private_id+".png"
+  private var filename = private_id
+  
   val doodle = new DoodlePanel
   val skipButt = new Button{
     this.background = Magic.white
@@ -150,13 +154,31 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   listenToTools
   this.listenTo(tools.submitP)
   
-  def export {
+  def export(saveAs:Boolean) {
     val text = Dialog.showInput(doodle, "set percentage", "exported image size", Dialog.Message.Question, null, List[String](), "100%")
     text.foreach { x => 
       try {
         val xtrim = x.takeWhile { x => x == '.' || (x >= '0' && x <= '9') }
         val percent = xtrim.toDouble/100
-        doodle.exportImage(percent)
+        if(filename == "offline" || saveAs) {
+          val fc = new FileChooser //Dialog.showInput(doodle, "set file name", "exported image name", Dialog.Message.Question, null, List[String](), "offline")
+          //fc.fileSelectionMode = FileChooser.SelectionMode.FilesOnly
+          fc.fileFilter = new io.PngFilter
+          val res = fc.showSaveDialog(this)
+          if (res != FileChooser.Result.Approve) return
+          val file = fc.selectedFile
+          filename = file.getName
+          pathname = file.getAbsolutePath
+          if(!filename.endsWith("png")){
+            pathname = pathname + ".png"
+          }
+          else {
+            filename = filename.dropRight(4)
+          }
+          doodle.exportImage(percent, pathname)
+          //}
+        }
+        else doodle.exportImage(percent, pathname)
       }
       catch {
         case e:Throwable => 
@@ -166,8 +188,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   
   def submit{
     if(Magic.offline) {
+      export(false)
       save
-      export
       return
     }
     else if(tools.model.isReady){
@@ -190,8 +212,29 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       )
     }
   }
-  def save{
-    doodle.save(private_id)
+  def save {
+    doodle.save(filename)
+  }
+  def load {
+    val fc = new FileChooser //Dialog.showInput(doodle, "set file name", "exported image name", Dialog.Message.Question, null, List[String](), "offline")
+    //fc.fileSelectionMode = FileChooser.SelectionMode.FilesOnly
+    fc.fileFilter = new io.TxtFilter
+    val res = fc.showOpenDialog(this)
+    if (res != FileChooser.Result.Approve) return
+    val file = fc.selectedFile
+    doodle.model.decryptFrom(file.getAbsolutePath,private_id)
+    doodle.redrawAll
+    layers.reset
+    if(filename == "offline"){
+      filename = file.getName
+      pathname = file.getAbsolutePath
+      if(!filename.endsWith("png")){
+        pathname = pathname + ".png"
+      }
+      else {
+        filename = filename.dropRight(4)
+      }
+    }
   }
   
   override def logout {
@@ -380,15 +423,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.O =>
           if(Magic.authorized){
             if(ctrl){
-              val text = Dialog.showInput(doodle, "file path", "open", Dialog.Message.Question, null, List[String](), "")
-              text.foreach { x => 
-                doodle.model.decryptFrom(x,private_id)
-                doodle.redrawAll
-                layers.reset
-                //val t = new java.util.Scanner(new File(x))
-                //while(t.hasNext()){
-                //  layers.head.strokes.pushAll(LocalStorage.decrypt(t.next()))}
-                }
+              load
             }
             else {
               tools.setTool(3)//->fill
@@ -397,7 +432,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         
         case Key.P =>
           if(ctrl){
-            export
+            export(true)
+          }
+          else {
+            export(false)
           }
         case Key.G =>
           if(alt){
