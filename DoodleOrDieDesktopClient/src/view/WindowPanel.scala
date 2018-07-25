@@ -12,7 +12,8 @@ trait WindowPanel extends Component{
 }
 
 trait PlayPanel extends WindowPanel {
-  
+  protected var pinged = false
+  protected var last_ping:Long = 0
   val logoutButt = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
@@ -118,6 +119,31 @@ trait PlayPanel extends WindowPanel {
                       http.HttpHandler.state.toPlayPanel
                   },this
               ),this
+          )
+      )
+  }
+  
+  def ping = {
+    if (!Magic.offline){
+      val f :Future[Boolean]  = Future(http.HttpHandler.ping)
+      f.onSuccess{
+        case b => 
+          if(!b) {
+            val reload = Dialog.showConfirmation(this, "The chain has timed out, do you want to reload", "Timed out",  Dialog.Options.YesNo, Dialog.Message.Warning, null)
+            if (reload == Dialog.Result.Yes) {
+              refresh
+            }
+          }
+      }
+    }
+    pinged = true
+    last_ping = System.nanoTime()
+  }
+  def refresh {
+    this.publish(
+          new view.ReplaceEvent(
+              new view.LoadingPanel(
+                  Future(http.HttpHandler.state.toPlayPanel), this), this
           )
       )
   }

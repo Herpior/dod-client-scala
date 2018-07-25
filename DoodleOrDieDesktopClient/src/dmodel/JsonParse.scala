@@ -106,5 +106,8 @@ object JsonParse {
 
 class JsonOk{
   var ok:Boolean = _
-  def isOk = ok
+  var valid:Boolean = true
+  def isOk = {
+    ok && valid
+  }
 }

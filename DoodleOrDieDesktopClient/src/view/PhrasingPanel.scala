@@ -11,7 +11,6 @@ import io.Icons
 class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Boolean,finish:Boolean,random:Boolean) extends BorderPanel with PlayPanel{
 
   this.background = Magic.bgColor
-  private var pinged = false
   val skipButt = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
@@ -84,8 +83,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   reactions += {
     case e:event.KeyReleased =>
       if(!pinged){
-        http.HttpHandler.ping
-        pinged = true
+        ping
       }
       if(real.text.length()>140){
         real.text = real.text.dropRight(real.text.length-140)

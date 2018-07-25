@@ -413,20 +413,9 @@ object HttpHandler {
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
   def ping={
-    var f :Future[Boolean] = Future{
-      val post = new PingPost(chain)
-      val in = postHttp(post)
-      //println(in.mkString("\n, "))
-      JsonParse.parseOk(in.mkString("\n")).isOk
-    }
-    f.onSuccess{
-      case b => 
-        if(!b) f = Future{
-          val post = new PingPost(chain)
-          val in = postHttp(post)
-          //println(in.mkString("\n, "))
-          JsonParse.parseOk(in.mkString("\n")).isOk
-        }
-    }
+    val post = new PingPost(chain)
+    val in = postHttp(post)
+    //println(in.mkString("\n, "))
+    JsonParse.parseOk(in.mkString("\n")).isOk
   }
 }

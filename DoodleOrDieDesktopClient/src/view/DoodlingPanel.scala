@@ -33,12 +33,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     //this.icon = Icons.getSkip
       skip
       }}
-
-  if(!Magic.offline){
-    controller.Timer(2*60*60*1000){
-      http.HttpHandler.ping
-    }.start
-  }
   
   /*val groups = http.HttpHandler.getGroupList.getGroups
   val roomChanger = new ComboBox(groups){
@@ -218,6 +212,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   }
   def save {
     doodle.save(filename)
+    val curr_time = System.nanoTime()
+    if(last_ping < curr_time - 7200000000000L) { // two hours between pings
+      //last_ping = curr_time //<-this is set in the ping function
+      ping
+    }
   }
   def load {
     val fc = new FileChooser //Dialog.showInput(doodle, "set file name", "exported image name", Dialog.Message.Question, null, List[String](), "offline")
@@ -261,7 +260,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   val savetimer = Timer(10000,false){
     Future(save)
   }
-  private var pinged = false
+  //
   private var check = 0l
   
   listenTo(ConfigDrawingPanel)
@@ -574,8 +573,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       savetimer.stop()
       
       if(!pinged){
-        http.HttpHandler.ping
-        pinged = true
+        ping
       }
       
       if(button == 1 && doodle.model.isMatrix){
