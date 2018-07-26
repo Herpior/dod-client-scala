@@ -214,7 +214,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     doodle.save(filename)
     val curr_time = System.nanoTime()
     if(last_ping < curr_time - 7200000000000L) { // two hours between pings
-      //last_ping = curr_time //<-this is set in the ping function
       ping
     }
   }

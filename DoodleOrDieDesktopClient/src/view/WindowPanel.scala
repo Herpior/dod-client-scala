@@ -75,6 +75,7 @@ trait PlayPanel extends WindowPanel {
   }
   
   def logout {
+    save
     this.publish(
           new view.ReplaceEvent(
               new view.LoadingPanel(
@@ -99,30 +100,32 @@ trait PlayPanel extends WindowPanel {
     }
   }
   def runSkip {
-      this.publish(
-          new view.ReplaceEvent(
-              new view.LoadingPanel(
-                  Future{
-                      http.HttpHandler.skip
-                      http.HttpHandler.state.toPlayPanel
-                  },this
-              ),this
-          )
+    save
+    this.publish(
+        new view.ReplaceEvent(
+            new view.LoadingPanel(
+                Future{
+                    http.HttpHandler.skip
+                    http.HttpHandler.state.toPlayPanel
+                },this
+            ),this
+        )
       )
   }
   def changeGroup(group:String) {
-      this.publish(
-          new view.ReplaceEvent(
-              new view.LoadingPanel(
-                  Future{
-                      http.HttpHandler.changeGroup(group)
-                      http.HttpHandler.state.toPlayPanel
-                  },this
-              ),this
-          )
+    save
+    this.publish(
+        new view.ReplaceEvent(
+            new view.LoadingPanel(
+                Future{
+                    http.HttpHandler.changeGroup(group)
+                    http.HttpHandler.state.toPlayPanel
+                },this
+            ),this
+        )
       )
   }
-  
+  def save
   def ping = {
     if (!Magic.offline){
       val f :Future[Boolean]  = Future(http.HttpHandler.ping)

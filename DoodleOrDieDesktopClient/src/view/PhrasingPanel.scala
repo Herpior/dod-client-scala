@@ -139,7 +139,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   layout(describe)=North
   layout(new FlowPanel(doodleP,editing){this.background=Magic.bgColor})=Center
   
-  
+  def save {}
   def submit{
     if(real.text.length()<6){
       Dialog.showMessage(this, "The description is too short", "Error", Dialog.Message.Error, null)

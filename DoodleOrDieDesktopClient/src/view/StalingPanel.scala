@@ -42,6 +42,7 @@ class StalingPanel extends BoxPanel(Orientation.Vertical) with PlayPanel{
       )
     )
   }
+  def save {}
   
   /*private def replaceWith(play:PlayPanel){
     this.publish(new ReplaceEvent(play,this))
