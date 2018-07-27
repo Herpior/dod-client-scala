@@ -10,6 +10,7 @@ import io.Icons
 
 class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Boolean,finish:Boolean,random:Boolean) extends BorderPanel with PlayPanel{
 
+  val this_phrasing_panel = this 
   this.background = Magic.bgColor
   val skipButt = new Button{
     this.background = Magic.white
@@ -149,11 +150,12 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
           new view.ReplaceEvent(
               new view.LoadingPanel(
                   Future{
-                      if(http.HttpHandler.submitDesc(real.text))
-                      http.HttpHandler.state.toPlayPanel
-                      else this
-                  },this
-              ),this
+                      if(http.HttpHandler.submitDesc(real.text)){
+                        http.HttpHandler.state.toPlayPanel
+                      }
+                      else this_phrasing_panel
+                  },this_phrasing_panel
+              ),this_phrasing_panel
           )
       )
   }
