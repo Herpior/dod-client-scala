@@ -55,10 +55,9 @@ object DoodleWindow extends SimpleSwingApplication {
         this.preferredSize = this.bounds.getSize
       case e:ReplaceEvent=>
         screen = e.replacement
-        this.contents = screen
-        //println("replaced should this now be: "+screen.getClass)
-        screen.repaint()
         this.listenTo(screen)
+        this.contents = screen
+        screen.repaint()
       case e:WindowClosing =>  //println(e.getClass)
         try{
           if(screen.isInstanceOf[DoodlingPanel]){

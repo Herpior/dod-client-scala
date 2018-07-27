@@ -187,10 +187,10 @@ object HttpHandler {
   }
   def submitDesc(desc:String)={
     val post = new DescPost(chain,desc)
-    //val in = postHttp(post)
+    val in = postHttp(post)
     //println(in.mkString("\n"))
-    //JsonParse.parseOk(in.mkString("\n")).isOk
-    false
+    JsonParse.parseOk(in.mkString("\n")).isOk
+    //false
   }
   def logout {
     //println(httpCookieStore.getCookies)

@@ -153,7 +153,9 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
                       if(http.HttpHandler.submitDesc(real.text)){
                         http.HttpHandler.state.toPlayPanel
                       }
-                      else this_phrasing_panel
+                      else {
+                        this_phrasing_panel
+                      }
                   },this_phrasing_panel
               ),this_phrasing_panel
           )
