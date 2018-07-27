@@ -116,7 +116,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   }
   
   
-  doodle.model.loadFrom(private_id)
+  doodle.model.loadSave(private_id)
   //doodle.redrawAll
   //println("backup."+group_id/*http.HttpHandler.getGroup*/+".txt")
                 //doodle.redrawMid
@@ -227,9 +227,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     val res = fc.showOpenDialog(this)
     if (res != FileChooser.Result.Approve) return
     val file = fc.selectedFile
-    doodle.model.decryptFrom(file.getAbsolutePath,private_id)
+    doodle.model.decryptFrom(file.getAbsolutePath)
     doodle.redrawAll
     layers.reset
+    println("filename: " + filename)
   }
   
   override def logout {

@@ -96,7 +96,7 @@ class LayerList {
     layers ++= risky
     current += 1
   }
-  def addLayers(adding:Array[Layer]){
+  def addLayers(adding:Buffer[Layer]){
     adding.foreach { l => addLayer(l) }
   }
   def layerUp{

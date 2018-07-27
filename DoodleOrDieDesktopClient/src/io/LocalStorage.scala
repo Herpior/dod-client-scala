@@ -1,8 +1,10 @@
 package io
 
-import dmodel.BasicLine
 import java.io.File
+import dmodel.BasicLine
 import dmodel.JsonLine
+import dmodel.JsonSave
+import dmodel.JsonStroke
 import dmodel.Colors
 
 object LocalStorage {
@@ -55,12 +57,13 @@ object LocalStorage {
     val st = json
     p.write(st)}
   }
-  def decryptFrom(path:String,chain:String)={
+  def decryptFrom(path:String)={
     val encrypted = loadFrom(path)
-    decrypt(encrypted,chain)
+    decrypt(encrypted)
   }
   def loadSave(chain:String)={
-    loadFrom("saves/save."+chain+".txt")
+    val loaded = loadFrom("saves/save."+chain+".txt")
+    dmodel.JsonParse.parseSave(loaded)
   }
   def loadFrom(path:String)={
     val ensource = scala.io.Source.fromFile(path)("UTF-8")
@@ -88,13 +91,11 @@ object LocalStorage {
   def storePw(cid:String){
     Crypt.encipherTo(cid, "/login")
   }*/
-  def decrypt(str:String,chain:String):(Array[dmodel.Layer], Int)={
+  def decrypt(str:String):JsonSave={
     str.headOption.foreach{ c=>
       if (c=='{'){
         val doodle = dmodel.JsonParse.parseSave(str)
-        val layers = doodle.getDoodleLayers
-        val pt = doodle.getTime
-        return (layers.toArray, pt)
+        return (doodle)
       }
     }
     val parts = str.replaceAll("\"", "").split("\\\\r")
@@ -108,7 +109,7 @@ object LocalStorage {
       val doodle = starr.map { x =>
        val pieces = x.split("\\\\n")
        //println(pieces.mkString(", "))
-       val res = new JsonLine
+       val res = new JsonStroke
        res.path = pieces(0).toArray.map { x => vmap(x)/2.0 }
        if(res.path.length%2==1)res.path = res.path.drop(1)
        res.size = if(pieces.length>1)vmap(pieces(1)(0))/2 else 1
@@ -123,9 +124,13 @@ object LocalStorage {
               parts(2).trim()
               )
       catch{case e:Throwable=>e.printStackTrace()}
-      val layer = new dmodel.Layer
-      layer.load(doodle)
-      (Array(layer),pt)
+      val layer = new dmodel.JsonLayer
+      layer.strokes = doodle
+      val save = new JsonSave
+      save.layers = Array(layer)
+      if(!parts.headOption.isEmpty) save.doodle_id = parts.headOption.get
+      save.time = pt
+      save
     /*} else {
       (Array[JsonLine](),0)
     }*/
