@@ -5,14 +5,15 @@ import event.WindowOpened
 import scala.swing.event.WindowClosing
 import scala.swing.event.UIElementResized
 import concurrent.Future
+import concurrent.Promise
 import concurrent.ExecutionContext.Implicits.global
 
 import javax.swing.UIManager
 
 object DoodleWindow extends SimpleSwingApplication {
   
-  val ver = "v0.498"
-  val version = 498
+  val ver = "v0.499"
+  val version = 499
   
    try {
     UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
@@ -31,8 +32,12 @@ object DoodleWindow extends SimpleSwingApplication {
       new LoadingPanel(Future{
         //http.HttpHandler.getSkips
         val state = http.HttpHandler.state
-        if(http.HttpHandler.loggedIn)
-        state.toPlayPanel
+        if(http.HttpHandler.loggedIn){
+          val playpanel = state.toPlayPanel
+          val usernameFuture = Future(http.HttpHandler.getAndSetUsername())
+          usernameFuture.onComplete { x => playpanel.refreshLogoutButt }
+          playpanel
+        }
         else new LogonPanel},new LogonPanel)
     } else new LogonPanel
     //val condo = new CondimentPanel

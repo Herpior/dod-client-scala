@@ -57,7 +57,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   val desc = new PhrasePanel{
     this.contents += new BorderPanel{
       //this.contents += txt
-      this.preferredSize = new Dimension(120,100)
+      this.preferredSize = new Dimension(200,100)
       this.minimumSize = new Dimension(60,40)
       this.maximumSize = new Dimension(180,200)
       this.background = dmodel.Magic.white

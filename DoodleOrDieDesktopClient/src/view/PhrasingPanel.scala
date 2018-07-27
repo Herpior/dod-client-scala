@@ -43,7 +43,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   val describe = new PhrasePanel{
     this.contents += new BorderPanel{
       //this.contents += txt
-      this.preferredSize = new Dimension(100,100)
+      this.preferredSize = new Dimension(200,100)
       this.minimumSize = new Dimension(60,50)
       this.maximumSize = new Dimension(160,200)
       this.background = dmodel.Magic.white

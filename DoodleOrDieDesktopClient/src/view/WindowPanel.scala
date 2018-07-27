@@ -17,7 +17,7 @@ trait PlayPanel extends WindowPanel {
   val logoutButt = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
-    this.action = Action("logout"){
+    this.action = Action("logout "+Magic.user){
       //this.icon = Icons.getSkip
       logout
       }
@@ -149,6 +149,9 @@ trait PlayPanel extends WindowPanel {
                   Future(http.HttpHandler.state.toPlayPanel), this), this
           )
       )
+  }
+  def refreshLogoutButt {
+    this.logoutButt.text = "logout " + Magic.user
   }
   //def submit:Boolean
   //def load:Boolean

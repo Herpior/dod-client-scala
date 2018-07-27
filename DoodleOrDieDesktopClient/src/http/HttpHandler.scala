@@ -90,7 +90,7 @@ object HttpHandler {
     def getChain = chain
     def getGroup = room
     def getAuth = auth.isSuper
-    def loggedIn = auth.skipsPerDuration>0//very weird way to figure out if logged in
+    def loggedIn = auth.skipsPerDuration>0 //very weird way to figure out if logged in
   
     def saveCid {
     cid.foreach { x => io.Crypt.encipherTo(x, "login") }
@@ -201,9 +201,10 @@ object HttpHandler {
     auth = new dmodel.JsonSkips
     val get3 = new MainGet()
     val in =  getHttp(get3)
+    dmodel.Magic.user = ""
     //println("HttpHandler logout")
-    //println("in:")
-    //println(in.mkString("\n"))
+    println("in:")
+    println(in.mkString("\n"))
     //println(httpCookieStore.toString())
   }
   def login(password:Array[Char],username:String):Boolean={
@@ -211,12 +212,13 @@ object HttpHandler {
     val post = new LoginPost(password,username)
     val in = postHttp(post)
     if(in.mkString("\n")!="""<p>Moved Temporarily. Redirecting to <a href="https://doodleordie.com/">https://doodleordie.com/</a></p>""")return false
-      //println(in.mkString("\n"))
+    //println("in\n" + in.mkString("\n"))
       //if not ok return false
     //println(_conn)
     val get = new MainGet()
     val in2 = getHttp(get)
-    //println(in2.mkString("\n"))
+    setUsername(in2)
+    //println("in2\n" + in2.mkString("\n"))
     //println(_conn)
     !cid.isEmpty
   }
@@ -254,6 +256,7 @@ object HttpHandler {
     addDodCookie("cid", pw.mkString)
     val get = new MainGet()
     val in2 = getHttp(get)
+    setUsername(in2)
     
     !cid.isEmpty
   }
@@ -329,6 +332,7 @@ object HttpHandler {
     }
     driver.close()
     //use selenium
+    getAndSetUsername()
     !cid.isEmpty
     /*
     val prepost = new DefaultPost("https://twitter.com/logout","https://twitter.com/")
@@ -412,5 +416,19 @@ object HttpHandler {
     val in = postHttp(post)
     //println(in.mkString("\n, "))
     JsonParse.parseOk(in.mkString("\n")).isOk
+  }
+  def getAndSetUsername() {
+    val get = new MainGet()
+    val in = getHttp(get)
+    setUsername(in)
+  }
+  def setUsername(mainget:Array[String]) {
+    try {
+      val prev = mainget.indexWhere { x => x.endsWith("""class="nav_you">""") }
+      val ripped = mainget(prev+1).trim.dropRight(7).dropWhile{ x => x != '>' }.drop(1)
+      dmodel.Magic.user = ripped
+    } catch {
+      case e:Throwable =>
+    }
   }
 }

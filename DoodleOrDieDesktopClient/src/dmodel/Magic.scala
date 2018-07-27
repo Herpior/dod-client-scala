@@ -25,6 +25,7 @@ object Magic {
   val hexa = "0123456789abcdef"
   val font20 = new swing.Label(" ").font.deriveFont(java.awt.Font.BOLD,20)
   var offline = false
+  var user = ""
   
   def setXY(nx:Int, ny:Int) {
     x = nx
