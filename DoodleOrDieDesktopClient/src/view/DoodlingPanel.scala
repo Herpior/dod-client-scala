@@ -509,7 +509,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             doodle.redrawLayerUp
           }
           Future(layers.reset)
-        case Key.X =>
+        case Key.B =>
           if(ctrl) this.swapLayerP
           else this.swapToolP
         case _ =>

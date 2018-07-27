@@ -36,8 +36,8 @@ Hotkeys:
   J: zoom tool
   K: hand tool
   L: bezier fill (only for supers)
-  X: separate tool panel from the main window / anchor tool panel back into the main window
-  Ctrl+ X: separate layer panel from the main window / anchor layer panel back into the main window
+  B: separate tool panel from the main window / anchor tool panel back into the main window
+  Ctrl+ B: separate layer panel from the main window / anchor layer panel back into the main window
   Ctrl+ S: save doodle backup
   P: export image as png, use previous save location if already saved
   Ctrl+ P: export image as png and choose save location

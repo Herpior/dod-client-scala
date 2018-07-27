@@ -1,3 +1,12 @@
+v0.499
+	client notices if the doodle has timed out
+	doodle is saved properly when changing between rooms
+	unicode characters work properly in drawing prompts (the font might not be able to render everything but that's a different thing)
+	descriptions with quotes and slashes don't cause problems
+	saving doodles will not change their save location in online mode
+	player username is shown in the logout button
+	logout button is bigger so you can see more than 4 first characters of the username
+	the button to separate panels changed from [X] to [B] because it is too easy to accidentally press x when undoing
 v0.498
 	saving and loading doodles file chooser starts from the working directory
 	bugfixes
