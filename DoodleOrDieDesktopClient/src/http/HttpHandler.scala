@@ -111,9 +111,9 @@ object HttpHandler {
     //cooky.foreach { x=>println(x.takeWhile { c => c!=':' }.trim) }
     val in = 
         if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding())){
-          new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent))
+          new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
-        else new java.util.Scanner(response.getEntity.getContent)
+        else new java.util.Scanner(response.getEntity.getContent, "utf-8")
     val str = Buffer[String]()
     /*println()
     println("HttpHandler getHttp")
@@ -143,9 +143,9 @@ object HttpHandler {
     println(response.getAllHeaders.mkString("\n"))*/
     val in = 
         if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding())){
-          new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent))
+          new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
-        else new java.util.Scanner(response.getEntity.getContent)
+        else new java.util.Scanner(response.getEntity.getContent, "utf-8")
     val str = Buffer[String]()
     //println("get: "+get.getClass)
     while(in.hasNext){
