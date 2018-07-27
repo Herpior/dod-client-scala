@@ -160,23 +160,24 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           //fc.fileSelectionMode = FileChooser.SelectionMode.FilesOnly
           fc.fileFilter = new io.PngFilter
           fc.title = "export file"
-          fc.peer.setCurrentDirectory(new java.io.File(this.pathname + ".png").getParentFile)
+          fc.peer.setCurrentDirectory(new java.io.File(this.pathname).getParentFile)
           val res = fc.showSaveDialog(this)
           if (res != FileChooser.Result.Approve) return
           val file = fc.selectedFile
-          filename = file.getName
-          pathname = file.getAbsolutePath
-          if(!filename.endsWith("png")){
-            //pathname = pathname + ".png"
+          if(Magic.offline){
+            filename = file.getName
+            pathname = file.getAbsolutePath
           }
-          else {
+          if(!pathname.endsWith("png")){
+            pathname = pathname + ".png"
+          }
+          if(filename.endsWith("png")) {
             filename = filename.dropRight(4)
-            pathname = pathname.dropRight(4)
           }
-          doodle.exportImage(percent, pathname + ".png")
+          doodle.exportImage(percent, pathname)
           //}
         }
-        else doodle.exportImage(percent, pathname + ".png")
+        else doodle.exportImage(percent, pathname)
       }
       catch {
         case e:Throwable => 
@@ -222,24 +223,13 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     //fc.fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fc.fileFilter = new io.TxtFilter
     fc.title = "load save"
-    fc.peer.setCurrentDirectory(new java.io.File(this.pathname + ".png").getParentFile)
+    fc.peer.setCurrentDirectory(new java.io.File(this.pathname).getParentFile)
     val res = fc.showOpenDialog(this)
     if (res != FileChooser.Result.Approve) return
     val file = fc.selectedFile
     doodle.model.decryptFrom(file.getAbsolutePath,private_id)
     doodle.redrawAll
     layers.reset
-    if(filename == "offline"){
-      filename = file.getName
-      pathname = file.getAbsolutePath
-      if(!filename.endsWith("txt")){
-        //pathname = pathname + ".png"
-      }
-      else {
-        filename = filename.dropRight(4)
-        pathname = pathname.dropRight(4)
-      }
-    }
   }
   
   override def logout {
