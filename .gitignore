@@ -6,6 +6,10 @@
 .classpath
 bin
 
+# idea
+**/.idea/workspace.xml
+**/.idea/tasks.xml
+
 */backup.*
 */bin/
 */login1
