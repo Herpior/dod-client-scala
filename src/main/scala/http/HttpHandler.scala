@@ -36,30 +36,12 @@ object HttpHandler {
   //val classLoader = getClass().getClassLoader();
   //println("lol")
   private var client :CloseableHttpClient = null//HttpClients.custom().build()
-  val httpCookieStore = new BasicCookieStore();
+  val httpCookieStore = new BasicCookieStore()
+  val cacertPath = "/dodcacerts"
+  val cacertPass = "RpcQNp1tTSifL6aGqAtt".toCharArray()
 
   try{
-    val url = getClass.getResource("/dodcacerts")
-    //val file = Source.fromInputStream(getClass.getResourceAsStream("/dodcacerts")).mkString
-    //val keystore = new File(url.getFile())
-    val sslcontext = SSLContexts.custom()
-                  .loadTrustMaterial(url, "RpcQNp1tTSifL6aGqAtt".toCharArray(),
-                          new TrustSelfSignedStrategy())
-                  .build();
-    //println(sslcontext)
-    val sslsf = new SSLConnectionSocketFactory(
-                  sslcontext,
-                  Array( "TLSv1" ),
-                  null,
-                  SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-    //println(sslsf)
-    val globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
-    client = HttpClients.custom()
-                  .setSSLSocketFactory(sslsf)
-                  .setDefaultRequestConfig(globalConfig)
-                  .setDefaultCookieStore(httpCookieStore)
-                  .build();//HttpClientBuilder.create().build();//new DefaultHttpClient .setParameter(ClientPNames.COOKIE_POLICY,CookiePolicy.BROWSER_COMPATIBILITY);
-
+    client = KeystoreLoader.setUpClient(cacertPath, cacertPass, httpCookieStore)
     } catch {
       case e: NullPointerException => //TODO:add notification that regular login is not possible without the key?
         println("dodcacerts not found")
