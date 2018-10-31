@@ -1,5 +1,7 @@
 package http
 
+import java.io.FileNotFoundException
+
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.client.methods.HttpGet
@@ -9,13 +11,11 @@ import scala.collection.JavaConversions._
 import org.apache.http.util.EntityUtils
 import dmodel.BasicLine
 import dmodel.JsonParse
-
 import java.util.zip.GZIPInputStream
 
 import org.apache.http.impl.client.BasicCookieStore
 import org.apache.http.impl.cookie.BasicClientCookie
 import org.apache.http.cookie.ClientCookie
-
 import java.util.Calendar
 
 
@@ -23,15 +23,15 @@ object HttpHandler {
 
   private var client :CloseableHttpClient = null
   val httpCookieStore = new BasicCookieStore()
-  val cacertPath = "/dodcacerts"
+  val cacertFilename = "/dodcacerts"
   val cacertPass = "RpcQNp1tTSifL6aGqAtt".toCharArray()
 
   try{
-    client = KeystoreLoader.setUpClient(cacertPath, cacertPass, httpCookieStore)
+    client = KeystoreLoader.setUpClient(cacertFilename, cacertPass, httpCookieStore)
     } catch {
-      case e: NullPointerException => //TODO:add notification that regular login is not possible without the key?
-        println("dodcacerts not found")
-      case e =>
+      case e: IllegalArgumentException => //TODO:add notification that regular login is not possible without the key?
+        println("dodcacerts not found in the jar: " + e)
+      case e:Throwable =>
         throw e
   }
   
@@ -42,7 +42,11 @@ object HttpHandler {
   
   try{
     addDodCookie("cid",io.Crypt.decipherFrom("login"))
-  }catch{case e:Throwable=>println("load cid failed - "+e.getLocalizedMessage)}
+  }
+  catch{
+    case e:FileNotFoundException=> // just means that user has not enabled automatic login
+    case e:Throwable=>println("load cid failed: "+e)
+  }
 
   private var chain = ""
   private var room = "global"

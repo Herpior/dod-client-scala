@@ -1,6 +1,9 @@
 package http
 
-import http.HttpHandler.{client, getClass, httpCookieStore}
+import java.io.File
+
+
+import javax.net.ssl.SSLContext;
 import org.apache.http.client.config.{CookieSpecs, RequestConfig}
 import org.apache.http.conn.ssl.{SSLConnectionSocketFactory, TrustSelfSignedStrategy}
 import org.apache.http.impl.client.{BasicCookieStore, HttpClients}
@@ -9,15 +12,32 @@ import org.apache.http.ssl.SSLContexts
 
 object KeystoreLoader {
 
-  def setUpClient(cacertpath:String, cacertPass:Array[Char], cookiestore:BasicCookieStore) = {
+  def setUpClient(cacertPath:String, cacertPass:Array[Char], httpCookieStore:BasicCookieStore) = {
+    //try to use a cacert file that is outside the jar,
+    // in case the cacerts file needs to be recreated issued to users without a full update
+    var sslcontext:SSLContext = null
+    try{
+      val url = (cacertPath).dropWhile(p => p=='/') //drop the first "/" in the path
+      val keystore = new File(url)
+      sslcontext = SSLContexts.custom()
+        .loadTrustMaterial(keystore, cacertPass,
+          new TrustSelfSignedStrategy())
+        .build();
+    } catch {
+      case e:Throwable=>
+        //e:FileNotFoundException usually,
+        // but I'll need a working sslcontext in any case, the above is only a fallback
 
-    val url = getClass.getResource(cacertpath)
-    //val file = Source.fromInputStream(getClass.getResourceAsStream("/dodcacerts")).mkString
-    //val keystore = new File(url.getFile()) // needs to be outside of jar for this to work
-    val sslcontext = SSLContexts.custom()
-      .loadTrustMaterial(url, cacertPass,
-        new TrustSelfSignedStrategy())
-      .build();
+        val url = getClass.getResource(cacertPath)
+        //val file = Source.fromInputStream(getClass.getResourceAsStream("/dodcacerts")).mkString
+        //val keystore = new File(url.getFile()) // needs to be outside of jar for this to work
+        sslcontext = SSLContexts.custom()
+          .loadTrustMaterial(url, cacertPass,
+            new TrustSelfSignedStrategy())
+          .build();
+    }
+
+
     val sslsf = new SSLConnectionSocketFactory(
       sslcontext,
       Array( "TLSv1" ),
