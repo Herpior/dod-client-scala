@@ -3,13 +3,13 @@ package http
 import http.HttpHandler.{client, getClass, httpCookieStore}
 import org.apache.http.client.config.{CookieSpecs, RequestConfig}
 import org.apache.http.conn.ssl.{SSLConnectionSocketFactory, TrustSelfSignedStrategy}
-import org.apache.http.impl.client.{BasicCookieStore, CloseableHttpClient, HttpClients}
+import org.apache.http.impl.client.{BasicCookieStore, HttpClients}
 import org.apache.http.ssl.SSLContexts
 
 
 object KeystoreLoader {
 
-  def setUpClient(cacertpath:String, cacertPass:Array[Char], cookiestore:BasicCookieStore):CloseableHttpClient = {
+  def setUpClient(cacertpath:String, cacertPass:Array[Char], cookiestore:BasicCookieStore) = {
 
     val url = getClass.getResource(cacertpath)
     //val file = Source.fromInputStream(getClass.getResourceAsStream("/dodcacerts")).mkString
@@ -18,21 +18,20 @@ object KeystoreLoader {
       .loadTrustMaterial(url, cacertPass,
         new TrustSelfSignedStrategy())
       .build();
-    //println(sslcontext)
     val sslsf = new SSLConnectionSocketFactory(
       sslcontext,
       Array( "TLSv1" ),
       null,
       SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-    //println(sslsf)
     val globalConfig = RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build();
     val client = HttpClients.custom()
       .setSSLSocketFactory(sslsf)
       .setDefaultRequestConfig(globalConfig)
       .setDefaultCookieStore(httpCookieStore)
-      .build();//HttpClientBuilder.create().build();//new DefaultHttpClient .setParameter(ClientPNames.COOKIE_POLICY,CookiePolicy.BROWSER_COMPATIBILITY);
+      .build();
+    //HttpClientBuilder.create().build();//new DefaultHttpClient .setParameter(ClientPNames.COOKIE_POLICY,CookiePolicy.BROWSER_COMPATIBILITY);
 
-    return client
+    client
   }
 }
 
