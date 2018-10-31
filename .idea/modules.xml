@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/DoodleOrDieDesktopClient/DoodleOrDieDesktopClient.iml" filepath="$PROJECT_DIR$/DoodleOrDieDesktopClient/DoodleOrDieDesktopClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dod.iml" filepath="$PROJECT_DIR$/.idea/modules/dod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dod-build.iml" filepath="$PROJECT_DIR$/.idea/modules/dod-build.iml" />
     </modules>
   </component>
 </project>

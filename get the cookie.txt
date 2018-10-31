@@ -1,0 +1,2 @@
+paste this onto the address bar when you are logged in to dod and it will tell you the id:
+javascript:alert("Your id cookie is: "+document.cookie.split(';').map(cookie=>cookie.split('=')).filter(cookie=>cookie[0]=="cid")[0][1])
