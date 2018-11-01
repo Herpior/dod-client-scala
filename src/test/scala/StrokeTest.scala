@@ -1,5 +1,6 @@
 package tests
 
+import dmodel.dpart.BasicLine
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
 //import org.junit.runner.RunWith

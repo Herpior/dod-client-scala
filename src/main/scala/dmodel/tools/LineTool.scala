@@ -2,13 +2,13 @@ package dmodel.tools
 
 import math.Pi
 import java.awt.Color
+
 import dmodel.Angle
-import dmodel.BasicLine
 import dmodel.Coord
-import dmodel.MultiLine
 import dmodel.Perspective
 import dmodel.ColorModel
 import dmodel.SizeModel
+import dmodel.dpart.{BasicLine, MultiLine}
 import view.DoodlePanel
 
 object LineTool extends LineToolClass

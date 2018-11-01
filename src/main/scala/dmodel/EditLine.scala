@@ -1,5 +1,7 @@
 package dmodel
 
+import dmodel.dpart.{BasicLine, DoodlePart}
+
 class EditLine(editedLine:DoodlePart, originalLine:DoodlePart) extends DoodlePart {
   def getLines: Array[BasicLine] = Array()
 

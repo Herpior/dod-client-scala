@@ -2,7 +2,7 @@ package dmodel.tools
 
 import collection.mutable.Buffer
 import dmodel.Coord
-import dmodel.DoodlePart
+import dmodel.dpart.DoodlePart
 import view.DoodlePanel
 
 object SelectTool extends SelectToolClass

@@ -1,10 +1,10 @@
 package dmodel.tools
 import view.DoodlePanel
-import dmodel.BasicLine
-import dmodel.DoodlePart
 import dmodel.Coord
 import dmodel.Magic
 import dmodel.Perspective
+import dmodel.dpart.{BasicLine, DoodlePart}
+
 import collection.mutable.Buffer
 import math.min
 import math.max

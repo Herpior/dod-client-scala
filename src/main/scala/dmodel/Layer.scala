@@ -1,5 +1,7 @@
 package dmodel
 
+import dmodel.dpart.{BasicLine, DoodlePart, JsonDoodle, JsonLine}
+
 import collection.mutable.Buffer
 
 class Layer() {

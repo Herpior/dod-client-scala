@@ -2,16 +2,14 @@ package dmodel.tools
 
 import java.awt.image.BufferedImage
 import java.awt.Color
+
 import collection.mutable.Queue
-import dmodel.BezierLine
-import dmodel.MultiLine
-import dmodel.BasicLine
-import dmodel.DoodlePart
 import dmodel.Magic
 import dmodel.Colors
 import dmodel.Coord
 import dmodel.ColorModel
 import dmodel.SizeModel
+import dmodel.dpart.{BasicLine, DoodlePart, MultiLine}
 import view.DoodlePanel
 
 object FillTool extends LineToolClass{

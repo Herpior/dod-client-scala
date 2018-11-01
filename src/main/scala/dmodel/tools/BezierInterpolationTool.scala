@@ -2,9 +2,7 @@ package dmodel.tools
 
 import dmodel.Colors
 import dmodel.Coord
-import dmodel.BezierLine
-import dmodel.MultiLine
-import dmodel.DoodlePart
+import dmodel.dpart.{BezierLine, DoodlePart, MultiLine}
 import view.DoodlePanel
 
 object BezierInterpolationTool extends SelectToolClass {

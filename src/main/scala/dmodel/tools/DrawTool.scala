@@ -1,9 +1,9 @@
 package dmodel.tools
-import dmodel.MultiLine
 import dmodel.Coord
 import dmodel.ColorModel
 import dmodel.SizeModel
 import dmodel.Magic
+import dmodel.dpart.MultiLine
 
 object DrawTool extends LineToolClass {
  

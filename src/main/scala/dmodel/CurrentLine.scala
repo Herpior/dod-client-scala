@@ -1,5 +1,7 @@
 package dmodel
 
+import dmodel.dpart.{BasicLine, BezierLine}
+
 class CurrentLine {
 
   private var basicLine:Option[BasicLine] = None

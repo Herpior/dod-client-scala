@@ -1,5 +1,7 @@
 package dmodel
 
+import dmodel.dpart.{BezierLine, DoodlePart, JsonLine, MultiLine}
+
 class JsonSave {
   var version:Int = _
   var doodle_id:String = _

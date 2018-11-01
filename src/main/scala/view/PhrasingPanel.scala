@@ -2,8 +2,9 @@ package view
 
 import scala.swing._
 import BorderPanel.Position._
-import dmodel.JsonDoodle
 import dmodel.Magic
+import dmodel.dpart.JsonDoodle
+
 import concurrent.Future
 import concurrent.ExecutionContext.Implicits.global
 import io.Icons

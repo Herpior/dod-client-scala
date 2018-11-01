@@ -1,9 +1,11 @@
 package dmodel
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder;
+import com.google.gson.GsonBuilder
 import java.io.StringReader
 import java.io.BufferedReader
+
+import dmodel.dpart.JsonDoodle
 
 object JsonParse {
     val gson = new Gson

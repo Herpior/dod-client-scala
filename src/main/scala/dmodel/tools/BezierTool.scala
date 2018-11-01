@@ -1,16 +1,14 @@
 package dmodel.tools
 import dmodel.Angle
 import dmodel.Magic
-import dmodel.BasicLine
-import dmodel.BezierLine
 import dmodel.ColorModel
 import dmodel.Colors
 import dmodel.Coord
 import dmodel.DoodleModel
-import dmodel.DoodlePart
-import dmodel.MultiLine
 import dmodel.Perspective
 import dmodel.SizeModel
+import dmodel.dpart.{BasicLine, BezierLine, DoodlePart, MultiLine}
+
 import math.Pi
 import collection.mutable.Buffer
 import view.DoodlePanel

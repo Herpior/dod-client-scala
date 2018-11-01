@@ -1,6 +1,7 @@
 package dmodel.tools
 
 import dmodel._
+import dmodel.dpart.{BasicLine, DoodlePart, MultiLine}
 import view.DoodlePanel
 
 object EditLineTool extends SelectToolClass { //(Array())

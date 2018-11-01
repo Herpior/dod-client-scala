@@ -7,12 +7,13 @@ import java.awt.Color
 import java.awt.image.BufferedImage
 import java.awt.Toolkit
 import java.io.File
+
 import dmodel.LineDrawer
 import dmodel.DoodleModel
 import dmodel.SizeModel
-import dmodel.DoodlePart
 import dmodel.Coord
 import dmodel.Magic
+import dmodel.dpart.DoodlePart
 //import java.awt.Cursor
 import math.{max,min}
 

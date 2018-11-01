@@ -1,5 +1,6 @@
 package dmodel
 
+import dmodel.dpart.JsonDoodle
 import view.DoodlingPanel
 import view.PhrasingPanel
 import view.StalingPanel

@@ -2,14 +2,13 @@ package http
 
 import collection.mutable.Map
 import java.util.ArrayList
+
+import dmodel.dpart.BasicLine
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.NameValuePair
 import org.apache.http.message.BasicNameValuePair
-
-
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.entity.StringEntity
-import dmodel.BasicLine
 
 class DefaultPost(url:String,ref:String) extends HttpPost(url){
     //if(cookie.length>0)this.addHeader("Cookie",cookie)

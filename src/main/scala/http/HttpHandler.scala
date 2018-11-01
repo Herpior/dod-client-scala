@@ -9,7 +9,6 @@ import org.apache.http.client.methods.HttpGet
 import collection.mutable.Buffer
 import scala.collection.JavaConversions._
 import org.apache.http.util.EntityUtils
-import dmodel.BasicLine
 import dmodel.JsonParse
 import java.util.zip.GZIPInputStream
 
@@ -17,6 +16,8 @@ import org.apache.http.impl.client.BasicCookieStore
 import org.apache.http.impl.cookie.BasicClientCookie
 import org.apache.http.cookie.ClientCookie
 import java.util.Calendar
+
+import dmodel.dpart.BasicLine
 
 
 object HttpHandler {

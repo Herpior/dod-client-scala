@@ -1,7 +1,8 @@
 package dmodel.tools
 import view.DoodlePanel
 import dmodel.Coord
-import dmodel.DoodlePart
+import dmodel.dpart.DoodlePart
+
 import collection.mutable.Buffer
 
 abstract class BasicTool {

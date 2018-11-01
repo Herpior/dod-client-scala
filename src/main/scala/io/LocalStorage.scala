@@ -1,11 +1,11 @@
 package io
 
 import java.io.File
-import dmodel.BasicLine
-import dmodel.JsonLine
+
 import dmodel.JsonSave
 import dmodel.JsonStroke
 import dmodel.Colors
+import dmodel.dpart.BasicLine
 
 object LocalStorage {
 

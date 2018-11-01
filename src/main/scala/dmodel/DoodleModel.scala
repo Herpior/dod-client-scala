@@ -1,5 +1,7 @@
 package dmodel
 
+import dmodel.dpart.{DoodlePart, JsonDoodle}
+
 import collection.mutable.Buffer
 import http.HttpHandler
 import io.LocalStorage
