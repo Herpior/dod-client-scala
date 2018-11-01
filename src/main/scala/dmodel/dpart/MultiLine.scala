@@ -4,7 +4,8 @@ import dmodel.{Colors, Coord, JsonStroke}
 
 import scala.collection.mutable.Buffer
 
-// please don't stack multilines inside each other, just flatten it
+// Used as a method to group multiple lines together, e.x. when filling, so they act as a single item in undo stack.
+// also an easy intermediate format between the original line format and the doodleordie export/upload format
 class MultiLine extends DoodlePart{
   private var lines = Buffer[BasicLine]()
   def transform (transformation:Coord=>Coord):MultiLine = {
