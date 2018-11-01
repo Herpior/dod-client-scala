@@ -2,7 +2,7 @@ package dmodel.tools
 import view.DoodlePanel
 import dmodel.Coord
 
-object ZoomTool extends BasicTool { //(Array())
+class ZoomTool extends BasicTool { //(Array())
   
   override def getLines() = {collection.mutable.Buffer()}
 

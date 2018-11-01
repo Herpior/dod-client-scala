@@ -3,7 +3,7 @@ import view.DoodlePanel
 import dmodel.Coord
 import dmodel.Magic
 
-object HandTool extends BasicTool { //(Array())
+class HandTool extends BasicTool { //(Array())
   
   //private var previousCoord = Coord(0,0) //initiate  0,0 coord, it should be replaced once the mouse is pressed anyways
   //private var point = Magic.doodleSize/2

@@ -9,7 +9,7 @@ import collection.mutable.Buffer
 import math.min
 import math.max
 
-object PerspectiveTool extends BasicTool {
+class PerspectiveTool extends BasicTool {
   
   private var closest : Option[Int] = None // index of the currently closest vanishing point, the perspective model should keep it in proper range
   

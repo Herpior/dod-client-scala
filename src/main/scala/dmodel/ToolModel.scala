@@ -4,11 +4,25 @@ import view.DoodlePanel
 
 object ToolModel {
 
+
+  val handTool = new HandTool
+  val drawTool = new DrawTool
+  val lineTool = new LineTool
+  val bezierTool = new BezierTool
+  val fillTool = new FillTool
+  val perspectiveTool = new PerspectiveTool
+  val zoomTool = new ZoomTool
+  val bezierInterpolationTool = new BezierInterpolationTool
+  val editLineTool = new EditLineTool
+
   private var mini = false
-  private var tool:BasicTool = DrawTool
   private var state = 0
   private var ready = Magic.readyDefault
-  private var toolList:Array[BasicTool] = Array(DrawTool, LineTool, BezierTool, FillTool, PerspectiveTool, ZoomTool, HandTool, BezierInterpolationTool, EditLineTool)
+  private var toolList:Array[BasicTool] = Array(
+    drawTool,        lineTool,    bezierTool,   fillTool,
+    perspectiveTool, zoomTool,    handTool,     bezierInterpolationTool,
+    editLineTool)
+  private var tool:BasicTool = toolList(0)
   
   def isReady = this.ready
   def initReady {ready = Magic.readyDefault}

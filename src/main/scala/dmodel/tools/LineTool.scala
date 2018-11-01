@@ -11,9 +11,9 @@ import dmodel.SizeModel
 import dmodel.dpart.{BasicLine, MultiLine}
 import view.DoodlePanel
 
-object LineTool extends LineToolClass
+//object LineTool extends LineToolClass
 
-class LineToolClass extends BasicTool {
+class LineTool extends BasicTool {
   
   private var drawing = false
   

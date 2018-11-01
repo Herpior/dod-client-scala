@@ -5,7 +5,7 @@ import dmodel.Coord
 import dmodel.dpart.{BezierLine, DoodlePart, MultiLine}
 import view.DoodlePanel
 
-object BezierInterpolationTool extends SelectToolClass {
+class BezierInterpolationTool extends SelectTool {
 
   override def onMouseUp  (dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     // if selected and hovering both full, and different lines, do the do

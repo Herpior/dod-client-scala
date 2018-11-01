@@ -5,7 +5,7 @@ import dmodel.SizeModel
 import dmodel.Magic
 import dmodel.dpart.MultiLine
 
-object DrawTool extends LineToolClass {
+class DrawTool extends LineTool {
  
 
   override def onMouseDrag(dp:view.DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){

@@ -13,7 +13,7 @@ import math.Pi
 import collection.mutable.Buffer
 import view.DoodlePanel
 
-object BezierTool extends LineToolClass {
+class BezierTool extends LineTool {
   
   
   // state 0 = nothing ongoing

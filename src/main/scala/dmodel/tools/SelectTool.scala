@@ -5,9 +5,9 @@ import dmodel.Coord
 import dmodel.dpart.DoodlePart
 import view.DoodlePanel
 
-object SelectTool extends SelectToolClass
 
-class SelectToolClass extends BasicTool {
+//base for tools that need to select lines
+class SelectTool extends BasicTool {
   
   protected var selected:Option[DoodlePart] = None // selected line after clicking
   protected var hovering:Option[DoodlePart] = None // line for visualization

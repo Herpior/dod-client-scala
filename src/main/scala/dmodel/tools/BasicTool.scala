@@ -5,7 +5,7 @@ import dmodel.dpart.DoodlePart
 
 import collection.mutable.Buffer
 
-abstract class BasicTool {
+trait BasicTool {
   
   def isBusy():Boolean = {false}
   def initTool() {}

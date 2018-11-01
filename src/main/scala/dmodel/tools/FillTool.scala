@@ -12,7 +12,7 @@ import dmodel.SizeModel
 import dmodel.dpart.{BasicLine, DoodlePart, MultiLine}
 import view.DoodlePanel
 
-object FillTool extends LineToolClass{
+class FillTool extends LineTool{
 
   
   //override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {

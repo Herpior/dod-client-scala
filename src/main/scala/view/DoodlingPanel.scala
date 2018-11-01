@@ -573,7 +573,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       else if(button == 2){ // middle button
         if(ctrl){ //TODO: implement layer moving here?
         }
-        else dmodel.tools.HandTool.onMouseDown(doodle, place, button, ctrl, alt, shift)//doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
+        else tools.model.handTool.onMouseDown(doodle, place, button, ctrl, alt, shift)//doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
       }
       else if(button > 1 && alt && !tools.model.isBusy ){ // middle or right click with alt or ctrl, no left button down
           if(Magic.authorized){
@@ -617,7 +617,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.redrawMid
       }
       else if(button == 2){
-        dmodel.tools.HandTool.onMouseUp(doodle, place, button, ctrl, alt, shift)
+        tools.model.handTool.onMouseUp(doodle, place, button, ctrl, alt, shift)
       }
       else if(doodle.canDraw){
         tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
@@ -644,7 +644,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         doodle.repaint
       }
       else if(middle){
-        dmodel.tools.HandTool.onMouseDrag(doodle, place, left, middle, right, ctrl, alt, shift)
+        tools.model.handTool.onMouseDrag(doodle, place, left, middle, right, ctrl, alt, shift)
       }
       else if(doodle.canDraw){
         tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)

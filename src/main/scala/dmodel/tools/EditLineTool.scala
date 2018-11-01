@@ -4,7 +4,7 @@ import dmodel._
 import dmodel.dpart.{BasicLine, DoodlePart, MultiLine}
 import view.DoodlePanel
 
-object EditLineTool extends SelectToolClass { //(Array())
+class EditLineTool extends SelectTool { //(Array())
 
   override def onMouseUp(dp: DoodlePanel, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
     super.onMouseUp(dp, coord, button, control, alt, shift)
