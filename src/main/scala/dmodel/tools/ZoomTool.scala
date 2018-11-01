@@ -9,10 +9,10 @@ object ZoomTool extends BasicTool { //(Array())
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     val count = if (control) 1 else 4
     if (button == 1) {
-      dp.zoomin(count)//change zoom up
+      dp.zoomIn(count)//change zoom up
     }
     if (button == 3) {
-      dp.zoomin(-count)//change zoom down
+      dp.zoomIn(-count)//change zoom down
     }
   }
 }

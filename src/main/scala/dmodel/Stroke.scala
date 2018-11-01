@@ -14,6 +14,8 @@ trait DoodlePart{
   def toJson:JsonStroke
   def toJsonString:String
   def toShortJsonString:String
+  def onUndo(layer: Layer){}//used for edit lines to undo the edit
+  def onRedo(layer: Layer){}
 }
 
 /*class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
@@ -250,7 +252,7 @@ class MultiLine extends DoodlePart{
   }
 }
 
-class BasicLine(val color:Color, val size:Double) extends DoodlePart {
+class BasicLine(var color:Color, var size:Double) extends DoodlePart {
   override def length2:Double = {
     if(coords.length==0) return 0.0
     var last = coords.head

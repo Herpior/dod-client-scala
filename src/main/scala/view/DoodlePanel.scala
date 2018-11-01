@@ -31,8 +31,9 @@ class DoodlePanel extends Panel {
       4,    4.76, 5.65, 6.72,
       8,    9.5,  11.3, 13.45,
       16,   19,   22.6, 26.9,
-      32,   38,   45.2, 53.8)
-  private var zoomind = 8//1.0
+      32,   38,   45.2, 53.8,
+      64)
+  private var zoomInd = 8//1.0
   private var cursorX = -100
   private var cursorY = -100
   
@@ -41,7 +42,7 @@ class DoodlePanel extends Panel {
   private var topImg = createImg
   private var drawImg = createImg
   
-  def getZoom = zooms(zoomind)
+  def getZoom = zooms(zoomInd)
   def getWidth = this.bounds.getWidth.toInt
   def getHeight = this.bounds.getHeight.toInt
   def canDraw = !this.model.layers.isMatrix
@@ -221,9 +222,9 @@ class DoodlePanel extends Panel {
     }
   }
   
-  def zoomin(num:Int) = {
-    val changed = zoomind-num//(zoom*(math.pow(2,-num))*10).toInt/10.0
-    if(changed>=0 && changed<zooms.length) zoomind = changed
+  def zoomIn(num:Int) = {
+    val changed = zoomInd-num//(zoom*(math.pow(2,-num))*10).toInt/10.0
+    if(changed>=0 && changed<zooms.length) zoomInd = changed
     //this.publish(new ZoomEvent)
     redrawAll
   }

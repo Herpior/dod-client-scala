@@ -288,8 +288,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //TODO: add support for mouse exited for tools
     case e:MouseWheelMoved =>
       val ctrl = e.peer.isControlDown()
-      if(ctrl)doodle.zoomin(e.rotation*4)
-      else doodle.zoomin(e.rotation)
+      if(ctrl)doodle.zoomIn(e.rotation*4)
+      else doodle.zoomIn(e.rotation)
       doodle.repaint
       //tools.model.zoomin(e.rotation)
           //repaint
@@ -470,7 +470,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(ctrl){
             savetimer.stop()
             doodle.model.redo
-            doodle.redrawLastMid
+            doodle.redrawMid
             doodle.repaint()
             Future(layers.reset)
             savetimer.start()

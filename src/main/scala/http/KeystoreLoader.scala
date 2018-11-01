@@ -2,7 +2,6 @@ package http
 
 import java.io.File
 
-
 import javax.net.ssl.SSLContext;
 import org.apache.http.client.config.{CookieSpecs, RequestConfig}
 import org.apache.http.conn.ssl.{SSLConnectionSocketFactory, TrustSelfSignedStrategy}
@@ -13,7 +12,7 @@ import org.apache.http.ssl.SSLContexts
 object KeystoreLoader {
 
   def setUpClient(cacertPath:String, cacertPass:Array[Char], httpCookieStore:BasicCookieStore) = {
-    //try to use a cacert file that is outside the jar,
+    // try to use a cacerts file that is outside the jar,
     // in case the cacerts file needs to be recreated issued to users without a full update
     var sslcontext:SSLContext = null
     try{
@@ -25,12 +24,10 @@ object KeystoreLoader {
         .build();
     } catch {
       case e:Throwable=>
-        //e:FileNotFoundException usually,
-        // but I'll need a working sslcontext in any case, the above is only a fallback
+        // it's e:FileNotFoundException usually,
+        // but I'll need to retry after any exception so
 
         val url = getClass.getResource(cacertPath)
-        //val file = Source.fromInputStream(getClass.getResourceAsStream("/dodcacerts")).mkString
-        //val keystore = new File(url.getFile()) // needs to be outside of jar for this to work
         sslcontext = SSLContexts.custom()
           .loadTrustMaterial(url, cacertPass,
             new TrustSelfSignedStrategy())
@@ -49,8 +46,6 @@ object KeystoreLoader {
       .setDefaultRequestConfig(globalConfig)
       .setDefaultCookieStore(httpCookieStore)
       .build();
-    //HttpClientBuilder.create().build();//new DefaultHttpClient .setParameter(ClientPNames.COOKIE_POLICY,CookiePolicy.BROWSER_COMPATIBILITY);
-
     client
   }
 }

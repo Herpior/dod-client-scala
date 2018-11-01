@@ -9,7 +9,12 @@ class Layer() {
   protected val strokes = Buffer[DoodlePart]()
   protected var visible = true
   private var selected = false
-  
+
+  def swap(findOld:DoodlePart, replaceWith:DoodlePart):Unit={
+    val editedIndex = strokes.indexOf(findOld)
+    if(editedIndex<0) return
+    strokes(editedIndex) = replaceWith
+  }
   def isVisible = visible
   def isSelected = selected
   def isMatrix = false
@@ -46,12 +51,14 @@ class Layer() {
   }
   def undo {
     if(strokes.length>0){
+      strokes.last.onUndo(this)
       redos += strokes.last
       strokes -= strokes.last
     }
   }
   def redo {
     if(redos.length>0){
+      redos.last.onRedo(this)
       strokes += redos.last
       redos -= redos.last
     }
@@ -81,10 +88,10 @@ class Layer() {
     strokes.toArray
   }
   def toJsonString = {
-    "{\"strokes\":["+this.strokes.map(_.toJsonString).mkString(",")+"],\"visible\":"+visible+"}"
+    "{\"strokes\":["+this.strokes.map(_.toJsonString).filter(_.nonEmpty).mkString(",")+"],\"visible\":"+visible+"}"
   }
   def toShortJsonString = {
-    "{\"s\":["+this.strokes.map(_.toShortJsonString).mkString(",")+"],\"v\":"+visible+"}"
+    "{\"s\":["+this.strokes.map(_.toShortJsonString).filter(_.nonEmpty).mkString(",")+"],\"v\":"+visible+"}"
   }
 }
 
