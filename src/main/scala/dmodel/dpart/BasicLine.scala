@@ -139,7 +139,14 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     lines.toArray
   }
 
+  def getShortPathString(len:Int) = {
+    if(coords.size<=len) coords.map(_.toString).mkString(",")
+    else coords.take(len).map(_.toString).mkString(",")+",..."
+  }
   override def toString = {
+    "BasicLine(size="+size.toInt+", color="+Colors.toHexString(color)+", path=["+getShortPathString(2)+"])"
+  }
+  def toDodJson = {
     "{\"path\":["+coords.map{
       c=>
         val tx = math.round(c.x*2)/2.0

@@ -200,8 +200,8 @@ class DoodleModel {
     this.toDodPostJsonStrokes(this.getFlatStrokes)
   }
   def toDodPostJsonStrokes(flatStrokes:Array[BasicLine]): String = {
-    // TODO: val strokesInDodFormat = flatStrokes.map(_.toDodJson)
-     "["+flatStrokes.mkString(",")+"]"
+    val strokesInDodFormat = flatStrokes.map(_.toDodJson)
+     "["+strokesInDodFormat.mkString(",")+"]"
   }
   def toDodPostJson = {
     val flatStrokes = this.getFlatStrokes
