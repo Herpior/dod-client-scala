@@ -6,7 +6,7 @@ import collection.mutable.Buffer
 object Colors {
 
   def toHexString(color:Color):String={
-    if(color.getAlpha!=255)return toRGBAString(color)
+    if(color.getAlpha!=255)return toRGBAString(color) //TODO: don't call it tohexstring if the semitransparent ones are not hex strings!!
     var r = Integer.toHexString(color.getRed())
     var g = Integer.toHexString(color.getGreen())
     var b = Integer.toHexString(color.getBlue())

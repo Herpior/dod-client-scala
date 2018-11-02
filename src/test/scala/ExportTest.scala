@@ -31,6 +31,12 @@ class ExportTest extends FlatSpec with Matchers {
       stroke2.addCoord(Coord(1,1))
 
       val editStroke = new EditLine(stroke, stroke)
+      
+      val semitransparent = new Color(0, 0, 0, 64)
+      val stroke3 = new BasicLine(semitransparent,5)
+      stroke3.addCoord(Coord(0,0))
+      stroke3.addCoord(Coord(1,1))
+
 
       f.doodleModel.layers.getCurrent.add(stroke)
       assert (f.doodleModel.toDodPostJsonStrokes.equals("[{\"path\":[0,0,1,1,1,11,2,22.5,3,389.5],\"size\":5,\"color\":\"#f90\"}]"), "doodle with one BasicLine not correctly formatted when posting it")
@@ -38,6 +44,8 @@ class ExportTest extends FlatSpec with Matchers {
       assert (f.doodleModel.toDodPostJsonStrokes.equals("[{\"path\":[0,0,1,1,1,11,2,22.5,3,389.5],\"size\":5,\"color\":\"#f90\"},{\"path\":[0,0,1,1],\"size\":5,\"color\":\"#abccee\"}]"), "doodle with two BasicLines not correctly formatted when posting it")
       f.doodleModel.layers.getCurrent.add(editStroke)
       assert (f.doodleModel.toDodPostJsonStrokes.equals("[{\"path\":[0,0,1,1,1,11,2,22.5,3,389.5],\"size\":5,\"color\":\"#f90\"},{\"path\":[0,0,1,1],\"size\":5,\"color\":\"#abccee\"}]"), "doodle with EditLine not correctly formatted when posting it")
+      f.doodleModel.layers.getCurrent.add(stroke3)
+      assert (f.doodleModel.toDodPostJsonStrokes.equals("[{\"path\":[0,0,1,1,1,11,2,22.5,3,389.5],\"size\":5,\"color\":\"#f90\"},{\"path\":[0,0,1,1],\"size\":5,\"color\":\"#abccee\"},{\"path\":[0,0,1,1],\"size\":5,\"color\":\"rgba(0,0,0,0.251)\"}]"), "doodle with semitransparent line not correctly formatted when posting it")
 
     }
 
