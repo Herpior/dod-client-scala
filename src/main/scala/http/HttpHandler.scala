@@ -110,8 +110,8 @@ object HttpHandler {
    * value pt: PaintTime
    * value doodle: array of strokes
    */
-  def submitDoodle(pp:Int,pt:Int,doodle:Array[BasicLine]):Boolean={
-    val post = new DoodlePost(room,chain,doodle,pp,pt)
+  def submitDoodle(doodleJson:String):Boolean={
+    val post = new DoodlePost(chain,doodleJson)
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
   }

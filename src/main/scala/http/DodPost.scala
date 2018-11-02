@@ -59,25 +59,9 @@ class PlayPost(ext:String) extends DodPost("",ext,"play"){
 }
 
 
-class DoodlePost(room:String,chain:String,doodle:Array[BasicLine],pp:Int,pt:Int) extends PlayPost("api/game/submit/drawing/"+chain){
-    
-    
-    val stookes = "["+doodle.mkString(",")+"]"
-    var j = stookes.length
-    var curr = 0
-    def h(a:Int) = {
-      val b = Math.ceil(j * (a / 100.0)).toInt
-      //println(j+" - "+b)
-      j -= b
-      val res = "\""+stookes.substring(curr,curr+b).replaceAll("\"", "\\\\\"")+"\""
-      curr += b
-      res
-    }
-    //val pt = (math.random*100000 + stookes.length()*5).toInt
-    def chpt(a:Int) = ",\""+chain+pt+""+a+"\":"
-    val jsonpost = "{\"chain_id\":\""+chain+"\",\"group_id\":\""+room+"\",\"sc\":"+doodle.length+",\"pt\":"+pt+
-    ",\"pp\":"+pp+",\"ext\":\"true\""+chpt(0)+j+chpt(3)+h(30)+chpt(2)+h(20)+chpt(1)+h(10)+chpt(5)+h(50)+chpt(4)+h(100)+"}"
-    this.setEntity(new StringEntity(jsonpost))
+class DoodlePost(chain:String,dodPostJson:String) extends PlayPost("api/game/submit/drawing/"+chain){
+
+    this.setEntity(new StringEntity(dodPostJson))
 }
 
 class DescPost(chain:String,description:String)  extends PlayPost("api/game/submit/phrase/"+chain){

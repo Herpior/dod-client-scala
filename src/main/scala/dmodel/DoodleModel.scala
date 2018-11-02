@@ -1,6 +1,6 @@
 package dmodel
 
-import dmodel.dpart.{DoodlePart, JsonDoodle}
+import dmodel.dpart.{BasicLine, DoodlePart, JsonDoodle}
 
 import collection.mutable.Buffer
 import http.HttpHandler
@@ -26,7 +26,9 @@ class DoodleModel {
   
   //private var room:String = "global"
   //private var id:String = ""
-  private var painttime = 0
+  private var paintTime = 0
+  private def chain = HttpHandler.getChain
+  private def room= HttpHandler.getGroup
   
   //private var current = 0
   //private var state = 0
@@ -42,9 +44,10 @@ class DoodleModel {
   }
   //---------\\
   def addTime(time:Long){
-    //println(painttime)
-    painttime += (time/1000).toInt
-    if(painttime < 0) painttime = 1000000}
+    //println(paintTime)
+    paintTime += (time/1000).toInt
+    if(paintTime < 0) paintTime = 1000000
+  }
   //def setState(tool:Int) {state = tool}
   //def setSize(next:Int) {size = next}
   /*def setColor(col:String,ind:Int){
@@ -88,6 +91,9 @@ class DoodleModel {
   def getLayers = {
     layers.toArray
   }
+  def getFlatStrokes = {
+    layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines))
+  }
   //---------\\
   def load(loaded:JsonDoodle){
     layers.head.load(loaded)
@@ -114,7 +120,7 @@ class DoodleModel {
       case e=>e.printStackTrace}
   }
   def submit={
-    HttpHandler.submitDoodle(this.getPaintPercentage, this.getPaintTime.toInt, layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)))
+    HttpHandler.submitDoodle(this.toDodPostJson)
   }
   def save(chain:String)={
     LocalStorage.saveTo(layers.toShortJsonString(this.getPaintTime, chain), chain)
@@ -126,8 +132,8 @@ class DoodleModel {
     //???
   }
   def getPaintTime={
-    //println("pt "+painttime)
-    painttime
+    //println("pt "+paintTime)
+    paintTime
     //???
   }
   //---------\\
@@ -189,6 +195,41 @@ class DoodleModel {
   def toLocalStorage{
     io.LocalStorage.printFile(layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
   }
+
+  def toDodPostJsonStrokes: String = {
+    this.toDodPostJsonStrokes(this.getFlatStrokes)
+  }
+  def toDodPostJsonStrokes(flatStrokes:Array[BasicLine]): String = {
+    // TODO: val strokesInDodFormat = flatStrokes.map(_.toDodJson)
+     "["+flatStrokes.mkString(",")+"]"
+  }
+  def toDodPostJson = {
+    val flatStrokes = this.getFlatStrokes
+    val rawDodPostStrokes = this.toDodPostJsonStrokes(flatStrokes)
+    var j = rawDodPostStrokes.length
+    var curr = 0
+
+    // the "anti cheating" code on the site,
+    // splitting the strokes into certain length parts
+    def h(a:Int) = {
+      val b = Math.ceil(j * (a / 100.0)).toInt
+      //println(j+" - "+b)
+      j -= b
+      val res = "\""+rawDodPostStrokes.substring(curr,curr+b).replaceAll("\"", "\\\\\"")+"\""
+      curr += b
+      res
+    }
+    //val pt = (math.random*100000 + stookes.length()*5).toInt
+    // val pt = this.getPaintTime.toInt
+
+    // dividers between the split pieces of the stroke array
+    def chpt(a:Int) = ",\""+chain+paintTime+""+a+"\":"
+    "{\"chain_id\":\""+chain+"\",\"group_id\":\""+room+"\",\"sc\":"+flatStrokes.length+",\"pt\":"+paintTime+
+      ",\"pp\":"+this.getPaintPercentage+",\"ext\":\"true\""+chpt(0)+j+chpt(3)+h(30)+chpt(2)+h(20)+chpt(1)+h(10)+chpt(5)+h(50)+chpt(4)+h(100)+"}"
+  }
+
+
+
   //---------\\
   /*def startWriting(place:Coord){
     ???
