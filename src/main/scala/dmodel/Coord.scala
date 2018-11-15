@@ -6,7 +6,7 @@ object Coord{
   def apply(c:Double) :Coord =Coord(c,c)
 }
 
-case class Coord(val x:Double,val y:Double) {
+case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
 
   def dist(other:Coord)={
     hypot(this.x-other.x,this.y-other.y)
@@ -34,6 +34,15 @@ case class Coord(val x:Double,val y:Double) {
   }
   def unary_- ={
     Coord(-this.x,-this.y)
+  }
+  def abs={
+    Coord(math.abs(this.x), math.abs(this.y))
+  }
+  def length = {
+    hypot(this.x, this.y)
+  }
+  def max = {
+    math.max(this.x, this.y)
   }
   def angle(other:Coord)={
     Angle.angle(this.x-other.x, this.y-other.y)
@@ -72,4 +81,6 @@ case class Coord(val x:Double,val y:Double) {
     val yy = if(y%1==0)(y).toInt.toString else y.toString
     xx+","+yy
   }
+
 }
+

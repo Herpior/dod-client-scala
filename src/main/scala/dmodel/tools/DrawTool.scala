@@ -4,9 +4,16 @@ import dmodel.ColorModel
 import dmodel.SizeModel
 import dmodel.Magic
 import dmodel.dpart.MultiLine
+import dmodel.filters.OneEuroFilter
+import view.DoodlePanel
+
+import scala.collection.mutable.Buffer
 
 class DrawTool extends LineTool {
- 
+
+  private var smoothing = true
+  private val oneEuroFilter = new OneEuroFilter
+  private var prev = Coord(0)
 
   override def onMouseDrag(dp:view.DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(left){
@@ -15,13 +22,55 @@ class DrawTool extends LineTool {
         dp.redrawDrawing
       }
       else {
-        addLine(ColorModel.getColor, SizeModel.getSize, coord)
-        //println("doodlingpanel drag pen tool alpha:"+tools.model.getColor.getAlpha)
-        if(ColorModel.getColor.getAlpha==255 || Magic.faster) dp.redrawLast
-        else dp.redrawDrawing
+        val processedCoord = updateCoord(coord)
+        if((processedCoord-prev).abs.max >= 0.4){
+          addLine(ColorModel.getColor, SizeModel.getSize, processedCoord)
+          if(ColorModel.getColor.getAlpha==255 || Magic.faster) dp.redrawLast
+          else dp.redrawDrawing
+        }
       }
       dp.repaint
     }
+  }
+
+  override def onMouseUp(dp: DoodlePanel, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
+    super.onMouseUp(dp, coord, button, control, alt, shift)
+    oneEuroFilter.reset
+  }
+
+  override def onMouseDown(dp: DoodlePanel, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
+    val processedCoord = updateCoord(coord)
+    prev = processedCoord
+    super.onMouseDown(dp, processedCoord, button, control, alt, shift)
+  }
+
+  private def updateCoord(coord:Coord) = {
+    if(smoothing) {
+      val timestamp = System.nanoTime()*1e-9
+      oneEuroFilter.update(coord, timestamp)
+    }
+    else {
+      coord
+    }
+  }
+
+  def setBeta(newBeta:Double) = {
+    this.oneEuroFilter.beta = newBeta
+  }
+  def multiplyBeta(multiplier:Double) = {
+    this.oneEuroFilter.beta *= multiplier
+  }
+  def setyMinCutoff(MinCutoff:Double) = {
+    this.oneEuroFilter.mincutoff = MinCutoff
+  }
+  def multiplyMinCutoff(multiplier:Double) = {
+    this.oneEuroFilter.mincutoff *= multiplier
+  }
+  def getBeta = {
+    this.oneEuroFilter.beta
+  }
+  def getMinCutoff = {
+    this.oneEuroFilter.mincutoff
   }
   //---------\\
   /*
