@@ -1,3 +1,11 @@
+v0.500
+	line smoothing?
+	line editing?
+	line eraser?
+	tools can have configurations?
+	tools can be added more easily?
+	removed the need for a separate dodcacerts file in the folder, (unless the certificate on the site changes again and a new file is needed, in which case a new dodcacerts file can be dropped in to the folder like it used to be, and the client will use that instead).
+	removed fb and twitter login, reducing the file size by like 50%, cookie login can be used instead.
 v0.499
 	client notices if the doodle has timed out
 	doodle is saved properly when changing between rooms

@@ -16,5 +16,9 @@ trait BasicTool {
   def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {}
   def getLines():Buffer[DoodlePart] = {collection.mutable.Buffer()} //for drawing the stroke or informational graphics, not for adding strokes to layer
   def getLastLine():Option[DoodlePart] = {None} // for drawing one segment of the stroke
+  // for configuring from the ui
+  def getConfigSetters():Array[Double=>Unit] = Array() //TODO: make this work with non-double config values
+  def getConfigNames():Array[String] = Array()
+  def getConfigValues():Array[Double] = Array()
 
 }
