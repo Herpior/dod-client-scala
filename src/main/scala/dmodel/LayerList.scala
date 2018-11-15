@@ -125,11 +125,11 @@ class LayerList {
   def toJson(time:Int) = {
     JsonParse.writeSave(this.toArray, time)
   }
-  def toJsonString(time:Int) = {
-    "{\"version\":"+view.DoodleWindow.version+",\"doodle_id\":"+http.HttpHandler.getChain+",\"time\":"+time+",\"layers\":["+this.layers.map(_.toJsonString).mkString(",")+"]}"
+  def toJsonString(time:Int, chain:String) = {
+    "{\"version\":"+view.DoodleWindow.version+",\"doodle_id\":\""+chain+"\",\"time\":"+time+",\"layers\":["+this.layers.map(_.toJsonString).mkString(",")+"]}"
    }
   def toShortJsonString(time:Int, chain:String) = {
-    "{\"v\":"+view.DoodleWindow.version+",\"d\":"+chain+",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
+    "{\"v\":"+view.DoodleWindow.version+",\"d\":\""+chain+"\",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
    }
   
 }

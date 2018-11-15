@@ -8,15 +8,15 @@ import scala.collection.mutable.Buffer
 // also an easy intermediate format between the original line format and the doodleordie export/upload format
 class MultiLine extends DoodlePart{
   private var lines = Buffer[BasicLine]()
-  def transform (transformation:Coord=>Coord):MultiLine = {
+  def transform (transformation:Coord=>Coord) = {
     val next = new MultiLine
-    next.setLines(this.lines.map ( line => line.transform(transformation)))
-    next
+    next.setLines(this.lines.flatMap ( line => line.transform(transformation)))
+    Some(next)
   }
   def distFrom(point:Coord)={
     val sorted = lines.map(_.distFrom(point)).sorted
     if(sorted.length>0)sorted.head
-    else 500
+    else Double.MaxValue // this multiline is empty
   }
   def apply(index:Int)={
     lines(index)
@@ -83,14 +83,14 @@ class MultiLine extends DoodlePart{
       val line = new BasicLine(Colors.inverse(x.color),1)
       line.setCoords(x.getCoords)
       res.addLine(line)}
-    res
+    Some(res)
   }
 
   def toJson = {
     val json = new JsonStroke
-    json.strokes = this.getLines.map(_.toJson)
+    json.strokes = this.getLines.flatMap(_.toJson)
     json.linetype = "multi"
-    json
+    Some(json)
   }
   def toJsonString = {
     //val lines = this.getLines
@@ -98,7 +98,7 @@ class MultiLine extends DoodlePart{
       lines.head.toJsonString
     }
     else {
-      "{\"linetype\":\"multi\",\"strokes\":["+lines.map(_.toJsonString).mkString(",")+"]}"
+      Some("{\"linetype\":\"multi\",\"strokes\":["+lines.flatMap(_.toJsonString).mkString(",")+"]}")
     }
   }
   def toShortJsonString = {
@@ -107,7 +107,7 @@ class MultiLine extends DoodlePart{
       lines.head.toShortJsonString
     }
     else {
-      "{\"l\":\"m\",\"ss\":["+lines.map(_.toShortJsonString).mkString(",")+"]}"
+      Some("{\"l\":\"m\",\"ss\":["+lines.flatMap(_.toShortJsonString).mkString(",")+"]}") //TODO: consider changing "ss" into something with only one character?
     }
   }
 }

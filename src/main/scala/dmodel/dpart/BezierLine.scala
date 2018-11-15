@@ -18,10 +18,10 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
   var y3 = 0.0
   var x4 = 0.0
   var y4 = 0.0*/
-  def transform (transformation:Coord=>Coord):BezierLine = {
-    val next = new BezierLine(this.color,this.size)
-    next.setCoords(this.coords.map(c=>transformation(c)))
-    next
+  def transform (transformation:Coord=>Coord) = {
+    val res = new BezierLine(this.color,this.size)
+    res.setCoords(this.coords.map(c=>transformation(c)))
+    Some(res)
   }
   def getCoordAt(dist:Double):Coord={
     if(dist<=0)return coords.head
@@ -65,10 +65,10 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
   def selection = {
     val res = new MultiLine
     res.addLine(this.getLine(Colors.inverse(color),1))
-    val line = new BasicLine(Color.black,1)
+    val line = new BasicLine(Colors.inverse(color),1)
     line.setCoords(coords)
     res.addLine(line)
-    res
+    Some(res)
   }
   def toJson = {
     val json = new JsonStroke
@@ -76,14 +76,14 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     json.size = size
     json.coords = coords.map(_.toJson)
     json.linetype = "bezier"
-    json
+    Some(json)
   }
   def toJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    "{\"linetype\":\"bezier\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"coords\":["+coords.map(_.toJsonString).mkString(",")+"]}"
+    Some("{\"linetype\":\"bezier\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"coords\":["+coords.map(_.toJsonString).mkString(",")+"]}")
   }
   def toShortJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    "{\"l\":\"b\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}"
+    Some("{\"l\":\"b\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}")
   }
 }

@@ -1,11 +1,11 @@
-package tests
+package dmodel
 
 import java.io.File
 
-import dmodel.Coord
 import dmodel.filters.OneEuroFilter
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
+//import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+import org.scalatest.{FlatSpec, Matchers}
 
 import scala.collection.mutable
 import scala.io.Source
@@ -29,6 +29,8 @@ class OneEuroTest extends FlatSpec with Matchers {
   "OneEuroFilter.update" should "return same values as an existing solution, with the same input" in
     {
       val filter = new OneEuroFilter()
+      filter.beta = 0.0
+      filter.mincutoff = 1.0
       val rng = new Random(28975)
       val signal = mutable.Buffer[Coord]()
       val noisySignal = mutable.Buffer[Coord]()
@@ -113,7 +115,11 @@ class OneEuroTest extends FlatSpec with Matchers {
   "OneEuroFilter.update" should "return same values as doubles and Coords in 1d" in
     {
       val doublefilter = new OneEuroFilter()
+      doublefilter.beta = 0.0 //TODO: check with nonzero beta
+      doublefilter.mincutoff = 1.0
       val coordfilter = new OneEuroFilter()
+      coordfilter.beta = 0.0
+      coordfilter.mincutoff = 1.0
       val rng = new Random(59571)
       val start = 0
       val end = 1000

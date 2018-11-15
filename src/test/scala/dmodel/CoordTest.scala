@@ -1,12 +1,8 @@
-package tests
+package dmodel
 
-import dmodel.dpart.BasicLine
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
 //import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-import java.awt.Color
-import dmodel._
+//import org.scalatest.junit.JUnitRunner
+import org.scalatest.{FlatSpec, Matchers}
 
 //@RunWith(classOf[JUnitRunner])
 class CoordTest extends FlatSpec with Matchers {
@@ -30,16 +26,16 @@ class CoordTest extends FlatSpec with Matchers {
       assert (coord4.length.equals(25.0), "Coord.length is wrong in two dimensions")
     }
 
-  "Coord.length" should "give correct result" in
+  "Coord +" should "give correct result" in
     {
-      val coord = Coord(10.0, 5.5)
-      assert (coord.length.equals(coord.dist(Coord(0))), "Coord.length gives different result than Coord.dist")
-      val coord2 = Coord(100,0)
-      assert (coord2.length.equals(100.0), "Coord.length is wrong in one dimension")
-      val coord3 = Coord(4,3)
-      assert (coord3.length.equals(5.0), "Coord.length is wrong in two dimensions")
-      val coord4 = Coord(7,24)
-      assert (coord4.length.equals(25.0), "Coord.length is wrong in two dimensions")
+      val coord = Coord(1, 1) + Coord(1, 1)
+      assert (coord.equals(Coord(2,2)), "Coord + coord is wrong in 1+1")
+      val coord2 = Coord(100,0) + Coord(0, -100)
+      assert (coord2.equals(Coord(100, -100)), "Coord + coord is wrong with negative numbers")
+      val coord3 = Coord(4.5, 3.5) + Coord(-4.5, 6.5)
+      assert (coord3.equals(Coord(0, 10)), "Coord + coord is wrong with negative numbers")
+      val coord4 = Coord(7, 24) + Coord(0.01, 0.5359)
+      assert (coord4.equals(Coord(7.01, 24.5359)), "Coord + coord is wrong with decimal numbers")
     }
 
 

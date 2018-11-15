@@ -11,7 +11,7 @@ class JsonLine extends DoodlePart {
   var size:Double = _
   var path:Array[Double]= Array()
 
-  def transform (transformation:Coord=>Coord):BasicLine = {
+  def transform (transformation:Coord=>Coord) = {
     val next = this.toBasicLine
     next.transform(transformation)
   }
@@ -40,14 +40,14 @@ class JsonLine extends DoodlePart {
     res.linetype = "basic"
     res.path = path
     res.size = size
-    res
+    Some(res)
   }
   def toJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    "{\"linetype\":\"json\",\"color\":"+color+",\"size\":"+sizestr+",\"path\":["+path.mkString(",")+"]}"
+    Some("{\"linetype\":\"json\",\"color\":"+color+",\"size\":"+sizestr+",\"path\":["+path.mkString(",")+"]}")
   }
   def toShortJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    "{\"l\":\"j\",\"c\":"+color+",\"s\":"+sizestr+",\"p\":["+path.mkString(",")+"]}"
+    Some("{\"l\":\"j\",\"c\":"+color+",\"s\":"+sizestr+",\"p\":["+path.mkString(",")+"]}")
   }
 }

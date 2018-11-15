@@ -19,10 +19,10 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     len
   }
   private var coords = Buffer[Coord]()
-  def transform (transformation:Coord=>Coord):BasicLine = {
+  def transform (transformation:Coord=>Coord) = {
     val next = new BasicLine(this.color,this.size)
     next.setCoords(this.coords.map(c=>transformation(c)))
-    next
+    Some(next)
   }
   def distFrom(point:Coord)={
     if(this.coords.length==0){500}
@@ -159,7 +159,7 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
   def selection = {
     val line = new BasicLine(Colors.inverse(this.color),1)
     line.setCoords(this.getCoords)
-    line
+    Some(line)
   }
   def toJson = {
     val json = new JsonStroke
@@ -167,21 +167,21 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     json.size = size
     json.path = this.coords.flatMap(_.toArray).toArray
     json.linetype = "basic"
-    json
+    Some(json)
   }
   def toJsonLine = {
     val json = new JsonLine
     json.color = Colors.toHexString(color)
     json.size = size
     json.path = this.coords.flatMap(_.toArray).toArray
-    json
+    Some(json)
   }
   def toJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    "{\"linetype\":\"basic\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.toShortJsonString).mkString(",")+"]}"
+    Some("{\"linetype\":\"basic\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.toShortJsonString).mkString(",")+"]}")
   }
   def toShortJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    "{\"l\":\"n\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}"
+    Some("{\"l\":\"n\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}")
   }
 }

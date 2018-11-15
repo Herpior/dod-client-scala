@@ -90,10 +90,10 @@ class Layer() {
     strokes.toArray
   }
   def toJsonString = {
-    "{\"strokes\":["+this.strokes.map(_.toJsonString).filter(_.nonEmpty).mkString(",")+"],\"visible\":"+visible+"}"
+    "{\"strokes\":["+this.strokes.flatMap(_.toJsonString).mkString(",")+"],\"visible\":"+visible+"}"
   }
   def toShortJsonString = {
-    "{\"s\":["+this.strokes.map(_.toShortJsonString).filter(_.nonEmpty).mkString(",")+"],\"v\":"+visible+"}"
+    "{\"s\":["+this.strokes.flatMap(_.toShortJsonString).mkString(",")+"],\"v\":"+visible+"}"
   }
 }
 
@@ -154,7 +154,7 @@ class MatrixLayer(private val orig:Layer) extends Layer {
   private def recalculate {
     strokes.clear
     val transformation = Matrix.transferPoint(Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Magic.doodleSize,Coord(0,Magic.doodleSize.y)), points)
-    strokes ++= orig.getThumb.map{
+    strokes ++= orig.getThumb.flatMap{
       s1 =>
         s1.transform(transformation)
     }

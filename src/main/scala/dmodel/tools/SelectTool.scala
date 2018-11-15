@@ -23,8 +23,8 @@ class SelectTool extends BasicTool {
   }
   override def getLines() = {
     val buf:Buffer[DoodlePart] = Buffer()
-    hovering.foreach { x => buf += x.selection }
-    selected.foreach { x => buf += x.selection }
+    hovering.foreach { _.selection.foreach(buf += _) }
+    selected.foreach { _.selection.foreach(buf += _) }
     buf
   }
   
