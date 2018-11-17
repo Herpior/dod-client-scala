@@ -60,7 +60,7 @@ class DrawTool extends LineTool {
   def multiplyBeta(multiplier:Double) = {
     this.oneEuroFilter.beta *= multiplier
   }
-  def setyMinCutoff(MinCutoff:Double) = {
+  def setMinCutoff(MinCutoff:Double) = {
     this.oneEuroFilter.mincutoff = MinCutoff
   }
   def multiplyMinCutoff(multiplier:Double) = {
@@ -72,6 +72,13 @@ class DrawTool extends LineTool {
   def getMinCutoff = {
     this.oneEuroFilter.mincutoff
   }
+
+  override def getConfigVariables() = {
+    val betaConfig = new ConfigVariable[Double]("reduce lag", _=>getBeta, setBeta, Some(1e-100), Some(1e-1), true)
+    val mincutConfig = new ConfigVariable[Double]("reduce jitter", _=>getMinCutoff, setMinCutoff, Some(1), Some(1e-3), true)
+    Array(betaConfig, mincutConfig).asInstanceOf[Array[ConfigVariable[Any]]]
+  }
+
   //---------\\
   /*
   def startLine(place:Coord,mods:Int){

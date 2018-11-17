@@ -6,18 +6,22 @@ package dmodel.tools
 // minValue: minimum value for values that can have a minimum value and are orderable
 // maxValue: maximum value for values that can have a maximum value and are orderable
 // logScale: boolean telling whether the scale should be linear or logarithmic for numeric values
-class ConfigVariable[T](name:String,getValue:Unit=>T, setValue:T=>Unit, val minVal:Option[T]=None, val maxVal:Option[T]=None, val logScale:Boolean=false)(implicit ord: Ordering[T]) {
+class ConfigVariable[T](name:String,getValue:Unit=>T, setValue:T=>Unit, val minVal:Option[T]=None, val maxVal:Option[T]=None, val logScale:Boolean=false, val logOffset:Double = 1e-100)(implicit ord: Ordering[T]) {
+
+  private val reversed = minVal.exists(min=>maxVal.exists(max=>ord.lt(max,min)))
+  private val actualMinVal = if(reversed) maxVal else minVal
+  private val actualMaxVal = if(reversed) minVal else maxVal
 
   def getVal = {
     getValue()
   }
 
   def setVal(x:T): Unit ={
-    if(minVal.exists(ord.gt(_,x))) {
-      setValue(minVal.getOrElse(x))
+    if(actualMinVal.exists(ord.gt(_,x))) {
+      setValue(actualMinVal.getOrElse(x))
     }
-    else if(maxVal.exists(ord.lt(_,x))) {
-      setValue(maxVal.getOrElse(x))
+    else if(actualMaxVal.exists(ord.lt(_,x))) {
+      setValue(actualMaxVal.getOrElse(x))
     }
     else setValue(x)
   }

@@ -8,7 +8,7 @@ import java.awt.RenderingHints
 import dmodel.SizeModel
 import dmodel.Magic
 
-class SizeSlider extends DodSlider(_=>SizeModel.getSize,1, SizeModel.maxSize, true, true){
+class SizeSlider extends DodSlider(_=>SizeModel.getSize, res=>SizeModel.setSize(res.toInt), 1, SizeModel.maxSize, 4,true, true){
 
   this.listenTo(mouse.clicks)
   this.listenTo(mouse.moves)

@@ -5,10 +5,10 @@ import math.min
 
 object SizeModel {
   
-  val sizes = Vector(1,3,5,10,25,50,100,600)
+  val sizes = Vector(1,3,5,10,25,50,100,400)
   private var nextsize = 25
   private var slider = false
-  def maxSize = if(Magic.authorized)600 else 100
+  def maxSize = if(Magic.authorized)400 else 100
   def getSize = nextsize
   def setSize(size:Int){ nextsize = min(max(size,1),maxSize) }
   

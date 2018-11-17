@@ -14,8 +14,14 @@ class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
   this.background = Magic.bgColor
 
   for (config <- configs) {
-    val label = new Label(config.getName)
-    this.contents += label
+    val label = new Label(config.getName){
+      this.foreground = Magic.white
+      this.background = Magic.buttColor
+    }
+    this.contents += new BoxPanel(Orientation.Horizontal){
+      this.contents += label
+      this.background = Magic.buttColor
+    }
     config.getVal match {
       case o: Int =>
         val slider = new ConfigSlider[Int](config.asInstanceOf[ConfigVariable[Int]])

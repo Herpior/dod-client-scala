@@ -20,7 +20,12 @@ class ToolPanel extends ScrollPane {
   val colorP = new ColorPanel
   val toolP = new ToolPickerPanel
   val submitP = new SubmitPanel
-  
+  val toolConfigPs = toolP.model.toolList.map{tool=>
+    new ConfigPanel(tool)
+  }
+
+  def toolConfigP = toolConfigPs(toolP.model.getState)
+  private var prevToolConfigP = toolConfigP
   def setTool(i:Int) {
     toolP.setTool(i)
   }
@@ -33,6 +38,7 @@ class ToolPanel extends ScrollPane {
     this.contents += sizeP
     this.contents += colorP
     this.contents += toolP
+    this.contents += toolConfigP
     this.contents += submitP
   }
   this.contents = box
@@ -41,6 +47,9 @@ class ToolPanel extends ScrollPane {
   
   this.reactions += {
     case e:controller.ToolChangeEvent =>
+      val ind = box.contents.indexOf(prevToolConfigP)
+      prevToolConfigP = toolConfigP
+      box.contents(ind) = prevToolConfigP
       //tool changed, shouldn't need any actions here for now, but could be useful when the tools can have some gui for configuring them and the gui needs to be swapped
   }
 

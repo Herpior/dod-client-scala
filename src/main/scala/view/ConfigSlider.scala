@@ -9,9 +9,11 @@ import scala.swing.event.{MouseDragged, MousePressed}
 class ConfigSlider[T](config: ConfigVariable[T])(implicit num: Numeric[T])
   extends DodSlider(
     _=>num.toDouble(config.getVal),
+    res=>config.setVal(res.asInstanceOf[T]),
     num.toDouble(config.minVal.getOrElse(0.asInstanceOf[T])),
-    num.toDouble(config.minVal.getOrElse(0.asInstanceOf[T])),
-    config.logScale){
+    num.toDouble(config.maxVal.getOrElse(0.asInstanceOf[T])),
+    logOffset = config.logOffset,
+    logScale = config.logScale){
 
   this.listenTo(mouse.clicks)
   this.listenTo(mouse.moves)

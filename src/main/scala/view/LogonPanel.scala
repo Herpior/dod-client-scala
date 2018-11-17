@@ -78,7 +78,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   this.preferredSize = new Dimension(600,600)
   this.minimumSize = new Dimension(300,300)
   this.maximumSize = new Dimension(600,800)
-  val font20 = Magic.font20
+  private val font20 = Magic.font20
   val unField = new TextField
   val autoButt = new RadioButton("Sign in automatically"){
     this.background = Magic.white

@@ -18,7 +18,7 @@ object ToolModel {
   private var mini = false
   private var state = 0
   private var ready = Magic.readyDefault
-  private var toolList:Array[BasicTool] = Array(
+  val toolList:Vector[BasicTool] = Vector(
     drawTool,        lineTool,    bezierTool,   fillTool,
     perspectiveTool, zoomTool,    handTool,     bezierInterpolationTool,
     editLineTool)

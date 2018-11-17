@@ -5,7 +5,7 @@ import dmodel.Coord
 // based on http://cristal.univ-lille.fr/~casiez/1euro/
 class OneEuroFilter() {
   var beta = 0.0001 //increase to reduce lag
-  var mincutoff = 4.0 //decrease to reduce jitter but increase lag
+  var mincutoff = 1.0 //decrease to reduce jitter but increase lag
   var dx = Coord(0)
   var dxdouble = 0.0
   val xfilt = new LowPassFilter
