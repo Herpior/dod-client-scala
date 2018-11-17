@@ -8,11 +8,14 @@ import scala.swing.{Dimension, Panel}
 import scala.swing.event.{MouseDragged, MousePressed}
 
 /* Base class for sliders
+ * all logic in Doubles because
  * minval and maxval tell the limits of the slider values
  * logScale tells if the values should use log scale instead of linear scale
  * isInteger tells if the values should be shown as integers or floating point numbers
  */
-class DodSlider(minVal:Double, maxVal:Double, logScale:Boolean = true, isInteger:Boolean = false) extends Panel{
+class DodSlider(getter:Unit=>Double, minVal:Double=0, maxVal:Double=1, logScale:Boolean = true, isInteger:Boolean = false) extends Panel{
+  if (minVal>maxVal)
+    throw new IllegalArgumentException("minVal must be smaller than maxVal")
 
   private val width = 200
   private val logArea = math.log(maxVal-minVal+1)
@@ -24,7 +27,7 @@ class DodSlider(minVal:Double, maxVal:Double, logScale:Boolean = true, isInteger
   protected val start = marginSizeX +  ballSize/2
   protected val length = width - start*2
   protected val height = ballSize + marginSizeY*2
-  protected var currentValue = minVal
+  def currentValue = getter()
 
   this.minimumSize = new Dimension(width, height)
   this.preferredSize = this.minimumSize
@@ -52,15 +55,28 @@ class DodSlider(minVal:Double, maxVal:Double, logScale:Boolean = true, isInteger
 
   }
 
-  private def realValFromX(x:Double) = {
+  private def logValFromX(x:Double) = {
     Math.exp((x-start)/length*logArea)+minVal-1
   }
+  private def linearValFromX(x:Double) = {
+    ((x-start)/length)+minVal-1
+  }
+
+  private def xFromLogVal(value:Double) = {
+    start + length*Math.log(value-minVal+1)/logArea
+  }
+  private def xFromLinearVal(value:Double) = {
+    start + length*Math.log(value-minVal+1)/logArea
+  }
+
   def xFromVal(value:Double) = {
-    math.round( start + length*Math.log(value-minVal+1)/logArea ).toInt
+    val func = if(logScale) xFromLogVal(_) else xFromLinearVal(_)
+    math.round(func(value)).toInt
   }
   def valFromX(x:Double) = {
-    if(isInteger) math.round(realValFromX(x)).toDouble
-    else realValFromX(x)
+    val res = if(logScale)logValFromX(x) else linearValFromX(x)
+    if(isInteger) math.round(res).toDouble
+    else res
   }
 
 

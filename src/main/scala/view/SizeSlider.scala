@@ -8,12 +8,7 @@ import java.awt.RenderingHints
 import dmodel.SizeModel
 import dmodel.Magic
 
-class SizeSlider extends DodSlider(1, SizeModel.maxSize, true, true){
-
-  override def paintComponent(g: Graphics2D): Unit = {
-    this.currentValue = SizeModel.getSize
-    super.paintComponent(g)
-  }
+class SizeSlider extends DodSlider(_=>SizeModel.getSize,1, SizeModel.maxSize, true, true){
 
   this.listenTo(mouse.clicks)
   this.listenTo(mouse.moves)
