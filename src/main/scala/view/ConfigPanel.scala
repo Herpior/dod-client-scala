@@ -1,14 +1,16 @@
 package view
 
-import dmodel.tools.{BasicTool, ConfigVariable}
+import dmodel.tools._
 import dmodel.Magic
 
-import scala.swing.{BoxPanel, Dimension, Label, Orientation}
+import scala.collection.mutable
+import scala.swing.{Action, BoxPanel, Dimension, Label, Orientation, RadioButton}
 
 
 class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
 
   val configs = tool.getConfigVariables()
+  val configContentsThatLikeToStealFocus = mutable.Buffer[swing.Component]()
 
   this.preferredSize = new Dimension(200, 50 * configs.length)
   this.background = Magic.bgColor
@@ -18,22 +20,44 @@ class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
       this.foreground = Magic.white
       this.background = Magic.buttColor
     }
-    this.contents += new BoxPanel(Orientation.Horizontal){
+    val labelbox = new BoxPanel(Orientation.Horizontal){
       this.contents += label
       this.background = Magic.buttColor
     }
-    config.getVal match {
-      case o: Int =>
-        val slider = new ConfigSlider[Int](config.asInstanceOf[ConfigVariable[Int]])
+    this.contents += labelbox
+    config match {
+      case intConf: IntConfigVariable =>
+        val slider = new ConfigSlider[Int](intConf.asInstanceOf[NumConfigVariable[Int]])
         this.listenTo(slider)
         this.contents += slider
-      case o: Double =>
-        val slider = new ConfigSlider[Double](config.asInstanceOf[ConfigVariable[Double]])
+      case doubleConf: DoubleConfigVariable =>
+        val slider = new ConfigSlider[Double](doubleConf.asInstanceOf[NumConfigVariable[Double]])
         this.listenTo(slider)
         this.contents += slider
-      case o: String =>
-      //this.contents += new ConfigSlider[String](option.asInstanceOf[ConfigVariable[String]])
-      case _ => //ignore unknown formats for now
+      //case stringConf: ConfigVariable[String] =>
+      //this.contents += new ConfigSlider[String](stringConf)
+      case boolConf: BooleanConfigVariable => //FIXME: this does not change the
+        val radio = new RadioButton(){
+          this.action==Action(config.getName){
+            boolConf.setVal(this.selected)
+          }
+        }
+        radio.selected = boolConf.getVal.asInstanceOf[Boolean] // this does not accept the returned value as Boolean otherwise for some reason?
+        labelbox.contents += radio
+        configContentsThatLikeToStealFocus += radio
+      case unitConf:UnitConfigVariable => // Unit means setter is a function that needs no arguments, but has some side effects
+        val button = new DodButton{
+          this.action=Action(config.getName){
+            unitConf.setVal
+          }
+        }
+        this.contents -= labelbox
+        this.contents +=  new BoxPanel(Orientation.Horizontal){
+          this.contents += button
+        }
+        configContentsThatLikeToStealFocus += button
+      case x => //ignore unknown formats for now
+        println(x.getClass)
     }
   }
 

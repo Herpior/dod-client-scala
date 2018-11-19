@@ -17,6 +17,6 @@ trait BasicTool {
   def getLines():Buffer[DoodlePart] = {collection.mutable.Buffer()} //for drawing the stroke or informational graphics, not for adding strokes to layer
   def getLastLine():Option[DoodlePart] = {None} // for drawing one segment of the stroke
   // for configuring from the ui
-  def getConfigVariables():Array[ConfigVariable[Any]] = Array()
+  def getConfigVariables():Vector[ConfigVariable] = Vector()
 
 }

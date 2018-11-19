@@ -2,11 +2,11 @@ package view
 
 import java.awt.Graphics2D
 
-import dmodel.tools.ConfigVariable
+import dmodel.tools.NumConfigVariable
 
 import scala.swing.event.{MouseDragged, MousePressed}
 
-class ConfigSlider[T](config: ConfigVariable[T])(implicit num: Numeric[T])
+class ConfigSlider[T](config: NumConfigVariable[T])(implicit num: Numeric[T])
   extends DodSlider(
     _=>num.toDouble(config.getVal),
     res=>config.setVal(res.asInstanceOf[T]),

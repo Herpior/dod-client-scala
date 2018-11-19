@@ -265,6 +265,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   listenTo(tools.mouse.wheel)
   listenTo(tools.keys)
   listenTo(tools)
+  tools.toolConfigPs.foreach(
+    cf=>{
+      listenTo(cf.keys)
+      listenTo(cf)
+      cf.configContentsThatLikeToStealFocus.foreach(c=>listenTo(c.keys))
+    })
   listenTo(tools.toolP) //toolchange
   reactions += {
     case e:ToolChangeEvent=>
