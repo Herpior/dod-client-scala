@@ -34,7 +34,7 @@ class SubmitPanel extends FlowPanel {
       def apply()=submit
     }
   }
-  val readyButt = new CheckBox("Ready to submit"){
+  val readyButt = new CheckBox("Ready to submit"){ //TODO, change to dodcheckbox
     this.font = Magic.font20
     this.preferredSize = new Dimension(200, 50)
     this.background = Magic.bgColor

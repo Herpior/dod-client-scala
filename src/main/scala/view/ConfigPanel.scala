@@ -36,13 +36,8 @@ class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
         this.contents += slider
       //case stringConf: ConfigVariable[String] =>
       //this.contents += new ConfigSlider[String](stringConf)
-      case boolConf: BooleanConfigVariable => //FIXME: this does not change the
-        val radio = new RadioButton(){
-          this.action==Action(config.getName){
-            boolConf.setVal(this.selected)
-          }
-        }
-        radio.selected = boolConf.getVal.asInstanceOf[Boolean] // this does not accept the returned value as Boolean otherwise for some reason?
+      case boolConf: BooleanConfigVariable =>
+        val radio = new DodCheckBox(boolConf.getName, _=>boolConf.getVal, boolConf.setVal)
         labelbox.contents += radio
         configContentsThatLikeToStealFocus += radio
       case unitConf:UnitConfigVariable => // Unit means setter is a function that needs no arguments, but has some side effects
