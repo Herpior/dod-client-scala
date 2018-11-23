@@ -57,14 +57,11 @@ class DrawTool extends LineTool {
   def setBeta(newBeta:Double) = {
     this.oneEuroFilter.beta = newBeta
   }
-  def multiplyBeta(multiplier:Double) = {
-    this.oneEuroFilter.beta *= multiplier
+  def setMinCutoff(minCutoff:Double) = {
+    this.oneEuroFilter.mincutoff = minCutoff
   }
-  def setMinCutoff(MinCutoff:Double) = {
-    this.oneEuroFilter.mincutoff = MinCutoff
-  }
-  def multiplyMinCutoff(multiplier:Double) = {
-    this.oneEuroFilter.mincutoff *= multiplier
+  def setDCutoff(dCutoff:Double) = {
+    this.oneEuroFilter.dcutoff = dCutoff
   }
   def getBeta = {
     this.oneEuroFilter.beta
@@ -72,13 +69,17 @@ class DrawTool extends LineTool {
   def getMinCutoff = {
     this.oneEuroFilter.mincutoff
   }
+  def getDCutoff = {
+    this.oneEuroFilter.dcutoff
+  }
 
   override def getConfigVariables() = {
     val betaConfig = new DoubleConfigVariable("reduce lag", _=>getBeta, setBeta, Some(1e-50), Some(1), true)
-    val mincutConfig = new DoubleConfigVariable("reduce jitter", _=>getMinCutoff, setMinCutoff, Some(1), Some(1e-3), true)
-    val unitConfig = new UnitConfigVariable("button test", _=>println("getter"), _=>println("setter"))
+    val mincutConfig = new DoubleConfigVariable("reduce jitter", _=>getMinCutoff, setMinCutoff, Some(10), Some(1e-3), true)
+    val dcutConfig = new DoubleConfigVariable("dcutoff", _=>getDCutoff, setDCutoff, Some(100), Some(1e-3), true)
+    //val unitConfig = new UnitConfigVariable("button test", _=>println("getter"), _=>println("setter"))
     val smoothingConfig = new BooleanConfigVariable("smoothing", _=>this.smoothing, smoothing=_)
-    Vector(smoothingConfig, betaConfig, mincutConfig, unitConfig).asInstanceOf[Vector[ConfigVariable]]
+    Vector(smoothingConfig, betaConfig, mincutConfig, dcutConfig).asInstanceOf[Vector[ConfigVariable]]
   }
 
   //---------\\

@@ -422,15 +422,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             doodle.repaint()
             layers.reset
           }
-        case Key.Comma => //TODO: move these to the pen tool config
-          tools.model.drawTool.multiplyBeta(10)
-          println("beta: "+tools.model.drawTool.getBeta)
-        case Key.Period =>
-          tools.model.drawTool.multiplyBeta(0.1)
-          println("beta: "+tools.model.drawTool.getBeta)
-        case Key.Minus =>
-          tools.model.drawTool.multiplyMinCutoff(0.5)
-          println("cutoff: "+tools.model.drawTool.getMinCutoff)
         case Key.O =>
           if(Magic.authorized){
             if(ctrl){

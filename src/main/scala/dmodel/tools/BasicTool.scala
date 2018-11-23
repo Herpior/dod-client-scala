@@ -2,6 +2,7 @@ package dmodel.tools
 import view.DoodlePanel
 import dmodel.Coord
 import dmodel.dpart.DoodlePart
+import dmodel.filters.OneEuroFilter
 
 import collection.mutable.Buffer
 

@@ -14,7 +14,7 @@ import scala.util.Random
 //@RunWith(classOf[JUnitRunner])
 class OneEuroTest extends FlatSpec with Matchers {
 
-  "OneEuroFilter.update" should "return same Coord on first update" in
+  "OneEuroFilter.filter" should "return same Coord on first update" in
     {
       val filter = new OneEuroFilter()
       val coord = new Coord(0.234, 345.6243)
@@ -26,7 +26,7 @@ class OneEuroTest extends FlatSpec with Matchers {
       assert (res2.dist(coord2)<0.000001,res2 + " not equal to "+ coord2)
     }
 
-  "OneEuroFilter.update" should "return same values as an existing solution, with the same input" in
+  "OneEuroFilter.filter" should "return same values as an existing solution, with the same input" in
     {
       val filter = new OneEuroFilter()
       filter.beta = 0.0
@@ -80,7 +80,7 @@ class OneEuroTest extends FlatSpec with Matchers {
       }
     }
 
-  "OneEuroFilter.update" should "return values somewhat close to the original values, using noisy signal" in
+  "OneEuroFilter.filter" should "return values somewhat close to the original values, using noisy signal" in
     {
       val filter = new OneEuroFilter()
       val rng = new Random(35975)
@@ -107,12 +107,12 @@ class OneEuroTest extends FlatSpec with Matchers {
 //        signal += x
 //        noisySignal += noisy
         val filtered = filter.update(noisy, timestamp)
-        assert (filtered.dist(x) < 20,"the update returns significantly wrong results")
+        assert (filtered.dist(x) < 20,"the filter returns significantly wrong results")
       }
     }
 
 
-  "OneEuroFilter.update" should "return same values as doubles and Coords in 1d" in
+  "OneEuroFilter.filter" should "return same values as doubles and Coords in 1d" in
     {
       val doublefilter = new OneEuroFilter()
       doublefilter.beta = 0.0 //TODO: check with nonzero beta
