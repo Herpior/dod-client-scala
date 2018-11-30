@@ -639,8 +639,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       else if(doodle.canDraw){
         tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
       }
-      
-      doodle.model.addTime((System.nanoTime()-check)/100000)
+
       savetimer.start()
       Future(layers.reset)
       

@@ -26,7 +26,8 @@ class DoodleModel {
   
   //private var room:String = "global"
   //private var id:String = ""
-  private var paintTime = 0
+  private var savedPaintTime = 0 //never use this time for exporting paint time, always use getPaintTime to get the current paint time
+  private val startTime = (System.nanoTime()/1000).toInt
   private def chain = HttpHandler.getChain
   private def room= HttpHandler.getGroup
   
@@ -43,10 +44,10 @@ class DoodleModel {
     matrix
   }
   //---------\\
-  def addTime(time:Long){
-    //println(paintTime)
-    paintTime += (time/1000).toInt
-    if(paintTime < 0) paintTime = 1000000
+  def addTime(time:Int){
+    //println(savedPaintTime)
+    savedPaintTime += time
+    if(savedPaintTime < 0) savedPaintTime = 1000000
   }
   //def setState(tool:Int) {state = tool}
   //def setSize(next:Int) {size = next}
@@ -97,6 +98,7 @@ class DoodleModel {
   //---------\\
   def load(loaded:JsonDoodle){
     layers.head.load(loaded)
+    addTime(loaded.time)
   }
   def loadSave(chain:String){
     try{
@@ -132,8 +134,8 @@ class DoodleModel {
     //???
   }
   def getPaintTime={
-    //println("pt "+paintTime)
-    paintTime
+    //println("pt "+savedPaintTime)
+    savedPaintTime + (System.nanoTime()/1000).toInt - startTime
     //???
   }
   //---------\\
@@ -223,8 +225,8 @@ class DoodleModel {
     // val pt = this.getPaintTime.toInt
 
     // dividers between the split pieces of the stroke array
-    def chpt(a:Int) = ",\""+chain+paintTime+""+a+"\":"
-    "{\"chain_id\":\""+chain+"\",\"group_id\":\""+room+"\",\"sc\":"+flatStrokes.length+",\"pt\":"+paintTime+
+    def chpt(a:Int) = ",\""+chain+getPaintTime+""+a+"\":"
+    "{\"chain_id\":\""+chain+"\",\"group_id\":\""+room+"\",\"sc\":"+flatStrokes.length+",\"pt\":"+getPaintTime+
       ",\"pp\":"+this.getPaintPercentage+",\"ext\":\"true\""+chpt(0)+j+chpt(3)+h(30)+chpt(2)+h(20)+chpt(1)+h(10)+chpt(5)+h(50)+chpt(4)+h(100)+"}"
   }
 
