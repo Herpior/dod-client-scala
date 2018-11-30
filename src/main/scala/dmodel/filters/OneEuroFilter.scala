@@ -3,7 +3,6 @@ package dmodel.filters
 import dmodel.Coord
 
 // based on http://cristal.univ-lille.fr/~casiez/1euro/
-// TODO: find a way to split the coord and double versions of smoothing filter without repeating too much stuff, if there is even a need for double filters?
 class OneEuroFilter() {
   var beta = 0.0001 //increase to reduce lag
   var mincutoff = 1.0 //decrease to reduce jitter but increase lag

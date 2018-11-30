@@ -39,6 +39,28 @@ class CoordTest extends FlatSpec with Matchers {
     }
 
 
+  "Coord.rounded" should "give correct result" in
+    {
+      var coord = Coord(1.001, 1.59)
+      var expected = Coord(1, 1.5)
+      var res = coord.rounded(2)
+      assert (res.equals(expected), "Coord.rounded fails with accuracy 2: expected "+expected+", got "+res)
+      expected = Coord(1, 2)
+      res = coord.rounded(1)
+      assert (res.equals(expected), "Coord.rounded fails with accuracy 1: expected "+expected+", got "+res)
+      expected = Coord(1, 1.6)
+      res = coord.rounded(10)
+      assert (res.equals(expected), "Coord.rounded fails with accuracy 10: expected "+expected+", got "+res)
+      coord = Coord(-0.25, 10005.525)
+      expected = Coord(0, 10005.5)
+      res = coord.rounded(2)
+      assert (res.equals(expected), "Coord.rounded fails with accuracy 2: expected "+expected+", got "+res)
+      expected = Coord(-0.2, 10005.5)
+      res = coord.rounded(10)
+      assert (res.equals(expected), "Coord.rounded fails with accuracy 10: expected "+expected+", got "+res)
+    }
+
+
 
 }
 

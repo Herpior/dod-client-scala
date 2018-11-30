@@ -88,7 +88,7 @@ class LayerList {
       addLayer(res)
     }
   }
-  def addLayer(added:Layer){//TODO: check that this works properly!!
+  def addLayer(added:Layer){
     val risky = layers.drop(ind+1)
     //layers --= risky
     layers = layers.take(ind+1)

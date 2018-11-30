@@ -2,7 +2,7 @@ package dmodel.dpart
 
 import java.awt.Color
 
-import dmodel.{Angle, Colors, Coord, JsonStroke}
+import dmodel._
 
 import scala.collection.mutable.Buffer
 
@@ -96,16 +96,16 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     tc
   }*/
 
-  def compress : Array[BasicLine] = {
+  def compress : Array[BasicLine] = { //TODO: check that the compress methods in multiline and basicline make sense and are used
     if (coords.length == 0) return Array()
-    var pc = coords(0).rounded(2)
+    var pc = coords(0).rounded(Magic.roundingAccuracy)
     val lines = Buffer[BasicLine]()
     var tc = new BasicLine(this.color,this.size)//Buffer[Coord](pc)
     tc.addCoord(pc)
     var pk = 10.0//pk = previous angle
     //var ppk = 10.0
     for(i<- coords){
-      val c = i.rounded(2)//Coord(math.round(i.x*2)/2.0,math.round(i.y*2)/2.0)
+      val c = i.rounded(Magic.roundingAccuracy)
       //val x = math.round(xs(i)*2)/2.0
       //val y = math.round(ys(i)*2)/2.0
       val k = pc.angle(c)
@@ -147,13 +147,7 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     "BasicLine(size="+size.toInt+", color="+Colors.toHexString(color)+", path=["+getShortPathString(2)+"])"
   }
   def toDodJson = {
-    "{\"path\":["+coords.map{
-      c=>
-        val tx = math.round(c.x*2)/2.0
-        val x = if(math.round(tx)/1.0 == tx)math.round(tx).toString else tx.toString
-        val ty = math.round(c.y*2)/2.0
-        val y = if(math.round(ty)/1.0 == ty)math.round(ty).toString else ty.toString
-        x+","+y
+    "{\"path\":["+coords.map{_.rounded(Magic.roundingAccuracy).toShortJsonString
     }.mkString(",")+"],\"size\":"+size.toInt+",\"color\":\""+Colors.toHexString(color)+"\"}"
   }
   def selection = {
@@ -165,7 +159,7 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     val json = new JsonStroke
     json.color = Colors.toHexString(color)
     json.size = size
-    json.path = this.coords.flatMap(_.toArray).toArray
+    json.path = this.coords.flatMap(_.rounded(Magic.roundingAccuracy).toArray).toArray
     json.linetype = "basic"
     Some(json)
   }
@@ -173,15 +167,15 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     val json = new JsonLine
     json.color = Colors.toHexString(color)
     json.size = size
-    json.path = this.coords.flatMap(_.toArray).toArray
+    json.path = this.coords.flatMap(_.rounded(Magic.roundingAccuracy).toArray).toArray
     Some(json)
   }
   def toJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    Some("{\"linetype\":\"basic\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.toShortJsonString).mkString(",")+"]}")
+    Some("{\"linetype\":\"basic\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.rounded(Magic.roundingAccuracy).toShortJsonString).mkString(",")+"]}")
   }
   def toShortJsonString = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    Some("{\"l\":\"n\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}")
+    Some("{\"l\":\"n\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.rounded(Magic.roundingAccuracy).toShortJsonString).mkString(",")+"]}")
   }
 }

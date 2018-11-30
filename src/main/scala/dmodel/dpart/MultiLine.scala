@@ -1,6 +1,6 @@
 package dmodel.dpart
 
-import dmodel.{Colors, Coord, JsonStroke}
+import dmodel.{Colors, Coord, JsonStroke, Magic}
 
 import scala.collection.mutable.Buffer
 
@@ -52,14 +52,14 @@ class MultiLine extends DoodlePart{
   //    ys += y0
   //  }
   //}
-  def compress {
+  def compress { //TODO: check that the compress methods in multiline and basicline make sense and are used
     val res = Buffer[BasicLine]()
     val nonempty = lines.filter { !_.getCoords.isEmpty }
     if(nonempty.isEmpty)return
     var curr = nonempty(0)
-    var cc = curr.getCoords.map(_.rounded(2))
+    var cc = curr.getCoords.map(_.rounded(Magic.roundingAccuracy))
     for(st<-nonempty.drop(1)){
-      val sc = st.getCoords.map(_.rounded(2))
+      val sc = st.getCoords.map(_.rounded(Magic.roundingAccuracy))
       if( st.size==curr.size &&
         st.color == curr.color &&
         cc.last == sc.head)
@@ -107,7 +107,7 @@ class MultiLine extends DoodlePart{
       lines.head.toShortJsonString
     }
     else {
-      Some("{\"l\":\"m\",\"ss\":["+lines.flatMap(_.toShortJsonString).mkString(",")+"]}") //TODO: consider changing "ss" into something with only one character?
+      Some("{\"l\":\"m\",\"ss\":["+lines.flatMap(_.toShortJsonString).mkString(",")+"]}") //TODO: consider changing "ss" into something with only one character? also "l" into "t" for all lines?
     }
   }
 }
