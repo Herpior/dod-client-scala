@@ -18,6 +18,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   //val decodedPath = java.io.URLDecoder.decode(derpPath, "UTF-8");
   private var pathname = "./saves/"+private_id+".png"
   private var filename = private_id
+  private var savename = private_id
   
   val doodle = new DoodlePanel
   val skipButt = new Button{
@@ -150,7 +151,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   this.listenTo(tools.submitP)
   
   def export(saveAs:Boolean) {
-    val text = Dialog.showInput(doodle, "set percentage", "exported image size", Dialog.Message.Question, null, List[String](), "100%")
+    val text = Dialog.showInput(doodle, "set percentage", "percentage or exported image size compared to the image size "+Magic.doodleSize.x+"x"+Magic.doodleSize.y+" px", Dialog.Message.Question, null, List[String](), "100%")
     text.foreach { x => 
       try {
         val xtrim = x.takeWhile { x => x == '.' || (x >= '0' && x <= '9') }
@@ -164,10 +165,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           val res = fc.showSaveDialog(this)
           if (res != FileChooser.Result.Approve) return
           val file = fc.selectedFile
-          if(Magic.offline){
-            filename = file.getName
-            pathname = file.getAbsolutePath
-          }
+          filename = file.getName
+          pathname = file.getAbsolutePath
           if(!pathname.endsWith("png")){
             pathname = pathname + ".png"
           }
@@ -212,7 +211,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     }
   }
   def save {
-    doodle.save(filename)
+    doodle.save(savename)
     val curr_time = System.nanoTime()
     if(last_ping < curr_time - 7200000000000L) { // two hours between pings
       ping
@@ -230,7 +229,13 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     doodle.model.decryptFrom(file.getAbsolutePath)
     doodle.redrawAll
     layers.reset
-    println("filename: " + filename)
+    if(savename == "offline"){
+      val yesNo = Dialog.showConfirmation(doodle, "Do you want to use this file as save location?", "Set as save location")
+      if(yesNo == Dialog.Result.Yes){
+        val fname = file.getName
+        savename = fname.replace("save.", "").replace(".txt", "")
+      }
+    }
   }
   
   override def logout {
@@ -347,7 +352,14 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           tools.colorP.repaint()
         case Key.S =>
           if(ctrl) {
-            save//toLocalStorage
+            if(this.savename == "offline"){
+              val newSaveName = Dialog.showInput(doodle, "set save name", "The name of the save file. So you don't have to save everything to save.offline.txt", Dialog.Message.Question, null, List[String](), "untitled")
+              newSaveName.foreach(savename = _)
+              save
+            }
+            else{
+              save
+            }//toLocalStorage
           }
           else {
             ColorModel.colorDown
