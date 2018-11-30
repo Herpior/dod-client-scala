@@ -141,7 +141,8 @@ object HttpHandler {
       val in2 = getHttp(get)
       setUsername(in2)
     } catch {
-      case e:NullPointerException => //the cert is not working so can't connect to the site, TODO:add dialogue to user about this
+      case e:NullPointerException =>
+        println("the cert is not working so can't connect to the site")
     }
     !cid.isEmpty
   }

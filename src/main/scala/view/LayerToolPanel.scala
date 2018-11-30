@@ -93,7 +93,7 @@ class LayerToolPanel(model:LayerList) extends GridPanel(2,3){
     g.setFont(g.getFont.deriveFont(java.awt.Font.BOLD))
     g.drawString("add", 10, 15)
     g.drawString("merge", 45, 15)
-    g.drawString("remove", 92, 15)//TODO undo and redo butts
+    g.drawString("remove", 92, 15)
   }*/
   /*
   this.listenTo(mouse.clicks)

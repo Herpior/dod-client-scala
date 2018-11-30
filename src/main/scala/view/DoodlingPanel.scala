@@ -404,7 +404,6 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           
         case Key.C =>
           if(ctrl){
-            //TODO: implement duplicate layer here
             //doodle.model.copy
           }
           else {
@@ -417,7 +416,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }*/
         case Key.M =>
           if(Magic.authorized && ctrl) {
-            doodle.model.matrixLayer //TODO make this work better
+            doodle.model.matrixLayer
             doodle.redrawAll
             doodle.repaint()
             layers.reset
@@ -545,7 +544,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       val shift = e.peer.isShiftDown()
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
-      if(doodle.canDraw){ // TODO: panning and zoom don't work with matrixlayers, maybe do something about that? 
+      if(doodle.canDraw){
         tools.model.mouseMoved(doodle, place, ctrl, alt, shift)
       }
       

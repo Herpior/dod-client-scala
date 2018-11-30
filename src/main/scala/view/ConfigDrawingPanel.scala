@@ -40,7 +40,8 @@ object ConfigDrawingPanel extends Frame {
       publish(new RepaintEvent)
       confwindow.dispose()
     } catch {
-      case e:Throwable => //TODO warn that this fails 
+      case e:Throwable =>
+        println("something happened in ConfigDrawingPanel.submit:\n"+e)
     }
   }
   def activate {

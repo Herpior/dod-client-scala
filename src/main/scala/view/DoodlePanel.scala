@@ -249,7 +249,6 @@ class DoodlePanel extends Panel {
     this.publish(new FullscreenEvent)
   }
   def pickColor(x:Int,y:Int, shift:Boolean):Option[Color] = {
-    //Todo some mod for picking color from whole image
     if(x>0&&y>0 && x<this.midImg.getWidth&&y<this.midImg.getHeight)
     {
       if(shift) { //picks the visible colour or something like it, I'm not sure if it's the fastest way but whatever, it should work?

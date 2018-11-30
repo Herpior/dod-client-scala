@@ -73,7 +73,7 @@ object LineDrawer {
         g.setColor(st.color)
         //if(last != -1)
         //val path = st.path.map(x=>math.round(x*2)/2.0*czoom)//(_*czoom)
-        //val len2 = path.length/2 //TODO separate x and y into dif arrays?
+        //val len2 = path.length/2
         val off = offs//*czoom//if(czoom<=2) Coord(0,0) else (offs*czoom)
         //val ox = if(czoom<2) 0 else (offsetX*czoom)
         //val oy = if(czoom<2) 0 else (offsetY*czoom)
