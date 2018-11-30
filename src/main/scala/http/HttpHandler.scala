@@ -129,8 +129,6 @@ object HttpHandler {
     val get3 = new MainGet()
     val in =  getHttp(get3)
     dmodel.Magic.user = ""
-    println("in:")
-    println(in.mkString("\n"))
   }
   def login(password:Array[Char],username:String):Boolean={
 
