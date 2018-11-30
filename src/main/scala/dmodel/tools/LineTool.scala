@@ -40,7 +40,7 @@ class LineTool extends BasicTool {
       dp.redrawDrawing
       dp.repaint
     }
-    else if(button == 3){
+    else if(button == 3 && isBusy){
       addLine(ColorModel.getColor, SizeModel.getSize, coord)
       //doodle.model.dragLine(place,mods)
       dp.redrawDrawing

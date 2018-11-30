@@ -20,7 +20,7 @@ class FillTool extends LineTool{
   //  dp.repaint
   //}
   override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
-    if(Magic.authorized){
+    if(Magic.authorized && left){
       dragLine(coord, control, shift)
       dp.redrawDrawing
       dp.repaint
@@ -28,16 +28,20 @@ class FillTool extends LineTool{
   }
   override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {}
   override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
-    startGradient(coord, control, alt, shift)
-    dp.redrawDrawing
-    dp.repaint
+    if(button == 1){
+      startGradient(coord, control, alt, shift)
+      dp.redrawDrawing
+      dp.repaint
+    }
   }
   override def onMouseUp(dp:view.DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(control)fillGradient(dp.model, dp.getSelected, coord, alt, shift) //next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int
-    else addGradient(dp.model, coord, alt, shift)
-    dp.redrawLastMid
-    dp.redrawDrawing
-    dp.repaint
+    if(button == 1){
+      if(control)fillGradient(dp.model, dp.getSelected, coord, alt, shift) //next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int
+      else addGradient(dp.model, coord, alt, shift)
+      dp.redrawLastMid
+      dp.redrawDrawing
+      dp.repaint
+    }
   }
   //override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?
   //override def getLastLine() = {None} // for drawing one segment of the line
