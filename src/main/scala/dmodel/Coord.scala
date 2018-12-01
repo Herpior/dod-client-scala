@@ -8,57 +8,127 @@ object Coord{
 
 case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
 
-  def dist(other:Coord)={
-    hypot(this.x-other.x,this.y-other.y)
+  def unary_- ={
+    this.map(-_)
+    //Coord(-this.x,-this.y)
   }
   def +(other:Coord)={
-    Coord(this.x+other.x,this.y+other.y)
+    this.mapWith(_+_, other)
+    //Coord(this.x+other.x,this.y+other.y)
   }
   def -(other:Coord)={
-    Coord(this.x-other.x,this.y-other.y)
+    this.mapWith(_-_, other)
+    //Coord(this.x-other.x,this.y-other.y)
   }
-  def <=(other:Coord)={ //true if both axes less or equal than other
-    this.x<=other.x && this.y<=other.y
+  def /(other:Coord)={
+    this.mapWith(_/_,other)
+    //Coord(this.x/divisor,this.y/divisor)
   }
-  def >=(other:Coord)={ //true if both axes more or equal than other
-    this.x>=other.x && this.y>=other.y
-  }
-  //def /(other:Coord)={
-  //  Coord(this.x/other.x,this.y/other.y)
-  //}
   def /(divisor:Double)={
-    Coord(this.x/divisor,this.y/divisor)
+    this.map(_/divisor)
+    //Coord(this.x/divisor,this.y/divisor)
   }
   def *(multiplier:Double)={
-    Coord(this.x*multiplier,this.y*multiplier)
+    this.map(_*multiplier)
+    //Coord(this.x*multiplier,this.y*multiplier)
   }
-  def unary_- ={
-    Coord(-this.x,-this.y)
+  def *(other:Coord)={
+    this.mapWith(_*_, other)
+    //Coord(this.x*multiplier.x, this.y*multiplier.y)
+  }
+  def ^(power:Double)={
+    this.map(math.pow(_, power))
+    //Coord(math.pow(this.x, power),math.pow(this.y, power))
+  }
+  def <(other:Coord)={ //true if both axes less than in other
+    this.x<other.x && this.y<other.y
+  }
+  def >(other:Coord)={ //true if both axes more than in other
+    this.x>other.x && this.y>other.y
+  }
+
+  def sqr ={
+    this*this
   }
   def abs={
-    Coord(math.abs(this.x), math.abs(this.y))
-  }
-  def length = {
-    hypot(this.x, this.y)
+    this.map(math.abs(_))
+    //Coord(math.abs(this.x), math.abs(this.y))
   }
   def max = {
     math.max(this.x, this.y)
   }
+  def min = {
+    math.min(this.x, this.y)
+  }
+  def sum ={
+    this.x + this.y
+  }
+  def dot(other:Coord) ={
+    (this*other).sum
+  }
   def angle(other:Coord)={
-    Angle.angle(this.x-other.x, this.y-other.y)
+    (other-this).toAngle
   }
+  def toAngle:Double ={//returns direction as angle in radians
+    val ang = math.acos(this.normalized.dot(Coord(1,0)))
+    if( this.y >= 0 ) ang
+    else 2*math.Pi - ang
+  }
+
+  def length = {
+    hypot(this.x, this.y)
+  }
+  def lengthSquared ={
+    this.sqr.sum
+  }
+  def dist(other:Coord)={
+    //hypot(this.x-other.x,this.y-other.y)
+    (this-other).length
+  }
+  def distSquared(other:Coord)={
+    //println("this: "+this+", other: "+other)
+    //println("(this-other): "+(this-other)+", .sqr: "+(this-other).sqr+", sum: "+(this-other).sqr.sum)
+    (this-other).lengthSquared
+  }
+  // from https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
+  def distFromContinuousLine(pointA:Coord, pointB:Coord):Double={
+    if(pointA == this || pointB == this) return 0.0
+    val delta = pointB - pointA
+    val numerator = delta.y*this.x - delta.x*this.y + pointB.x*pointA.y - pointB.y*pointA.x
+    math.abs(numerator) / math.sqrt(delta.sqr.sum)
+  }
+  // from https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
+  def distFromLine(pointA:Coord, pointB:Coord):Double ={
+    val l2 = pointA.distSquared(pointB)
+    if(l2 == 0) return this.dist(pointA)
+    val delta = pointB - pointA
+    val t = math.max(0, math.min(1, (this-pointA).dot(delta)/l2))
+    val proj = pointA + delta*t
+    this.dist(proj)
+  }
+
   def rounded(accuracy:Int)={
-    Coord(round(this.x*accuracy)/accuracy.toDouble,round(this.y*accuracy)/accuracy.toDouble)
+    this.map(x=>round(x*accuracy)/accuracy.toDouble)
+    //Coord(round(this.x*accuracy)/accuracy.toDouble,round(this.y*accuracy)/accuracy.toDouble)
   }
-  def flip={ //flips x and y
+  def normalized:Coord ={
+    if(this == Coord(0)) return this
+    this/this.length
+  }
+  def flipped={ //flips x and y
     Coord(this.y, this.x)
   }
-  def perpendiculate={ //flips vector 90 degrees
+  def perpendiculated={ //flips vector 90 degrees
     Coord(-this.y, this.x)
   }
-  def toAngle={//returns direction as angle in radians
-    math.tan(x/y)
+
+  def map(func:Double=>Double) ={
+    Coord(func(this.x), func(this.y))
   }
+  def mapWith(func:(Double, Double)=>Double, other:Coord) ={
+    Coord(func(this.x, other.x), func(this.y, other.y))
+  }
+
   def toArray={
     Array(x, y)
   }
@@ -68,18 +138,23 @@ case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
     json.y = y
     json
   }
+
   override def toString={
-    "("+x+", "+y+")"
+    val (xx, yy) = this.toCleanStrings
+    "("+xx+", "+yy+")"
   }
   def toJsonString = {
-    val xx = if(x%1==0)math.round(x).toString else x.toString
-    val yy = if(y%1==0)math.round(y).toString else y.toString
+    val (xx, yy) = this.toCleanStrings
     "{\"x\":"+xx+",\"y\":"+yy+"}"
   }
   def toShortJsonString = {
+    val (xx, yy) = this.toCleanStrings
+    xx + "," + yy
+  }
+  def toCleanStrings = {
     val xx = if(x%1==0)(x).toInt.toString else x.toString
     val yy = if(y%1==0)(y).toInt.toString else y.toString
-    xx+","+yy
+    (xx,yy)
   }
 
 }
