@@ -51,7 +51,7 @@ class PerspectiveTool extends BasicTool {
       if(vps.size == 2){ // cross between the vanishing points
         val vert = new BasicLine(Magic.red, 1.0)
         val center = (vp1+vp2)/2
-        val slope = difference.perpendiculate
+        val slope = difference.perpendiculated
         vert.addCoord(center - slope)
         vert.addCoord(center + slope)
         buf += vert 

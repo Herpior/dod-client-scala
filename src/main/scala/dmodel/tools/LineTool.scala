@@ -3,7 +3,7 @@ package dmodel.tools
 import math.Pi
 import java.awt.Color
 
-import dmodel.Angle
+//import dmodel.Angle
 import dmodel.Coord
 import dmodel.Perspective
 import dmodel.ColorModel
@@ -95,8 +95,8 @@ class LineTool extends BasicTool {
           val dlen = math.sqrt(dc.x*dc.x+dc.y*dc.y)//place.dist(c0)
           //println(dlen+" <- "+place.dist(c0))
           val xy = 
-              if (shift) Perspective.getCoord(c0,Angle.angle(dc.x,dc.y),dlen)
-              else Angle.getCoord(math.round(Angle.angle(dc.x,dc.y)/Pi*4)*Pi/4,dlen)
+              if (shift) Perspective.getDisplacement(c0, place)//Angle.angle(dc.x,dc.y),dlen)
+              else Perspective.getCoord(math.round(dc.toAngle/Pi*4)*Pi/4,dlen)
               //println("coord: "+xy+" mods ="+mods)
           val c2 = c0+xy
           //if(c2>=Coord(0)&&c2<=Magic.doodleSize)

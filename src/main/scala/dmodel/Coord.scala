@@ -14,31 +14,24 @@ case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
   }
   def +(other:Coord)={
     this.mapWith(_+_, other)
-    //Coord(this.x+other.x,this.y+other.y)
   }
   def -(other:Coord)={
     this.mapWith(_-_, other)
-    //Coord(this.x-other.x,this.y-other.y)
   }
   def /(other:Coord)={
     this.mapWith(_/_,other)
-    //Coord(this.x/divisor,this.y/divisor)
   }
   def /(divisor:Double)={
     this.map(_/divisor)
-    //Coord(this.x/divisor,this.y/divisor)
   }
   def *(multiplier:Double)={
     this.map(_*multiplier)
-    //Coord(this.x*multiplier,this.y*multiplier)
   }
   def *(other:Coord)={
     this.mapWith(_*_, other)
-    //Coord(this.x*multiplier.x, this.y*multiplier.y)
   }
   def ^(power:Double)={
     this.map(math.pow(_, power))
-    //Coord(math.pow(this.x, power),math.pow(this.y, power))
   }
   def <(other:Coord)={ //true if both axes less than in other
     this.x<other.x && this.y<other.y
@@ -52,7 +45,6 @@ case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
   }
   def abs={
     this.map(math.abs(_))
-    //Coord(math.abs(this.x), math.abs(this.y))
   }
   def max = {
     math.max(this.x, this.y)
@@ -66,13 +58,16 @@ case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
   def dot(other:Coord) ={
     (this*other).sum
   }
-  def angle(other:Coord)={
+  def direction(other:Coord)={
     (other-this).toAngle
   }
   def toAngle:Double ={//returns direction as angle in radians
-    val ang = math.acos(this.normalized.dot(Coord(1,0)))
+    val ang = this.angleBetweenVector(Coord(1,0))
     if( this.y >= 0 ) ang
     else 2*math.Pi - ang
+  }
+  def angleBetweenVector(other:Coord) = {
+    math.acos(this.normalized.dot(other.normalized))
   }
 
   def length = {
@@ -82,12 +77,9 @@ case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
     this.sqr.sum
   }
   def dist(other:Coord)={
-    //hypot(this.x-other.x,this.y-other.y)
     (this-other).length
   }
   def distSquared(other:Coord)={
-    //println("this: "+this+", other: "+other)
-    //println("(this-other): "+(this-other)+", .sqr: "+(this-other).sqr+", sum: "+(this-other).sqr.sum)
     (this-other).lengthSquared
   }
   // from https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
@@ -109,7 +101,6 @@ case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
 
   def rounded(accuracy:Int)={
     this.map(x=>round(x*accuracy)/accuracy.toDouble)
-    //Coord(round(this.x*accuracy)/accuracy.toDouble,round(this.y*accuracy)/accuracy.toDouble)
   }
   def normalized:Coord ={
     if(this == Coord(0)) return this

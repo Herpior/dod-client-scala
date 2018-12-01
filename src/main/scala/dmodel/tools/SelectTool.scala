@@ -9,11 +9,11 @@ import view.DoodlePanel
 //base for tools that need to select lines
 class SelectTool extends BasicTool {
   
-  protected var selected:Option[DoodlePart] = None // selected line after clicking
-  protected var hovering:Option[DoodlePart] = None // line for visualization
+  protected var selected:Array[DoodlePart] = Array() // selected line after clicking
+  protected var hovering:Array[DoodlePart] = Array() // line for visualization
   
   override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(select(dp, coord, control, alt)){
+    if(selectOne(dp, coord, control, alt)){
       dp.redrawDrawing
       dp.repaint
     }
@@ -33,7 +33,7 @@ class SelectTool extends BasicTool {
   }
 
   // returns boolean that tells whether there has been a change and the graphics should be redrawn
-  def select(dp:DoodlePanel, place:Coord, control:Boolean, alt:Boolean):Boolean={
+  def selectOne(dp:DoodlePanel, place:Coord, control:Boolean, alt:Boolean):Boolean={
     val strokes = if(alt) {
       dp.model.getLayers.flatMap(_.getStrokes(false))
     }
@@ -50,15 +50,15 @@ class SelectTool extends BasicTool {
     }
     val prev = hovering
     if(best<20){
-     hovering = Some(curr)
+     hovering = Array(curr)
     } else {
-      hovering = None
+      hovering = Array()
     }
     hovering != prev
   }
   def unselect {
-    hovering = None
-    selected = None
+    hovering = Array()
+    selected = Array()
   }
   
   def allSelected = (hovering ++ selected).toArray

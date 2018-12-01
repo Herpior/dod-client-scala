@@ -16,7 +16,7 @@ class BezierInterpolationTool extends SelectTool {
     }
   }
   override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(left && select(dp, coord, control, alt)) {
+    if(left && selectOne(dp, coord, control, alt)) {
       dp.redrawDrawing
       dp.repaint
     }
@@ -28,8 +28,8 @@ class BezierInterpolationTool extends SelectTool {
     if(selected.nonEmpty && hovering.nonEmpty){
       //println("both found")
       val res = new MultiLine
-      val line1 = hovering.get
-      val line2 = selected.get
+      val line1 = hovering(0)
+      val line2 = selected(0)
       if(line1.isInstanceOf[BezierLine] && line2.isInstanceOf[BezierLine]){
         //println("both bez")
         combineBezier(line1.asInstanceOf[BezierLine], line2.asInstanceOf[BezierLine], control, alt, shift, res)

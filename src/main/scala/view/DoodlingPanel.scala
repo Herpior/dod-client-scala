@@ -151,7 +151,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   this.listenTo(tools.submitP)
   
   def export(saveAs:Boolean) {
-    val text = Dialog.showInput(doodle, "set percentage", "percentage or exported image size compared to the image size "+Magic.doodleSize.x+"x"+Magic.doodleSize.y+" px", Dialog.Message.Question, null, List[String](), "100%")
+    val text = Dialog.showInput(doodle, "set percentage", "percentage of exported image size compared to the image size "+Magic.doodleSize.x+"x"+Magic.doodleSize.y+" px", Dialog.Message.Question, null, List[String](), "100%")
     text.foreach { x => 
       try {
         val xtrim = x.takeWhile { x => x == '.' || (x >= '0' && x <= '9') }
@@ -605,7 +605,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       else if(doodle.canDraw){ 
         tools.model.mousePressed(doodle, place, button, ctrl, alt, shift)
       }
-      
+      check = System.nanoTime()
       
     case e:MouseReleased=>
       // ^left only = 0
@@ -639,6 +639,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       else if(doodle.canDraw){
         tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
       }
+
+      doodle.model.addTime(((System.nanoTime()-check)/100000).toInt)
 
       savetimer.start()
       Future(layers.reset)

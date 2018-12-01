@@ -2,7 +2,7 @@ package dmodel
 
 import math._
 
-object Angle {
+object Angles {
 
   // y increases downwards, x increases to right.
   def angle(x: Double, y: Double) = {

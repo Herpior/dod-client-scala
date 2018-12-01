@@ -60,21 +60,24 @@ object Perspective {
     else if(index == 2) removeSecondary
     else removePrimary
   }
-  
-  def getCoord(orig:Coord,angle:Double,length:Double)={
-    val ang = Angle.angle(orig.x-pers.x, orig.y-pers.y)
+
+  // returns direction from origin to vanishing point, scaled by distance
+  def getDisplacement(orig:Coord,cursor:Coord):Coord ={
+    val angle = orig.direction(cursor)
+    val length = orig.dist(cursor)
+    val ang = orig.direction(pers)//Angle.direction(orig.x-pers.x, orig.y-pers.y)
     val ang2 = if(!pers2.isEmpty){
       val p = pers2.get
-      Angle.angle(orig.x-p.x,orig.y-p.y)
+      orig.direction(p)//Angle.direction(orig.x-p.x,orig.y-p.y)
     } else 0.0
     val ang3 = if(!pers3.isEmpty){
       val p = pers3.get
-      Angle.angle(orig.x-p.x,orig.y-p.y)
+      orig.direction(p)//Angle.angle(orig.x-p.x,orig.y-p.y)
     } else if(!pers2.isEmpty) {
       val difference = pers - pers2.get
-      val slope = difference.perpendiculate
-      Angle.angle(slope.x, slope.y)
-      //slope.toAngle
+      val slope = difference.perpendiculated
+      //Angle.angle(slope.x, slope.y)
+      slope.toAngle
     }
     else math.Pi/2
     val angs = Array[Double](ang,ang2,ang3,Pi+ang,Pi+ang2,Pi+ang3)
@@ -89,6 +92,15 @@ object Perspective {
       buf += d
     }
     val resultante = buf.zipWithIndex
-    Angle.getCoord(angs(resultante.sortBy(f=>f._1).head._2), length)
+
+    getCoord(angs(resultante.sortBy(f=>f._1).head._2), length)
+  }
+
+  def getCoord(angle: Double, length: Double):Coord ={
+    val x = length * math.cos(angle)
+    val y = length * math.sin(angle)
+    new Coord(x , y)
   }
 }
+
+

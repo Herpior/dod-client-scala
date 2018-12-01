@@ -45,9 +45,8 @@ class DoodleModel {
   }
   //---------\\
   def addTime(time:Int){
-    //println(savedPaintTime)
     savedPaintTime += time
-    if(savedPaintTime < 0) savedPaintTime = 1000000
+    if(savedPaintTime < 0) savedPaintTime = 13371337
   }
   //def setState(tool:Int) {state = tool}
   //def setSize(next:Int) {size = next}
@@ -105,7 +104,7 @@ class DoodleModel {
       val loaded = io.LocalStorage.loadSave(chain)//.decryptFrom(path,chain)
       layers.load(loaded)
       //layers.getCurrent/*(this.current)*/.load(loaded._1)
-      addTime(loaded.time)
+      addTime(loaded.getTime)
     }
     catch{
       case e:java.io.FileNotFoundException=>
@@ -134,9 +133,24 @@ class DoodleModel {
     //???
   }
   def getPaintTime={
-    //println("pt "+savedPaintTime)
-    savedPaintTime + (System.nanoTime()/1000).toInt - startTime
-    //???
+    // 229319649/ 24867
+    // 1398881828/9330
+    // 90768084/ 6401
+    // 2943088 / 1538
+    // 4120702 / 1433,
+    // 2389145 / 1279,
+    // 2099153 / 1197
+    // 869790  / 570
+    // 2222038 / 367
+    // 554956  / 299
+    // 1089980 / 274
+    // 1506210 / 272
+    /*var pt = savedPaintTime + (System.nanoTime()/1000).toInt - startTime
+    if (pt < 0) pt = -pt
+    if (pt > 5120702) pt = pt % 5120702
+    if (pt < 454956) pt += 454956
+    pt*/
+    savedPaintTime
   }
   //---------\\
   /*def addChar(c:Char){

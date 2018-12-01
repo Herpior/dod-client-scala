@@ -102,14 +102,16 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     val lines = Buffer[BasicLine]()
     var tc = new BasicLine(this.color,this.size)//Buffer[Coord](pc)
     tc.addCoord(pc)
-    var pk = 10.0//pk = previous angle
+    var prevDir = Coord(0)
+    //var pk = 10.0//pk = previous angle
     //var ppk = 10.0
     for(i<- coords){
       val c = i.rounded(Magic.roundingAccuracy)
+      val dir = c - pc //TODO: test that this works properly
       //val x = math.round(xs(i)*2)/2.0
       //val y = math.round(ys(i)*2)/2.0
-      val k = pc.angle(c)
-      val comp = math.abs(Angle.compare(pk,k))
+      //val k = pc.angle(c)
+      val comp = if(prevDir == Coord(0)) 0 else prevDir.angleBetweenVector(dir)//math.abs(Angle.compare(pk,k))
       //val comp2 = math.abs(Angle.compare(ppk,k))
       if(pc==c/*||(comp<math.Pi/32&&this.size==1)*/){
         //there are two coordinates at the same point, keep the previous angle and don't add the same coordinate again
@@ -126,7 +128,7 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
         }
         tc.addCoord( c )
         //ppk = pk
-        pk = k
+        prevDir = dir
       }
       pc = c
     }

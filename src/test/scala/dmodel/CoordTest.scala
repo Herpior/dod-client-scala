@@ -461,66 +461,97 @@ class CoordTest extends FlatSpec with Matchers {
       assert (math.abs(coord.toAngle - math.Pi/6*11) < epsilon, "Coord.toAngle is wrong in sqrt3,-1: "+coord.toAngle)
     }
 
-  "Coord.angle" should "give same result as coord.toAngle when starting at origo" in
+  "Coord.direction" should "give same result as coord.toAngle when starting at origo" in
     {
       val epsilon = 1e-9
       var coord = Coord(100,0)
-      assert (math.abs(Coord(0).angle(coord) - 0) < epsilon, "Coord.angle is wrong in one 1,0: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - 0) < epsilon, "Coord.direction is wrong in one 1,0: "+Coord(0).direction(coord))
       coord = Coord(4,4)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/4) < epsilon, "Coord.angle is wrong in 1,1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/4) < epsilon, "Coord.direction is wrong in 1,1: "+Coord(0).direction(coord))
       coord = Coord(0,24)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/2) < epsilon, "Coord.angle is wrong in 0,1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/2) < epsilon, "Coord.direction is wrong in 0,1: "+Coord(0).direction(coord))
       coord= Coord(-5, 5)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/4*3) < epsilon, "Coord.angle wrong in -1,1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/4*3) < epsilon, "Coord.direction wrong in -1,1: "+Coord(0).direction(coord))
       coord = Coord(-1, 0)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi) < epsilon, "Coord.angle is wrong in -1,0: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi) < epsilon, "Coord.direction is wrong in -1,0: "+Coord(0).direction(coord))
       coord = Coord(-1, -1)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/4*5) < epsilon, "Coord.angle is wrong in -1,-1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/4*5) < epsilon, "Coord.direction is wrong in -1,-1: "+Coord(0).direction(coord))
       coord = Coord(0, -1)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/2*3) < epsilon, "Coord.angle is wrong in 0,-1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/2*3) < epsilon, "Coord.direction is wrong in 0,-1: "+Coord(0).direction(coord))
       coord = Coord(3, -3)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/4*7) < epsilon, "Coord.angle is wrong in 1,-1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/4*7) < epsilon, "Coord.direction is wrong in 1,-1: "+Coord(0).direction(coord))
 
       coord = Coord(math.sqrt(3), 1)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/6) < epsilon, "Coord.angle is wrong in sqrt3,-1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/6) < epsilon, "Coord.direction is wrong in sqrt3,-1: "+Coord(0).direction(coord))
       coord = Coord(math.sqrt(3), -1)
-      assert (math.abs(Coord(0).angle(coord) - math.Pi/6*11) < epsilon, "Coord.angle is wrong in sqrt3,-1: "+Coord(0).angle(coord))
+      assert (math.abs(Coord(0).direction(coord) - math.Pi/6*11) < epsilon, "Coord.direction is wrong in sqrt3,-1: "+Coord(0).direction(coord))
     }
 
-  "Coord.angle" should "give correct results" in
+  "Coord.direction" should "give correct results" in
     {
       val epsilon = 1e-9
       var coord = Coord(100,0)
       var comparing = Coord(99,0)
-      assert (math.abs(comparing.angle(coord) - 0) < epsilon, "Coord.angle is wrong in one 1,0: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - 0) < epsilon, "Coord.direction is wrong in one 1,0: "+comparing.direction(coord))
       coord = Coord(4,4)
       comparing = Coord(1,1)
-      assert (math.abs(comparing.angle(coord) - math.Pi/4) < epsilon, "Coord.angle is wrong in 1,1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/4) < epsilon, "Coord.direction is wrong in 1,1: "+comparing.direction(coord))
       coord = Coord(1,24)
       comparing = Coord(1,4)
-      assert (math.abs(comparing.angle(coord) - math.Pi/2) < epsilon, "Coord.angle is wrong in 0,1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/2) < epsilon, "Coord.direction is wrong in 0,1: "+comparing.direction(coord))
       coord= Coord(-5, 5)
       comparing = Coord(5, -5)
-      assert (math.abs(comparing.angle(coord) - math.Pi/4*3) < epsilon, "Coord.angle wrong in -1,1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/4*3) < epsilon, "Coord.direction wrong in -1,1: "+comparing.direction(coord))
       coord = Coord(-1, 99)
       comparing = Coord(99,99)
-      assert (math.abs(comparing.angle(coord) - math.Pi) < epsilon, "Coord.angle is wrong in -1,0: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi) < epsilon, "Coord.direction is wrong in -1,0: "+comparing.direction(coord))
       coord = Coord(1, 0)
       comparing = Coord(2, 1)
-      assert (math.abs(comparing.angle(coord) - math.Pi/4*5) < epsilon, "Coord.angle is wrong in -1,-1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/4*5) < epsilon, "Coord.direction is wrong in -1,-1: "+comparing.direction(coord))
       coord = Coord(99, -1)
       comparing = Coord(99,0)
-      assert (math.abs(comparing.angle(coord) - math.Pi/2*3) < epsilon, "Coord.angle is wrong in 0,-1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/2*3) < epsilon, "Coord.direction is wrong in 0,-1: "+comparing.direction(coord))
       coord = Coord(10, 21)
       comparing = Coord(7, 24)
-      assert (math.abs(comparing.angle(coord) - math.Pi/4*7) < epsilon, "Coord.angle is wrong in 1,-1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/4*7) < epsilon, "Coord.direction is wrong in 1,-1: "+comparing.direction(coord))
 
       coord = Coord(math.sqrt(3)+1, 1)
       comparing = Coord(1,0)
-      assert (math.abs(comparing.angle(coord) - math.Pi/6) < epsilon, "Coord.angle is wrong in sqrt3,-1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/6) < epsilon, "Coord.direction is wrong in sqrt3,-1: "+comparing.direction(coord))
       coord = Coord(math.sqrt(3), 2)
       comparing = Coord(0,3)
-      assert (math.abs(comparing.angle(coord) - math.Pi/6*11) < epsilon, "Coord.angle is wrong in sqrt3,-1: "+comparing.angle(coord))
+      assert (math.abs(comparing.direction(coord) - math.Pi/6*11) < epsilon, "Coord.direction is wrong in sqrt3,-1: "+comparing.direction(coord))
+    }
+
+  "Coord.angleBetweenVector" should "give correct results" in
+    {
+      val epsilon = 3e-8 // a bit looser epsilon so it lets these pass
+      var coord = Coord(100,0)
+      var comparing = Coord(100,0)
+      assert (math.abs(comparing.angleBetweenVector(coord) - 0) < epsilon, "Coord.angleBetweenVector is wrong in one 1,0: "+comparing.angleBetweenVector(coord))
+      coord = Coord(4,4)
+      comparing = Coord(1,0)
+      assert (math.abs(comparing.angleBetweenVector(coord) - math.Pi/4) < epsilon, "Coord.angleBetweenVector is wrong in 1,1: "+comparing.angleBetweenVector(coord))
+      coord = Coord(24,24)
+      comparing = Coord(-1, 1)
+      assert (math.abs(comparing.angleBetweenVector(coord) - math.Pi/2) < epsilon, "Coord.angleBetweenVector is wrong in 0,1: "+comparing.angleBetweenVector(coord))
+      coord= Coord(-5, 5)
+      comparing = Coord(11, 0)
+      assert (math.abs(comparing.angleBetweenVector(coord) - math.Pi/4*3) < epsilon, "Coord.angleBetweenVector wrong in -1,1: "+comparing.angleBetweenVector(coord))
+      comparing = Coord(0, 11)
+      assert (math.abs(comparing.angleBetweenVector(coord) - math.Pi/4) < epsilon, "Coord.angleBetweenVector wrong in -1,1: "+comparing.angleBetweenVector(coord))
+      comparing = Coord(5, -5)
+      assert (math.abs(comparing.angleBetweenVector(coord) - math.Pi) < epsilon, "Coord.angleBetweenVector wrong in -1,1: "+comparing.angleBetweenVector(coord))
+      coord = Coord(-1, 99)
+      comparing = Coord(-1,99)
+      assert (math.abs(comparing.angleBetweenVector(coord) - 0) < epsilon, "Coord.angleBetweenVector is wrong in -1,0: "+comparing.angleBetweenVector(coord))
+
+      coord = Coord(math.sqrt(3), 1)
+      comparing = Coord(1,0)
+      assert (math.abs(comparing.angleBetweenVector(coord) - math.Pi/6) < epsilon, "Coord.angleBetweenVector is wrong in sqrt3,-1: "+comparing.angleBetweenVector(coord))
+      coord = Coord(math.sqrt(3), -1)
+      comparing = Coord(math.sqrt(3), 1)
+      assert (math.abs(comparing.angleBetweenVector(coord) - math.Pi/6*2) < epsilon, "Coord.angleBetweenVector is wrong in sqrt3,-1: "+comparing.angleBetweenVector(coord))
     }
 
 
