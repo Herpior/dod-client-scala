@@ -2,7 +2,7 @@ package dmodel.dpart
 
 import java.awt.Color
 
-import dmodel.{Bezier, Colors, Coord, JsonStroke}
+import dmodel._
 
 
 class BezierLine(var color:Color, var size:Double) extends DoodlePart {
@@ -32,6 +32,9 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     if(ind>=0&&ind<4)
       coords(ind) else coords(0)
   }
+  def getCoords ={
+      coords.toArray
+  }
   def setCoord(ind:Int,place:Coord){
     if(ind>=0&&ind<4)
       coords(ind) = place
@@ -53,7 +56,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     }
     val cs = Bezier.curve(coords(0),coords(1),coords(2),coords(3))
     val res = new BasicLine(color1,size1)
-    res.setCoords (cs.map { c => Coord(math.round(c.x*2)/2.0,math.round(c.y*2)/2.0) })
+    res.setCoords (cs.map { c => c.rounded(Magic.roundingAccuracy) })
     res
   }
   def getLines : Array[BasicLine]= {
