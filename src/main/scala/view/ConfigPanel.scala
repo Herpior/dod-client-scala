@@ -38,6 +38,7 @@ class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
       //this.contents += new ConfigSlider[String](stringConf)
       case boolConf: BooleanConfigVariable =>
         val radio = new DodCheckBox(boolConf.getName, _=>boolConf.getVal, boolConf.setVal)
+        labelbox.contents -= label//
         labelbox.contents += radio
         configContentsThatLikeToStealFocus += radio
       case unitConf:UnitConfigVariable => // Unit means setter is a function that needs no arguments, but has some side effects
