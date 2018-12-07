@@ -10,7 +10,8 @@ class EditLineTool extends SelectTool { //(Array())
 
   override def onMouseUp(dp: DoodlePanel, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
     super.onMouseUp(dp, coord, button, control, alt, shift)
-    selected match {
+    // don't do anything if both are false
+    if(changeColour||changeSize) selected match {
       case Some(line:MultiLine)=>
         val edited = new MultiLine
         val lines = line.getLines.map{

@@ -455,6 +455,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             savetimer.stop()
             doodle.model.layers.split
             doodle.redrawAll
+            doodle.repaint
             Future(layers.reset)
             savetimer.start()
           }

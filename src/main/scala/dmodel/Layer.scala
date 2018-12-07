@@ -1,6 +1,6 @@
 package dmodel
 
-import dmodel.dpart.{BasicLine, DoodlePart, JsonDoodle, JsonLine}
+import dmodel.dpart._
 
 import collection.mutable.Buffer
 
@@ -77,10 +77,14 @@ class Layer() {
   }
   def split = {
     val upper = new Layer
-    upper.redos ++= this.redos
+    //if the original line of an editline is not in the redo stack, it's in the undo stack and the edit line should stay in the original layer
+    val editlines = this.redos.filter(dp => dp.isInstanceOf[EditLine] && !this.redos.contains(dp.asInstanceOf[EditLine].originalLine))
+    upper.redos ++= this.redos.filter(!editlines.contains(_))
     this.redos.clear
+    this.redos ++= editlines
+    this.revive
     upper.revive
-    upper.setVisibility(false)
+    upper.setVisibility(true)
     upper
   }
   def getStrokes(posting:Boolean)={
