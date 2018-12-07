@@ -49,7 +49,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     (this.coords++this.getLine(color,size).getCoords).map(_.dist(point)).sorted.head
   }
   def getLine(color1:Color,size1:Double):BasicLine={
-    if(coords.forall(_==coords(0))){
+    if(coords.forall(_==coords(0))){ //if the bezier line is a point, return a point
       val st = new BasicLine(color1,size1)
       st.setCoords( Array(coords(0)) )
       return st

@@ -28,8 +28,8 @@ class BezierInterpolationTool extends SelectTool {
     if(selected.nonEmpty && hovering.nonEmpty){
       //println("both found")
       val res = new MultiLine
-      val line1 = hovering(0)
-      val line2 = selected(0)
+      val line1 = hovering.get
+      val line2 = selected.get
       if(line1.isInstanceOf[BezierLine] && line2.isInstanceOf[BezierLine]){
         //println("both bez")
         combineBezier(line1.asInstanceOf[BezierLine], line2.asInstanceOf[BezierLine], control, alt, shift, res)

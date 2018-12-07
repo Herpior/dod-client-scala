@@ -99,12 +99,15 @@ class DoodleModel {
     layers.head.load(loaded)
     addTime(loaded.time)
   }
+  def load(loaded:JsonSave){
+    layers.load(loaded)
+    //layers.getCurrent/*(this.current)*/.load(loaded._1)
+    addTime(loaded.getTime)
+  }
   def loadSave(chain:String){
     try{
       val loaded = io.LocalStorage.loadSave(chain)//.decryptFrom(path,chain)
-      layers.load(loaded)
-      //layers.getCurrent/*(this.current)*/.load(loaded._1)
-      addTime(loaded.getTime)
+      load(loaded)
     }
     catch{
       case e:java.io.FileNotFoundException=>

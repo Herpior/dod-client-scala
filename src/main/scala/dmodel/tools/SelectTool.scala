@@ -9,8 +9,8 @@ import view.DoodlePanel
 //base for tools that need to select lines
 class SelectTool extends BasicTool {
   
-  protected var selected:Array[DoodlePart] = Array() // selected line after clicking
-  protected var hovering:Array[DoodlePart] = Array() // line for visualization
+  protected var selected:Option[DoodlePart] = None//Array() // selected line after clicking
+  protected var hovering:Option[DoodlePart] = None//Array() // line for visualization
   
   override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
     if(selectOne(dp, coord, control, alt)){
@@ -50,15 +50,15 @@ class SelectTool extends BasicTool {
     }
     val prev = hovering
     if(best<20){
-     hovering = Array(curr)
+     hovering = Some(curr)
     } else {
-      hovering = Array()
+      hovering = None
     }
     hovering != prev
   }
   def unselect {
-    hovering = Array()
-    selected = Array()
+    hovering = None
+    selected = None
   }
   
   def allSelected = (hovering ++ selected).toArray
