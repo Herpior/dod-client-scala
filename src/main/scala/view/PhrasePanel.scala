@@ -11,8 +11,14 @@ class PhrasePanel extends BoxPanel(Orientation.NoOrientation){
     this.background = java.awt.Color.YELLOW
     this.font = Magic.font20
   }*/
-  val phraseLabel = new Label{
+  /*val phraseLabel = new Label{
     this.font = Magic.font20
+    //this.preferredSize =  new Dimension(900, 200)
+  }*/
+  val flow = new FlowPanel(){//new GridPanel(2, 1){
+    //this.contents+=extraLabel
+    //this.contents+=phraseLabel
+    this.background = Magic.white
   }
   val desc = new BoxPanel(Orientation.Vertical){
     this.background = Magic.white//bgColor
@@ -20,16 +26,15 @@ class PhrasePanel extends BoxPanel(Orientation.NoOrientation){
     this.minimumSize = new Dimension(400, 50)
     this.preferredSize = new Dimension(900, 100)
     this.maximumSize = new Dimension(3900, 200)
-    val flow = new FlowPanel{
-      //this.contents+=extraLabel
-      this.contents+=phraseLabel
-      this.background = Magic.white
-    }
+
     this.contents += flow
   }
   this.contents += desc
   def setPhrase(phrase:String){
-    phraseLabel.text = phrase
+    flow.contents.clear()
+    flow.contents +=  new Label(phrase){this.font = Magic.font20}//new scala.swing.TextArea(phrase){this.font = Magic.font20}
+    //phrase.split(' ').foreach(word=>flow.contents += new Label(word){this.font = Magic.font20})
+    //phraseLabel.text = phrase
   }
   /*def setPhrase(phrase:String,extra:String){
     phraseLabel.text = phrase

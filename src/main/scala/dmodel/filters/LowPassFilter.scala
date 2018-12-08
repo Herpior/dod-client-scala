@@ -14,6 +14,7 @@ class LowPassFilter {
     OUT: Filtered value */
   def filter(x:Coord, alpha:Double) = {
     var hatx = x
+    prev = x
     if (initialized) {
       hatx = x * alpha + hatxprev * (1 - alpha)
     }

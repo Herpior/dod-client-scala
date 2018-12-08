@@ -129,7 +129,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   this.listenTo(logoutButt.keys)
   //doodleControl.listenTo(txt)
   this.listenTo(skipButt.keys)
-  this.listenTo(desc.phraseLabel.keys)
+  desc.flow.contents.foreach{x=>this.listenTo(x.keys)}
   
   layers.contents.foreach{x=>this.listenTo(x.keys)}
   layers.tools.contents.foreach{x=>this.listenTo(x.keys)}

@@ -2,7 +2,9 @@ package dmodel
 
 import java.io.File
 
-import dmodel.filters.OneEuroFilter
+import dmodel.filters.{LowPassFilter, OneEuroFilter}
+
+import scala.collection.mutable
 //import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{FlatSpec, Matchers}
@@ -139,6 +141,124 @@ class OneEuroTest extends FlatSpec with Matchers {
         assert (math.abs(doublefiltered - coordfiltered.x) < 0.00001,"filter returns different values with same input using doubles and coords")
       }
     }
+
+  "OneEuroFilter.filter" should "return same Coord displacements in all directions" in
+    {
+      val epsilon = 1e-9
+      val filter = new OneEuroFilter()
+      var coord = Coord(0)
+      var res = filter.update(coord, 120)
+      val results = mutable.Buffer[Coord](res)
+      assert (res.dist(coord)<0.000001,res + " not equal to "+ coord)
+      coord = Coord(1)
+      res = filter.update(coord, 140)
+      results += res
+      coord = Coord(2)
+      res = filter.update(coord, 160)
+      results += res
+      coord = Coord(3)
+      res = filter.update(coord, 170)
+      results += res
+      coord = Coord(5)
+      res = filter.update(coord, 180)
+      results += res
+      coord = Coord(100)
+      res = filter.update(coord, 200)
+      results += res
+      coord = Coord(101)
+      res = filter.update(coord, 240)
+      results += res
+
+
+      filter.reset
+      var coord2 = Coord(0)
+      var res2 = filter.update(coord2, 120)
+      val results2 = mutable.Buffer[Coord](res2)
+      assert (res2.dist(coord2)<0.000001,res2 + " not equal to "+ coord2)
+      coord2 = Coord(-1)
+      res2 = filter.update(coord2, 140)
+      results2 += res2
+      coord2 = Coord(-2)
+      res2 = filter.update(coord2, 160)
+      results2 += res2
+      coord2 = Coord(-3)
+      res2 = filter.update(coord2, 170)
+      results2 += res2
+      coord2 = Coord(-5)
+      res2 = filter.update(coord2, 180)
+      results2 += res2
+      coord2 = Coord(-100)
+      res2 = filter.update(coord2, 200)
+      results2 += res2
+      coord2 = Coord(-101)
+      res2 = filter.update(coord2, 240)
+      results2 += res2
+
+      for (i <- results.indices){
+        assert(results(i).dist(-results2(i))<epsilon, "difference in results between 1,1 and -1,-1 directions: "+results(i)+" - " +results2(i))
+      }
+
+    }
+
+
+  "LowPassFilter.filter" should "return same Coord displacements in all directions" in
+    {
+      val epsilon = 1e-9
+      val filter = new LowPassFilter()
+      var coord = Coord(0)
+      var res = filter.filter(coord, 0.5)
+      val results = mutable.Buffer[Coord](res)
+      assert (res.dist(coord)<0.000001,res + " not equal to "+ coord)
+      coord = Coord(1)
+      res = filter.filter(coord, 0.25)
+      results += res
+      coord = Coord(2)
+      res = filter.filter(coord, 0.5)
+      results += res
+      coord = Coord(3)
+      res = filter.filter(coord, 0.5)
+      results += res
+      coord = Coord(5)
+      res = filter.filter(coord, 0.75)
+      results += res
+      coord = Coord(100)
+      res = filter.filter(coord, 0.5)
+      results += res
+      coord = Coord(101)
+      res = filter.filter(coord, 0.15)
+      results += res
+
+
+      filter.reset
+      var coord2 = Coord(0)
+      var res2 = filter.filter(coord2, 0.5)
+      val results2 = mutable.Buffer[Coord](res2)
+      assert (res2.dist(coord2)<0.000001,res2 + " not equal to "+ coord2)
+      coord2 = Coord(-1)
+      res2 = filter.filter(coord2, 0.25)
+      results2 += res2
+      coord2 = Coord(-2)
+      res2 = filter.filter(coord2, 0.5)
+      results2 += res2
+      coord2 = Coord(-3)
+      res2 = filter.filter(coord2, 0.5)
+      results2 += res2
+      coord2 = Coord(-5)
+      res2 = filter.filter(coord2, 0.75)
+      results2 += res2
+      coord2 = Coord(-100)
+      res2 = filter.filter(coord2, 0.5)
+      results2 += res2
+      coord2 = Coord(-101)
+      res2 = filter.filter(coord2, 0.15)
+      results2 += res2
+
+      for (i <- results.indices){
+        assert(results(i).dist(-results2(i))<epsilon, "difference in results between 1,1 and -1,-1 directions: "+results(i)+" - " +results2(i))
+      }
+
+    }
+
 
 }
 

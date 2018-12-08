@@ -42,7 +42,8 @@ class OneEuroFilter() {
     val edx = dxfilt.filter(dx, alpha(freq, dcutoff))
     val cutoff = mincutoff + beta * edx.length
     prevTime = timestampInSeconds
-    xfilt.filter(x, alpha(freq, cutoff))
+    val res = xfilt.filter(x, alpha(freq, cutoff))
+    res
   }
 
   def alpha(freq:Double, cutoff:Double) = {
