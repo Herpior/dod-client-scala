@@ -1,5 +1,7 @@
 package view
 
+import java.net.URI
+
 import scala.swing._
 //import Swing.Embossing
 import BorderPanel.Position._
@@ -95,6 +97,11 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     }
   }
   */
+  val registerButt =  new LoginButton("Register"){
+    this.action=Action("Register"){
+      launchDodRegistration
+    }
+  }
   val normalButt = new LoginButton("Sign in normally"){
     this.action=Action("Sign in normally"){
       switchToNormal
@@ -122,6 +129,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   this.contents += new Label(" "){this.font = font20}
   //this.contents += faceButt
   //this.contents += twitterButt
+  this.contents += registerButt
   this.contents += cookieButt
   //this.contents += new Label(" "){this.font = font20}
   this.contents += unLabel
@@ -193,6 +201,18 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       status = 3
       this.revalidate()
       this.repaint()
+    }
+  }
+  def launchDodRegistration: Unit ={
+    import java.awt.Desktop
+    val url = "https://doodleordie.com/create-account"
+
+    if (Desktop.isDesktopSupported) { // Windows
+      Desktop.getDesktop.browse(new URI(url))
+    }
+    else { // Ubuntu
+      val runtime = Runtime.getRuntime
+      runtime.exec("/usr/bin/firefox -new-window " + url)
     }
   }
   def switchToNormal{
