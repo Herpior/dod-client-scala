@@ -15,7 +15,7 @@ class SubmitPanel extends FlowPanel {
   val model = ToolModel
   model.initReady
   
-  if(Magic.offline && !model.isReady) model.clickReady
+  if(Magic.offline) model.setReady(true)
   
   this.preferredSize = new Dimension(200, 100)
   this.minimumSize = preferredSize
@@ -34,17 +34,14 @@ class SubmitPanel extends FlowPanel {
       def apply()=submit
     }
   }
-  val readyButt = new CheckBox("Ready to submit"){ //TODO, change to dodcheckbox
-    this.font = Magic.font20
-    this.preferredSize = new Dimension(200, 50)
-    this.background = Magic.bgColor
-    this.foreground = Magic.white
+  val readyButt = new DodCheckBox("Ready to submit", _=>model.getReady, clickReady){ //TODO, change to dodcheckbox
+    //this.font = Magic.font20
+    //this.preferredSize = new Dimension(200, 50)
+    //this.background = Magic.bgColor
+    //this.foreground = Magic.white
     //this.selectedIcon = Icons.getCheckIcon
-    this.opaque = true
-    this.borderPainted = false
-    this.action = new Action("Ready to submit"){
-      def apply()=clickReady
-    }
+    //this.opaque = true
+    //this.borderPainted = false
   }
   this.contents +=   submitButt
   if(!Magic.offline) {
@@ -55,8 +52,8 @@ class SubmitPanel extends FlowPanel {
   private def submit = {
     publish(new controller.SubmitEvent)
   }
-  private def clickReady = {
-    model.clickReady
+  private def clickReady(value:Boolean) = {
+    model.setReady(value)
     submitButt.background = if(model.isReady) Magic.buttColor else Color.LIGHT_GRAY
     //submitButt.repaint()
   }

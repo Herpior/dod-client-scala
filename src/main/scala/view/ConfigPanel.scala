@@ -16,30 +16,35 @@ class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
   this.background = Magic.bgColor
 
   for (config <- configs) {
+    /*
     val label = new Label(config.getName){
       this.foreground = Magic.white
       this.background = Magic.buttColor
-    }
+    }*/
+    /*
     val labelbox = new BoxPanel(Orientation.Horizontal){
       this.contents += label
       this.background = Magic.buttColor
-    }
-    this.contents += labelbox
+    }*/
+    //this.contents += labelbox
     config match {
       case intConf: IntConfigVariable =>
-        val slider = new ConfigSlider[Int](intConf.asInstanceOf[NumConfigVariable[Int]])
+        println("intConf not implemented")
+        /*val slider = new ConfigSlider(intConf.asInstanceOf[NumConfigVariable[Int]])
         this.listenTo(slider)
-        this.contents += slider
+        this.contents += slider*/
       case doubleConf: DoubleConfigVariable =>
-        val slider = new ConfigSlider[Double](doubleConf.asInstanceOf[NumConfigVariable[Double]])
+        val slider = new ConfigSlider(doubleConf)
         this.listenTo(slider)
         this.contents += slider
       //case stringConf: ConfigVariable[String] =>
       //this.contents += new ConfigSlider[String](stringConf)
       case boolConf: BooleanConfigVariable =>
         val radio = new DodCheckBox(boolConf.getName, _=>boolConf.getVal, boolConf.setVal)
-        labelbox.contents -= label//
-        labelbox.contents += radio
+        this.contents += new BoxPanel(Orientation.Horizontal){
+          this.contents += radio
+          this.background = Magic.buttColor
+        }
         configContentsThatLikeToStealFocus += radio
       case unitConf:UnitConfigVariable => // Unit means setter is a function that needs no arguments, but has some side effects
         val button = new DodButton{
@@ -47,7 +52,6 @@ class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
             unitConf.setVal
           }
         }
-        this.contents -= labelbox
         this.contents +=  new BoxPanel(Orientation.Horizontal){
           this.contents += button
         }

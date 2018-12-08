@@ -40,9 +40,10 @@ object ToolModel {
   def getTool = tool
   
   
-  def clickReady(){
+  def setReady(rdy:Boolean){
     ready = !ready
   }
+  def getReady = ready
   
   def isBusy() = {
     tool.isBusy()

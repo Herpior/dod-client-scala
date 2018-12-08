@@ -4,8 +4,8 @@ import dmodel.Coord
 
 // based on http://cristal.univ-lille.fr/~casiez/1euro/
 class OneEuroFilter() {
-  var beta = 0.0001 //increase to reduce lag
-  var mincutoff = 1.0 //decrease to reduce jitter but increase lag
+  var beta = 1e-12 //increase to reduce lag
+  var mincutoff = 4.0 //decrease to reduce jitter but increase lag
   var dcutoff = 1.0 // this also has some effect
 
   var dx = Coord(0)

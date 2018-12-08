@@ -74,12 +74,12 @@ class DrawTool extends LineTool {
   }
 
   override def getConfigVariables() = {
-    val betaConfig = new DoubleConfigVariable("reduce lag", _=>getBeta, setBeta, Some(1e-50), Some(1), true)
-    val mincutConfig = new DoubleConfigVariable("reduce jitter", _=>getMinCutoff, setMinCutoff, Some(10), Some(1e-3), true)
-    val dcutConfig = new DoubleConfigVariable("dcutoff", _=>getDCutoff, setDCutoff, Some(100), Some(1e-3), true)
+    //val betaConfig = new DoubleConfigVariable("reduce lag", _=>getBeta, setBeta, Some(1e-50), Some(1), true)
+    val mincutConfig = new DoubleConfigVariable("reduce lag", _=>getMinCutoff, setMinCutoff, Some(1e-1), Some(16), true)
+    //val dcutConfig = new DoubleConfigVariable("dcutoff", _=>getDCutoff, setDCutoff, Some(100), Some(1e-3), true)
     //val unitConfig = new UnitConfigVariable("button test", _=>println("getter"), _=>println("setter"))
-    val smoothingConfig = new BooleanConfigVariable("smoothing", _=>this.smoothing, smoothing=_)
-    Vector(smoothingConfig, betaConfig, mincutConfig, dcutConfig).asInstanceOf[Vector[ConfigVariable]]
+    val smoothingConfig = new BooleanConfigVariable("use smoothing", _=>this.smoothing, smoothing=_)
+    Vector(smoothingConfig, mincutConfig).asInstanceOf[Vector[ConfigVariable]]
   }
 
   //---------\\
