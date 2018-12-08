@@ -20,6 +20,7 @@ object ColorModel {
   private val normal = Array(
           "#000000","#6d6f71","#0791cd","#699c41","#f47e20","#d6163b","#6e1a11","#f8ded7",
           "#ffffff","#d1d3d4","#73cff2","#9bcc66","#ffec00","#f180aa","#812468","#8e684c").map { x => Colors.toColor(x) }
+  if(Magic.namira) normal(7) = Colors.toColor("#ede4c8")
   private val superColours = normal ++ Array(
     "#000000","#111111","#222222","#333333","#444444","#555555","#666666","#777777","#888888","#999999","#aaaaaa","#bbbbbb","#cccccc","#dddddd","#eeeeee","#ffffff",
     "#f69679","#f9ad81","#fdc689","#fff799","#c4df9b","#a3d39c","#82ca9c","#7accc8","#6dcff6","#7da7d9","#8393ca","#8781bd","#a186be","#bd8cbf","#f49ac1","#f5989d",

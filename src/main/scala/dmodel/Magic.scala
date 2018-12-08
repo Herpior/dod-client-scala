@@ -4,10 +4,11 @@ import java.awt.Color
 
 object Magic {
 
+  private val loadedConf = io.LocalStorage.loadConfig("config")
   def authorized = http.HttpHandler.getAuth || offline
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
-  val fasterPan = true //if true will move only the images when dragging, rather than drawing everything again every pixel
-  val readyDefault = false //default for ready checkbox
+  val fasterPan = try {loadedConf.getOrElse("fasterPan","true").toBoolean} catch {case e:Throwable => true} //if true will move only the images when dragging, rather than drawing everything again every pixel
+  val readyDefault = try {loadedConf.getOrElse("readyDefault","false").toBoolean} catch {case e:Throwable => false} //default for ready checkbox
   var x = 520
   var y = 390
   val rows = 16
@@ -28,7 +29,8 @@ object Magic {
   var offline = false
   var user = ""
   var roundingAccuracy = 10 //determines how accurately the lines are drawn, saved and uploaded. 2 => 0, 0.5, 1, ... 10 => 0, 0.1, 0.2, ...
-  
+  val namira = try {loadedConf.getOrElse("namira","false").toBoolean} catch {case e:Throwable => false} //changes skincolor to beige
+
   def setXY(nx:Int, ny:Int) {
     x = nx
     y = ny
