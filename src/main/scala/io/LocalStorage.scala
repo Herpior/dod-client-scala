@@ -77,7 +77,7 @@ object LocalStorage {
   }
   def readArray(path:String)={
     val source = scala.io.Source.fromFile(path)("UTF-8")
-    val res = source.mkString.split(",")//(",(?=([^\\(]*\\([^\\)]*\\))*[^\(]*$)", -1)//split(",")
+    val res = source.mkString.split(",").map(_.trim)//(",(?=([^\\(]*\\([^\\)]*\\))*[^\(]*$)", -1)//split(",")
     source.close()
     res
   }
