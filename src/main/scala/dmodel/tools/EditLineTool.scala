@@ -36,6 +36,7 @@ class EditLineTool extends SelectTool { //(Array())
         val edited = new BezierLine(colour, size)
         edited.setCoords(line.getCoords)
         swap(dp, line, edited)
+      case None =>
       case any => println(any)
     }
     selected = None

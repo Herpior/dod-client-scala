@@ -105,14 +105,11 @@ object HttpHandler {
     httpCookieStore.addCookie(cookie)
   }
 
-  /*
-   * value pp: PaintPercentage
-   * value pt: PaintTime
-   * value doodle: array of strokes
-   */
   def submitDoodle(doodleJson:String):Boolean={
     val post = new DoodlePost(chain,doodleJson)
     val in = postHttp(post)
+    //println(doodleJson)
+    //println(in.mkString("\n"))
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
   def submitDesc(desc:String)={

@@ -14,6 +14,7 @@ object ToolModel {
   val zoomTool = new ZoomTool
   val bezierInterpolationTool = new BezierInterpolationTool
   val editLineTool = new EditLineTool
+  val eraseLineTool = new EraseLineTool
 
   private var mini = false
   private var state = 0
@@ -21,14 +22,14 @@ object ToolModel {
   val toolList:Vector[BasicTool] = Vector(
     drawTool,        lineTool,    bezierTool,   fillTool,
     perspectiveTool, zoomTool,    handTool,     bezierInterpolationTool,
-    editLineTool)
+    editLineTool, eraseLineTool)
   private var tool:BasicTool = toolList(0)
   
   def isReady = this.ready
   def initReady {ready = Magic.readyDefault}
   
   def setTool(n:Int){
-    if(n>=0 && n<=toolList.size && (n<7||Magic.authorized)) {
+    if(n>=0 && n<=toolList.size && (n!=7 || Magic.authorized)) {
       tool.cleanUp()
       state = n
       tool = toolList(n)
