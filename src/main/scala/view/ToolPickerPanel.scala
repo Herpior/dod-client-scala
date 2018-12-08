@@ -39,7 +39,7 @@ class ToolPickerPanel extends GridPanel(2, 4) {
     val orig = model.getState
     buttons(orig).borderPainted = false
     model.setTool(i)
-    val next = i
+    val next = model.getState
     buttons(next).borderPainted = true
     publish(new controller.ToolChangeEvent(model.getState))
 
