@@ -61,6 +61,16 @@ object LocalStorage {
     val encrypted = loadFrom(path)
     decrypt(encrypted)
   }
+  def loadConfig(path:String): Map[String, String] ={
+    val source = scala.io.Source.fromFile(path)("UTF-8")
+    val derped = source.getLines().flatMap{
+      str=>
+        val arr = str.split('=').map(_.trim())
+        if(arr.length == 2) Map[String, String](arr(0)->arr(1))
+        else Map[String, String]()
+    }
+    derped.toMap
+  }
   def loadSave(chain:String)={
     val loaded = loadFrom("saves/save."+chain+".txt")
     dmodel.JsonParse.parseSave(loaded)
