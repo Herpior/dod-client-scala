@@ -9,7 +9,7 @@ class DodCheckBox(text:String, getValue:Unit=>Boolean, setValue:Boolean=>Unit) e
   this.preferredSize = new Dimension(200, 20)
   this.minimumSize = new Dimension(200, 20)
   this.background = Magic.bgColor
-  this.foreground = Magic.buttColor
+  this.foreground = Magic.darkerColor
   //this.selectedIcon = Icons.getCheckIcon
   this.opaque = true
   this.borderPainted = false

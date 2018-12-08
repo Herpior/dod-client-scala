@@ -70,7 +70,7 @@ class ConfigSlider(config: DoubleConfigVariable) extends Panel{
     //g.fillOval(155, 155, 40, 40)
     g.setColor(Magic.white)
     g.fillRect(start+1, marginSizeY+1+labelHeight, pos-1, sliderHeight-2)
-    g.setColor(Magic.buttColor)
+    g.setColor(Magic.darkerColor)
     //val offset = valueAsString.length()*3+1
     g.setFont(g.getFont.deriveFont(java.awt.Font.BOLD))
     //g.drawString(valueAsString, pos-offset, 19)

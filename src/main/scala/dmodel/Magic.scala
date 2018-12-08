@@ -18,6 +18,7 @@ object Magic {
   val bgColor = Color.decode("#b7e4f4")
   val bgColorAlpha = new Color(183,228,244,192)
   val buttColor = Color.decode("#4cb9dd")
+  val darkerColor = Color.decode("#2e6287")
   val white = Color.white
   val red = Color.decode("#b94cdd")
   val black = Color.decode("#111111")
