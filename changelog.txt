@@ -1,4 +1,73 @@
+v0.500
+	line smoothing?
+	line editing?
+	line eraser?
+	tools can have configurations?
+	tools can be added more easily?
+	removed the need for a separate dodcacerts file in the folder, (unless the certificate on the site changes again and a new file is needed, in which case a new dodcacerts file can be dropped in to the folder like it used to be, and the client will use that instead).
+	removed fb and twitter login, reducing the file size by like 50%, cookie login can be used instead.
+v0.499
+	client notices if the doodle has timed out
+	doodle is saved properly when changing between rooms
+	unicode characters work properly in drawing prompts (the font might not be able to render everything but that's a different thing)
+	descriptions with quotes and slashes don't cause problems
+	saving doodles will not change their save location in online mode
+	player username is shown in the logout button
+	logout button is bigger so you can see more than 4 first characters of the username
+	the button to separate panels changed from [X] to [B] because it is too easy to accidentally press x when undoing
+v0.498
+	saving and loading doodles file chooser starts from the working directory
+	bugfixes
+v0.497
+	saving and loading doodles uses an actual file chooser
+	offline doodles are saved and loaded properly
+	perspective ruler works the same way that the perspective tool shows
+	layer panel and tool panel can be separated into their own little windows by pressing x/ctrl+x
+v0.496
+	freely choose exported image size
+	set drawing area size in offline mode
+	cookie login
+	offline mode
+	error message for when the site cert is expired
+	transparency in submitted doodles is limited to 3 decimals, as it previously wasted a lot more space for little difference
+	non-super players will be able to use bezier curves, fill, perspective ruler, zoom and pan tools
+	added zoom and pan tools
+	max description length is doubled?
+	fill tool direction can be flipped by dragging it to the other direction
+	improved perspective ruler
+	zooming is slower normally and can be sped up by holding control
+	colour mixing is gamma corrected
+	refactored gui and tools, there should not be other differences than that the code is better and maybe less bugs? or more?
+	increased palette size
+v0.444
 	perspective transform
+	mac version
+v0.430
+	refactored ui
+	fixed bug allowing too short descriptions to be sent
+	submit button now gray when not enabled
+	left clicking now picks both primary and secondary colours while right click only changes the secondary color 
+v0.425
+	added checkbox to prevent accidental submissions
+	added support for opacity
+	removed constraints to stay within the canvas
+	changed save format into one that contains layer and stroke information properly.
+	as a result, saving is slightly slower, loading is slower and the save files are larger.
+	save files should not overwrite saves of previous prompts
+	save files will be saved in saves folder
+	fixed autologin for normal players
+	cursor should stay visible when using a small brush while zoomed out
+	changed cacerts
+	window size will not change when logging in/submitting/skipping
+	trying to log in with empty username or password will produce error before trying to log in
+	pressing enter on login screen will attempt to log in
+	minor bugfixes
+v0.410	
+	added possibility to login with twitter (still experimental)
+	added possibility to login with facebook (still experimental)
+	unicode characters work in descriptions, (some emoji should work too but the font doesn't really support them)
+	bezier fill for supers
+	ping doodles every 2h
 v0.395
 	added ability to open colorpicker by double clicking
 	fixed bug with line tool where using rulers could draw line out of bounds
@@ -34,6 +103,5 @@ v0.350
 	added color picker
 	added color slots
 	added ability to load colors from file
-	
 v0.300
 	fixed bug that prevented users from logging in...

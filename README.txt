@@ -1,43 +1,54 @@
-Client made by Qazhax
+Client made by Qazhax (http://doodleordie.com/profile/qazhax) (Discord Qazhax#8820) (qazhax@gmail.com)
 
-there might be bugs around so use at your own risk, this is basically in alpha...
+To run:
+1. Install the newest java JRE
+2. run the doodleordieclient jar file
+
+there might be bugs around so use at your own risk...
 please use https://docs.google.com/forms/d/1PC7Id8WjQnhYUFQsf9aG2PfoE__qt2ETfAAK76ERvxo/viewform to report bugs and other issues
 
-Upgrading to super is encouraged. It helps to keep the Doodle or Die servers running!
+Upgrading to super is encouraged. It probably helps to keep the Doodle or Die servers running, I don't know how is the site even running anymore, but I'm not really connected with the real devs and this works offline anyways.
+
 
 if no shortcuts work, press tab, it should help maybe
-if you focus the room dropdown box, press tab before you accidentally change the group, I'll try to fix this at some point..
 
 shirinking the drawing area should reduce lag if it is noticeable
-keeping layers you don't need invisible should also reduce lag
+turning invisible the layers that you don't need visible at the moment should also reduce lag. They should, however, be made visible again if you wish to post them.
 
 doodle saves a backup 20 seconds after the last stroke and when closing the window
-saves do NOT keep layer data. everything will load on one layer.
-
+using automatic login will not save your password or username anywhere (just the cookie)
 
 Hotkeys:
   WASD: move on color palette
-  Q: smallen brush size
-  E: enlarge brush size
+  Q: shrink brush size by one
+  E: enlarge brush size by one
   R: Go up a layer
   Ctrl+ R: add a layer above the current layer
   F: go down a layer
   Ctrl+ F: merge layer with the layer below
-  Alt+ G: split redos of the current layer into another layer
+  Alt+ G: split undone strokes of the current layer into another layer, can be used to undo merged layers, undo a line in the middle of a layer, etc
   Alt+ F: undo everything on current layer (redoable)
   Y: pencil
   U: Line
-  I: Bezier curve (only for supers)
-  O: (Gradient) fill (only for supers)
-  HJKL: to be added... (only for supers)
+  I: Bezier curve
+  O: fill (Gradient only for supers)
+  H: set perspective ruler
+  J: zoom tool
+  K: hand tool
+  L: bezier fill (only for supers)
+  B: separate tool panel from the main window / anchor tool panel back into the main window
+  Ctrl+ B: separate layer panel from the main window / anchor layer panel back into the main window
   Ctrl+ S: save doodle backup
-  Ctrl+ P: export high resolution image
+  P: export image as png, use previous save location if already saved
+  Ctrl+ P: export image as png and choose save location
+  Ctrl+ O: load saved image
   Ctrl+ Z: undo
   Ctrl+ Y: redo
   Ctrl+ Shift+Z: redo
   scroll wheel:  zoom
-  Ctrl+ scroll wheel: smoother, slower zoom
-  alt+ right mouse button: select color from image (only for supers)
+  Ctrl+ scroll wheel: faster zoom
+  alt+ right mouse button: select color from layer (only for supers)
+  alt+ shift+ right mouse button: select color from image (only for supers)
   middle mouse button: drag image
 
 Pencil:
@@ -50,26 +61,35 @@ Line:
   hold ctrl to use ruler
   hold ctrl+shift to use perspective ruler
 
-Bezier: (only for supers)
+Bezier: 
   draw a line from the start to end and set the guides after that
   hold ctrl to use ruler
   hold ctrl+shift to use perspective ruler
 
-fill: (only for supers)
+fill:
   draw a line to the direction you want the gradient to change
   hold ctrl to fill area that is limited by current+selected layers
 
-perspective: (only for supers)
+perspective:
+  click and drag to move the closest vanishing point
+  rightclick a vanishing point to remove it
+
   click to set primary vanishing point
-  alt click to set second vanishing point
-  ctrl click to set third vanishing point
+  ctrl click to set second vanishing point
+  alt click to set third vanishing point
   rightclick to reset primary vanishing point
-  alt rightclick to remove second vanishing point
-  ctrl rightclick to remove third vanishing point
+  ctrl rightclick to remove second vanishing point
+  alt rightclick to remove third vanishing point
+
+Bezier fill: (only for supers)
+  draw two bezier lines, select bezier fill tool
+  drag from first bezier to the second bezier
+  the tool will fill area between the curves with bezier curves
+  the direction of the bezier curves used as guide matters
 
 tools and colors:
   right click a colour to select it as the other end of a gradient
-  control click or double click a colour to open color picker (only for supers)
+  ctrl click or double click a colour to open color picker (only for supers)
 
 layers:
   buttons affect currently selected layer, remove layer button has no double check
