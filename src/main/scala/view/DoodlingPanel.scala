@@ -251,7 +251,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           )
       )
   }
-  
+
   val savetimer = Timer(10000,false){
     Future(save)
   }
@@ -345,11 +345,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       e.key match {
         
         case Key.W =>
-          ColorModel.colorUp
-          tools.colorP.repaint()
+          //ColorModel.colorUp
+          tools.colorP.colorUp
         case Key.A =>
-          ColorModel.colorLeft
-          tools.colorP.repaint()
+          //ColorModel.colorLeft
+          tools.colorP.colorLeft//.repaint()
         case Key.S =>
           if(ctrl) {
             if(this.savename == "offline"){
@@ -362,12 +362,12 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
             }//toLocalStorage
           }
           else {
-            ColorModel.colorDown
-            tools.colorP.repaint()
+            //ColorModel.colorDown
+            tools.colorP.colorDown//repaint()
           }
         case Key.D =>
-          ColorModel.colorRight
-          tools.colorP.repaint()
+          //ColorModel.colorRight
+          tools.colorP.colorRight//repaint()
           
         case Key.Q =>
           SizeModel.sizeDown
@@ -596,7 +596,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       else if(button > 1 && alt && !tools.model.isBusy ){ // middle or right click with alt or ctrl, no left button down
           if(Magic.authorized){
             val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt, shift)
-            color.foreach(c=>ColorModel.setColor(c))
+            color.foreach(c=>tools.colorP.setColor(c))
             tools.colorP.repaint()
           }
         /*else if(alt){
@@ -671,6 +671,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
 
       doodle.setCursor(e.point.getX(), e.point.getY())
       doodle.repaint
+    //case e:Event => println(e)
   }
   
   /*private var fullscreen = false

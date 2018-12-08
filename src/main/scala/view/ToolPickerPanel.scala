@@ -32,19 +32,19 @@ class ToolPickerPanel extends GridPanel(2, 4) {
       }
     }
   }
-  
-  override def paintComponent(g:java.awt.Graphics2D){
-    buttons.foreach{ x => x.borderPainted = false}
-    buttons(model.getState).borderPainted = true
-    super.paintComponent(g)
-  }
-  
+
   this.contents ++= buttons
   
   def setTool(i:Int){
+    val orig = model.getState
+    buttons(orig).borderPainted = false
     model.setTool(i)
+    val next = i
+    buttons(next).borderPainted = true
     publish(new controller.ToolChangeEvent(model.getState))
-    this.repaint
+
+    buttons(orig).repaint()
+    buttons(next).repaint()
   }
   
   def click(i:Int){

@@ -65,10 +65,6 @@ class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
     this.preferredSize = new Dimension(200, 5)
   }
 
-  override def paintComponent(g: java.awt.Graphics2D) {
-    super.paintComponent(g)
-  }
-
   this.listenTo(mouse.clicks)
   this.listenTo(mouse.moves)
   this.reactions += {
