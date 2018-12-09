@@ -12,6 +12,6 @@ trait DoodlePart{
   def toJson:Option[JsonStroke]   // not used!!
   def toJsonString:Option[String] // not used!!
   def toShortJsonString:Option[String]
-  def onUndo(layer: Layer){} // used for edit lines to undo the edit
-  def onRedo(layer: Layer){}
+  def onUndo(layer: Layer):Boolean = {true} // used for edit lines to undo the edit, return true if successful, return false if edited line is not in he layer
+  def onRedo(layer: Layer):Boolean = {true}
 }

@@ -5,17 +5,19 @@ import dmodel.dpart._
 import collection.mutable.Buffer
 
 class Layer() {
-  val redos = Buffer[DoodlePart]()
+  protected val redos = Buffer[DoodlePart]()
   //var img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB)
   //var thumb = new BufferedImage(200,150,BufferedImage.TYPE_INT_ARGB)
   protected val strokes = Buffer[DoodlePart]()
   protected var visible = true
   private var selected = false
 
-  def swap(findOld:DoodlePart, replaceWith:DoodlePart):Unit={
+  //returns false if the old doodlepart is not found
+  def swap(findOld:DoodlePart, replaceWith:DoodlePart):Boolean ={
     val editedIndex = strokes.indexOf(findOld)
-    if(editedIndex<0) return
+    if(editedIndex<0) return false
     strokes(editedIndex) = replaceWith
+    true
   }
   def isVisible = visible
   def isSelected = selected
@@ -65,6 +67,19 @@ class Layer() {
       redos -= redos.last
     }
   }
+  def redoOrReturnLineOnFailure:Option[DoodlePart] = { //used for splitting layer
+    if(redos.length>0){
+      if(redos.last.onRedo(this)){
+        strokes += redos.last
+        redos -= redos.last
+        None
+      } else {
+        val res = redos.last
+        redos -= res
+        Some(res)
+      }
+    } else None
+  }
   def burn {
     while (strokes.length>0){
       undo
@@ -75,20 +90,30 @@ class Layer() {
       redo
     }
   }
+  def reviveAndReturnFailedEditLines= { //used for splitting layer
+    val returning = Buffer[DoodlePart]()
+    while(redos.length>0){
+      redoOrReturnLineOnFailure.foreach(returning += _)
+    }
+    returning.reverse
+  }
   def split = {
     val upper = new Layer
     //if the original line of an editline is not in the redo stack, it's in the undo stack and the edit line should stay in the original layer
-    val editlines = this.redos.filter(dp => dp.isInstanceOf[EditLine] && !this.redos.contains(dp.asInstanceOf[EditLine].originalLine))
-    upper.redos ++= this.redos.filter(!editlines.contains(_))
+    //val editlines = this.redos.filter(dp => dp.isInstanceOf[EditLine] && !this.redos.contains(dp.asInstanceOf[EditLine].originalLine))
+    upper.redos ++= this.redos//.filter(!editlines.contains(_))
     this.redos.clear
-    this.redos ++= editlines
+    val returnedLines = upper.reviveAndReturnFailedEditLines
+    this.redos ++= returnedLines
     this.revive
-    upper.revive
     upper.setVisibility(true)
     upper
   }
-  def getStrokes(posting:Boolean)={
+  def getStrokes(posting:Boolean)={ //TODO: rename things here
     if(visible)strokes.toArray else Array[DoodlePart]()
+  }
+  def getRedos={
+    redos.toArray
   }
   def getThumb={
     strokes.toArray
