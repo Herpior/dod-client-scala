@@ -94,11 +94,11 @@ class LayerListPanel(model:LayerList) extends Panel{
             publish(new RepaintEvent)
           case x if x>Magic.thumbX+10 && x<Magic.thumbX+30 =>
             if(real>5&&real<25){
-              model.toArray(index).visibility
+              model.toArray(index).toggleVisibility
               publish(new RepaintEvent)
             }
             if(real>30&&real<50){
-             model.toArray(index).select
+             model.toArray(index).toggleSelected
              repaint
             }
           case x=>

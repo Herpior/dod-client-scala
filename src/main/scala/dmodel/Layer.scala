@@ -27,8 +27,8 @@ class Layer() {
   def dragPoint(coord:Coord){}
   def releasePoint {}
   
-  def select = selected = !selected
-  def visibility = visible = !visible
+  def toggleSelected = selected = !selected
+  def toggleVisibility = visible = !visible
   
   def setVisibility(next:Boolean) {visible = next}
   
@@ -39,7 +39,7 @@ class Layer() {
     this.strokes ++= arr.map(_.toBasicLine)
   }
   def merge(another:Layer){
-    this.strokes ++= another.getThumb
+    this.strokes ++= another.getStrokes
     this.redos.clear
     this.redos ++= another.redos
   }
@@ -109,13 +109,13 @@ class Layer() {
     upper.setVisibility(true)
     upper
   }
-  def getStrokes(posting:Boolean)={ //TODO: rename things here
+  def getVisibleStrokes(posting:Boolean)={ //TODO: rename things here
     if(visible)strokes.toArray else Array[DoodlePart]()
   }
   def getRedos={
     redos.toArray
   }
-  def getThumb={
+  def getStrokes={
     strokes.toArray
   }
   def toJsonString = {
@@ -155,7 +155,7 @@ class MatrixLayer(private val orig:Layer) extends Layer {
   }
   override def undo {
     strokes.clear
-    strokes ++= orig.getThumb
+    strokes ++= orig.getStrokes
     points = Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Coord(0,Magic.doodleSize.y),Magic.doodleSize)
     edges.setCoords(points++Array(points.head))
   }
@@ -163,7 +163,7 @@ class MatrixLayer(private val orig:Layer) extends Layer {
   }
   override def load(arr:Array[JsonLine]){
   }
-  override def getStrokes(posting:Boolean)={
+  override def getVisibleStrokes(posting:Boolean)={
     if(posting) {
       if(visible)strokes.toArray else Array[DoodlePart]()
     }
@@ -183,7 +183,7 @@ class MatrixLayer(private val orig:Layer) extends Layer {
   private def recalculate {
     strokes.clear
     val transformation = Matrix.transferPoint(Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Magic.doodleSize,Coord(0,Magic.doodleSize.y)), points)
-    strokes ++= orig.getThumb.flatMap{
+    strokes ++= orig.getStrokes.flatMap{
       s1 =>
         s1.transform(transformation)
     }

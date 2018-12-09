@@ -17,7 +17,7 @@ object LineDrawer {
     //println("alpha: "+alp)
     val g = img.createGraphics
     layers.foreach{
-      l=>l.getStrokes(true).foreach { x =>
+      l=>l.getVisibleStrokes(true).foreach { x =>
         LineDrawer.drawDoodlePart(g, x, 200.0/Magic.x, Coord(0,0), true)
       }
     }
@@ -39,7 +39,7 @@ object LineDrawer {
     val g = img.createGraphics()
     g.setColor(Magic.buttColor)
     g.fillRect(0, 0, Magic.thumbX, Magic.thumbY)
-    layer.getThumb.foreach{
+    layer.getStrokes.foreach{
       dp=> drawDoodlePart(g,dp,Magic.thumbZoom,Coord(0,0),true)
       //println(dp)
     }
@@ -62,7 +62,7 @@ object LineDrawer {
       drawDoodlePart(g, line, czoom, offs, antialiasing)
     }
     catch {
-      case e => e.printStackTrace
+      case e:Throwable => e.printStackTrace
     }
   }
   def drawDoodlePart(g:Graphics2D,dp:DoodlePart,czoom:Double,offs:Coord,antialiasing:Boolean){

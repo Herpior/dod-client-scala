@@ -85,14 +85,14 @@ class DoodleModel {
     currentTool.getLastLine
   }
   def getLastMid = {
-    val strokes = layers.getCurrent.getStrokes(false)//(current).getStrokes
+    val strokes = layers.getCurrent.getVisibleStrokes(false)//(current).getStrokes
     strokes.lastOption
   }
   def getLayers = {
     layers.toArray
   }
   def getFlatStrokes = {
-    layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines))
+    layers.toArray.flatMap(_.getVisibleStrokes(true).flatMap(_.getLines))
   }
   //---------\\
   def load(loaded:JsonDoodle){
@@ -111,7 +111,7 @@ class DoodleModel {
     }
     catch{
       case e:java.io.FileNotFoundException=>
-      case e=>e.printStackTrace}
+      case e:Throwable=>e.printStackTrace}
   }
   def decryptFrom(path:String){
     try{
@@ -121,7 +121,7 @@ class DoodleModel {
     }
     catch{
       case e:java.io.FileNotFoundException=>
-      case e=>e.printStackTrace}
+      case e:Throwable=>e.printStackTrace}
   }
   def submit={
     HttpHandler.submitDoodle(this.toDodPostJson)
@@ -212,7 +212,7 @@ class DoodleModel {
   }
   //---------\\
   def toLocalStorage{
-    io.LocalStorage.printFile(layers.toArray.flatMap(_.getStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
+    io.LocalStorage.printFile(layers.toArray.flatMap(_.getVisibleStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
   }
 
   def toDodPostJsonStrokes: String = {

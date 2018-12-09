@@ -34,10 +34,11 @@ class SelectTool extends BasicTool {
 
   // returns boolean that tells whether there has been a change and the graphics should be redrawn
   def selectOne(dp:DoodlePanel, place:Coord, control:Boolean, alt:Boolean):Boolean={
-    val strokes = if(alt) {
-      dp.model.getLayers.flatMap(_.getStrokes(false))
+    val strokes = dp.model.getMid.getVisibleStrokes(false)
+    /*if(alt) {
+      dp.model.getLayers.flatMap(_.getVisibleStrokes(false)) //maybe think about selectTool that can select lines from any layer
     }
-    else dp.model.getMid.getStrokes(false)
+    else*/
     if(strokes.length<1) return false
     var curr = strokes(0)
     var best = curr.distFrom(place)

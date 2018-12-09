@@ -36,28 +36,28 @@ class LayerTest extends FlatSpec with Matchers {
     layer.add(stroke3)
     layer.add(editline)
     layer.add(editline2)
-    assert(layer.getStrokes(false).deep == Array(stroke3, editline, editline2).deep, "layer's strokes are wrong before doing anything")
+    assert(layer.getStrokes.deep == Array(stroke3, editline, editline2).deep, "layer's strokes are wrong before doing anything")
     layer.undo
-    assert(layer.getStrokes(false).deep == Array(stroke2, editline).deep, "layer's strokes are wrong after one undo")
+    assert(layer.getStrokes.deep == Array(stroke2, editline).deep, "layer's strokes are wrong after one undo")
     assert(layer.getRedos.deep == Array(editline2).deep, "layer's redos are wrong after one undo")
     layer.undo
-    assert(layer.getStrokes(false).deep == Array(stroke).deep, "layer's strokes are wrong after two undos")
+    assert(layer.getStrokes.deep == Array(stroke).deep, "layer's strokes are wrong after two undos")
     assert(layer.getRedos.deep == Array(editline2, editline).deep, "layer's redos are wrong after two undos")
     layer.undo
-    assert(layer.getStrokes(false).deep == Array().deep, "layer's strokes are wrong after three undos")
+    assert(layer.getStrokes.deep == Array().deep, "layer's strokes are wrong after three undos")
     assert(layer.getRedos.deep == Array(editline2, editline, stroke).deep, "layer's redos are wrong after three undos")
 
     val splitted = layer.split
-    assert(layer.getStrokes(false).deep == Array().deep, "layer's strokes are wrong after split")
+    assert(layer.getStrokes.deep == Array().deep, "layer's strokes are wrong after split")
     assert(layer.getRedos.deep == Array().deep, "layer's redos are wrong after split")
-    assert(splitted.getStrokes(false).deep == Array(stroke3, editline, editline2).deep, "split layer's strokes are wrong after split")
+    assert(splitted.getStrokes.deep == Array(stroke3, editline, editline2).deep, "split layer's strokes are wrong after split")
     assert(splitted.getRedos.deep == Array().deep, "split layer's redos are wrong after split")
     splitted.undo
     splitted.undo
     val splitted2 = splitted.split
-    assert(splitted.getStrokes(false).deep == Array(stroke3, editline, editline2).deep, "layer's strokes are wrong after split")
+    assert(splitted.getStrokes.deep == Array(stroke3, editline, editline2).deep, "layer's strokes are wrong after split")
     assert(splitted.getRedos.deep == Array().deep, "layer's redos are wrong after split")
-    assert(splitted2.getStrokes(false).deep == Array().deep, "split layer's strokes are wrong after split")
+    assert(splitted2.getStrokes.deep == Array().deep, "split layer's strokes are wrong after split")
     assert(splitted2.getRedos.deep == Array().deep, "split layer's redos are wrong after split")
   }
 

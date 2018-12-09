@@ -4,6 +4,11 @@ import math.{hypot,round}
 
 object Coord{
   def apply(c:Double) :Coord =Coord(c,c)
+  def fromAngle(angle: Double, length: Double):Coord ={
+    val x = length * math.cos(angle)
+    val y = length * math.sin(angle)
+    new Coord(x , y)
+  }
 }
 
 case class Coord(val x:Double,val y:Double) extends Metric[Coord] {

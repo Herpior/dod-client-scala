@@ -39,7 +39,7 @@ class LayerList {
   }
   def split {
     val curr = getCurrent
-    if(!curr.redos.isEmpty)
+    if(!curr.getRedos.isEmpty)
     addLayer(curr.split)
   }
   //
@@ -118,7 +118,7 @@ class LayerList {
     }
   }
   def load(save:JsonSave){
-    if(size==1 && layers.head.getThumb.length==0) layers = save.getDoodleLayers
+    if(size==1 && layers.head.getStrokes.length==0) layers = save.getDoodleLayers
     else layers ++= save.getDoodleLayers
     current = size-1
   }

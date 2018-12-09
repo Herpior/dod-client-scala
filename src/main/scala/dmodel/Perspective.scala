@@ -93,13 +93,7 @@ object Perspective {
     }
     val resultante = buf.zipWithIndex
 
-    getCoord(angs(resultante.sortBy(f=>f._1).head._2), length)
-  }
-
-  def getCoord(angle: Double, length: Double):Coord ={
-    val x = length * math.cos(angle)
-    val y = length * math.sin(angle)
-    new Coord(x , y)
+    Coord.fromAngle(angs(resultante.sortBy(f=>f._1).head._2), length)
   }
 }
 
