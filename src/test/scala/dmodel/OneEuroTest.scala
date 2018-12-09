@@ -142,7 +142,7 @@ class OneEuroTest extends FlatSpec with Matchers {
       }
     }
 
-  "OneEuroFilter.filter" should "return same Coord displacements in all directions" in
+  "OneEuroFilter.filter" should "return same Coord displacements in all directions in origo" in
     {
       val epsilon = 1e-9
       val filter = new OneEuroFilter()
@@ -201,7 +201,7 @@ class OneEuroTest extends FlatSpec with Matchers {
     }
 
 
-  "LowPassFilter.filter" should "return same Coord displacements in all directions" in
+  "LowPassFilter.filter" should "return same Coord displacements in all directions in origo" in
     {
       val epsilon = 1e-9
       val filter = new LowPassFilter()
@@ -258,6 +258,124 @@ class OneEuroTest extends FlatSpec with Matchers {
       }
 
     }
+
+
+  "LowPassFilter.filter" should "return same Coord displacements in all directions" in
+    {
+      val epsilon = 1e-9
+      val filter = new LowPassFilter()
+      var coord = Coord(200+0)
+      var res = filter.filter(coord, 0.5)
+      val results = mutable.Buffer[Coord](res)
+      assert (res.dist(coord)<0.000001,res + " not equal to "+ coord)
+      coord = Coord(200+1)
+      res = filter.filter(coord, 0.25)
+      results += res
+      coord = Coord(200+2)
+      res = filter.filter(coord, 0.5)
+      results += res
+      coord = Coord(200+3)
+      res = filter.filter(coord, 0.5)
+      results += res
+      coord = Coord(200+5)
+      res = filter.filter(coord, 0.75)
+      results += res
+      coord = Coord(200+100)
+      res = filter.filter(coord, 0.5)
+      results += res
+      coord = Coord(200+101)
+      res = filter.filter(coord, 0.15)
+      results += res
+
+
+      filter.reset
+      var coord2 = Coord(200+0)
+      var res2 = filter.filter(coord2, 0.5)
+      val results2 = mutable.Buffer[Coord](res2)
+      assert (res2.dist(coord2)<0.000001,res2 + " not equal to "+ coord2)
+      coord2 = Coord(200-1)
+      res2 = filter.filter(coord2, 0.25)
+      results2 += res2
+      coord2 = Coord(200-2)
+      res2 = filter.filter(coord2, 0.5)
+      results2 += res2
+      coord2 = Coord(200-3)
+      res2 = filter.filter(coord2, 0.5)
+      results2 += res2
+      coord2 = Coord(200-5)
+      res2 = filter.filter(coord2, 0.75)
+      results2 += res2
+      coord2 = Coord(200-100)
+      res2 = filter.filter(coord2, 0.5)
+      results2 += res2
+      coord2 = Coord(200-101)
+      res2 = filter.filter(coord2, 0.15)
+      results2 += res2
+
+      for (i <- results.indices){
+        assert((results(i)).dist(Coord(400)-results2(i))<epsilon, "difference in results between 1,1 and -1,-1 directions: "+results(i)+" - " +results2(i))
+      }
+
+    }
+
+  "OneEuroFilter.filter" should "return same Coord displacements in all directions" in
+    {
+      val epsilon = 1e-9
+      val filter = new OneEuroFilter()
+      var coord = Coord(200+0)
+      var res = filter.update(coord, 120)
+      val results = mutable.Buffer[Coord](res)
+      assert (res.dist(coord)<0.000001,res + " not equal to "+ coord)
+      coord = Coord(200+1)
+      res = filter.update(coord, 140)
+      results += res
+      coord = Coord(200+2)
+      res = filter.update(coord, 160)
+      results += res
+      coord = Coord(200+3)
+      res = filter.update(coord, 170)
+      results += res
+      coord = Coord(200+5)
+      res = filter.update(coord, 180)
+      results += res
+      coord = Coord(200+100)
+      res = filter.update(coord, 200)
+      results += res
+      coord = Coord(200+101)
+      res = filter.update(coord, 240)
+      results += res
+
+
+      filter.reset
+      var coord2 = Coord(200+0)
+      var res2 = filter.update(coord2, 120)
+      val results2 = mutable.Buffer[Coord](res2)
+      assert (res2.dist(coord2)<0.000001,res2 + " not equal to "+ coord2)
+      coord2 = Coord(200-1)
+      res2 = filter.update(coord2, 140)
+      results2 += res2
+      coord2 = Coord(200-2)
+      res2 = filter.update(coord2, 160)
+      results2 += res2
+      coord2 = Coord(200-3)
+      res2 = filter.update(coord2, 170)
+      results2 += res2
+      coord2 = Coord(200-5)
+      res2 = filter.update(coord2, 180)
+      results2 += res2
+      coord2 = Coord(200-100)
+      res2 = filter.update(coord2, 200)
+      results2 += res2
+      coord2 = Coord(200-101)
+      res2 = filter.update(coord2, 240)
+      results2 += res2
+
+      for (i <- results.indices){
+        assert(results(i).dist(Coord(400)-results2(i))<epsilon, "difference in results between 1,1 and -1,-1 directions: "+results(i)+" - " +results2(i))
+      }
+
+    }
+
 
 
 }
