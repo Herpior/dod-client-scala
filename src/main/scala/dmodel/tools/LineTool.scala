@@ -96,7 +96,7 @@ class LineTool extends BasicTool {
           //println(dlen+" <- "+place.dist(c0))
           val xy = 
               if (shift) Perspective.getDisplacement(c0, place)//Angle.angle(dc.x,dc.y),dlen)
-              else Perspective.getCoord(math.round(dc.toAngle/Pi*4)*Pi/4,dlen)
+              else Coord.fromAngle(math.round(dc.toAngle/Pi*4)*Pi/4,dlen)
               //println("coord: "+xy+" mods ="+mods)
           val c2 = c0+xy
           //if(c2>=Coord(0)&&c2<=Magic.doodleSize)

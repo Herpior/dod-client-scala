@@ -29,12 +29,12 @@ class PerspectiveTest extends FlatSpec with Matchers {
       cursor = Coord(49-20, 49-21)
       disp = Perspective.getDisplacement(orig, cursor)
       coord = orig + disp
-      assert (coord.dist(Coord(49*math.sqrt(2)- 29).sqr/2^0.5) < epsilon, "Perspective.getDisplacement fails with near pointing: "+coord)
+      assert (coord.dist((Coord(49*math.sqrt(2)- 29).sqr/2)^0.5) < epsilon, "Perspective.getDisplacement fails with near pointing: "+coord)
       orig = Coord(10, 10)
       cursor = Coord(6, 7)
       disp = Perspective.getDisplacement(orig, cursor)
       coord = orig + disp
-      assert (coord.dist(Coord(orig.length - 5).sqr/2^0.5) < epsilon, "Perspective.getDisplacement fails with near pointing: "+coord)
+      assert (coord.dist((Coord(orig.length - 5).sqr/2)^0.5) < epsilon, "Perspective.getDisplacement fails with near pointing: "+coord)
     }
 
 }

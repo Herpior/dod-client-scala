@@ -129,7 +129,7 @@ class BezierTool extends LineTool {
               val len = place.dist(c0)
               val xy = 
                 if (shift) Perspective.getDisplacement(c0,place) //Angle.angle(dc.x,dc.y),len)
-                else Perspective.getCoord(math.round(dc.toAngle/Pi*4)*Pi/4, len) //TODO: make perspective do the heavy lifting in 8-direction ruler too
+                else Coord.fromAngle(math.round(dc.toAngle/Pi*4)*Pi/4, len) //TODO: make perspective do the heavy lifting in 8-direction ruler too
               coord = c0+xy
             case 2 =>
               val c0 = bezierLine.getCoord(3)
@@ -137,7 +137,7 @@ class BezierTool extends LineTool {
               val len = place.dist(c0)
               val xy =
                 if (shift) Perspective.getDisplacement(c0,place)//Angle.angle(dc.x,dc.y),len)
-                else Perspective.getCoord(math.round(dc.toAngle/Pi*4)*Pi/4,len)
+                else Coord.fromAngle(math.round(dc.toAngle/Pi*4)*Pi/4,len)
               coord = c0+xy
             case _ =>
           }
