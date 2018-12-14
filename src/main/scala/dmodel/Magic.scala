@@ -4,7 +4,7 @@ import java.awt.Color
 
 object Magic {
 
-  private val loadedConf = io.LocalStorage.loadConfig("config")
+  private val loadedConf = try { io.LocalStorage.loadConfig("config") } catch { case e:Throwable => Map[String, String]()}
   def authorized = http.HttpHandler.getAuth || offline
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
   val fasterPan = try {loadedConf.getOrElse("fasterPan","true").toBoolean} catch {case e:Throwable => true} //if true will move only the images when dragging, rather than drawing everything again every pixel

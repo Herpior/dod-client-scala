@@ -80,7 +80,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   this.preferredSize = new Dimension(600,600)
   this.minimumSize = new Dimension(300,300)
   this.maximumSize = new Dimension(600,800)
-  private val font20 = Magic.font20
+  //private val font20 = Magic.font20
   val unField = new TextField
   val autoButt = new RadioButton("Sign in automatically"){
     this.background = Magic.white
@@ -122,29 +122,29 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       offline
     }
   }
-  val unLabel = new Label("Username"){this.font = font20}
-  val pwLabel = new Label("Password"){this.font = font20}
-  val sigLabel = new Label("Sign in"){this.font = font20}
+  val unLabel = new Label("Username"){this.font = Magic.font20}
+  val pwLabel = new Label("Password"){this.font = Magic.font20}
+  val sigLabel = new Label("Sign in"){this.font = Magic.font20}
   this.contents += sigLabel
-  this.contents += new Label(" "){this.font = font20}
+  this.contents += new Label(" "){this.font = Magic.font20}
   //this.contents += faceButt
   //this.contents += twitterButt
   this.contents += registerButt
   this.contents += cookieButt
-  //this.contents += new Label(" "){this.font = font20}
+  //this.contents += new Label(" "){this.font = Magic.font20}
   this.contents += unLabel
   unField.preferredSize = new Dimension(900, 50)
   unField.maximumSize = new Dimension(1900, 50)
-  unField.font = font20
+  unField.font = Magic.font20
   this.contents += unField
-  this.contents += new Label(" "){this.font = font20}
+  this.contents += new Label(" "){this.font = Magic.font20}
   this.contents += pwLabel
   val pwField = new PasswordField
-  pwField.font = font20//.deriveFont(40f)
+  pwField.font = Magic.font20//.deriveFont(40f)
   pwField.preferredSize = new Dimension(900, 50)
   pwField.maximumSize = new Dimension(1800, 50)
   this.contents += pwField
-  this.contents += new Label(" "){this.font = font20}
+  this.contents += new Label(" "){this.font = Magic.font20}
   this.contents += singButt
   this.contents += autoButt
   this.contents += offButt
