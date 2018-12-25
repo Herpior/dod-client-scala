@@ -1,18 +1,15 @@
 Client made by Qazhax (http://doodleordie.com/profile/qazhax) (Discord Qazhax#8820) (qazhax@gmail.com)
 
 To run:
-1. Install the newest java JRE
-2. run the doodleordieclient jar file
+1. Install newest Java SE Runtime Environment (JRE) 8
+2. run the doodleordieclient jar/exe/app file
 
 there might be bugs around so use at your own risk...
-please use https://docs.google.com/forms/d/1PC7Id8WjQnhYUFQsf9aG2PfoE__qt2ETfAAK76ERvxo/viewform to report bugs and other issues
+please report bugs in discord, or I might not notice it for months, you can also use https://docs.google.com/forms/d/1PC7Id8WjQnhYUFQsf9aG2PfoE__qt2ETfAAK76ERvxo/viewform to report minor bugs and other issues if you so prefer.
 
 Upgrading to super is encouraged. It probably helps to keep the Doodle or Die servers running, I don't know how is the site even running anymore, but I'm not really connected with the real devs and this works offline anyways.
 
-
-if no shortcuts work, press tab, it should help maybe
-
-shirinking the drawing area should reduce lag if it is noticeable
+shrinking the drawing area should slightly reduce lag if it is noticeable
 turning invisible the layers that you don't need visible at the moment should also reduce lag. They should, however, be made visible again if you wish to post them.
 
 doodle saves a backup 20 seconds after the last stroke and when closing the window
@@ -26,7 +23,7 @@ Hotkeys:
   Ctrl+ R: add a layer above the current layer
   F: go down a layer
   Ctrl+ F: merge layer with the layer below
-  Alt+ G: split undone strokes of the current layer into another layer, can be used to undo merged layers, undo a line in the middle of a layer, etc
+  Alt+ G: split undone strokes of the current layer into a new layer, can be used to undo merged layers, undo a line in the middle of a layer, etc
   Alt+ F: undo everything on current layer (redoable)
   Y: pencil
   U: Line
@@ -61,16 +58,16 @@ Line:
   hold ctrl to use ruler
   hold ctrl+shift to use perspective ruler
 
-Bezier: 
+Bezier:
   draw a line from the start to end and set the guides after that
   hold ctrl to use ruler
   hold ctrl+shift to use perspective ruler
 
-fill:
+Fill:
   draw a line to the direction you want the gradient to change
   hold ctrl to fill area that is limited by current+selected layers
 
-perspective:
+Perspective:
   click and drag to move the closest vanishing point
   rightclick a vanishing point to remove it
 
@@ -86,6 +83,13 @@ Bezier fill: (only for supers)
   drag from first bezier to the second bezier
   the tool will fill area between the curves with bezier curves
   the direction of the bezier curves used as guide matters
+
+Color injector:
+  pick the colour and size you want to change the line colour into
+  click the line whose colour or size you wish to change
+
+Eraser:
+  click the line you wish to erase, the whole line will be erased.
 
 tools and colors:
   right click a colour to select it as the other end of a gradient

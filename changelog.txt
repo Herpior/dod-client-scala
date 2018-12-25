@@ -1,12 +1,19 @@
-v0.500
-	line smoothing?
-	line editing?
-	line eraser?
-	tools can have configurations?
-	tools can be added more easily?
-	removed the need for a separate dodcacerts file in the folder, (unless the certificate on the site changes again and a new file is needed, in which case a new dodcacerts file can be dropped in to the folder like it used to be, and the client will use that instead).
-	removed fb and twitter login, reducing the file size by like 50%, cookie login can be used instead.
-v0.499
+v0.500 - 23.12.2018
+	dodcacerts file is not necessary in the folder anymore, updated dodcacerts file can be added to the folder if necessary (if the cert on the website changes)
+	added tool for changing line size and color
+	added eraser tool for erasing whole lines
+	line stabilizer using 1€ filter
+	increased line accuracy 5x
+	colours file parsing should let you load edited files more easily
+	default colours now include the default super colours, if the colours file is not found in the folder.
+	added registration link that should open dod on your browser, if someone finds the program before finding dod
+	removed fb and twitter login, reducing the file size by ~50%, cookie login can be used instead.
+	added possibility for using config file for some values
+	fixed bug that used a lot of cpu for no reason, at least on some computers
+	fixed bugs with save/export file naming
+	fixed bug preventing color picking with fill tool
+	fixed bug in loading drawing time
+v0.499 - 27.7.2018
 	client notices if the doodle has timed out
 	doodle is saved properly when changing between rooms
 	unicode characters work properly in drawing prompts (the font might not be able to render everything but that's a different thing)
@@ -15,7 +22,7 @@ v0.499
 	player username is shown in the logout button
 	logout button is bigger so you can see more than 4 first characters of the username
 	the button to separate panels changed from [X] to [B] because it is too easy to accidentally press x when undoing
-v0.498
+v0.498 - 15.6.2018
 	saving and loading doodles file chooser starts from the working directory
 	bugfixes
 v0.497
@@ -46,7 +53,7 @@ v0.430
 	refactored ui
 	fixed bug allowing too short descriptions to be sent
 	submit button now gray when not enabled
-	left clicking now picks both primary and secondary colours while right click only changes the secondary color 
+	left clicking now picks both primary and secondary colours while right click only changes the secondary color
 v0.425
 	added checkbox to prevent accidental submissions
 	added support for opacity
@@ -62,7 +69,7 @@ v0.425
 	trying to log in with empty username or password will produce error before trying to log in
 	pressing enter on login screen will attempt to log in
 	minor bugfixes
-v0.410	
+v0.410
 	added possibility to login with twitter (still experimental)
 	added possibility to login with facebook (still experimental)
 	unicode characters work in descriptions, (some emoji should work too but the font doesn't really support them)
