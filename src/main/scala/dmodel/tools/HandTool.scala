@@ -1,7 +1,7 @@
 package dmodel.tools
-import view.DoodlePanel
-import dmodel.Coord
-import dmodel.Magic
+
+import dmodel.DoodleBufferer
+import dmodel.{Coord, DoodleBufferer, Magic}
 
 class HandTool extends BasicTool { //(Array())
   
@@ -9,31 +9,31 @@ class HandTool extends BasicTool { //(Array())
   //private var point = Magic.doodleSize/2
   private var tmp = Coord(0,0) //point
 
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     tmp = coord
-    dp.startMove
+    db.startMove
   }
-  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
     //var change = coord - previousCoord
-    //dp.prepareMove(coord)
-    //dp.move(coord)
+    //db.prepareMove(coord)
+    //db.move(coord)
     //previousCoord = coord
     val moved = (tmp-coord)
     if (Magic.fasterPan)
-      dp.prepareMove(moved)
+      db.prepareMove(moved)
     else {
-      dp.movePanPoint(moved)
-      dp.redrawAll
+      db.movePanPoint(moved)
+      db.redrawAll
     }
       
-    dp.repaint
+    //db.repaint
     //point = Coord(max(min(moved.x,Magic.x),0),max(min(moved.y,Magic.y),0))
   }
-  override def onMouseUp(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseUp(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     //var change = coord - previousCoord
     val moved = (tmp-coord)
-    dp.movePanPoint(moved)
-    dp.redrawAll
-    dp.repaint
+    db.movePanPoint(moved)
+    db.redrawAll
+    //db.repaint
   }
 }

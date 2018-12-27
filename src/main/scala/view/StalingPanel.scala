@@ -3,7 +3,10 @@ package view
 import scala.swing._
 import dmodel.Magic
 import java.awt.Font
+
+import controller.ReplaceEvent
 import http.HttpHandler
+
 import concurrent.Future
 import concurrent.ExecutionContext.Implicits.global
 

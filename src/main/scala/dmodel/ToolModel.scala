@@ -50,11 +50,11 @@ object ToolModel {
   }
   
   def mouseMoved(dp:DoodlePanel, point:Coord, ctrl:Boolean, alt:Boolean, shift:Boolean) {
-    tool.onMouseMove(dp, point, ctrl, alt, shift)
+    tool.onMouseMove(dp.bufferer, point, ctrl, alt, shift)
   }
   
   def mousePressed(dp:DoodlePanel, point:Coord, button:Int, ctrl:Boolean, alt:Boolean, shift:Boolean) {
-    tool.onMouseDown(dp, point, button, ctrl, alt, shift)
+    tool.onMouseDown(dp.bufferer, point, button, ctrl, alt, shift)
     /*
       if(doodle.model.isWriting){
         doodle.model.stopWriting
@@ -76,7 +76,7 @@ object ToolModel {
   }
   
   def mouseReleased(dp:DoodlePanel, point:Coord, button:Int, ctrl:Boolean, alt:Boolean, shift:Boolean) {
-    tool.onMouseUp(dp, point, button, ctrl, alt, shift)
+    tool.onMouseUp(dp.bufferer, point, button, ctrl, alt, shift)
     /*
      // ^left only = 0
       // ^middle only = 512
@@ -92,6 +92,6 @@ object ToolModel {
   }
   
   def mouseDragged(dp:DoodlePanel, point:Coord, left:Boolean, middle:Boolean, right:Boolean, ctrl:Boolean, alt:Boolean, shift:Boolean) {
-    tool.onMouseDrag(dp, point, left, middle, right, ctrl, alt, shift)
+    tool.onMouseDrag(dp.bufferer, point, left, middle, right, ctrl, alt, shift)
   }
 }

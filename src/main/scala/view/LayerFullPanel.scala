@@ -4,6 +4,8 @@ import scala.swing._
 import java.awt.BasicStroke
 import java.awt.image.BufferedImage
 import java.awt.Color
+
+import controller.RepaintEvent
 import dmodel.Magic
 import dmodel.LayerList
 

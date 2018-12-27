@@ -2,14 +2,13 @@ package dmodel.tools
 
 import dmodel._
 import dmodel.dpart._
-import view.DoodlePanel
 
 class EditLineTool extends SelectTool { //(Array())
-  private var changeColour = true
-  private var changeSize = false
+  protected var changeColour = true
+  protected var changeSize = false
 
-  override def onMouseUp(dp: DoodlePanel, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
-    super.onMouseUp(dp, coord, button, control, alt, shift)
+  override def onMouseUp(db: DoodleBufferer, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
+    //super.onMouseUp(db, coord, button, control, alt, shift)
     // don't do anything if both are false
     if(changeColour||changeSize) selected match {
       case Some(line:MultiLine)=>
@@ -23,33 +22,33 @@ class EditLineTool extends SelectTool { //(Array())
             editedSubline
         }
         edited.setLines(lines)
-        swap(dp, line, edited)
+        swap(db, line, edited)
       case Some(line:BasicLine)=>
         val colour = if(changeColour) ColorModel.getColor else line.color
         val size = if(changeSize) SizeModel.getSize else line.size
         val edited = new BasicLine(colour, size)
         edited.setCoords(line.getCoords)
-        swap(dp, line, edited)
+        swap(db, line, edited)
       case Some(line:BezierLine)=>
         val colour = if(changeColour) ColorModel.getColor else line.color
         val size = if(changeSize) SizeModel.getSize else line.size
         val edited = new BezierLine(colour, size)
         edited.setCoords(line.getCoords)
-        swap(dp, line, edited)
+        swap(db, line, edited)
       case None =>
       case any => println(any)
     }
     selected = None
   }
 
-  def swap(dp:DoodlePanel, line:DoodlePart, edited:DoodlePart): Unit ={
+  def swap(db:DoodleBufferer, line:DoodlePart, edited:DoodlePart): Unit ={
 
-    dp.model.layers.getCurrent.swap(line, edited)
+    db.model.layers.getCurrent.swap(line, edited)
     val editLine = new EditLine(edited, line)
-    dp.model.layers.getCurrent.add(editLine)
-    dp.redrawMid
-    dp.redrawDrawing
-    dp.repaint()
+    db.model.layers.getCurrent.add(editLine)
+    db.redrawMid
+    db.redrawDrawing
+    //db.repaint()
   }
 
   override def getConfigVariables() = {

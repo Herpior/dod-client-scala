@@ -4,6 +4,8 @@ import scala.swing._
 import scala.swing.event.MouseReleased
 import java.awt.Graphics2D
 import java.awt.RenderingHints
+
+import controller.RepaintEvent
 import dmodel.Magic
 import dmodel.LayerList
 

@@ -1,29 +1,27 @@
 package dmodel.tools
 
-import dmodel.Colors
-import dmodel.Coord
+import dmodel.{Colors, Coord, DoodleBufferer}
 import dmodel.dpart.{BezierLine, DoodlePart, MultiLine}
-import view.DoodlePanel
 
 class BezierInterpolationTool extends SelectTool {
 
-  override def onMouseUp  (dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseUp  (db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     // if selected and hovering both full, and different lines, do the do
-    if(lineFill(dp, control, alt, shift)) {
-      dp.redrawLastMid
-      dp.redrawDrawing
-      dp.repaint
+    if(lineFill(db, control, alt, shift)) {
+      db.redrawLastMid
+      db.redrawDrawing
+      //db.repaint
     }
   }
-  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(left && selectOne(dp, coord, control, alt)) {
-      dp.redrawDrawing
-      dp.repaint
+  override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(left && selectOne(db, coord, control, alt)) {
+      db.redrawDrawing
+      //db.repaint
     }
   }
   
   // returns true if the fill is successful
-  def lineFill(dp:DoodlePanel, control:Boolean, alt:Boolean, shift:Boolean)={
+  def lineFill(db:DoodleBufferer, control:Boolean, alt:Boolean, shift:Boolean)={
     var success = false
     if(selected.nonEmpty && hovering.nonEmpty){
       //println("both found")
@@ -38,7 +36,7 @@ class BezierInterpolationTool extends SelectTool {
       else {
         linearFill(line1,line2,res)
       }
-      dp.model.layers.getCurrent.add(res)
+      db.model.layers.getCurrent.add(res)
     }
     unselect
     success

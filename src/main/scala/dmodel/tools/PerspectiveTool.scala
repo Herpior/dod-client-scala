@@ -1,5 +1,5 @@
 package dmodel.tools
-import view.DoodlePanel
+import dmodel.DoodleBufferer
 import dmodel.Coord
 import dmodel.Magic
 import dmodel.Perspective
@@ -85,30 +85,30 @@ class PerspectiveTool extends BasicTool {
   //if near a vanishing point, grab vanishing point
   //else check if ctrl or alt pressed and decide which vanishing point to grab from that
   //if left click, deleting vanishing point instead
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     if(button == 1) setVanishingPoint(coord, control, alt)
     else if(button == 3) deleteVanishingPoint(coord, control, alt)
-    dp.redrawDrawing
-    dp.repaint
+    db.redrawDrawing
+    //db.repaint
   }
-  override def onMouseUp  (dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseUp  (db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     //stop dragging vanishing point
     if(button == 1) setVanishingPoint(coord, control, alt)
     checkClosest(coord)
-    dp.redrawDrawing
-    dp.repaint
+    db.redrawDrawing
+    //db.repaint
   }
-  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
     //move vanishing point
     if(left) setVanishingPoint(coord, control, alt)
-    dp.redrawDrawing
-    dp.repaint
+    db.redrawDrawing
+    //db.repaint
   }
-  override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseMove(db:DoodleBufferer, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
     //if near vanishing point add a white dot on the closest one, if not, remove the
     if(checkClosest(coord)) {
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
   

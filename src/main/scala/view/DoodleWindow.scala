@@ -1,5 +1,7 @@
 package view
 
+import controller.ReplaceEvent
+
 import scala.swing._
 import event.WindowOpened
 import scala.swing.event.WindowClosing
@@ -7,7 +9,6 @@ import scala.swing.event.UIElementResized
 import concurrent.Future
 import concurrent.Promise
 import concurrent.ExecutionContext.Implicits.global
-
 import javax.swing.UIManager
 
 object DoodleWindow extends SimpleSwingApplication {

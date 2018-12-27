@@ -9,8 +9,12 @@ import dmodel.LayerList
 import dmodel.Magic
 import dmodel.LineDrawer
 import java.awt.BasicStroke
+
 import io.Icons
 import java.awt.RenderingHints
+
+import controller.RepaintEvent
+
 import concurrent.Future
 import concurrent.ExecutionContext.Implicits.global
 

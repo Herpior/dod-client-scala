@@ -1,5 +1,7 @@
 package view
 
+import controller.ReplaceEvent
+
 import scala.swing._
 import BorderPanel.Position._
 import dmodel.Magic
@@ -70,7 +72,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   doodleP.model.load(doodle)
   //println(doodle.getStrokes.mkString(","))
   //println(doodleP.model.layers.head.getStrokes.length)
-  doodleP.redrawAll
+  doodleP.bufferer.redrawAll
   doodleP.repaint()
   real.requestFocusInWindow()}
   val real = new TextArea
@@ -148,7 +150,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
       return
     }
     this.publish(
-          new view.ReplaceEvent(
+          new ReplaceEvent(
               new view.LoadingPanel(
                   Future{
                       if(http.HttpHandler.submitDesc(real.text)){

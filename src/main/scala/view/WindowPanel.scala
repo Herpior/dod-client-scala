@@ -1,5 +1,7 @@
 package view
 
+import controller.ReplaceEvent
+
 import scala.swing.Component
 import swing._
 import concurrent.Future
@@ -77,7 +79,7 @@ trait PlayPanel extends WindowPanel {
   def logout {
     save
     this.publish(
-          new view.ReplaceEvent(
+          new ReplaceEvent(
               new view.LoadingPanel(
                   Future{
                       http.HttpHandler.logout
@@ -102,7 +104,7 @@ trait PlayPanel extends WindowPanel {
   def runSkip {
     save
     this.publish(
-        new view.ReplaceEvent(
+        new ReplaceEvent(
             new view.LoadingPanel(
                 Future{
                     http.HttpHandler.skip
@@ -115,7 +117,7 @@ trait PlayPanel extends WindowPanel {
   def changeGroup(group:String) {
     save
     this.publish(
-        new view.ReplaceEvent(
+        new ReplaceEvent(
             new view.LoadingPanel(
                 Future{
                     http.HttpHandler.changeGroup(group)
@@ -144,7 +146,7 @@ trait PlayPanel extends WindowPanel {
   }
   def refresh {
     this.publish(
-          new view.ReplaceEvent(
+          new ReplaceEvent(
               new view.LoadingPanel(
                   Future(http.HttpHandler.state.toPlayPanel), this), this
           )

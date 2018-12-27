@@ -1,5 +1,7 @@
 package view
 
+import java.awt.Toolkit
+
 import scala.swing._
 import scala.swing.event._
 import scala.swing.BorderPanel.Position._
@@ -96,7 +98,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       layout -= tools
       tFrame.activate
     }
-    doodle.redrawAll
+    doodle.bufferer.redrawAll
     doodle.repaint
     this.revalidate()
     istf = !istf
@@ -110,7 +112,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       layout -= layers
       lFrame.activate
     }
-    doodle.redrawAll
+    doodle.bufferer.redrawAll
     doodle.repaint
     this.revalidate()
     istf = !istf
@@ -193,7 +195,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     else if(tools.model.isReady){
       save
       this.publish(
-          new view.ReplaceEvent(
+          new ReplaceEvent(
               new view.LoadingPanel(
                   Future{
                       if(doodle.submit)
@@ -227,7 +229,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     if (res != FileChooser.Result.Approve) return
     val file = fc.selectedFile
     doodle.model.decryptFrom(file.getAbsolutePath)
-    doodle.redrawAll
+    doodle.bufferer.redrawAll
     layers.reset
     if(savename == "offline"){
       val yesNo = Dialog.showConfirmation(doodle, "Do you want to use this file as save location?", "Set as save location")
@@ -241,7 +243,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   override def logout {
     save
     this.publish(
-          new view.ReplaceEvent(
+          new ReplaceEvent(
               new view.LoadingPanel(
                   Future{
                       http.HttpHandler.logout
@@ -279,10 +281,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   listenTo(tools.toolP) //toolchange
   reactions += {
     case e:ToolChangeEvent=>
-      doodle.redrawDrawing
+      doodle.bufferer.redrawDrawing
       doodle.repaint
     case e:RepaintEvent=>
-      doodle.redrawAll
+      doodle.bufferer.redrawAll
       doodle.repaint
       layers.reset
     case e:SubmitEvent=>
@@ -298,9 +300,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //doodle.model.unselect
       //TODO: add support for mouse exited for tools
     case e:MouseWheelMoved =>
-      val ctrl = e.peer.isControlDown()
-      if(ctrl)doodle.zoomIn(e.rotation*4)
-      else doodle.zoomIn(e.rotation)
+      val ctrl = e.peer.isControlDown() || e.modifiers == 256
+      if(ctrl)doodle.bufferer.zoomIn(e.rotation*4)
+      else doodle.bufferer.zoomIn(e.rotation)
       doodle.repaint
       //tools.model.zoomin(e.rotation)
           //repaint
@@ -314,7 +316,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       }*/
     case e:KeyPressed =>
       val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown()
+      val ctrl = e.peer.isControlDown() || e.modifiers == 256
       val shift = e.peer.isShiftDown()
       // shift = 64
       // ctrl = 128
@@ -429,7 +431,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.M =>
           if(Magic.authorized && ctrl) {
             doodle.model.matrixLayer
-            doodle.redrawAll
+            doodle.bufferer.redrawAll
             doodle.repaint()
             layers.reset
           }
@@ -454,32 +456,32 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(alt){
             savetimer.stop()
             doodle.model.layers.split
-            doodle.redrawAll
+            doodle.bufferer.redrawAll
             doodle.repaint
             Future(layers.reset)
             savetimer.start()
           }
         case Key.Enter =>
           if(ctrl){
-            doodle.publish(new SubmitEvent)
+            this.submit//doodle.publish(new SubmitEvent)
             //HttpHandler.post(this.layers.flatMap { x => x.strokes.reverse.flatMap{y=>y.getLines} }.toArray)
           }
         case Key.Z =>
           if(!ctrl && !shift && !alt){
-            doodle.fullScreen
+            //doodle.fullScreen
             //val dir = if(zoom>2) 2 else -2
             //tools.model.zoomin(dir)
           }else if(ctrl && !shift){
             savetimer.stop()
             doodle.model.undo
-            doodle.redrawMid
+            doodle.bufferer.redrawMid
             doodle.repaint()
             Future(layers.reset)
             savetimer.start()
           } else if(ctrl && shift){
             savetimer.stop()
             doodle.model.redo
-            doodle.redrawLastMid
+            doodle.bufferer.redrawLastMid
             doodle.repaint()
             Future(layers.reset)
             savetimer.start()
@@ -488,7 +490,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(ctrl){
             savetimer.stop()
             doodle.model.redo
-            doodle.redrawMid
+            doodle.bufferer.redrawMid
             doodle.repaint()
             Future(layers.reset)
             savetimer.start()
@@ -499,32 +501,35 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.F =>
           if(ctrl && !alt) {
             doodle.model.mergeLayer
-            doodle.redrawMergeDown
+            doodle.bufferer.redrawMergeDown
             doodle.repaint
           }
           else if(alt && !ctrl){
             savetimer.stop()
             doodle.model.burn
             //doodle.model.toLocalStorage
-            doodle.redrawMid
+            doodle.bufferer.redrawMid
             doodle.repaint
             savetimer.start()
           }
           else {
             doodle.model.layerDown
-            doodle.redrawLayerDown
+            doodle.bufferer.redrawLayerDown
+            doodle.repaint()
           }
           Future(layers.reset)
         case Key.R =>
           if(ctrl) {
           //println("layerlist curr"+doodle.model.layers.ind)
             doodle.model.addLayer
-            doodle.redrawLayerUp
+            doodle.bufferer.redrawLayerUp
+            doodle.repaint()
           //println("layerlist curr"+doodle.model.layers.ind)
           }
           else {
             doodle.model.layerUp
-            doodle.redrawLayerUp
+            doodle.bufferer.redrawLayerUp
+            doodle.repaint()
           }
           Future(layers.reset)
         case Key.B =>
@@ -548,16 +553,16 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //doodle.repaint
       //tools.repaint()
     case e:MouseMoved =>
-      val place = doodle.getCoord(e.point.getX, e.point.getY)
+      val place = doodle.bufferer.getCoord(e.point.getX, e.point.getY)
       //val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
       //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown()
+      val ctrl = e.peer.isControlDown() || e.modifiers == 256
       val shift = e.peer.isShiftDown()
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
-      if(doodle.canDraw){
+      if(doodle.bufferer.canDraw){
         tools.model.mouseMoved(doodle, place, ctrl, alt, shift)
       }
       
@@ -567,13 +572,13 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       doodle.repaint
       
     case e:MousePressed=> 
-      val place = doodle.getCoord(e.point.getX, e.point.getY)
+      val place = doodle.bufferer.getCoord(e.point.getX, e.point.getY)
       //val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
       //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val button = e.peer.getButton // 1 if left, 2 if middle, 3 if right
       val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown()
+      val ctrl = e.peer.isControlDown() || e.modifiers == 256
       val shift = e.peer.isShiftDown()
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
@@ -586,16 +591,16 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       
       if(button == 1 && doodle.model.isMatrix){
         doodle.model.startMatrix(place, e.modifiers)
-        doodle.redrawMid
+        doodle.bufferer.redrawMid
       }
       else if(button == 2){ // middle button
         if(ctrl){ //TODO: implement layer moving here?
         }
-        else tools.model.handTool.onMouseDown(doodle, place, button, ctrl, alt, shift)//doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
+        else tools.model.handTool.onMouseDown(doodle.bufferer, place, button, ctrl, alt, shift)//doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
       }
       else if(button > 1 && alt && !tools.model.isBusy ){ // middle or right click with alt or ctrl, no left button down
           if(Magic.authorized){
-            val color = doodle.pickColor(e.point.getX.toInt,e.point.getY.toInt, shift)
+            val color = doodle.bufferer.pickColor(e.point.getX.toInt,e.point.getY.toInt, shift)
             color.foreach(c=>tools.colorP.setColor(c))
             tools.colorP.repaint()
           }
@@ -603,10 +608,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           dmodel.tools.HandTool.onMouseDown(doodle, place, button, ctrl, alt, shift) //doodle.prepareMove(dmodel.Coord(e.point.getX,e.point.getY))
         }*/
       }
-      else if(doodle.canDraw){ 
+      else if(doodle.bufferer.canDraw){
         tools.model.mousePressed(doodle, place, button, ctrl, alt, shift)
       }
       check = System.nanoTime()
+      doodle.repaint()
       
     case e:MouseReleased=>
       // ^left only = 0
@@ -617,55 +623,62 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       // right = 4096
       // shift = 64
       // ctrl = 128
+      // cmd = 256
       // alt =  512
       // alr gr = 640 = alt + ctrl
-      val place = doodle.getCoord(e.point.getX, e.point.getY)
+      val place = doodle.bufferer.getCoord(e.point.getX, e.point.getY)
       //val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
       //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val button = e.peer.getButton // 1 if left, 2 if middle, 3 if right
       val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown()
+      val ctrl = e.peer.isControlDown() || e.modifiers == 256
       val shift = e.peer.isShiftDown()
+      //print(e.modifiers & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())
+      //print(" ")
+      //print(e.peer.getButton)
+      //print(" ")
+      //println(e.modifiers)
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
       
       if(button == 1 && doodle.model.isMatrix){
         doodle.model.stopMatrix
-        doodle.redrawMid
+        doodle.bufferer.redrawMid
       }
       else if(button == 2){
-        tools.model.handTool.onMouseUp(doodle, place, button, ctrl, alt, shift)
+        tools.model.handTool.onMouseUp(doodle.bufferer, place, button, ctrl, alt, shift)
       }
-      else if(doodle.canDraw){
+      else if(doodle.bufferer.canDraw){
         tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
       }
 
       doodle.model.addTime(((System.nanoTime()-check)/100000).toInt)
 
       savetimer.start()
+      doodle.repaint()
       Future(layers.reset)
       
     case e:MouseDragged=>
-      val place = doodle.getCoord(e.point.getX, e.point.getY)
+      val place = doodle.bufferer.getCoord(e.point.getX, e.point.getY)
       val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
       val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown()
+      val ctrl = e.peer.isControlDown() || e.modifiers == 256
       val shift = e.peer.isShiftDown()
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
 
       if(left && doodle.model.isMatrix){
         doodle.model.dragMatrix(place, e.modifiers)
-        doodle.redrawMid
+        doodle.bufferer.redrawMid
         doodle.repaint
       }
       else if(middle){
-        tools.model.handTool.onMouseDrag(doodle, place, left, middle, right, ctrl, alt, shift)
+        tools.model.handTool.onMouseDrag(doodle.bufferer, place, left, middle, right, ctrl, alt, shift)
       }
-      else if(doodle.canDraw){
+      else if(doodle.bufferer.canDraw){
         tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)
       }
 

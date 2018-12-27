@@ -1,17 +1,11 @@
 package dmodel.tools
 //import dmodel.Angle
-import dmodel.Magic
-import dmodel.ColorModel
-import dmodel.Colors
-import dmodel.Coord
-import dmodel.DoodleModel
-import dmodel.Perspective
-import dmodel.SizeModel
+import dmodel._
 import dmodel.dpart.{BasicLine, BezierLine, DoodlePart, MultiLine}
 
 import math.Pi
 import collection.mutable.Buffer
-import view.DoodlePanel
+import dmodel.DoodleBufferer
 
 class BezierTool extends LineTool {
   
@@ -25,40 +19,40 @@ class BezierTool extends LineTool {
   private var guideLine: MultiLine = new MultiLine
   
   
-  override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseMove(db:DoodleBufferer, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
     if(state == 2){
       dragBezier(1, coord, control, shift)
       dragBezier(2, coord, control, shift)
-      dp.redrawDrawing
+      db.redrawDrawing
     }
   }
-  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
     if(left){
       if(state == 1){
         dragBezier(3, coord, control, shift)
       } else {
         dragBezier(2, coord, control, shift)
       }
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
-  override def onMouseUp(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseUp(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     if(button == 1){
       if(state == 1){
         dragBezier(3, coord, control, shift)
         state = 2
       } else {
         dragBezier(2, coord, control, shift)
-        stopBezier(dp.model)
-        dp.redrawLastMid
+        stopBezier(db.model)
+        db.redrawLastMid
         state = 0
       }
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     if(button == 1){
       if(state == 0){
       //startLine(e)
@@ -69,8 +63,8 @@ class BezierTool extends LineTool {
         dragBezier(1, coord, control, shift)
         state = 3
       }
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
   override def getLines() : Buffer[DoodlePart]= {
@@ -80,9 +74,9 @@ class BezierTool extends LineTool {
   } //for redrawing the whole line while drawing?
   
   //def initTool() {}
-  //def onMouseUp(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
-  //def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
-  //def onMouseMove(dp:DoodlePanel, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
+  //def onMouseUp(db:DoodleBufferer, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
+  //def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
+  //def onMouseMove(db:DoodleBufferer, coord:Coord, left:Boolean, right:Boolean, middle:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
   
   //def setBezier{
   //  this.bezier = true

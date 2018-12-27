@@ -8,6 +8,8 @@ import swing.Action
 import swing.Label
 import swing.TextField
 import java.text.Format
+
+import controller.RepaintEvent
 import dmodel.Magic
 import dmodel.Coord
 

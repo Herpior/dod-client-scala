@@ -1,9 +1,8 @@
 package dmodel.tools
 
 import collection.mutable.Buffer
-import dmodel.Coord
+import dmodel.{Coord, DoodleBufferer}
 import dmodel.dpart.DoodlePart
-import view.DoodlePanel
 
 
 //base for tools that need to select lines
@@ -12,13 +11,13 @@ class SelectTool extends BasicTool {
   protected var selected:Option[DoodlePart] = None//Array() // selected line after clicking
   protected var hovering:Option[DoodlePart] = None//Array() // line for visualization
   
-  override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
-    if(selectOne(dp, coord, control, alt)){
-      dp.redrawDrawing
-      dp.repaint
+  override def onMouseMove(db:DoodleBufferer, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {
+    if(selectOne(db, coord, control, alt)){
+      db.redrawDrawing
+      //db.repaint
     }
   }
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     selected = hovering
   }
   override def getLines() = {
@@ -33,10 +32,10 @@ class SelectTool extends BasicTool {
   }
 
   // returns boolean that tells whether there has been a change and the graphics should be redrawn
-  def selectOne(dp:DoodlePanel, place:Coord, control:Boolean, alt:Boolean):Boolean={
-    val strokes = dp.model.getMid.getVisibleStrokes(false)
+  def selectOne(db:DoodleBufferer, place:Coord, control:Boolean, alt:Boolean):Boolean={
+    val strokes = db.model.getMid.getVisibleStrokes(false)
     /*if(alt) {
-      dp.model.getLayers.flatMap(_.getVisibleStrokes(false)) //maybe think about selectTool that can select lines from any layer
+      db.model.getLayers.flatMap(_.getVisibleStrokes(false)) //maybe think about selectTool that can select lines from any layer
     }
     else*/
     if(strokes.length<1) return false

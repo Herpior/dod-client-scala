@@ -4,43 +4,38 @@ import java.awt.image.BufferedImage
 import java.awt.Color
 
 import collection.mutable.Queue
-import dmodel.Magic
-import dmodel.Colors
-import dmodel.Coord
-import dmodel.ColorModel
-import dmodel.SizeModel
+import dmodel._
 import dmodel.dpart.{BasicLine, DoodlePart, MultiLine}
-import view.DoodlePanel
 
 class FillTool extends LineTool{
 
   
-  //override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
-  //  dp.redrawDrawing
-  //  dp.repaint
+  //override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
+  //  db.redrawDrawing
+  //  db.repaint
   //}
-  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+  override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(Magic.authorized && left){
       dragLine(coord, control, shift)
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
-  override def onMouseMove(dp:DoodlePanel, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {}
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseMove(db:DoodleBufferer, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {}
+  override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     if(button == 1){
       startGradient(coord, control, alt, shift)
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
-  override def onMouseUp(dp:view.DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
+  override def onMouseUp(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     if(button == 1){
-      if(control)fillGradient(dp.model, dp.getSelected, coord, alt, shift) //next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int
-      else addGradient(dp.model, coord, alt, shift)
-      dp.redrawLastMid
-      dp.redrawDrawing
-      dp.repaint
+      if(control)fillGradient(db.model, db.getSelected, coord, alt, shift) //next:MultiLine,border:BufferedImage,color1:Color,color2:Color,sizeo:Int,vertical:Boolean,place:Coord,mods:Int
+      else addGradient(db.model, coord, alt, shift)
+      db.redrawLastMid
+      db.redrawDrawing
+      //db.repaint
     }
   }
   //override def getLines() = {collection.mutable.Buffer()} //for redrawing the whole line while drawing?

@@ -6,9 +6,10 @@ package view
 
 import swing._
 import dmodel.Magic
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import controller.Timer
+import controller.{ReplaceEvent, Timer}
 
 class LoadingPanel(real:Future[WindowPanel],old:WindowPanel) extends BoxPanel(Orientation.Vertical) with WindowPanel{
   

@@ -9,7 +9,7 @@ import dmodel.Perspective
 import dmodel.ColorModel
 import dmodel.SizeModel
 import dmodel.dpart.{BasicLine, MultiLine}
-import view.DoodlePanel
+import dmodel.DoodleBufferer
 
 //object LineTool extends LineToolClass
 
@@ -19,32 +19,32 @@ class LineTool extends BasicTool {
   
   override def isBusy() = drawing
   
-  override def onMouseDrag(dp:DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+  override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(left){
       dragLine(coord, control, shift)
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
-  override def onMouseUp(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
+  override def onMouseUp(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
     if(button == 1){
-      stopLine(coord, dp.model)
-      dp.redrawDrawing
-      dp.redrawLastMid
-      dp.repaint
+      stopLine(coord, db.model)
+      db.redrawDrawing
+      db.redrawLastMid
+      //db.repaint
     }
   }
-  override def onMouseDown(dp:DoodlePanel, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
+  override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
     if(button == 1){
       startLine(coord)
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
     else if(button == 3 && isBusy){
       addLine(ColorModel.getColor, SizeModel.getSize, coord)
       //doodle.model.dragLine(place,mods)
-      dp.redrawDrawing
-      dp.repaint
+      db.redrawDrawing
+      //db.repaint
     }
   }
   override def getLines() = {

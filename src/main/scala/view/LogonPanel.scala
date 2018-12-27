@@ -2,6 +2,8 @@ package view
 
 import java.net.URI
 
+import controller.ReplaceEvent
+
 import scala.swing._
 //import Swing.Embossing
 import BorderPanel.Position._

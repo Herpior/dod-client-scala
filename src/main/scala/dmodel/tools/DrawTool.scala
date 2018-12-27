@@ -1,13 +1,8 @@
 package dmodel.tools
-import dmodel.Coord
-import dmodel.ColorModel
-import dmodel.SizeModel
-import dmodel.Magic
-import dmodel.dpart.MultiLine
-import dmodel.filters.OneEuroFilter
-import view.DoodlePanel
 
-import scala.collection.mutable.Buffer
+import dmodel._
+import dmodel.filters.OneEuroFilter
+
 
 class DrawTool extends LineTool {
 
@@ -15,33 +10,33 @@ class DrawTool extends LineTool {
   private val oneEuroFilter = new OneEuroFilter
   private var prev = Coord(0)
 
-  override def onMouseDrag(dp:view.DoodlePanel, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
+  override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(left){
       if(alt){
         dragLine(coord, control, shift)
-        dp.redrawDrawing
+        db.redrawDrawing
       }
       else {
         val processedCoord = updateCoord(coord)
         if((processedCoord-prev).abs.max >= 0.4){
           addLine(ColorModel.getColor, SizeModel.getSize, processedCoord)
-          if(ColorModel.getColor.getAlpha==255 || Magic.faster) dp.redrawLast
-          else dp.redrawDrawing
+          if(ColorModel.getColor.getAlpha==255 || Magic.faster) db.redrawLast
+          else db.redrawDrawing
         }
       }
-      dp.repaint
+      //db.repaint
     }
   }
 
-  override def onMouseUp(dp: DoodlePanel, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
-    super.onMouseUp(dp, coord, button, control, alt, shift)
+  override def onMouseUp(db: DoodleBufferer, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
+    super.onMouseUp(db, coord, button, control, alt, shift)
     oneEuroFilter.reset
   }
 
-  override def onMouseDown(dp: DoodlePanel, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
+  override def onMouseDown(db: DoodleBufferer, coord: Coord, button: Int, control: Boolean, alt: Boolean, shift: Boolean): Unit = {
     val processedCoord = updateCoord(coord)
     prev = processedCoord
-    super.onMouseDown(dp, processedCoord, button, control, alt, shift)
+    super.onMouseDown(db, processedCoord, button, control, alt, shift)
   }
 
   private def updateCoord(coord:Coord) = {
