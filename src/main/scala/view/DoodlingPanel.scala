@@ -75,7 +75,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   }
   private val tools = new ToolPanel
   val layers = new LayerFullPanel(doodle.model.layers)
-  val extra = if(finish) "DRAW (last step): " else "DRAW: "
+  private val extra = if(finish) "DRAW (last step): " else "DRAW: "
   desc.setPhrase( extra+phrase )//,extra)
   layout(layers) = West
   if(!Magic.offline) layout(desc) = North
@@ -85,11 +85,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   //val doodleControl = new DrawingController(doodle,tools,layers)
   //val toolControl = new ToolController(tools)
   
-  val lFrame = new DodFrame(layers, Unit=>swapLayerP)
-  val tFrame = new DodFrame(tools, Unit=>swapToolP)
+  val lFrame = new DodFrame(layers, Unit=>swapLayerP())
+  val tFrame = new DodFrame(tools, Unit=>swapToolP())
   private var istf = false
   private var islf = false
-  def swapToolP {
+  def swapToolP() {
     if(istf){
       tFrame.deactivate
       layout(tools) = East
@@ -103,7 +103,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     this.revalidate()
     istf = !istf
   }
-  def swapLayerP {
+  def swapLayerP() {
     if(istf){
       lFrame.deactivate
       layout(layers) = West
@@ -136,13 +136,13 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   layers.contents.foreach{x=>this.listenTo(x.keys)}
   layers.tools.contents.foreach{x=>this.listenTo(x.keys)}
   
-  def listenToTools{
+  def listenToTools(){
     tools.sizeP.contents.foreach{x=>this.listenTo(x.keys)}
     tools.sizeP.grid.contents.foreach{x=>this.listenTo(x.keys)}
     tools.colorP.contents.foreach{x=>this.listenTo(x.keys)}
     tools.toolP.contents.foreach{x=>this.listenTo(x.keys)}
   }  
-  def deafToTools{
+  def deafToTools(){
     tools.sizeP.contents.foreach{x=>this.deafTo(x.keys)}
     tools.sizeP.grid.contents.foreach{x=>this.deafTo(x.keys)}
     tools.colorP.contents.foreach{x=>this.deafTo(x.keys)}
@@ -186,11 +186,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     }
   }
   
-  def submit{
+  private def submit(){
     if(Magic.offline) {
       export(false)
       save
-      return
     }
     else if(tools.model.isReady){
       save
@@ -254,7 +253,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       )
   }
 
-  val savetimer = Timer(10000,false){
+  private val savetimer = Timer(10000,repeats = false){
     Future(save)
   }
   //
