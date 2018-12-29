@@ -126,3 +126,5 @@ bin
 **/one_euro_test2.txt
 **/save.*.txt
 saves/
+
+.DS_Store
