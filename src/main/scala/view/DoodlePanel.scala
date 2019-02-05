@@ -31,6 +31,12 @@ class DoodlePanel extends Panel {
   private var cursorX = -100
   private var cursorY = -100
 
+  override def repaint: Unit = {
+    if(this.bufferer.dirty){
+      this.bufferer.redrawAll
+    }
+    super.repaint()
+  }
   
   override def paintComponent(g:Graphics2D){
     //this.bufferer.setBounds(this.getWidth, this.getHeight) //check if there is a better spot for this, like on resized
@@ -146,7 +152,9 @@ class DoodlePanel extends Panel {
   }
 
   this.reactions += {
-    case e:UIElementResized => this.bufferer.setBounds(this.getWidth, this.getHeight)
+    case e:UIElementResized =>
+      this.bufferer.setBounds(this.getWidth, this.getHeight)
+      this.repaint
   }
 
 }

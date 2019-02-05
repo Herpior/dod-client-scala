@@ -25,7 +25,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   var topImg = createImg
   var drawImg = createImg
 
-  private var dirty = true
+  var dirty = true
   private var point = Magic.doodleSize/2
   private var tmp = Coord(0,0)
 
@@ -54,6 +54,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
     redrawTop
     redrawMid
     redrawDrawing
+    dirty = false
   }
   // redraws the layers below the current layer
   // pretty slow if there are a lot of things below
@@ -155,7 +156,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
     val changed = zoomInd-num//(zoom*(math.pow(2,-num))*10).toInt/10.0
     if(changed>=0 && changed<zooms.length) zoomInd = changed
     //this.publish(new ZoomEvent)
-    redrawAll
+    dirty = true
   }
   def movePanPoint(coord:Coord){
     point += coord
