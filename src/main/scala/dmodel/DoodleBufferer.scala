@@ -2,9 +2,6 @@ package dmodel
 
 import java.awt.Color
 import java.awt.image.BufferedImage
-import java.io.File
-
-import scala.swing.Dialog
 
 class DoodleBufferer(val model:DoodleModel, private var width:Int, private var height:Int) {
 
@@ -58,22 +55,22 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
   // redraws the layers below the current layer
   // pretty slow if there are a lot of things below
-  def redrawBot{ //TODO change to clearRect based solution? that won't bug when area size changes
+  def redrawBot{
     val img = createImg  //or graphics.setComposite(AlphaComposite.Clear); graphics.fillRect(0, 0, SIZE, SIZE); graphics.setComposite(AlphaComposite.SrcOver);
-  val g = img.createGraphics()
+    val g = img.createGraphics()
     g.setColor(Magic.bgColor)
     g.fillRect(0, 0, img.getWidth, img.getHeight)
     val off = offset
     val canvas = Magic.doodleSize*getZoom
     g.setColor(Magic.white)
     g.fillRect(off.x.toInt, off.y.toInt, canvas.x.toInt, canvas.y.toInt)
-    //LineDrawer.redraw(img, model.getBot)
     model.getBot.flatMap { x => x.getVisibleStrokes(true) }.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)
     }
     botImg = img
   }
   // redraws the current layer
+  // bit slow it there are a lot of things on the layer
   def redrawMid{
     val img = createImg
     val g = img.createGraphics()
