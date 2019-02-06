@@ -46,7 +46,7 @@ class OneEuroFilter() {
     res
   }
 
-  def alpha(freq:Double, cutoff:Double) = {
+  def alpha(freq:Double, cutoff:Double): Double = {
     val tau = 1.0/(2*math.Pi*cutoff)
     val te = 1.0/freq
     1.0/(1+tau/te)
@@ -57,7 +57,7 @@ class OneEuroFilter() {
     update(Coord(x, 0), timestampInSeconds).x
   }
 
-  def reset ={
+  def reset(): Unit ={
     this.initialized = false
     this.xfilt.reset
     this.dxfilt.reset

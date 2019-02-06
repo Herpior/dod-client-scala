@@ -12,7 +12,7 @@ class LowPassFilter {
     IN : Noisy sample value : x
     Alpha value : alpha
     OUT: Filtered value */
-  def filter(x:Coord, alpha:Double) = {
+  def filter(x:Coord, alpha:Double): Coord = {
     var hatx = x
     prev = x
     if (initialized) {
@@ -24,7 +24,7 @@ class LowPassFilter {
     hatxprev = hatx
     hatx
   }
-  def reset: Unit = {
+  def reset(): Unit = {
     initialized = false
   }
 }

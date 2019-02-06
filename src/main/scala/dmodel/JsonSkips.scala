@@ -8,7 +8,7 @@ class JsonSkips {
   var skipDurationHours:Int=_
   var skipsPerDuration:Int=_
   
-  def isSuper = {
+  def isSuper: Boolean = {
     skipsPerDuration==1000
   }
 }

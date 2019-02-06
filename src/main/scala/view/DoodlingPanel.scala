@@ -23,7 +23,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   private var savename = private_id
   
   val doodle = new DoodlePanel
-  val skipButt = new Button{
+  val skipButt: Button = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
     this.opaque = true
@@ -57,7 +57,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
   }*/
   
   //val txt = new TextField
-  val desc = new PhrasePanel{
+  val desc: PhrasePanel = new PhrasePanel{
     this.contents += new BorderPanel{
       //this.contents += txt
       this.preferredSize = new Dimension(200,100)
@@ -149,7 +149,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     tools.toolP.contents.foreach{x=>this.deafTo(x.keys)}
     tools.submitP.contents.foreach{x=>this.deafTo(x.keys)}
   }
-  listenToTools
+  listenToTools()
   this.listenTo(tools.submitP)
   
   def export(saveAs:Boolean) {
@@ -200,9 +200,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
                       if(doodle.submit)
                         http.HttpHandler.state.toPlayPanel
                       else {
-                        controller.Timer(100,false){
+                        controller.Timer(100, false) {
                           skipButt.requestFocusInWindow()
-                        }.start
+                        }.start()
                         this
                       }
                   },this
@@ -218,7 +218,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       ping
     }
   }
-  def load {
+  def load() {
     val fc = new FileChooser //Dialog.showInput(doodle, "set file name", "exported image name", Dialog.Message.Question, null, List[String](), "offline")
     //fc.fileSelectionMode = FileChooser.SelectionMode.FilesOnly
     fc.fileFilter = new io.TxtFilter
@@ -287,7 +287,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       doodle.repaint
       layers.reset
     case e:SubmitEvent=>
-      this.submit
+      this.submit()
     /*case e:SizeChangeEvent =>
       doodle.model.setSize(e.size)
       doodle.repaint
@@ -299,7 +299,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //doodle.model.unselect
       //TODO: add support for mouse exited for tools
     case e:MouseWheelMoved =>
-      val ctrl = e.peer.isControlDown() || e.modifiers == 256
+      val ctrl = e.peer.isControlDown || e.modifiers == 256
       if(ctrl)doodle.bufferer.zoomIn(e.rotation*4)
       else doodle.bufferer.zoomIn(e.rotation)
       doodle.repaint
@@ -314,9 +314,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           doodle.model.addChar(e.char)
       }*/
     case e:KeyPressed =>
-      val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown() || e.modifiers == 256
-      val shift = e.peer.isShiftDown()
+      val alt = e.peer.isAltDown
+      val ctrl = e.peer.isControlDown || e.modifiers == 256
+      val shift = e.peer.isShiftDown
       // shift = 64
       // ctrl = 128
       // alt =  512
@@ -462,7 +462,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
         case Key.Enter =>
           if(ctrl){
-            this.submit//doodle.publish(new SubmitEvent)
+            this.submit()//doodle.publish(new SubmitEvent)
             //HttpHandler.post(this.layers.flatMap { x => x.strokes.reverse.flatMap{y=>y.getLines} }.toArray)
           }
         case Key.Z =>
@@ -532,8 +532,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           }
           Future(layers.reset)
         case Key.B =>
-          if(ctrl) this.swapLayerP
-          else this.swapToolP
+          if(ctrl) this.swapLayerP()
+          else this.swapToolP()
         case _ =>
       }
       //repaint
@@ -556,9 +556,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
       //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
-      val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown() || e.modifiers == 256
-      val shift = e.peer.isShiftDown()
+      val alt = e.peer.isAltDown
+      val ctrl = e.peer.isControlDown || e.modifiers == 256
+      val shift = e.peer.isShiftDown
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
       if(doodle.bufferer.canDraw){
@@ -576,9 +576,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val button = e.peer.getButton // 1 if left, 2 if middle, 3 if right
-      val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown() || e.modifiers == 256
-      val shift = e.peer.isShiftDown()
+      val alt = e.peer.isAltDown
+      val ctrl = e.peer.isControlDown || e.modifiers == 256
+      val shift = e.peer.isShiftDown
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
       
@@ -630,9 +630,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       //val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
       val button = e.peer.getButton // 1 if left, 2 if middle, 3 if right
-      val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown() || e.modifiers == 256
-      val shift = e.peer.isShiftDown()
+      val alt = e.peer.isAltDown
+      val ctrl = e.peer.isControlDown || e.modifiers == 256
+      val shift = e.peer.isShiftDown
       //print(e.modifiers & Toolkit.getDefaultToolkit().getMenuShortcutKeyMask())
       //print(" ")
       //print(e.peer.getButton)
@@ -663,9 +663,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       val left = javax.swing.SwingUtilities.isLeftMouseButton(e.peer)
       val middle = javax.swing.SwingUtilities.isMiddleMouseButton(e.peer)
       val right = javax.swing.SwingUtilities.isRightMouseButton(e.peer)
-      val alt = e.peer.isAltDown()
-      val ctrl = e.peer.isControlDown() || e.modifiers == 256
-      val shift = e.peer.isShiftDown()
+      val alt = e.peer.isAltDown
+      val ctrl = e.peer.isControlDown || e.modifiers == 256
+      val shift = e.peer.isShiftDown
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
 
@@ -681,7 +681,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)
       }
 
-      doodle.setCursor(e.point.getX(), e.point.getY())
+      doodle.setCursor(e.point.getX, e.point.getY)
       doodle.repaint
     //case e:Event => println(e)
   }
@@ -705,9 +705,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     ???
     true
   }*/
-  controller.Timer(100,false){
+  controller.Timer(100, false) {
     tools.sizeP.contents.head.requestFocusInWindow()
-  }.start
+  }.start()
   
   this.focusable = true
   //roomChanger.

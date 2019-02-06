@@ -25,8 +25,8 @@ object ToolModel {
     editLineTool, eraseLineTool)
   private var tool:BasicTool = toolList(0)
   
-  def isReady = this.ready
-  def initReady {ready = Magic.readyDefault}
+  def isReady: Boolean = this.ready
+  def initReady() {ready = Magic.readyDefault}
   
   def setTool(n:Int){
     if(n>=0 && n<=toolList.size && (n!=7 || Magic.authorized)) {
@@ -36,16 +36,16 @@ object ToolModel {
       tool.initTool()
     }
   }
-  def getState = state
-  def getTool = tool
+  def getState: Int = state
+  def getTool: BasicTool = tool
   
   
   def setReady(rdy:Boolean){
     ready = !ready
   }
-  def getReady = ready
+  def getReady: Boolean = ready
   
-  def isBusy() = {
+  def isBusy = {
     tool.isBusy()
   }
   

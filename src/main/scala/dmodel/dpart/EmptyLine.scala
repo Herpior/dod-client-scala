@@ -9,12 +9,12 @@ import dmodel.{Coord, JsonStroke}
  * (an unique identifier might work, but it'd need to stay unique across multiple save and reload loops and stored)
  */
 class EmptyLine extends DoodlePart {
-  def distFrom(point:Coord) = Double.MaxValue // return maxValue so the line can't be selected accidentally
+  def distFrom(point:Coord): Double = Double.MaxValue // return maxValue so the line can't be selected accidentally
 
   // these lines are not exactly lines that could be drawn, transformed, selected, or saved, as told before
   override def getLines = Array()
-  override def transform(transformation: Coord => Coord) = None
-  override def selection = None
+  override def transform(transformation: Coord => Coord): None.type = None
+  override def selection: None.type = None
   override def toJson:Option[JsonStroke] = None
   override def toJsonString:Option[String] = None
   override def toShortJsonString:Option[String] = None

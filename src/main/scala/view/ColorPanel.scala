@@ -15,9 +15,9 @@ import dmodel.ColorModel
 
 class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
   
-  val ht = math.max(this.rows*12, 80)//+10
+  val ht: Int = math.max(this.rows*12, 80)//+10
   
-  val model = ColorModel
+  val model: ColorModel.type = ColorModel
   this.preferredSize = new Dimension(200, ht)
   this.minimumSize = new Dimension(200, ht)
   this.maximumSize = preferredSize
@@ -28,7 +28,7 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
   private val primaryBorder = javax.swing.BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.cyan), BorderFactory.createLoweredBevelBorder())
   private val secondaryBorder=javax.swing.BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red), BorderFactory.createRaisedBevelBorder())
   private val colors = model.getColors //only used for the button creation loop, possibly outdated later. maybe change something?
-  val buttons = Array.ofDim[Button](colors.length)
+  val buttons: Array[Button] = Array.ofDim[Button](colors.length)
   for (i <- colors.indices){
     buttons(i) = new Button(){
       this.opaque = true
@@ -73,7 +73,7 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
   this.contents ++= buttons
 
 
-  def setColor(color: Color) = {
+  def setColor(color: Color): Unit = {
     model.setColor(color)
     buttons(model.colorIndex).repaint()
   }
@@ -83,19 +83,19 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
   def selectSecondary(i:Int){
     changeSecondary(_=>model.secondaryColor(i))
   }
-  def colorUp =  {
+  def colorUp(): Unit =  {
     changeColor(_=>model.colorUp)
   }
-  def colorDown = {
+  def colorDown(): Unit = {
     changeColor(_=>model.colorDown)
   }
-  def colorLeft = {
+  def colorLeft(): Unit = {
     changeColor(_=>model.colorLeft)
   }
-  def colorRight = {
+  def colorRight(): Unit = {
     changeColor(_=>model.colorRight)
   }
-  def changeColor(func:Unit=>Unit) = {
+  def changeColor(func:Unit=>Unit): Unit = {
     val orig = model.colorIndex
     buttons(orig).borderPainted = false
     func()
@@ -106,7 +106,7 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
     buttons(orig).repaint()
     buttons(next).repaint()
   }
-  def changeSecondary(func:Unit=>Unit) = {
+  def changeSecondary(func:Unit=>Unit): Unit = {
     val orig = model.colorIndex2
     val primary = model.colorIndex
     if(orig != primary) buttons(orig).borderPainted = false

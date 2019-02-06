@@ -10,7 +10,7 @@ import dmodel.dpart.JsonDoodle
 object JsonParse {
     val gson = new Gson
 
-  def parseDoodle(jsfile:String)={
+  def parseDoodle(jsfile:String): JsonDoodle ={
     //val gson = new Gson
     //println(jsfile)
     //val red = new JsonParser
@@ -22,7 +22,7 @@ object JsonParse {
     //doodle.print
     targ
   }
-  def parseSave(jsfile:String)={
+  def parseSave(jsfile:String): JsonSave ={
     //val gson = new Gson
     //println(jsfile)
     //val red = new JsonParser
@@ -34,7 +34,7 @@ object JsonParse {
     //doodle.print
     targ
   }
-  def parseState(jsfile:String)={
+  def parseState(jsfile:String): JsonState ={
     //val gson = new Gson
     //println(jsfile)
     //val red = new JsonParser
@@ -54,29 +54,29 @@ object JsonParse {
     //reader.setLenient(true)
     try{
       val targ = gson.fromJson(reader,classOf[JsonOk])
-      return targ
+      targ
     }catch{
-      case e:Throwable=>return new JsonOk{ok=false}
+      case e:Throwable=>new JsonOk{ok=false}
     }
     //targ.print
     //println("end")
     //doodle.print
   }
-  def parseSkips(jsfile:String)={
+  def parseSkips(jsfile:String): JsonSkips ={
     //val gson = new Gson
     val reader = new BufferedReader(new StringReader(jsfile))
     //reader.setLenient(true)
     val targ = gson.fromJson(reader,classOf[JsonSkips])
     targ
   }
-  def parseGroupList(jsfile:String)={
+  def parseGroupList(jsfile:String): JsonGroups ={
     val gson = new Gson
     val reader = new BufferedReader(new StringReader(jsfile))
     //reader.setLenient(true)
     val targ = gson.fromJson(reader,classOf[JsonGroups])
     targ
   }
-  def writeSave(layers:Array[Layer], time:Int)={
+  def writeSave(layers:Array[Layer], time:Int): String ={
     //Don't use, too slow and adds useless extra values
     
     //val gson = new Gson
@@ -109,7 +109,7 @@ object JsonParse {
 class JsonOk{
   var ok:Boolean = _
   var valid:Boolean = true
-  def isOk = {
+  def isOk: Boolean = {
     ok && valid
   }
 }

@@ -10,11 +10,11 @@ class DodFrame(orig:Component, onClose:Unit=>Unit) extends Frame {
   this.iconImage = io.Icons.getDod
   
   this.contents = decoy
-  def activate {
+  def activate() {
     this.contents = orig
     this.visible = true
   }
-  def deactivate {
+  def deactivate() {
     this.contents = decoy
     this.visible = false
   }

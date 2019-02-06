@@ -16,7 +16,7 @@ class StalingPanel extends BoxPanel(Orientation.Vertical) with PlayPanel{
   this.contents += new BoxPanel(Orientation.NoOrientation){
     this.preferredSize=bordersize
     this.background = Magic.bgColor}
-  val showButt = new Button{
+  val showButt: Button = new Button{
     this.background = Magic.buttColor
     this.foreground = Magic.white
     this.opaque = true
@@ -29,7 +29,7 @@ class StalingPanel extends BoxPanel(Orientation.Vertical) with PlayPanel{
   }
   
   
-  def resume = {
+  def resume(): Unit = {
     this.publish(
       new ReplaceEvent(
         new LoadingPanel(
@@ -52,7 +52,7 @@ class StalingPanel extends BoxPanel(Orientation.Vertical) with PlayPanel{
   }*/
   
   showButt.font = Magic.font20
-  val descrip = new PhrasePanel{
+  val descrip: PhrasePanel = new PhrasePanel{
     this.preferredSize = new Dimension(900,150)
     this.desc.contents += new FlowPanel(roomChanger,showButt,logoutButt){this.background=Magic.white}
   }

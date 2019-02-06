@@ -4,6 +4,8 @@ import collection.mutable.Buffer
 import dmodel.{Coord, DoodleBufferer}
 import dmodel.dpart.DoodlePart
 
+import scala.collection.mutable
+
 
 //base for tools that need to select lines
 class SelectTool extends BasicTool {
@@ -20,14 +22,14 @@ class SelectTool extends BasicTool {
   override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     selected = hovering
   }
-  override def getLines() = {
+  override def getLines(): mutable.Buffer[DoodlePart] = {
     val buf:Buffer[DoodlePart] = Buffer()
     hovering.foreach { _.selection.foreach(buf += _) }
     selected.foreach { _.selection.foreach(buf += _) }
     buf
   }
   
-  override def cleanUp{
+  override def cleanUp(){
     unselect
   }
 
@@ -56,12 +58,12 @@ class SelectTool extends BasicTool {
     }
     hovering != prev
   }
-  def unselect {
+  def unselect() {
     hovering = None
     selected = None
   }
   
-  def allSelected = (hovering ++ selected).toArray
+  def allSelected: Array[DoodlePart] = (hovering ++ selected).toArray
   
   
 }

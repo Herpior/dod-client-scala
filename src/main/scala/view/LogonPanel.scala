@@ -3,6 +3,7 @@ package view
 import java.net.URI
 
 import controller.ReplaceEvent
+import javax.swing.border.Border
 
 import scala.swing._
 //import Swing.Embossing
@@ -44,7 +45,7 @@ class LogonPanel extends /*BoxPanel(Orientation.Vertical)*/FlowPanel with Window
     case e:ReplaceEvent =>
       if(e.source==sign)this.publish(new ReplaceEvent(e.replacement,this))
   }
-  def continue = sign.continue
+  def continue(): Unit = sign.continue
   val bordersize = new Dimension(300,80)
       this.background = Magic.bgColor
   
@@ -59,7 +60,7 @@ class LogonPanel extends /*BoxPanel(Orientation.Vertical)*/FlowPanel with Window
       this.background = Magic.bgColor}
     this.contents+=new BorderPanel{
       this.background = Magic.buttColor
-      val bord = Swing.EmptyBorder(1,1,1,1)
+      val bord: Border = Swing.EmptyBorder(1,1,1,1)
       this.border = bord
       layout(sign) = Center
       }
@@ -84,7 +85,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
   this.maximumSize = new Dimension(600,800)
   //private val font20 = Magic.font20
   val unField = new TextField
-  val autoButt = new RadioButton("Sign in automatically"){
+  val autoButt: RadioButton = new RadioButton("Sign in automatically"){
     this.background = Magic.white
   }
   /*
@@ -99,34 +100,34 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     }
   }
   */
-  val registerButt =  new LoginButton("Register"){
+  val registerButt: LoginButton =  new LoginButton("Register"){
     this.action=Action("Register"){
       launchDodRegistration
     }
   }
-  val normalButt = new LoginButton("Sign in normally"){
+  val normalButt: LoginButton = new LoginButton("Sign in normally"){
     this.action=Action("Sign in normally"){
       switchToNormal
     }
   }
-  val cookieButt = new LoginButton("Sign in with a cookie"){
+  val cookieButt: LoginButton = new LoginButton("Sign in with a cookie"){
     this.action=Action("Sign in with a cookie"){
       switchToCookie
     }
   }
-  val singButt = new LoginButton("Sign In"){
+  val singButt: LoginButton = new LoginButton("Sign In"){
     this.action=Action("Sign in"){
       continue
     }
   }
-  val offButt = new LoginButton("Offline Mode"){
+  val offButt: LoginButton = new LoginButton("Offline Mode"){
     this.action=Action("Offline Mode"){
       offline
     }
   }
-  val unLabel = new Label("Username"){this.font = Magic.font20}
-  val pwLabel = new Label("Password"){this.font = Magic.font20}
-  val sigLabel = new Label("Sign in"){this.font = Magic.font20}
+  val unLabel: Label = new Label("Username"){this.font = Magic.font20}
+  val pwLabel: Label = new Label("Password"){this.font = Magic.font20}
+  val sigLabel: Label = new Label("Sign in"){this.font = Magic.font20}
   this.contents += sigLabel
   this.contents += new Label(" "){this.font = Magic.font20}
   //this.contents += faceButt
@@ -187,7 +188,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
     }
   }
   */
-  def switchToCookie{
+  def switchToCookie(){
     val index = this.contents.indexOf(cookieButt)
     //this.contents -= twitterButt
     if(index>0 && status != 3){
@@ -205,7 +206,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       this.repaint()
     }
   }
-  def launchDodRegistration: Unit ={
+  def launchDodRegistration(): Unit ={
     import java.awt.Desktop
     val url = "https://doodleordie.com/create-account"
 
@@ -217,7 +218,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       runtime.exec("/usr/bin/firefox -new-window " + url)
     }
   }
-  def switchToNormal{
+  def switchToNormal(){
     val index = this.contents.indexOf(normalButt)
     //this.contents -= twitterButt
     if(index>0 && status != 0){
@@ -234,16 +235,16 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       this.repaint()
     }
   }
-  def offline {
+  def offline() {
     val next = new LoadingPanel(Future{
-        Magic.offline = true;
-        ConfigDrawingPanel.activate
+        Magic.offline = true
+      ConfigDrawingPanel.activate
         new DoodlingPanel("offline", "offline", "Offline", false)
         },owner)
     val e = new ReplaceEvent(next,this)
       this.publish(e)
   }
-  def continue {
+  def continue() {
     //println(HttpHandler.cook)
 /*      val next = new LoadingPanel(Future(HttpHandler.state.toPlayPanel),owner)
       val e = new ReplaceEvent(next,this)
@@ -297,9 +298,9 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
       continue
   }
   
-  controller.Timer(100,false){
-  unField.requestFocusInWindow()
-  }.start
+  controller.Timer(100, false) {
+    unField.requestFocusInWindow()
+  }.start()
   
   
 }

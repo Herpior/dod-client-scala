@@ -17,12 +17,12 @@ object DoodleWindow extends SimpleSwingApplication {
   val version = 499
   
    try {
-    UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName() );
+    UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName )
    } catch {
      case e:Throwable => e.printStackTrace();
    }
 
-  def top = new MainFrame { //TODO: switch to scalafx? http://www.scalafx.org/ what? why? cmon..
+  def top: MainFrame = new MainFrame { //TODO: switch to scalafx? http://www.scalafx.org/ what? why? cmon..
     this.title = "Doodle or Die"
     this.iconImage = io.Icons.getDod//new javax.swing.ImageIcon("favicon.png").getImage
     

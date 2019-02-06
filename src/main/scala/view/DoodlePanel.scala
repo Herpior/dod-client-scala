@@ -1,11 +1,8 @@
 package view
 
 import scala.swing._
-import java.awt.RenderingHints
-import java.awt.BasicStroke
-import java.awt.Color
+import java.awt.{Dialog => _, Dimension => _, Graphics2D => _, Panel => _, _}
 import java.awt.image.BufferedImage
-import java.awt.Toolkit
 import java.io.File
 
 import controller.FullscreenEvent
@@ -17,10 +14,10 @@ import scala.swing.event.UIElementResized
 import math.{max,min}
 
 class DoodlePanel extends Panel {
-  def getWidth = this.bounds.getWidth.toInt
-  def getHeight = this.bounds.getHeight.toInt
+  def getWidth: Int = this.bounds.getWidth.toInt
+  def getHeight: Int = this.bounds.getHeight.toInt
 
-  val pencil = Toolkit.getDefaultToolkit.createCustomCursor(io.Icons.getPenCursor, new java.awt.Point(0,0), "pencil")
+  val pencil: Cursor = Toolkit.getDefaultToolkit.createCustomCursor(io.Icons.getPenCursor, new java.awt.Point(0,0), "pencil")
   this.cursor = pencil
   this.minimumSize = new Dimension(400,300)
   this.preferredSize = new Dimension(2*Magic.x,2*Magic.y)
@@ -90,7 +87,7 @@ class DoodlePanel extends Panel {
     //this.model.toLocalStorage
     this.model.save(chain)//TODO remove either and follow and remove the things this would use?
   }
-  def setCursor(x:Double,y:Double)={
+  def setCursor(x:Double,y:Double): Unit ={
     cursorX = x.toInt
     cursorY = y.toInt
   }/*

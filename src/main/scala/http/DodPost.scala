@@ -66,7 +66,7 @@ class DoodlePost(chain:String,dodPostJson:String) extends PlayPost("api/game/sub
 
 class DescPost(chain:String,description:String)  extends PlayPost("api/game/submit/phrase/"+chain){
     
-    val desc = description.replace("\\","\\\\").replace("\"","\\\"")//.take(140)
+    val desc: String = description.replace("\\","\\\\").replace("\"","\\\"")//.take(140)
     //println("{\"description\":\""+desc+"\"}")
     this.setEntity(new StringEntity("{\"description\":\""+desc+"\"}","UTF-8"))
     

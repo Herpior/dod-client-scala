@@ -13,9 +13,9 @@ import io.Icons
 
 class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Boolean,finish:Boolean,random:Boolean) extends BorderPanel with PlayPanel{
 
-  val this_phrasing_panel = this 
+  val this_phrasing_panel: PhrasingPanel = this
   this.background = Magic.bgColor
-  val skipButt = new Button{
+  val skipButt: Button = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
     this.opaque = true
@@ -43,7 +43,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
     this.publish(new ReplaceEvent(play,this))
   }*/
   
-  val describe = new PhrasePanel{
+  val describe: PhrasePanel = new PhrasePanel{
     this.contents += new BorderPanel{
       //this.contents += txt
       this.preferredSize = new Dimension(200,100)
@@ -59,11 +59,11 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
       }) = Center
     }
   }
-  val desc = if(start) "What would you like the next player to draw?" else if(finish) "Describe the doodle. (last step)" else "Describe the doodle."
+  val desc: String = if(start) "What would you like the next player to draw?" else if(finish) "Describe the doodle. (last step)" else "Describe the doodle."
   describe.setPhrase(desc)
   
   
-  val doodleP = new DoodlePanel{ //TODO: the drawing is placed in the corner
+  val doodleP: DoodlePanel = new DoodlePanel{ //TODO: the drawing is placed in the corner
     this.preferredSize = new Dimension(Magic.x,Magic.y)
     this.minimumSize = new Dimension(Magic.x,Magic.y)
     this.maximumSize = new Dimension(Magic.x,Magic.y)
@@ -76,7 +76,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
     doodleP.repaint()
     real.requestFocusInWindow()
   }
-  val limit = new Label(Magic.maxChars.toString){
+  val limit: Label = new Label(Magic.maxChars.toString){
     this.foreground = Magic.buttColor
     this.font = Magic.font20
   }
@@ -96,17 +96,17 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
       
   }
   
-  val submitButt = new Button("submit"){
+  val submitButt: Button = new Button("submit"){
     this.font = Magic.font20
     this.background = Magic.buttColor
     this.foreground = Magic.white
     this.opaque = true
     this.borderPainted = false
     this.action = new Action("Submit"){
-      def apply()=submit
+      def apply(): Unit =submit
     }
   }
-  val editing = new BoxPanel(Orientation.Vertical){
+  val editing: BoxPanel = new BoxPanel(Orientation.Vertical){
     this.contents+= new PhrasePanel{
       this.background = Magic.bgColor
       this.preferredSize = new Dimension(Magic.x,Magic.y-100)
@@ -144,7 +144,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   layout(new FlowPanel(doodleP,editing){this.background=Magic.bgColor})=Center
   
   def save {}
-  def submit{
+  def submit(){
     if(real.text.length()<6){
       Dialog.showMessage(this, "The description is too short", "Error", Dialog.Message.Error, null)
       return

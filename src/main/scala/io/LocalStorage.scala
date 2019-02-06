@@ -11,7 +11,7 @@ object LocalStorage {
 
   //val source = scala.io.Source.fromFile("E:/trash/DOD/0-519.txt")
   //val values = try source.mkString finally source.close()
-  val values = Array.range(0, 1040).map(a=>(a+1e3).toChar)
+  val values: Array[Char] = Array.range(0, 1040).map(a=>(a+1e3).toChar)
   //(z[a] = String.fromCharCode(2 * a + 1e3), z[a])
   //var res = values//""
   //for(i<-values.indices){
@@ -20,9 +20,9 @@ object LocalStorage {
   //  }
   //}
   //println(values.mkString)
-  val vmap = values.zipWithIndex.toMap.withDefault(x=>0)
+  val vmap: Map[Char, Int] = values.zipWithIndex.toMap.withDefault(x=>0)
   
-  def transform(strokes:Array[BasicLine])={
+  def transform(strokes:Array[BasicLine]): String ={
     //println(strokes.mkString(", "))
     /*"\\r"+*/ strokes.map { line =>
       val col = line.color
@@ -32,11 +32,11 @@ object LocalStorage {
     line.getCoords.map(c=>cipher(c.x)+""+cipher(c.y)).mkString+"\\n"+values((line.size*2).toInt)+"\\n"+color
     }.mkString("\\t")// + "\\r"+strokes.length*17
   }
-  def cipher(d:Double)={
+  def cipher(d:Double): Char ={
     values(math.min(math.max((d*2).toInt,0),1039))
   }
   def printToFile(f: java.io.File)(op: java.io.BufferedWriter => Unit) {
-     try{f.getParentFile().mkdirs()}catch{case e:Throwable=>}
+     try{f.getParentFile.mkdirs()}catch{case e:Throwable=>}
      val out = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
     new java.io.FileOutputStream(f), "UTF-8"))
   try {
@@ -57,7 +57,7 @@ object LocalStorage {
     val st = json
     p.write(st)}
   }
-  def decryptFrom(path:String)={
+  def decryptFrom(path:String): JsonSave ={
     val encrypted = loadFrom(path)
     decrypt(encrypted)
   }
@@ -71,11 +71,11 @@ object LocalStorage {
     }
     derped.toMap
   }
-  def loadSave(chain:String)={
+  def loadSave(chain:String): JsonSave ={
     val loaded = loadFrom("saves/save."+chain+".txt")
     dmodel.JsonParse.parseSave(loaded)
   }
-  def loadFrom(path:String)={
+  def loadFrom(path:String): String ={
     val ensource = scala.io.Source.fromFile(path)("UTF-8")
     //println(path)
     //println(System.getProperty("file.encoding"))
@@ -85,7 +85,7 @@ object LocalStorage {
     lines
     
   }
-  def readArray(path:String)={
+  def readArray(path:String): Array[String] ={
     val source = scala.io.Source.fromFile(path)("UTF-8")
     val res = source.mkString.split(",").map(_.trim)//(",(?=([^\\(]*\\([^\\)]*\\))*[^\(]*$)", -1)//split(",")
     source.close()

@@ -11,18 +11,18 @@ class JsonLine extends DoodlePart {
   var size:Double = _
   var path:Array[Double]= Array()
 
-  def transform (transformation:Coord=>Coord) = {
+  def transform (transformation:Coord=>Coord): Some[BasicLine] = {
     val next = this.toBasicLine
     next.transform(transformation)
   }
-  def distFrom(point:Coord)={
+  def distFrom(point:Coord): Double ={
     this.toBasicLine.distFrom(point)
   }
-  def getLines = {
+  def getLines: Array[BasicLine] = {
     Array(this.toBasicLine)
   }
-  def toDoodlePart = toBasicLine
-  def toBasicLine={
+  def toDoodlePart: BasicLine = toBasicLine
+  def toBasicLine: BasicLine ={
     val res = new BasicLine(Colors.toColor(this.color),this.size)
     val buf = Buffer[Coord]()
     for(i<-0 until this.path.length/2){
@@ -31,10 +31,10 @@ class JsonLine extends DoodlePart {
     res.setCoords(buf)
     res
   }
-  def selection = {
+  def selection: Some[BasicLine] = {
     this.toBasicLine.selection
   }
-  def toJson = {
+  def toJson: Some[JsonStroke] = {
     val res = new JsonStroke
     res.color = color
     res.linetype = "basic"
@@ -42,11 +42,11 @@ class JsonLine extends DoodlePart {
     res.size = size
     Some(res)
   }
-  def toJsonString = {
+  def toJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"linetype\":\"json\",\"color\":"+color+",\"size\":"+sizestr+",\"path\":["+path.mkString(",")+"]}")
   }
-  def toShortJsonString = {
+  def toShortJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"l\":\"j\",\"c\":"+color+",\"s\":"+sizestr+",\"p\":["+path.mkString(",")+"]}")
   }

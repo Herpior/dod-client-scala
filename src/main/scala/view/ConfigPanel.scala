@@ -4,13 +4,13 @@ import dmodel.tools._
 import dmodel.Magic
 
 import scala.collection.mutable
-import scala.swing.{Action, BoxPanel, Dimension, Label, Orientation, RadioButton}
+import scala.swing.{Action, BoxPanel, Component, Dimension, Label, Orientation, RadioButton}
 
 
 class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
 
-  val configs = tool.getConfigVariables()
-  val configContentsThatLikeToStealFocus = mutable.Buffer[swing.Component]()
+  val configs: ConfigVariable = tool.getConfigVariables()
+  val configContentsThatLikeToStealFocus: mutable.Buffer[Component] = mutable.Buffer[swing.Component]()
 
   this.preferredSize = new Dimension(200, 50 * configs.length)
   this.background = Magic.bgColor

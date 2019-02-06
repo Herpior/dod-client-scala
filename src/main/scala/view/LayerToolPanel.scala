@@ -16,19 +16,19 @@ class LayerToolPanel(model:LayerList) extends GridPanel(2,3){
   this.background = Magic.bgColor
   private val parent = this
   
-  def publishRepaint = this.publish(new RepaintEvent)
+  def publishRepaint(): Unit = this.publish(new RepaintEvent)
   
-  val addButt = new LayerButton{
+  val addButt: LayerButton = new LayerButton{
     this.action = new Action("Add"){
-      def apply() = {
+      def apply(): Unit = {
         model.addLayer
         publishRepaint
       }
     }
   }
-  val mergeButt = new LayerButton{
+  val mergeButt: LayerButton = new LayerButton{
     this.action = new Action("Merge"){
-      def apply() = {
+      def apply(): Unit = {
         val input = Dialog.showOptions(parent, "Are you sure you want to merge layer to the layer below?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
         if(input == Dialog.Result.Yes){
           model.mergeLayer
@@ -37,9 +37,9 @@ class LayerToolPanel(model:LayerList) extends GridPanel(2,3){
       }
     }
   }
-  val remoButt = new LayerButton{
+  val remoButt: LayerButton = new LayerButton{
     this.action = new Action("Remove"){
-      def apply() = {
+      def apply(): Unit = {
         val input = Dialog.showOptions(parent, "Are you sure you want to remove layer? this can't be undone.", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
         if(input == Dialog.Result.Yes){
           model.removeLayer
@@ -48,25 +48,25 @@ class LayerToolPanel(model:LayerList) extends GridPanel(2,3){
       }
     }
   }
-  val undoButt = new LayerButton{
+  val undoButt: LayerButton = new LayerButton{
     this.action = new Action("Undo"){
-      def apply() = {
+      def apply(): Unit = {
         model.undo
         publishRepaint
       }
     }
   }
-  val redoButt = new LayerButton{
+  val redoButt: LayerButton = new LayerButton{
     this.action = new Action("Redo"){
-      def apply() = {
+      def apply(): Unit = {
         model.redo
         publishRepaint
       }
     }
   }
-  val burnButt = new LayerButton{
+  val burnButt: LayerButton = new LayerButton{
     this.action = new Action("Burn"){
-      def apply() = {
+      def apply(): Unit = {
         val input = Dialog.showOptions(parent, "Are you sure you want to undo everything on the layer?", "Confirmation", Dialog.Options.YesNo, Dialog.Message.Question, null, Seq(Dialog.Result.Yes, Dialog.Result.Cancel), 0)
         if(input == Dialog.Result.Yes){
           model.burn

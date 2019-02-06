@@ -3,6 +3,10 @@ package dmodel.tools
 import math.Pi
 import java.awt.Color
 
+import dmodel.dpart.DoodlePart
+
+import scala.collection.mutable
+
 //import dmodel.Angle
 import dmodel.Coord
 import dmodel.Perspective
@@ -17,7 +21,7 @@ class LineTool extends BasicTool {
   
   private var drawing = false
   
-  override def isBusy() = drawing
+  override def isBusy(): Boolean = drawing
   
   override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(left){
@@ -47,17 +51,17 @@ class LineTool extends BasicTool {
       //db.repaint
     }
   }
-  override def getLines() = {
+  override def getLines(): mutable.Buffer[DoodlePart] = {
     multiLine.getLines.toBuffer
   }
-  override def getLastLine() = {
+  override def getLastLine(): Option[BasicLine] = {
     multiLine.getLast.flatMap (_.getLastLine)
   } //  MultiLine.getLast.flatMap()
   
   protected var multiLine:MultiLine = new MultiLine
 
    
-  def getLast = {
+  def getLast: Option[BasicLine] = {
     //multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
     multiLine.getLast.flatMap(_.getLastLine)
   }

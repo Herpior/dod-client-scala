@@ -7,9 +7,9 @@ object Colors {
 
   def toHexString(color:Color):String={
     if(color.getAlpha!=255)return toRGBAString(color) //TODO: don't call it tohexstring if the semitransparent ones are not hex strings!!
-    var r = Integer.toHexString(color.getRed())
-    var g = Integer.toHexString(color.getGreen())
-    var b = Integer.toHexString(color.getBlue())
+    var r = Integer.toHexString(color.getRed)
+    var g = Integer.toHexString(color.getGreen)
+    var b = Integer.toHexString(color.getBlue)
       if(r.length()<2)r="0"+r
       if(g.length()<2)g="0"+g
       if(b.length()<2)b="0"+b
@@ -22,10 +22,10 @@ object Colors {
     "#"+r+""+g+""+b
   }
   def toHexRGBA(color:Color):String={
-    val alpha = color.getAlpha()
-    var r = Integer.toHexString(color.getRed())
-    var g = Integer.toHexString(color.getGreen())
-    var b = Integer.toHexString(color.getBlue())
+    val alpha = color.getAlpha
+    var r = Integer.toHexString(color.getRed)
+    var g = Integer.toHexString(color.getGreen)
+    var b = Integer.toHexString(color.getBlue)
     var a = Integer.toHexString(alpha)
       if(r.length()<2)r="0"+r
       if(g.length()<2)g="0"+g
@@ -40,8 +40,8 @@ object Colors {
     if(alpha==255)"#"+r+""+g+""+b
     else "#"+r+""+g+""+b+""+a
   }
-  def toRGBAString(color:Color)={
-    "rgba("+color.getRed()+","+color.getGreen()+","+color.getBlue()+","+(color.getAlpha()*1000/255.0).round/1000.0+")"
+  def toRGBAString(color:Color): String ={
+    "rgba("+color.getRed+","+color.getGreen+","+color.getBlue+","+(color.getAlpha*1000/255.0).round/1000.0+")"
   }
   /*def toHexString(color:javafx.scene.paint.Color)={
     var r = Integer.toHexString((color.getRed()*255).toInt)
@@ -101,9 +101,9 @@ object Colors {
     toHexString( inverse(toColor(colorstr)) )
   }
   def inverse(color:Color):Color={
-    val r = 255-color.getRed()
-    val g = 255-color.getGreen()
-    val b = 255-color.getBlue()
+    val r = 255-color.getRed
+    val g = 255-color.getGreen
+    val b = 255-color.getBlue
     new Color(r,g,b)
     /*var r = Integer.toHexString(255-color.getRed())
     var g = Integer.toHexString(255-color.getGreen())
@@ -118,7 +118,7 @@ object Colors {
     val green = ((first.getGreen+second.getGreen)*0.5*(1-opacity)+opacity*add.getGreen).toInt
     val blue = ((first.getBlue+second.getBlue)*0.5*(1-opacity)+opacity*add.getBlue).toInt
     
-    return new Color(red,green,blue)
+    new Color(red,green,blue)
   }
   def linearcolor(n:Int,rgb:Boolean,fcolor:Color,bcolor:Color) :Array[Color] = { 
     val first = fcolor//Color.decode(fcolor)

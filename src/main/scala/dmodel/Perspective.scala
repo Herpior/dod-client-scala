@@ -1,61 +1,62 @@
 package dmodel
 
 import collection.mutable.Buffer
-import math.{Pi,abs}
+import math.{Pi, abs}
+import scala.collection.mutable
 
 object Perspective {
   private var pers = Magic.doodleSize/2
   private var pers2 :Option[Coord] = None
   private var pers3 :Option[Coord] = None 
-  private var defaultAng2 = 0.0;
-  private var defaultAng3 = math.Pi/2;
-  
-  def setPrimary(coord:Coord)={
+  private var defaultAng2 = 0.0
+  private var defaultAng3 = math.Pi/2
+
+  def setPrimary(coord:Coord): Int ={
     pers = coord
     1
   }
-  def setSecondary(coord:Coord)={
+  def setSecondary(coord:Coord): Int ={
     pers2 = Some(coord)
     2
   }
-  def setTertiary(coord:Coord)={
+  def setTertiary(coord:Coord): Int ={
     if(pers2.nonEmpty) {
       pers3 = Some(coord)
       3
     }
     else setSecondary(coord)
   }
-  def setVanishingPoint(index:Int, coord:Coord)={
+  def setVanishingPoint(index:Int, coord:Coord): Int ={
     if(index == 3) setTertiary(coord)
     else if(index == 2) setSecondary(coord)
     else setPrimary(coord)
   }
   
-  def getVanishingPoints = {
+  def getVanishingPoints: mutable.Buffer[Coord] = {
     val buf = Buffer(pers)
     pers2.foreach { x => buf += x }
     pers3.foreach { x => buf += x }
     buf
   }
   
-  def removePrimary{
+  def removePrimary(){
     if(pers2.nonEmpty){
       pers = pers2.get
       removeSecondary // this will propagate the change to the tertiary vp if one exists
     }
     else pers = Magic.doodleSize/2 //uhh I can't delete the last vp so I'll just reset it to the center, maybe it's okay?
   }
-  def removeSecondary{
+  def removeSecondary(){
     if(pers3.nonEmpty){
       pers2 = pers3
       removeTertiary
     }
     else pers2 = None
   }
-  def removeTertiary{
+  def removeTertiary(){
     pers3 = None
   }
-  def removeVanishingPoint(index:Int)={
+  def removeVanishingPoint(index:Int): Unit ={
     if(index == 3) removeTertiary
     else if(index == 2) removeSecondary
     else removePrimary

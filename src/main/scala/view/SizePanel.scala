@@ -14,7 +14,7 @@ import dmodel.SizeModel
 
 class SizePanel extends BoxPanel(Orientation.Vertical){
   
-  val model = SizeModel
+  val model: SizeModel.type = SizeModel
   this.preferredSize = new Dimension(200, 135)
   this.background = Magic.bgColor
   val grid = new SizeGrid

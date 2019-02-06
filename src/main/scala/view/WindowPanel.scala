@@ -16,7 +16,7 @@ trait WindowPanel extends Component{
 trait PlayPanel extends WindowPanel {
   protected var pinged = false
   protected var last_ping:Long = 0
-  val logoutButt = new Button{
+  val logoutButt: Button = new Button{
     this.background = Magic.white
     this.foreground = Magic.buttColor
     this.action = Action("logout "+Magic.user){
@@ -39,7 +39,7 @@ trait PlayPanel extends WindowPanel {
     this.background = Magic.white
   }
   this.listenTo(combo.keys)
-  val roomChanger = new BoxPanel(Orientation.NoOrientation){
+  val roomChanger: BoxPanel = new BoxPanel(Orientation.NoOrientation){
     this.contents += combo
   }
   
@@ -50,7 +50,7 @@ trait PlayPanel extends WindowPanel {
     combo = new ComboBox(x){
       this.background = Magic.white
     
-      val index = x.indexWhere (_._id==http.HttpHandler.getGroup)
+      val index: Int = x.indexWhere (_._id==http.HttpHandler.getGroup)
       this.selection.index = if(index<0) 0 else index
     
       this.listenTo(this.selection)
@@ -76,7 +76,7 @@ trait PlayPanel extends WindowPanel {
       tmp.displayName = "Failed to Load"
   }
   
-  def logout {
+  def logout() {
     save
     this.publish(
           new ReplaceEvent(
@@ -90,7 +90,7 @@ trait PlayPanel extends WindowPanel {
       )
   }
   
-  def skip {
+  def skip() {
     val skips = http.HttpHandler.getSkips
     if(skips.skipsAvailable>0){
       val ok = Dialog.showConfirmation(this, "you have "+skips.skipsAvailable+" skips left. continue?", "skip", Dialog.Options.OkCancel, Dialog.Message.Question, null)
@@ -101,7 +101,7 @@ trait PlayPanel extends WindowPanel {
       Dialog.showMessage(this, "You have no skips left", "skip", Dialog.Message.Warning, null)
     }
   }
-  def runSkip {
+  def runSkip() {
     save
     this.publish(
         new ReplaceEvent(
@@ -127,8 +127,8 @@ trait PlayPanel extends WindowPanel {
         )
       )
   }
-  def save
-  def ping = {
+  def save()
+  def ping(): Unit = {
     if (!Magic.offline){
       val f :Future[Boolean]  = Future(http.HttpHandler.ping)
       f.onSuccess{
@@ -144,7 +144,7 @@ trait PlayPanel extends WindowPanel {
     pinged = true
     last_ping = System.nanoTime()
   }
-  def refresh {
+  def refresh() {
     this.publish(
           new ReplaceEvent(
               new view.LoadingPanel(
@@ -152,7 +152,7 @@ trait PlayPanel extends WindowPanel {
           )
       )
   }
-  def refreshLogoutButt {
+  def refreshLogoutButt() {
     this.logoutButt.text = "logout " + Magic.user
   }
   //def submit:Boolean

@@ -10,7 +10,7 @@ import dmodel.dpart.{BasicLine, DoodlePart}
 
 object LineDrawer {
 
-  def paintPercentage(layers:Array[Layer]) = {
+  def paintPercentage(layers:Array[Layer]): Int = {
     val img = new java.awt.image.BufferedImage(200,150,java.awt.image.BufferedImage.TYPE_INT_ARGB)
     val col = img.getRGB(0,0)
     val alp = (col>>24)&0xff
@@ -34,7 +34,7 @@ object LineDrawer {
     paint/300
   }
   
-  def thumb(layer:Layer)={
+  def thumb(layer:Layer): BufferedImage ={
     val img = new BufferedImage(Magic.thumbX,Magic.thumbY,BufferedImage.TYPE_INT_ARGB)
     val g = img.createGraphics()
     g.setColor(Magic.buttColor)
@@ -62,7 +62,7 @@ object LineDrawer {
       drawDoodlePart(g, line, czoom, offs, antialiasing)
     }
     catch {
-      case e:Throwable => e.printStackTrace
+      case e:Throwable => e.printStackTrace()
     }
   }
   def drawDoodlePart(g:Graphics2D,dp:DoodlePart,czoom:Double,offs:Coord,antialiasing:Boolean){

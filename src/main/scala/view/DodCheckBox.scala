@@ -14,9 +14,9 @@ class DodCheckBox(text:String, getValue:Unit=>Boolean, setValue:Boolean=>Unit) e
   this.opaque = true
   this.borderPainted = false
   this.selected = getValue()
-  def getSelected = this.selected
+  def getSelected: Boolean = this.selected
   this.action = new Action(text){
-    def apply()=setValue(getSelected)
+    def apply(): Unit =setValue(getSelected)
   }
 
 }

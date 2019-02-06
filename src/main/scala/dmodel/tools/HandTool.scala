@@ -11,7 +11,7 @@ class HandTool extends BasicTool { //(Array())
 
   override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     tmp = coord
-    db.startMove
+    db.startMove()
   }
   override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {
     //var change = coord - previousCoord
@@ -31,7 +31,7 @@ class HandTool extends BasicTool { //(Array())
   }
   override def onMouseUp(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean) {
     //var change = coord - previousCoord
-    val moved = (tmp-coord)
+    val moved = tmp-coord
     db.movePanPoint(moved)
     db.redrawAll
     //db.repaint

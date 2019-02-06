@@ -49,26 +49,26 @@ class DrawTool extends LineTool {
     }
   }
 
-  def setBeta(newBeta:Double) = {
+  def setBeta(newBeta:Double): Unit = {
     this.oneEuroFilter.beta = newBeta
   }
-  def setMinCutoff(minCutoff:Double) = {
+  def setMinCutoff(minCutoff:Double): Unit = {
     this.oneEuroFilter.mincutoff = minCutoff
   }
-  def setDCutoff(dCutoff:Double) = {
+  def setDCutoff(dCutoff:Double): Unit = {
     this.oneEuroFilter.dcutoff = dCutoff
   }
-  def getBeta = {
+  def getBeta: Double = {
     this.oneEuroFilter.beta
   }
-  def getMinCutoff = {
+  def getMinCutoff: Double = {
     this.oneEuroFilter.mincutoff
   }
-  def getDCutoff = {
+  def getDCutoff: Double = {
     this.oneEuroFilter.dcutoff
   }
 
-  override def getConfigVariables() = {
+  override def getConfigVariables(): Vector[ConfigVariable] = {
     //val betaConfig = new DoubleConfigVariable("reduce lag", _=>getBeta, setBeta, Some(1e-50), Some(1), true)
     val mincutConfig = new DoubleConfigVariable("reduce lag", _=>getMinCutoff, setMinCutoff, Some(1e-1), Some(16), true)
     //val dcutConfig = new DoubleConfigVariable("dcutoff", _=>getDCutoff, setDCutoff, Some(100), Some(1e-3), true)

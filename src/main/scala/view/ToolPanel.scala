@@ -12,7 +12,7 @@ import dmodel.ToolModel
 
 class ToolPanel extends ScrollPane {
   
-  val model = ToolModel
+  val model: ToolModel.type = ToolModel
   
   this.background = Magic.bgColor
   
@@ -20,7 +20,7 @@ class ToolPanel extends ScrollPane {
   val colorP = new ColorPanel
   val toolP = new ToolPickerPanel
   val submitP = new SubmitPanel
-  val toolConfigPs = toolP.model.toolList.map{tool=>
+  val toolConfigPs: Vector[ConfigPanel] = toolP.model.toolList.map{ tool=>
     new ConfigPanel(tool)
   }
 
@@ -30,7 +30,7 @@ class ToolPanel extends ScrollPane {
     toolP.setTool(i)
   }
   
-  val box = new BoxPanel(Orientation.Vertical) {
+  val box: BoxPanel = new BoxPanel(Orientation.Vertical) {
     this.background = Magic.bgColor
     this.minimumSize = new Dimension(200,500)
     this.preferredSize = new Dimension(210,600)

@@ -17,10 +17,10 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
     64)
   private var zoomInd = 8//1.0
 
-  var botImg = createImg
-  var midImg = createImg
-  var topImg = createImg
-  var drawImg = createImg
+  var botImg: BufferedImage = createImg
+  var midImg: BufferedImage = createImg
+  var topImg: BufferedImage = createImg
+  var drawImg: BufferedImage = createImg
 
   var dirty = true
   private var point = Magic.doodleSize/2
@@ -35,18 +35,18 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
 
   def getZoom = zooms(zoomInd)
-  def getTmp = tmp
+  def getTmp: Coord = tmp
 
-  def canDraw = !this.model.layers.isMatrix
+  def canDraw: Boolean = !this.model.layers.isMatrix
 
-  def createImg={
+  def createImg: BufferedImage ={
     new BufferedImage(math.max(width,400),math.max(height,300),BufferedImage.TYPE_INT_ARGB)
   }
 
 
   // redraws everything
   // very slow if there are a lot of things
-  def redrawAll {
+  def redrawAll() {
     redrawBot
     redrawTop
     redrawMid
@@ -55,7 +55,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
   // redraws the layers below the current layer
   // pretty slow if there are a lot of things below
-  def redrawBot{
+  def redrawBot(){
     val img = createImg  //or graphics.setComposite(AlphaComposite.Clear); graphics.fillRect(0, 0, SIZE, SIZE); graphics.setComposite(AlphaComposite.SrcOver);
     val g = img.createGraphics()
     g.setColor(Magic.bgColor)
@@ -71,7 +71,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
   // redraws the current layer
   // bit slow it there are a lot of things on the layer
-  def redrawMid{
+  def redrawMid(){
     val img = createImg
     val g = img.createGraphics()
     //LineDrawer.redraw(img, model.getMid)
@@ -82,7 +82,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
   // redraws the layers on top of the current layer
   // pretty slow if there are a lot of things on top
-  def redrawTop{
+  def redrawTop(){
     val img = createImg
     val g = img.createGraphics()
     //LineDrawer.redraw(img, model.getTop)
@@ -95,7 +95,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // used for lines that redrawLast can't be used on
   // that is, on bezier lines and semitransparent lines
   // it will also clear the drawing layer but there should be a better way to clear it somewhere?
-  def redrawDrawing{
+  def redrawDrawing(){
     val img = createImg
     val g = img.createGraphics()
     model.getDrawing.foreach{dp=>
@@ -105,7 +105,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
   // redraws image when moving up in the layers
   // that is, it merges the current layer on top of the bottom layer and redraws the current layer and the top layer
-  def redrawLayerUp{
+  def redrawLayerUp(){
     val g = botImg.createGraphics
     g.drawImage(midImg, 0, 0, null)
     redrawTop
@@ -113,7 +113,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
   // redraws image when moving down in the layers
   // that is, it merges the current and the top layers and redraws the new current layer and bottom layers
-  def redrawLayerDown{
+  def redrawLayerDown(){
     val g = midImg.createGraphics
     g.drawImage(topImg, 0, 0, null)
     topImg = midImg
@@ -123,7 +123,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // draw the image again after merging down
   // that is, the current layer and bottom layer are redrawn
   // as an optimization this might be trying to draw the bottom part of the merged layer first, before it's merged and paste the previously current layer on top, but now I'm not sure if this actually does that
-  def redrawMergeDown{
+  def redrawMergeDown(){
     val img = midImg
     redrawMid
     val g = midImg.createGraphics()
@@ -133,7 +133,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // draw the last segment of the current line
   // used when a new segment is added to current line
   // does not work with semitransparent lines or beziers
-  def redrawLast{
+  def redrawLast(){
     val g = drawImg.createGraphics()
     model.getLast.foreach{dp=>
       LineDrawer.drawDoodlePartLast(g,dp,getZoom,offset,true)
@@ -142,14 +142,14 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // draw the last line in current layer
   // used when everything else in the layer is drawn
   // that is, when a new line is finished
-  def redrawLastMid{
+  def redrawLastMid(){
     val g = midImg.createGraphics()
     model.getLastMid.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)
     }
   }
 
-  def zoomIn(num:Int) = {
+  def zoomIn(num:Int): Unit = {
     val changed = zoomInd-num//(zoom*(math.pow(2,-num))*10).toInt/10.0
     if(changed>=0 && changed<zooms.length) zoomInd = changed
     //this.publish(new ZoomEvent)
@@ -166,7 +166,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
     tmp = coord
   }
 
-  def offset = {
+  def offset: Coord = {
     //val z = (-1/(zoom/2)+1)
     //val off = magic*z
     //val offX = (260*z).toInt //0.5->-2, 1-> -1, 2->0, 4->0.5, 8->0.75
@@ -178,7 +178,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
     off
   }
 
-  def getCoord(x:Double,y:Double)={
+  def getCoord(x:Double,y:Double): Coord ={
     //val middle = Coord (getWidth,getHeight)/2
     val coord = (Coord(x,y)- offset)/getZoom//(Coord(x,y)-middle)/zoom + (Magic.doodleSize - point)
     //println(coord.x+", "+coord.y)
@@ -214,7 +214,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
 
 
-  def getSelected = {
+  def getSelected: BufferedImage = {
     val img = new BufferedImage(Magic.x*2,Magic.y*2,BufferedImage.TYPE_INT_ARGB)
     LineDrawer.redraw2(
       img,

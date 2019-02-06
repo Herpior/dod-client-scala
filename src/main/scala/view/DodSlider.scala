@@ -16,7 +16,7 @@ import scala.swing.event.{MouseDragged, MousePressed}
  * isInteger tells if the values should be shown as integers or floating point numbers
  */
 class DodSlider(getValue:Unit=>Double, setValue:Double=>Unit,/*getString:Unit=>String, */ minVal:Double=0, maxVal:Double=1, logOffset:Double = 1, logScale:Boolean = true, isInteger:Boolean = false) extends Panel{
-  val reversed = minVal>maxVal
+  val reversed: Boolean = minVal>maxVal
 
 
   private val width = 200
@@ -28,9 +28,9 @@ class DodSlider(getValue:Unit=>Double, setValue:Double=>Unit,/*getString:Unit=>S
   protected val marginSizeY = 1
   protected val sliderHeight = 6
   protected val ballSize = 26
-  protected val start = marginSizeX +  ballSize/2
-  protected val length = width - start*2
-  protected val height = ballSize + marginSizeY*2
+  protected val start: Int = marginSizeX +  ballSize/2
+  protected val length: Int = width - start*2
+  protected val height: Int = ballSize + marginSizeY*2
   def currentValue = getValue()
 
   this.minimumSize = new Dimension(width, height)
@@ -38,7 +38,7 @@ class DodSlider(getValue:Unit=>Double, setValue:Double=>Unit,/*getString:Unit=>S
   this.maximumSize = this.minimumSize
   this.background = Magic.bgColor
 
-  def valueAsString = {
+  def valueAsString: String = {
     if(isInteger)currentValue.toInt.toString
     else f"$currentValue%1.2f"
   }
@@ -69,8 +69,8 @@ class DodSlider(getValue:Unit=>Double, setValue:Double=>Unit,/*getString:Unit=>S
     else (value-minVal)/(maxVal-minVal)
   }
 
-  protected def xFromVal(value:Double) =  math.round(start + length * normalizedXFromVal(value)).toInt
-  protected def valFromX(x:Double) = {
+  protected def xFromVal(value:Double): Int =  math.round(start + length * normalizedXFromVal(value)).toInt
+  protected def valFromX(x:Double): Double = {
     val res = valFromNormalizedX((x-start)/length)
     if(isInteger) math.round(res).toDouble
     else res

@@ -18,7 +18,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
   var y3 = 0.0
   var x4 = 0.0
   var y4 = 0.0*/
-  def transform (transformation:Coord=>Coord) = {
+  def transform (transformation:Coord=>Coord): Some[BezierLine] = {
     val res = new BezierLine(this.color,this.size)
     res.setCoords(this.coords.map(c=>transformation(c)))
     Some(res)
@@ -28,11 +28,11 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     if(dist>=1)return coords.last
     Bezier.pointAt(dist,coords(0),coords(1),coords(2),coords(3))
   }
-  def getCoord (ind:Int)={
+  def getCoord (ind:Int): Coord ={
     if(ind>=0&&ind<4)
       coords(ind) else coords(0)
   }
-  def getCoords ={
+  def getCoords: Array[Coord] ={
       coords
   }
   def setCoord(ind:Int,place:Coord){
@@ -45,7 +45,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
       coords(i) = places(i)
     }
   }
-  def distFrom(point:Coord)=(this.coords ++ this.getLine(color, size).getCoords).map(_.dist(point)).min
+  def distFrom(point:Coord): Double =(this.coords ++ this.getLine(color, size).getCoords).map(_.dist(point)).min
   def getLine(color1:Color,size1:Double):BasicLine={
     if(coords.forall(_==coords(0))){ //if the bezier line is a point, return a point
       val st = new BasicLine(color1,size1)
@@ -63,7 +63,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     //res.ys = xys._2.map(y=>math.round(2*y)/2.0)
     Array(res)
   }
-  def selection = {
+  def selection: Some[MultiLine] = {
     val res = new MultiLine
     res.addLine(this.getLine(Colors.inverse(color),1))
     val line = new BasicLine(Colors.inverse(color),1)
@@ -71,7 +71,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     res.addLine(line)
     Some(res)
   }
-  def toJson = {
+  def toJson: Some[JsonStroke] = {
     val json = new JsonStroke
     json.color = Colors.toHexString(color)
     json.size = size
@@ -79,11 +79,11 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     json.linetype = "bezier"
     Some(json)
   }
-  def toJsonString = {
+  def toJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"linetype\":\"bezier\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"coords\":["+coords.map(_.toJsonString).mkString(",")+"]}")
   }
-  def toShortJsonString = {
+  def toShortJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"l\":\"b\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}")
   }

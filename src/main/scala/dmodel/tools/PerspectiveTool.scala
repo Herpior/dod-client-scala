@@ -6,6 +6,7 @@ import dmodel.Perspective
 import dmodel.dpart.{BasicLine, DoodlePart}
 
 import collection.mutable.Buffer
+import scala.collection.mutable
 
 class PerspectiveTool extends BasicTool {
   
@@ -16,7 +17,7 @@ class PerspectiveTool extends BasicTool {
   // show vanishing points as dots, 
   // lines between the dots, or a cross if less than 3 vanishing points
   // with two points, the center line defines the horizon and the other line should cross it in 90 degree angle
-  override def getLines() = {
+  override def getLines(): mutable.Buffer[DoodlePart] = {
     val vps = Perspective.getVanishingPoints
     val buf = Buffer[DoodlePart]()
     
@@ -121,7 +122,7 @@ class PerspectiveTool extends BasicTool {
   }
   // checks which vanishing point, if any, is closer than 50 in-image pixels to the cursor
   // returns true if the tool graphics should be redrawn
-  def checkClosest(coord:Coord) = {
+  def checkClosest(coord:Coord): Boolean = {
     val vps = Perspective.getVanishingPoints
     val dists = vps.map { vp => vp.dist(coord) }
     val distsWind = dists.zipWithIndex

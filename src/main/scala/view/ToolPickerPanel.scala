@@ -14,7 +14,7 @@ import io.Icons
 
 class ToolPickerPanel extends GridPanel(2, 4) {
   
-  val model = ToolModel
+  val model: ToolModel.type = ToolModel
   this.preferredSize = new Dimension(200, 100)
   this.minimumSize = preferredSize
   this.maximumSize = preferredSize
@@ -23,12 +23,12 @@ class ToolPickerPanel extends GridPanel(2, 4) {
   val icons = Array(Icons.getPen, Icons.getLine, Icons.getBez, Icons.getFill, 
                     Icons.getPers, Icons.getZoom, Icons.getDrag, Icons.getBezFill,
                     Icons.getColorInjector, Icons.getEraser)
-  val toolcount = icons.length
-  val buttons = Array.ofDim[ToolButton](toolcount)
+  val toolcount: Int = icons.length
+  val buttons: Array[ToolButton] = Array.ofDim[ToolButton](toolcount)
   for(i<-0 until toolcount){
     buttons(i) = new ToolButton(icons(i)){
       this.action = new Action(""){
-        def apply() = click(i)
+        def apply(): Unit = click(i)
       }
     }
   }

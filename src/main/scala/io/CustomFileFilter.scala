@@ -5,10 +5,10 @@ import java.io.File
 
 class PngFilter extends FileFilter {
 
-  def accept(file:File) = {
-    file.getName().toLowerCase().endsWith("png") || file.isDirectory()
+  def accept(file:File): Boolean = {
+    file.getName.toLowerCase().endsWith("png") || file.isDirectory
   }
-  def getDescription = {
+  def getDescription: String = {
     "png file"
   }
 }
@@ -16,8 +16,8 @@ class PngFilter extends FileFilter {
 
 class TxtFilter extends FileFilter {
 
-  def accept(file:File) = {
-    if(file.getName().toLowerCase().endsWith("txt") && file.canRead()) {
+  def accept(file:File): Boolean = {
+    if(file.getName.toLowerCase().endsWith("txt") && file.canRead) {
       val ensource = scala.io.Source.fromFile(file)("UTF-8")
       try{
         ensource.take(3).mkString == "{\"v" //the save files should all start like this so this will hide most of the other files
@@ -25,9 +25,9 @@ class TxtFilter extends FileFilter {
         case e:Throwable => false
       }
     }
-    else file.isDirectory()
+    else file.isDirectory
   }
-  def getDescription = {
+  def getDescription: String = {
     "savefile"
   }
 }

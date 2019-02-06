@@ -25,11 +25,11 @@ class SizeButton extends DodButton {
     g.fillRoundRect(3, 3, 44, 44, 44, 44)
     super.paintComponent(g)
   }
-  def select {
+  def select() {
     this.background = Magic.white
     this.foreground = Magic.buttColor
   }
-  def unselect {
+  def unselect() {
     this.background = Magic.buttColor
     this.foreground = Magic.white
   }

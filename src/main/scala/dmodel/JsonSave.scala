@@ -1,6 +1,8 @@
 package dmodel
 
-import dmodel.dpart.{BezierLine, DoodlePart, JsonLine, MultiLine}
+import dmodel.dpart._
+
+import scala.collection.mutable
 
 class JsonSave {
   var version:Int = _
@@ -12,24 +14,24 @@ class JsonSave {
   var t:Int = _
   var l:Array[JsonLayer] = Array()
   
-  def getVersion = {
+  def getVersion: Int = {
     version match { case 0 => v case x => x }
   }
   
-  def getDoodleId = {
+  def getDoodleId: String = {
     doodle_id match { case ""|null => d case x => x }
   }
   
-  def getTime = {
+  def getTime: Int = {
     time match { case 0 => t case x => x }
   }
   
-  def getLayers = {
+  def getLayers: Array[_ <: JsonLayer] = {
     layers match { case Array()|null => if(l!=null)l else Array() case x => x }
   }
   
   //def print = println(this)
-  def getDoodleLayers = {
+  def getDoodleLayers: mutable.Buffer[Layer] = {
     
     val buf = collection.mutable.Buffer[Layer]()
     getLayers.foreach { 
@@ -42,7 +44,7 @@ class JsonSave {
     buf
   }
   
-  override def toString ="version "+getVersion+". doodle_id "+getDoodleId+". time "+getTime+
+  override def toString: String ="version "+getVersion+". doodle_id "+getDoodleId+". time "+getTime+
       ". layers "+getLayers.take(10).mkString(", ")
 }
 
@@ -51,10 +53,10 @@ class JsonLayer {
   var visible:Boolean = true
   var s:Array[JsonStroke] = Array()
   var v:Boolean = true
-  def getVisible = {
+  def getVisible: Boolean = {
     visible match { case true => v case x => x }
   }
-  def getStrokes = {
+  def getStrokes: Array[JsonStroke] = {
     strokes match { case Array()|null => s case x => x }
   }
 }
@@ -71,7 +73,7 @@ class JsonStroke {
   var c:String = _
   var s:Double = _
   
-  def getLines = {
+  def getLines: Array[BasicLine] = {
     toDoodlePart.getLines
   }
   def toDoodlePart:DoodlePart = {

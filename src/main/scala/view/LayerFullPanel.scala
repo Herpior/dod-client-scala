@@ -22,7 +22,7 @@ class LayerFullPanel(model:LayerList) extends BoxPanel(Orientation.Vertical) {
     this.horizontalScrollBarPolicy = scala.swing.ScrollPane.BarPolicy.Never
     }
   
-  def reset = list.reset
+  def reset(): Unit = list.reset
   
   this.deafTo(this)
   this.listenTo(tools)

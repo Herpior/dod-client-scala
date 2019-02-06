@@ -3,12 +3,13 @@ package dmodel
 import dmodel.dpart._
 
 import collection.mutable.Buffer
+import scala.collection.mutable
 
 class Layer() {
-  protected val redos = Buffer[DoodlePart]()
+  protected val redos: mutable.Buffer[DoodlePart] = Buffer[DoodlePart]()
   //var img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB)
   //var thumb = new BufferedImage(200,150,BufferedImage.TYPE_INT_ARGB)
-  protected val strokes = Buffer[DoodlePart]()
+  protected val strokes: mutable.Buffer[DoodlePart] = Buffer[DoodlePart]()
   protected var visible = true
   private var selected = false
 
@@ -19,16 +20,16 @@ class Layer() {
     strokes(editedIndex) = replaceWith
     true
   }
-  def isVisible = visible
-  def isSelected = selected
+  def isVisible: Boolean = visible
+  def isSelected: Boolean = selected
   def isMatrix = false
   
   def pressPoint(coord:Coord){}
   def dragPoint(coord:Coord){}
-  def releasePoint {}
+  def releasePoint() {}
   
-  def toggleSelected = selected = !selected
-  def toggleVisibility = visible = !visible
+  def toggleSelected(): Unit = selected = !selected
+  def toggleVisibility(): Unit = visible = !visible
   
   def setVisibility(next:Boolean) {visible = next}
   
@@ -53,14 +54,14 @@ class Layer() {
     strokes ++= adding
     redos.clear()
   }
-  def undo {
+  def undo() {
     if(strokes.nonEmpty){
       strokes.last.onUndo(this)
       redos += strokes.last
       strokes -= strokes.last
     }
   }
-  def redo {
+  def redo() {
     if(redos.nonEmpty){
       redos.last.onRedo(this)
       strokes += redos.last
@@ -80,24 +81,24 @@ class Layer() {
       }
     } else None
   }
-  def burn {
+  def burn() {
     while (strokes.nonEmpty){
       undo
     }
   }
-  def revive {
+  def revive() {
     while(redos.nonEmpty){
       redo
     }
   }
-  def reviveAndReturnFailedEditLines= { //used for splitting layer
+  def reviveAndReturnFailedEditLines: mutable.Buffer[DoodlePart] = { //used for splitting layer
     val returning = Buffer[DoodlePart]()
     while(redos.nonEmpty){
       redoOrReturnLineOnFailure.foreach(returning += _)
     }
     returning.reverse
   }
-  def split = {
+  def split: Layer = {
     val upper = new Layer
     //if the original line of an editline is not in the redo stack, it's in the undo stack and the edit line should stay in the original layer
     //val editlines = this.redos.filter(dp => dp.isInstanceOf[EditLine] && !this.redos.contains(dp.asInstanceOf[EditLine].originalLine))
@@ -109,19 +110,19 @@ class Layer() {
     upper.setVisibility(true)
     upper
   }
-  def getVisibleStrokes(posting:Boolean)={ //TODO: rename things here
+  def getVisibleStrokes(posting:Boolean): Array[DoodlePart] ={ //TODO: rename things here
     if(visible)strokes.toArray else Array[DoodlePart]()
   }
-  def getRedos={
+  def getRedos: Array[DoodlePart] ={
     redos.toArray
   }
-  def getStrokes={
+  def getStrokes: Array[DoodlePart] ={
     strokes.toArray
   }
-  def toJsonString = {
+  def toJsonString: String = {
     "{\"strokes\":["+this.strokes.flatMap(_.toJsonString).mkString(",")+"],\"visible\":"+visible+"}"
   }
-  def toShortJsonString = {
+  def toShortJsonString: String = {
     "{\"s\":["+this.strokes.flatMap(_.toShortJsonString).mkString(",")+"],\"v\":"+visible+"}"
   }
 }
@@ -165,7 +166,7 @@ class MatrixLayer(private val orig:Layer) extends Layer {
   }
   override def load(arr:Array[JsonLine]){
   }
-  override def getVisibleStrokes(posting:Boolean)={
+  override def getVisibleStrokes(posting:Boolean): Array[DoodlePart] ={
     if(posting) {
       if(visible)strokes.toArray else Array[DoodlePart]()
     }
@@ -182,7 +183,7 @@ class MatrixLayer(private val orig:Layer) extends Layer {
       edges.setCoords(points++Array(points.head))
     }
   }
-  private def recalculate {
+  private def recalculate() {
     strokes.clear
     val transformation = Matrix.transferPoint(Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Magic.doodleSize,Coord(0,Magic.doodleSize.y)), points)
     strokes ++= orig.getStrokes.flatMap{
@@ -190,7 +191,7 @@ class MatrixLayer(private val orig:Layer) extends Layer {
         s1.transform(transformation)
     }
   }
-  def normal = {
+  def normal: Layer = {
     val res = new Layer
     strokes.foreach { stroke => res.add(stroke) }
     res

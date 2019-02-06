@@ -41,7 +41,7 @@ class LoadingPanel(real:Future[WindowPanel],old:WindowPanel) extends BoxPanel(Or
   this.contents += new FlowPanel(descrip){this.background=Magic.bgColor}
   
   
-  val timer:javax.swing.Timer= Timer(5000,true){
+  val timer:javax.swing.Timer= Timer(5000){
     loadingIndex += 1
     if(loadingIndex<loadingTexts.length) {
       descrip.setPhrase(loadingTexts(loadingIndex))
@@ -54,7 +54,7 @@ class LoadingPanel(real:Future[WindowPanel],old:WindowPanel) extends BoxPanel(Or
   }
   timer.start()
   
-  def setResults {
+  def setResults() {
     real.onSuccess{
       case x=>
         timer.stop()
@@ -71,7 +71,7 @@ class LoadingPanel(real:Future[WindowPanel],old:WindowPanel) extends BoxPanel(Or
         this.publish(new ReplaceEvent(old,this))
     }
   }
-  Timer(10,false){ //slow down so that the window has time to listen to this
+  Timer(10, false) { //slow down so that the window has time to listen to this
     setResults
-  }.start
+  }.start()
 }

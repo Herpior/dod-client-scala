@@ -13,9 +13,9 @@ object ColorModel {
   def getColor2 = getColors(colorpicker2)
   
   
-  def colorSize = this.getColors.length
+  def colorSize: Int = this.getColors.length
   //val rows = 5
-  def rows = if(Magic.authorized)Magic.rows else 2
+  def rows: Int = if(Magic.authorized)Magic.rows else 2
   //val nrows = 2
   private val normal = Array(
           "#000000","#6d6f71","#0791cd","#699c41","#f47e20","#d6163b","#6e1a11","#f8ded7",
@@ -48,25 +48,25 @@ object ColorModel {
           "#000000","#f7c1ad","#f6ab8a","#f58f4f","#f47e20","#c04e1b","#9e3517","#842514",
           "#000000","#000000","#000000","#000000","#000000","#e2241a","#cc2419","#a62116")*/
     //Array()
-  def getColors= if(Magic.authorized)colors else normal
-  def rowl = colorSize/rows//(colors.length/rows)
-  def colorIndex = colorpicker
-  def colorIndex2 = colorpicker2
+  def getColors: Array[Color] = if(Magic.authorized)colors else normal
+  def rowl: Int = colorSize/rows//(colors.length/rows)
+  def colorIndex: Int = colorpicker
+  def colorIndex2: Int = colorpicker2
   //def colorIndex2 = colorpicker2
   //def getColor(ind:Int) = if(ind<1)getColors(colorIndex) else getColors(colorIndex2)
-  def colorUp =  if(colorpicker>=rowl){
+  def colorUp(): Unit =  if(colorpicker>=rowl){
     if(colorpicker2 == colorpicker) colorpicker2 -= rowl
     colorpicker -= rowl
   }
-  def colorDown = if(colorpicker<rowl*(rows-1)){
+  def colorDown(): Unit = if(colorpicker<rowl*(rows-1)){
     if(colorpicker2 == colorpicker) colorpicker2 += rowl
     colorpicker += rowl
   } 
-  def colorLeft = if(colorpicker>0){
+  def colorLeft(): Unit = if(colorpicker>0){
     if(colorpicker2 == colorpicker) colorpicker2 -= 1
     colorpicker -= 1
   }
-  def colorRight = if(colorpicker<colorSize-1){
+  def colorRight(): Unit = if(colorpicker<colorSize-1){
     if(colorpicker2 == colorpicker) colorpicker2 += 1
     colorpicker += 1
   }
@@ -97,7 +97,7 @@ object ColorModel {
       colors(colorpicker)=Colors.toColor(col)
       io.LocalStorage.storeArray(colors.map(color=>Colors.toHexRGBA(color)), "colours")
     }catch{
-      case e:Throwable=>e.printStackTrace
+      case e:Throwable=>e.printStackTrace()
     }
   }
   def setColor(color:Color){

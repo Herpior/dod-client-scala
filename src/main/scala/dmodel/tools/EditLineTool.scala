@@ -51,7 +51,7 @@ class EditLineTool extends SelectTool { //(Array())
     //db.repaint()
   }
 
-  override def getConfigVariables() = {
+  override def getConfigVariables(): Vector[ConfigVariable] = {
     val colorConfig = new BooleanConfigVariable("set color", _=>this.changeColour, changeColour=_)
     val sizeConfig = new BooleanConfigVariable("set size", _=>this.changeSize, changeSize=_)
     Vector(colorConfig, sizeConfig).asInstanceOf[Vector[ConfigVariable]]

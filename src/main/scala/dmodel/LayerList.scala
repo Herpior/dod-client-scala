@@ -11,21 +11,21 @@ class LayerList {
   private var layers = Buffer(new Layer)
   private var current = 0
   
-  def ind = current
-  def isMatrix = getCurrent.isMatrix;
-  
-  def size = layers.length
+  def ind: Int = current
+  def isMatrix: Boolean = getCurrent.isMatrix
+
+  def size: Int = layers.length
   //
-  def getTop = {
+  def getTop: Array[Layer] = {
     this.layers.drop(ind + 1).toArray
   }
-  def getBot = {
+  def getBot: Array[Layer] = {
     this.layers.take(ind).toArray
   }
-  def getCurrent = {
+  def getCurrent: Layer = {
     layers(ind)
   }
-  def getSelected = {
+  def getSelected: Array[Layer] = {
     val curr = getCurrent
     this.layers.filter { lay => lay.isSelected || lay==curr}.toArray
   }
@@ -37,32 +37,32 @@ class LayerList {
       layers(other)=tmp
     }
   }
-  def split {
+  def split() {
     val curr = getCurrent
     if(!curr.getRedos.isEmpty)
     addLayer(curr.split)
   }
   //
-  def toArray = {
+  def toArray: Array[Layer] = {
     layers.toArray
   }
-  def head = {
+  def head: Layer = {
     layers.head
   }
   
   //
-  def undo = {
+  def undo(): Unit = {
     layers(ind).undo
   }
-  def redo = {
+  def redo(): Unit = {
     layers(ind).redo
   }
-  def burn = {
+  def burn(): Unit = {
     layers(ind).burn
   }
   
   //
-  def mergeLayer{
+  def mergeLayer(){
     val i = ind
     if(i>0){
       layers(i-1).merge(layers(i))
@@ -70,18 +70,18 @@ class LayerList {
       current -= 1
       }
   }
-  def removeLayer{
+  def removeLayer(){
     if(ind>=0 && size>1){
       layers -= layers(ind)
       if(ind>0)current -= 1
       }
   }
-  def addLayer{addLayer(new Layer)}
+  def addLayer(){addLayer(new Layer)}
   def addMatrixLayer(orig:Layer){
     addLayer(new MatrixLayer(orig))
     layerUp
     }
-  def finaliseMatrix{
+  def finaliseMatrix(){
     this.getCurrent match {
       case layer: MatrixLayer =>
         val res = layer.normal
@@ -101,13 +101,13 @@ class LayerList {
   def addLayers(adding:Buffer[Layer]){
     adding.foreach { l => addLayer(l) }
   }
-  def layerUp{
+  def layerUp(){
     if(ind+1<layers.length) {
       //finaliseMatrix
       current += 1
     }
   }
-  def layerDown{
+  def layerDown(){
     if(ind>0) {
       //finaliseMatrix
       current -= 1
@@ -124,13 +124,13 @@ class LayerList {
     else layers ++= save.getDoodleLayers
     current = size-1
   }
-  def toJson(time:Int) = {
+  def toJson(time:Int): String = {
     JsonParse.writeSave(this.toArray, time)
   }
-  def toJsonString(time:Int, chain:String) = {
+  def toJsonString(time:Int, chain:String): String = {
     "{\"version\":"+view.DoodleWindow.version+",\"doodle_id\":\""+chain+"\",\"time\":"+time+",\"layers\":["+this.layers.map(_.toJsonString).mkString(",")+"]}"
    }
-  def toShortJsonString(time:Int, chain:String) = {
+  def toShortJsonString(time:Int, chain:String): String = {
     "{\"v\":"+view.DoodleWindow.version+",\"d\":\""+chain+"\",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
    }
   

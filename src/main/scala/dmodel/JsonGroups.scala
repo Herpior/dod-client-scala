@@ -7,7 +7,7 @@ class JsonGroups {
   var isPartial:Boolean = _
   var layout:Boolean = _
   var html:String = _
-  def getGroups = Array(everyone) ++ groups
+  def getGroups: Array[JsonGroup] = Array(everyone) ++ groups
 }
 
 object everyone extends JsonGroup {
@@ -20,10 +20,10 @@ class JsonGroup {
   var displayName:String = _
   var stats:JsonGroupStats = _
   var urlSafe:String = _
-  override def toString={
+  override def toString: String ={
     displayName
   }
-  def change = {
+  def change: Boolean = {
     http.HttpHandler.changeGroup(_id)
   }
 }

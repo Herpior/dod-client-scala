@@ -1,8 +1,9 @@
 package dmodel
+import scala.collection.immutable
 
 object Fonts {
 
-  val letters = Map(
+  val letters: Map[Char, monospace] = Map(
       (' ',new monospace(25,Array(),Array())),
       ('A',new monospace(20,Array(Array(0.0,8.0,15.5),Array(4.0,12.0)),Array(Array(19.5,0.0,19.5),Array(11.0,11.0)))),
       ('B',new monospace(17,Array(Array(0.0,0.0),Array(0.0625,2.2331144073390305,5.710333392869302,8.033366999131886,9.01663993858017,9.310114629438658,9.313576690707634,9.02670028132627,8.05128825746499,5.731513061808471,2.2445188444601456,0.0625),Array(0.40625,1.767940099060155,4.223902912270319,6.324197594453551,8.069890204233616,9.462046800234361,10.501733441079693,11.190016185393347,11.52796109179917,11.516634218921013,11.157101625382666,10.450429369808035,9.397683510820855,7.999930107044975,6.2582352171043,4.1736648996225085,1.7472852132235062,0.40625)),Array(Array(0.09375,18.59375),Array(0.0,0.08500289976910835,0.6985020894069294,1.7554946691444115,2.732566044207715,3.4301441890519015,4.1388096686486335,4.83638781349282,5.8134591885561235,6.870451768293606,7.483950957931427,7.568953857700535),Array(7.375,7.407382960931216,7.654044663343484,8.115674106405606,8.759199330017594,9.55154837407946,10.459649278491156,11.450430083152867,12.490818827964489,13.54774355282612,14.588132297637742,15.578913102299452,16.48701400671115,17.279363050773014,17.922888274385002,18.384517717447068,18.631179419859365,18.66356238079058)))),
@@ -37,23 +38,23 @@ object Fonts {
   ).withDefault { x => new monospace(5,Array(),Array()) }
   
   
-  def getLetter(letter:Char,font:Int)={
+  def getLetter(letter:Char,font:Int): monospace ={
     letters(letter)
   }
   
 }
 case class letter(xs:Array[Array[Double]], ys:Array[Array[Double]]) {
-  def length = {
+  def length: Double = {
     val sort = xs.flatten.sorted
     sort.head-sort.last
   }
   def height = 10
-  def coords = {
+  def coords: immutable.IndexedSeq[immutable.IndexedSeq[Coord]] = {
     xs.indices.map{ 
       i=>xs(i).indices.map( j=> Coord( xs(i)(j), ys(i)(j) ) ) 
     }
   }
 }
 class monospace(val l:Double,xs:Array[Array[Double]],ys:Array[Array[Double]])extends letter(xs,ys){
-  override def length = l
+  override def length: Double = l
 }

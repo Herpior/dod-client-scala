@@ -9,7 +9,7 @@ import dmodel.tools.BasicTool
 
 class DoodleModel {
   val layers = new LayerList//Buffer(new Layer)
-  val tools = ToolModel
+  val tools: ToolModel.type = ToolModel
   //private val next = new CurrentLine
   
   //private var multiLine:Option[MultiLine] = None
@@ -38,9 +38,9 @@ class DoodleModel {
   //private var color2 = "#000000"
   
   //def isWriting = textLine.isDefined
-  def isDrawing = tools.getTool.isBusy //currentLines.length>0/*multiLine.isDefined*/ || hoveringLine2.isDefined
+  def isDrawing = tools.getTool.isBusy() //currentLines.length>0/*multiLine.isDefined*/ || hoveringLine2.isDefined
   //def isBezier = bezier && bezierLine.isDefined
-  def isMatrix = {
+  def isMatrix: Boolean = {
     matrix
   }
   //---------\\
@@ -67,31 +67,31 @@ class DoodleModel {
     this.currentLines ++= dps
   }
   //---------\\
-  def getTop = {
+  def getTop: Array[Layer] = {
     layers.getTop//drop(current+1).flatMap { x => x.getStrokes }.toArray
   }
-  def getBot = {
+  def getBot: Array[Layer] = {
     layers.getBot//.take(current).flatMap { x => x.getStrokes }.toArray
   }
-  def getMid = {
+  def getMid: Layer = {
     layers.getCurrent//(current).getStrokes
   }
   //---------\\
-  def getDrawing = {
+  def getDrawing: Array[DoodlePart] = {
     currentLines.toArray//(bezierLine/*++textLine*/++multiLine).toArray
   }
   def getLast = {
   //  multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
-    currentTool.getLastLine
+    currentTool.getLastLine()
   }
-  def getLastMid = {
+  def getLastMid: Option[DoodlePart] = {
     val strokes = layers.getCurrent.getVisibleStrokes(false)//(current).getStrokes
     strokes.lastOption
   }
-  def getLayers = {
+  def getLayers: Array[Layer] = {
     layers.toArray
   }
-  def getFlatStrokes = {
+  def getFlatStrokes: Array[BasicLine] = {
     layers.toArray.flatMap(_.getVisibleStrokes(true).flatMap(_.getLines))
   }
   //---------\\
@@ -111,7 +111,7 @@ class DoodleModel {
     }
     catch{
       case e:java.io.FileNotFoundException=>
-      case e:Throwable=>e.printStackTrace}
+      case e:Throwable=>e.printStackTrace()}
   }
   def decryptFrom(path:String){
     try{
@@ -121,21 +121,21 @@ class DoodleModel {
     }
     catch{
       case e:java.io.FileNotFoundException=>
-      case e:Throwable=>e.printStackTrace}
+      case e:Throwable=>e.printStackTrace()}
   }
-  def submit={
+  def submit: Boolean ={
     HttpHandler.submitDoodle(this.toDodPostJson)
   }
-  def save(chain:String)={
+  def save(chain:String): Unit ={
     LocalStorage.saveTo(layers.toShortJsonString(this.getPaintTime, chain), chain)
   }
   //---------\\
-  def getPaintPercentage={
+  def getPaintPercentage: Int ={
     //println("pp "+LineDrawer.paintPercentage(layers.toArray))
     LineDrawer.paintPercentage(layers.toArray)
     //???
   }
-  def getPaintTime={
+  def getPaintTime: Int ={
     // 229319649/ 24867
     // 1398881828/9330
     // 90768084/ 6401
@@ -175,13 +175,13 @@ class DoodleModel {
   def paste{
     ???
   }*/
-  def undo{
+  def undo(){
     layers.undo
   }
-  def redo{
+  def redo(){
     layers.redo
   }
-  def burn{
+  def burn(){
     layers.burn
   }
   //---------\\
@@ -198,20 +198,20 @@ class DoodleModel {
     ???
   }*/
   //---------\\
-  def mergeLayer{
+  def mergeLayer(){
     layers.mergeLayer
   }
-  def addLayer{
+  def addLayer(){
     layers.addLayer
   }
-  def layerUp{
+  def layerUp(){
     layers.layerUp
   }
-  def layerDown{
+  def layerDown(){
     layers.layerDown
   }
   //---------\\
-  def toLocalStorage{
+  def toLocalStorage(){
     io.LocalStorage.printFile(layers.toArray.flatMap(_.getVisibleStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime, "backup."+HttpHandler.getGroup+".txt")
   }
 
@@ -222,7 +222,7 @@ class DoodleModel {
     val strokesInDodFormat = flatStrokes.map(_.toDodJson)
      "["+strokesInDodFormat.mkString(",")+"]"
   }
-  def toDodPostJson = {
+  def toDodPostJson: String = {
     val flatStrokes = this.getFlatStrokes
     val rawDodPostStrokes = this.toDodPostJsonStrokes(flatStrokes)
     var j = rawDodPostStrokes.length
@@ -261,7 +261,7 @@ class DoodleModel {
   }*/
   
   //---------\\
-  def matrixLayer {
+  def matrixLayer() {
     if(!matrix)this.layers.addMatrixLayer(this.layers.getCurrent)
     else this.layers.finaliseMatrix
   }
@@ -271,7 +271,7 @@ class DoodleModel {
   def dragMatrix(place:Coord,mods:Int){
     layers.getCurrent.dragPoint(place)
   }
-  def stopMatrix{
+  def stopMatrix(){
     layers.getCurrent.releasePoint
   }
 }

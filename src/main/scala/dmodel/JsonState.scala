@@ -1,9 +1,9 @@
 package dmodel
 
 import dmodel.dpart.JsonDoodle
-import view.DoodlingPanel
-import view.PhrasingPanel
-import view.StalingPanel
+import view.{DoodlingPanel, PhrasingPanel, PlayPanel, StalingPanel}
+
+import scala.swing.Panel
 
 class JsonState {
   var activeState:String = _
@@ -25,22 +25,22 @@ class JsonState {
     "stale"
     "phrase"
   }*/
-  def finishing = {
+  def finishing: Boolean = {
     /*isFinishingChain != null &&*/ isFinishingChain
   }
-  def starting = {
+  def starting: Boolean = {
     /*isStartingChain != null &&*/ isStartingChain
   }
-  def randomizer = {
+  def randomizer: Boolean = {
     starting || group_id == "gJzy1S_3_" || group_id == "EGb3cV8Bo8"
   }
-  def getPhrase = {
+  def getPhrase: String = {
     if(phrase!=null)phrase else ""
   }
-  def getDoodle = {
+  def getDoodle: JsonDoodle = {
     if(doodle!=null)doodle else new JsonDoodle
   }
-  def toPlayPanel={
+  def toPlayPanel: Panel with PlayPanel ={
     //println(activeState+" - "+private_id+"/"+staleChain_id+" - "+group_id)
     activeState match{
       case "draw"=>

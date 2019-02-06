@@ -9,7 +9,7 @@ import org.apache.http.client.methods.HttpGet
 import collection.mutable.Buffer
 import scala.collection.JavaConversions._
 import org.apache.http.util.EntityUtils
-import dmodel.JsonParse
+import dmodel.{JsonGroups, JsonParse, JsonSkips, JsonState}
 import java.util.zip.GZIPInputStream
 
 import org.apache.http.impl.client.BasicCookieStore
@@ -17,15 +17,15 @@ import org.apache.http.impl.cookie.BasicClientCookie
 import org.apache.http.cookie.ClientCookie
 import java.util.Calendar
 
-import dmodel.dpart.BasicLine
+import dmodel.dpart.{BasicLine, JsonDoodle}
 
 
 object HttpHandler {
 
-  private var client :CloseableHttpClient = null
+  private var client :CloseableHttpClient = _
   val httpCookieStore = new BasicCookieStore()
   val cacertFilename = "/dodcacerts"
-  val cacertPass = "RpcQNp1tTSifL6aGqAtt".toCharArray()
+  val cacertPass: Array[Char] = "RpcQNp1tTSifL6aGqAtt".toCharArray
 
   try{
     client = KeystoreLoader.setUpClient(cacertFilename, cacertPass, httpCookieStore)
@@ -54,19 +54,19 @@ object HttpHandler {
   private var auth = new dmodel.JsonSkips
   
   val GZIP_CONTENT_TYPE = "gzip"
-  def getChain = chain
-  def getGroup = room
-  def getAuth = auth.isSuper
-  def loggedIn = auth.skipsPerDuration>0 //very weird way to figure out if logged in
+  def getChain: String = chain
+  def getGroup: String = room
+  def getAuth: Boolean = auth.isSuper
+  def loggedIn: Boolean = auth.skipsPerDuration>0 //very weird way to figure out if logged in
 
-  def saveCid {
+  def saveCid() {
   cid.foreach { x => io.Crypt.encipherTo(x, "login") }
   }
     
   private def postHttp(post:HttpPost)={
     val response = client.execute(post)
     val in = 
-        if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding())){
+        if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding)){
           new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
@@ -78,10 +78,10 @@ object HttpHandler {
     str.toArray
   }
 
-  def getHttp(get:HttpGet)={
+  def getHttp(get:HttpGet): Array[String] ={
     val response = client.execute(get)
     val in = 
-        if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding())){
+        if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding)){
           new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
@@ -99,9 +99,9 @@ object HttpHandler {
     cookie.setPath("/")
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.DAY_OF_YEAR, 300)
-    val date = calendar.getTime()
+    val date = calendar.getTime
     cookie.setExpiryDate(date)
-    cookie.setAttribute(ClientCookie.DOMAIN_ATTR, "true");
+    cookie.setAttribute(ClientCookie.DOMAIN_ATTR, "true")
     httpCookieStore.addCookie(cookie)
   }
 
@@ -112,12 +112,12 @@ object HttpHandler {
     //println(in.mkString("\n"))
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
-  def submitDesc(desc:String)={
+  def submitDesc(desc:String): Boolean ={
     val post = new DescPost(chain,desc)
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
-  def logout {
+  def logout() {
     val get = new DodGet("bye","")
     getHttp(get)
     room = "global"
@@ -143,31 +143,31 @@ object HttpHandler {
     }
     cid.isDefined
   }
-  def skip{
+  def skip(){
     val post = new SkipPost(chain)
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
-  def getSkips= {
+  def getSkips: JsonSkips = {
     val get = new SkipsGet()
     val in = getHttp(get)
     val skips = JsonParse.parseSkips(in.mkString("\n"))
     this.auth = skips
     skips
   }
-  def getGroupList={
+  def getGroupList: JsonGroups ={
     val get = new GroupsGet()
     val in = getHttp(get)
     val list = JsonParse.parseGroupList(in.mkString("\n"))
     if(list.activeGroup!=null&&list.activeGroup._id!=null) room = list.activeGroup._id
     list
   }
-  def getDoodle(url:String)={
+  def getDoodle(url:String): JsonDoodle ={
     val get = new DoodleGet(url)
     val in = getHttp(get)
     JsonParse.parseDoodle(in.mkString("\n").dropWhile(_!='{').dropRight(2))
   }
-  def changeGroup(group_id:String)={
+  def changeGroup(group_id:String): Boolean ={
     val post = new ChangeGroupPost(group_id)
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
@@ -180,7 +180,7 @@ object HttpHandler {
     
     cid.isDefined
   }
-  def debugGet(ext:String,ref:String)={
+  def debugGet(ext:String,ref:String): Unit ={
     val get = new DefaultGet(ext,ref)
     val in = getHttp(get)
     println("HttpHandler debugGet")
@@ -188,10 +188,10 @@ object HttpHandler {
     println(in.mkString("\n"))
     println("cookies:")
   }
-  def hasCid = {
+  def hasCid: Boolean = {
     cid.isDefined
   }
-  def state={
+  def state: JsonState ={
     val get = new StateGet()
     val in = getHttp(get)
     val state = JsonParse.parseState(in.mkString("\n"))
@@ -201,12 +201,12 @@ object HttpHandler {
     if(state.skipsInfo != null )auth = state.skipsInfo
     state
   }
-  def resume={
+  def resume: Boolean ={
     val post = new ResumePost()
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk
   }
-  def ping={
+  def ping: Boolean ={
     val post = new PingPost(chain)
     val in = postHttp(post)
     JsonParse.parseOk(in.mkString("\n")).isOk

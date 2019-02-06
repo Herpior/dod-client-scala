@@ -18,13 +18,13 @@ import scala.swing.{Dimension, Panel}
  */
 //getValue:Unit=>Double, setValue:Double=>Unit, /*getString:Unit=>String, */ minVal:Double=0, maxVal:Double=1, logOffset:Double = 1, logScale:Boolean = true, isInteger:Boolean = false
 class ConfigSlider(config: DoubleConfigVariable) extends Panel{
-  def getValue = config.getVal
-  def setValue(res:Double) = config.setVal(res)
-  val minVal = config.minVal.getOrElse(0.0)
-  val maxVal = config.maxVal.getOrElse(1.0)
-  val logOffset = config.logOffset
-  val logScale = config.logScale
-  val reversed = minVal>maxVal
+  def getValue: Double = config.getVal
+  def setValue(res:Double): Unit = config.setVal(res)
+  val minVal: Double = config.minVal.getOrElse(0.0)
+  val maxVal: Double = config.maxVal.getOrElse(1.0)
+  val logOffset: Double = config.logOffset
+  val logScale: Boolean = config.logScale
+  val reversed: Boolean = minVal>maxVal
 
 
   private val width = 200
@@ -36,17 +36,17 @@ class ConfigSlider(config: DoubleConfigVariable) extends Panel{
   protected val marginSizeY = 2
   protected val labelHeight = 10
   protected val sliderHeight = 10
-  protected val start = marginSizeX
-  protected val length = width - start*2 -2
-  protected val height = sliderHeight + marginSizeY*2 + labelHeight
-  def currentValue = getValue
+  protected val start: Int = marginSizeX
+  protected val length: Int = width - start*2 -2
+  protected val height: Int = sliderHeight + marginSizeY*2 + labelHeight
+  def currentValue: Double = getValue
 
   this.minimumSize = new Dimension(width, height)
   this.preferredSize = this.minimumSize
   this.maximumSize = this.minimumSize
   this.background = Magic.bgColor
 
-  def valueAsString = {
+  def valueAsString: String = {
     //f"$currentValue%1.2f"
     val curr = currentValue
     val str = curr.toString
@@ -88,8 +88,8 @@ class ConfigSlider(config: DoubleConfigVariable) extends Panel{
     else (value-minVal)/(maxVal-minVal)
   }
 
-  protected def xFromVal(value:Double) =  math.round(start + length * normalizedXFromVal(value)).toInt
-  protected def valFromX(x:Double) = {
+  protected def xFromVal(value:Double): Int =  math.round(start + length * normalizedXFromVal(value)).toInt
+  protected def valFromX(x:Double): Double = {
     val res = valFromNormalizedX((x-start)/length)
     res
   }

@@ -30,6 +30,6 @@ class EraseLineTool extends EditLineTool {
     db.redrawDrawing
     db.repaint()
   }*/
-override def getConfigVariables() = {Vector()}
+override def getConfigVariables(): Vector[Nothing] = {Vector()}
 
 }

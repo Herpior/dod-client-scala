@@ -26,7 +26,7 @@ class LayerListPanel(model:LayerList) extends Panel{
   this.maximumSize = new Dimension(200, model.toArray.length*(5+Magic.thumbY))
   
   this.background = Magic.bgColor
-  controller.Timer(100,false)(reset).start //might fail if loading the save file takes too long?
+  controller.Timer(100, false)(reset).start() //might fail if loading the save file takes too long?
   
   private var thumbs = model.toArray.map { layer => (layer, LineDrawer.thumb(layer)) }.toMap
   
@@ -57,7 +57,7 @@ class LayerListPanel(model:LayerList) extends Panel{
     }
   }
   
-  def reset = {
+  def reset(): Unit = {
     val layers = model.toArray
     val ht = layers.length*(5+Magic.thumbY)
     this.current = model.getCurrent
@@ -85,7 +85,7 @@ class LayerListPanel(model:LayerList) extends Panel{
     case e:event.MouseReleased=>
       val y=e.point.getY
       //println("y: "+y)
-      val ht = (Magic.thumbY+5)
+      val ht = Magic.thumbY+5
       val index = model.size-1-y.toInt/ht
       //println("index: "+index)
       if(index>=0){

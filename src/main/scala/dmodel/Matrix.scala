@@ -53,7 +53,7 @@ object Matrix/*(magicX:Int,magicY:Int)*/ {
     Array(Array())
   }*/
   
-  def gaussian(arr:Array[Array[Double]]) = {
+  def gaussian(arr:Array[Array[Double]]): Unit = {
     val as = arr.map(_.clone())
     println("as:")
     println(as.map(_.mkString(", ")).mkString("\n"))
@@ -120,77 +120,77 @@ gaussian (arr)
         
       var ADDING = 0.001; // to avoid dividing by zero
 
-      val xA = source(0).x;
-      val yA = source(0).y;
+      val xA = source(0).x
+      val yA = source(0).y
 
-      val xC = source(2).x;
-      val yC = source(2).y;
+      val xC = source(2).x
+      val yC = source(2).y
 
-      val xAu = destination(0).x;
-      val yAu = destination(0).y;
-  
-      var xBu = destination(1).x;
-      val yBu = destination(1).y;
-  
-      var xCu = destination(2).x;
-      val yCu = destination(2).y;
-  
-      var xDu = destination(3).x;
-      val yDu = destination(3).y;
-  
+      val xAu = destination(0).x
+      val yAu = destination(0).y
+
+      var xBu = destination(1).x
+      val yBu = destination(1).y
+
+      var xCu = destination(2).x
+      val yCu = destination(2).y
+
+      var xDu = destination(3).x
+      val yDu = destination(3).y
+
       // Calculations
       // if points are the same, have to add a ADDING to avoid dividing by zero
-      if (xBu==xCu) xCu+=ADDING;
-      if (xAu==xDu) xDu+=ADDING;
-      if (xAu==xBu) xBu+=ADDING;
-      if (xDu==xCu) xCu+=ADDING;
-      var kBC = (yBu-yCu)/(xBu-xCu);
-      var kAD = (yAu-yDu)/(xAu-xDu);
-      var kAB = (yAu-yBu)/(xAu-xBu);
-      var kDC = (yDu-yCu)/(xDu-xCu);
-  
-      if (kBC==kAD) kAD+=ADDING;
-      val xE = (kBC * xBu - kAD * xAu + yAu - yBu) / (kBC - kAD);
-      val yE = kBC * (xE - xBu) + yBu;
-  
-      if (kAB==kDC) kDC+=ADDING;
-      var xF = (kAB*xBu - kDC*xCu + yCu - yBu) / (kAB-kDC);
-      val yF = kAB * (xF - xBu) + yBu;
-  
-      if (xE==xF) xF+=ADDING;
-      val kEF = (yE - yF) / (xE - xF);
-  
-      if (kEF==kAB) kAB+=ADDING;
-      val xG = (kEF * xDu - kAB * xAu + yAu - yDu) / (kEF - kAB);
-      val yG = kEF * (xG - xDu) + yDu;
-  
-      if (kEF==kBC) kBC+=ADDING;
-      val xH = (kEF * xDu - kBC * xBu + yBu - yDu) / (kEF - kBC);
-      val yH = kEF * (xH - xDu) + yDu;
+      if (xBu==xCu) xCu+=ADDING
+      if (xAu==xDu) xDu+=ADDING
+      if (xAu==xBu) xBu+=ADDING
+      if (xDu==xCu) xCu+=ADDING
+      var kBC = (yBu-yCu)/(xBu-xCu)
+      var kAD = (yAu-yDu)/(xAu-xDu)
+      var kAB = (yAu-yBu)/(xAu-xBu)
+      var kDC = (yDu-yCu)/(xDu-xCu)
 
-      
+      if (kBC==kAD) kAD+=ADDING
+      val xE = (kBC * xBu - kAD * xAu + yAu - yBu) / (kBC - kAD)
+      val yE = kBC * (xE - xBu) + yBu
+
+      if (kAB==kDC) kDC+=ADDING
+      var xF = (kAB*xBu - kDC*xCu + yCu - yBu) / (kAB-kDC)
+      val yF = kAB * (xF - xBu) + yBu
+
+      if (xE==xF) xF+=ADDING
+      val kEF = (yE - yF) / (xE - xF)
+
+      if (kEF==kAB) kAB+=ADDING
+      val xG = (kEF * xDu - kAB * xAu + yAu - yDu) / (kEF - kAB)
+      val yG = kEF * (xG - xDu) + yDu
+
+      if (kEF==kBC) kBC+=ADDING
+      val xH = (kEF * xDu - kBC * xBu + yBu - yDu) / (kEF - kBC)
+      val yH = kEF * (xH - xDu) + yDu
+
+
       val xI = c.x
       val yI = c.y
 
-      val rG = (yC - yI) / (yC - yA);
-      val rH = (xI - xA) / (xC - xA);
-  
-      var xJ = (xG-xDu)*rG + xDu;
-      val yJ = (yG - yDu) * rG + yDu;
-  
-      var xK = (xH-xDu)*rH + xDu;
-      val yK = (yH - yDu) * rH + yDu;
-  
-      if (xF==xJ) xJ+=ADDING;
-      if (xE==xK) xK+=ADDING;
+      val rG = (yC - yI) / (yC - yA)
+      val rH = (xI - xA) / (xC - xA)
+
+      var xJ = (xG-xDu)*rG + xDu
+      val yJ = (yG - yDu) * rG + yDu
+
+      var xK = (xH-xDu)*rH + xDu
+      val yK = (yH - yDu) * rH + yDu
+
+      if (xF==xJ) xJ+=ADDING
+      if (xE==xK) xK+=ADDING
       val kJF = (yF - yJ) / (xF - xJ); //23
       var kKE = (yE-yK) / (xE-xK); //12
   
       //var xKE;
-      if (kJF==kKE) kKE+=ADDING;
-      val xIu = (kJF * xF - kKE * xE + yE - yF) / (kJF - kKE);
-      val yIu = kJF * (xIu - xJ) + yJ;
-      
+      if (kJF==kKE) kKE+=ADDING
+      val xIu = (kJF * xF - kKE * xE + yE - yF) / (kJF - kKE)
+      val yIu = kJF * (xIu - xJ) + yJ
+
       Coord(xIu, yIu)
 
     }

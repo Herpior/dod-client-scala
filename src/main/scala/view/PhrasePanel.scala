@@ -15,12 +15,12 @@ class PhrasePanel extends BoxPanel(Orientation.NoOrientation){
     this.font = Magic.font20
     //this.preferredSize =  new Dimension(900, 200)
   }*/
-  val flow = new FlowPanel(){//new GridPanel(2, 1){
+  val flow: FlowPanel = new FlowPanel(){//new GridPanel(2, 1){
     //this.contents+=extraLabel
     //this.contents+=phraseLabel
     this.background = Magic.white
   }
-  val desc = new BoxPanel(Orientation.Vertical){
+  val desc: BoxPanel = new BoxPanel(Orientation.Vertical){
     this.background = Magic.white//bgColor
     this.border = Swing.EmptyBorder(30,30,30,30)
     this.minimumSize = new Dimension(400, 50)

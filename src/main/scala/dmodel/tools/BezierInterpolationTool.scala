@@ -21,7 +21,7 @@ class BezierInterpolationTool extends SelectTool {
   }
   
   // returns true if the fill is successful
-  def lineFill(db:DoodleBufferer, control:Boolean, alt:Boolean, shift:Boolean)={
+  def lineFill(db:DoodleBufferer, control:Boolean, alt:Boolean, shift:Boolean): Boolean ={
     var success = false
     if(selected.nonEmpty && hovering.nonEmpty){
       //println("both found")

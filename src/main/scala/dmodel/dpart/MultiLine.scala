@@ -8,23 +8,23 @@ import scala.collection.mutable.Buffer
 // also an easy intermediate format between the original line format and the doodleordie export/upload format
 class MultiLine extends DoodlePart{
   private var lines = Buffer[BasicLine]()
-  def transform (transformation:Coord=>Coord) = {
+  def transform (transformation:Coord=>Coord): Some[MultiLine] = {
     val next = new MultiLine
     next.setLines(this.lines.flatMap ( line => line.transform(transformation)))
     Some(next)
   }
-  def distFrom(point:Coord)={
+  def distFrom(point:Coord): Double ={
     val sorted = lines.map(_.distFrom(point)).sorted
     if(sorted.nonEmpty)sorted.head
     else Double.MaxValue // this multiline is empty
   }
-  def apply(index:Int)={
+  def apply(index:Int): BasicLine ={
     lines(index)
   }
-  def size={
+  def size: Int ={
     lines.length
   }
-  def isEmpty={
+  def isEmpty: Boolean ={
     lines.isEmpty
   }
   def setLines(arr:Array[BasicLine]){
@@ -36,10 +36,10 @@ class MultiLine extends DoodlePart{
   def addLine(line:BasicLine){
     lines += line
   }
-  def getLines={
+  def getLines: Array[BasicLine] ={
     lines.toArray
   }
-  def getLast={
+  def getLast: Option[BasicLine] ={
     lines.lastOption
   }
   /*def lineType={
@@ -51,7 +51,7 @@ class MultiLine extends DoodlePart{
   //    ys += y0
   //  }
   //}
-  def compress { //TODO: check that the compress methods in multiline and basicline make sense and are used
+  def compress() { //TODO: check that the compress methods in multiline and basicline make sense and are used
     val res = Buffer[BasicLine]()
     val nonempty = lines.filter { !_.getCoords.isEmpty }
     if(nonempty.isEmpty)return
@@ -76,7 +76,7 @@ class MultiLine extends DoodlePart{
     //lines = res
     //println(res.mkString("\n"))
   }
-  def selection = {
+  def selection: Some[MultiLine] = {
     val res = new MultiLine
     lines.foreach { x =>
       val line = new BasicLine(Colors.inverse(x.color),1)
@@ -85,13 +85,13 @@ class MultiLine extends DoodlePart{
     Some(res)
   }
 
-  def toJson = {
+  def toJson: Some[JsonStroke] = {
     val json = new JsonStroke
     json.strokes = this.getLines.flatMap(_.toJson)
     json.linetype = "multi"
     Some(json)
   }
-  def toJsonString = {
+  def toJsonString: Some[String] = {
     //val lines = this.getLines
     if(lines.length == 1) {
       lines.head.toJsonString
@@ -100,7 +100,7 @@ class MultiLine extends DoodlePart{
       Some("{\"linetype\":\"multi\",\"strokes\":["+lines.flatMap(_.toJsonString).mkString(",")+"]}")
     }
   }
-  def toShortJsonString = {
+  def toShortJsonString: Some[String] = {
     //val lines = this.getLines
     if(lines.length == 1) {
       lines.head.toShortJsonString

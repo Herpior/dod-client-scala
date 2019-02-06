@@ -5,29 +5,31 @@ package io
  */
 
 import java.awt.image.BufferedImage
+
 import javax.imageio.ImageIO
 import java.io.File
 import java.io.IOException
+
 import javax.swing.ImageIcon
-import java.awt.Toolkit
+import java.awt.{Image, Toolkit}
 
 object Icons {
-  val tk = Toolkit.getDefaultToolkit()
-  val pen = tk.getImage(getClass.getResource("/images/pencil.png"))
-  val line = tk.getImage(getClass.getResource("/images/line.png"))
-  val fill = tk.getImage(getClass.getResource("/images/fill.png"))
-  val bezier = tk.getImage(getClass.getResource("/images/bezier.png"))
-  val bezierfill = tk.getImage(getClass.getResource("/images/bezierfill.png"))
-  val colorpicker = tk.getImage(getClass.getResource("/images/colorpicker.png"))
-  val colorinjector = tk.getImage(getClass.getResource("/images/colorinjector.png"))
-  val eraser = tk.getImage(getClass.getResource("/images/eraser.png"))
-  val hand = tk.getImage(getClass.getResource("/images/hand6.png"))
-  val zoom = tk.getImage(getClass.getResource("/images/zoom2.png"))
-  val pers = tk.getImage(getClass.getResource("/images/pers.png"))
-  val eye = tk.getImage(getClass.getResource("/images/eye.png"))
-  val check = tk.getImage(getClass.getResource("/images/check.png"))
+  val tk: Toolkit = Toolkit.getDefaultToolkit
+  val pen: Image = tk.getImage(getClass.getResource("/images/pencil.png"))
+  val line: Image = tk.getImage(getClass.getResource("/images/line.png"))
+  val fill: Image = tk.getImage(getClass.getResource("/images/fill.png"))
+  val bezier: Image = tk.getImage(getClass.getResource("/images/bezier.png"))
+  val bezierfill: Image = tk.getImage(getClass.getResource("/images/bezierfill.png"))
+  val colorpicker: Image = tk.getImage(getClass.getResource("/images/colorpicker.png"))
+  val colorinjector: Image = tk.getImage(getClass.getResource("/images/colorinjector.png"))
+  val eraser: Image = tk.getImage(getClass.getResource("/images/eraser.png"))
+  val hand: Image = tk.getImage(getClass.getResource("/images/hand6.png"))
+  val zoom: Image = tk.getImage(getClass.getResource("/images/zoom2.png"))
+  val pers: Image = tk.getImage(getClass.getResource("/images/pers.png"))
+  val eye: Image = tk.getImage(getClass.getResource("/images/eye.png"))
+  val check: Image = tk.getImage(getClass.getResource("/images/check.png"))
   //val skip = new ImageIcon(tk.getImage(getClass.getResource("/skip.png")))
-  val dod = tk.getImage(getClass.getResource("/images/favicon.png"))
+  val dod: Image = tk.getImage(getClass.getResource("/images/favicon.png"))
   //val pentest1 = getClass.getClassLoader.getResource("/pencil.png")
   //val pentest2 = getClass.getClassLoader.getResource("/resources/pencil.png")
   //val pentest3 = getClass.getClassLoader.getResource("/main/resources/pencil.png")
@@ -87,20 +89,20 @@ object Icons {
     case e:IOException =>
   }*/
   
-  def getPen = pen//this.pencilIcon
-  def getLine = line//this.lineIcon
-  def getFill = fill//this.fillIcon
-  def getBez = bezier//this.bezierIcon
-  def getDrag = hand//this.bezierIcon
-  def getZoom = zoom//this.bezierIcon
-  def getBezFill = bezierfill//this.bezierIcon
-  def getPers = pers//this.persIcon
-  def getColorPicker = colorpicker//this.persIcon
-  def getColorInjector = colorinjector//this.persIcon
-  def getEraser = eraser//this.persIcon
+  def getPen: Image = pen//this.pencilIcon
+  def getLine: Image = line//this.lineIcon
+  def getFill: Image = fill//this.fillIcon
+  def getBez: Image = bezier//this.bezierIcon
+  def getDrag: Image = hand//this.bezierIcon
+  def getZoom: Image = zoom//this.bezierIcon
+  def getBezFill: Image = bezierfill//this.bezierIcon
+  def getPers: Image = pers//this.persIcon
+  def getColorPicker: Image = colorpicker//this.persIcon
+  def getColorInjector: Image = colorinjector//this.persIcon
+  def getEraser: Image = eraser//this.persIcon
   //def getSkip = skip//this.skipIcon
-  def getVisible = eye//this.eyeIcon
-  def getCheck = check//this.checkIcon
-  def getDod = dod//this.checkIcon
-  def getPenCursor = this.penCursorIcon
+  def getVisible: Image = eye//this.eyeIcon
+  def getCheck: Image = check//this.checkIcon
+  def getDod: Image = dod//this.checkIcon
+  def getPenCursor: BufferedImage = this.penCursorIcon
 }

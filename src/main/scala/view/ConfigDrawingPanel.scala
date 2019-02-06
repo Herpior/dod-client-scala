@@ -14,14 +14,14 @@ import dmodel.Magic
 import dmodel.Coord
 
 object ConfigDrawingPanel extends Frame {
-  val confwindow = this
+  val confwindow: ConfigDrawingPanel.type = this
   title   = "Select drawing area size" //Select drawing area size
   /*def findCenter(window: Window) = {
     new Point(window.location.x + window.size.width/2, window.location.y + window.size.height/2)
   }
   location = findCenter(secondFrame.owner)*/
-  val xField = new TextField(Magic.doodleSize.x.toInt.toString()){this.preferredSize = new Dimension(50, 20)}
-  val yField = new TextField(Magic.doodleSize.y.toInt.toString()){this.preferredSize = new Dimension(50, 20)}
+  val xField: TextField = new TextField(Magic.doodleSize.x.toInt.toString){this.preferredSize = new Dimension(50, 20)}
+  val yField: TextField = new TextField(Magic.doodleSize.y.toInt.toString){this.preferredSize = new Dimension(50, 20)}
     
   contents = new FlowPanel {
     this.background = Magic.bgColor
@@ -34,7 +34,7 @@ object ConfigDrawingPanel extends Frame {
   }
   //size = new Dimension(200,400)
   
-  def submit {
+  def submit() {
     try{
       val x = xField.text.toInt
       val y = yField.text.toInt
@@ -46,10 +46,10 @@ object ConfigDrawingPanel extends Frame {
         println("something happened in ConfigDrawingPanel.submit:\n"+e)
     }
   }
-  def activate {
+  def activate() {
     this.visible = true
-    xField.text = Magic.doodleSize.x.toInt.toString()
-    yField.text = Magic.doodleSize.y.toInt.toString()
+    xField.text = Magic.doodleSize.x.toInt.toString
+    yField.text = Magic.doodleSize.y.toInt.toString
   }
   
   this.centerOnScreen()

@@ -19,23 +19,23 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     len
   }
   private var coords = Buffer[Coord]()
-  def transform (transformation:Coord=>Coord) = {
+  def transform (transformation:Coord=>Coord): Some[BasicLine] = {
     val next = new BasicLine(this.color,this.size)
     next.setCoords(this.coords.map(c=>transformation(c)))
     Some(next)
   }
-  def distFrom(point:Coord)={
+  def distFrom(point:Coord): Double ={
     if(this.coords.isEmpty){500}
     else this.getCoords.map(_.dist(point)).min
   }
   def setCoords(buf:Buffer[Coord]){ coords = buf }
   def setCoords(arr:Array[Coord]){ coords = arr.toBuffer }
-  def getCoords = coords.toArray
+  def getCoords: Array[Coord] = coords.toArray
   def addCoord(c:Coord){ coords += c }
   def getLines = Array(this)
-  def getLast ={this.coords.last}
-  def getLastOption ={this.coords.lastOption}
-  def getLastLine = {if(coords.length>1) Some(new BasicLine(color,size){this.setCoords(coords.takeRight(2))}) else None}
+  def getLast: Coord ={this.coords.last}
+  def getLastOption: Option[Coord] ={this.coords.lastOption}
+  def getLastLine: Option[BasicLine] = {if(coords.length>1) Some(new BasicLine(color,size){this.setCoords(coords.takeRight(2))}) else None}
   def setLast(coord:Coord){
     this.coords(coords.length-1) = coord
   }
@@ -141,23 +141,23 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     lines.toArray
   }
 
-  def getShortPathString(len:Int) = {
+  def getShortPathString(len:Int): String = {
     if(coords.size<=len) coords.map(_.toString).mkString(",")
     else coords.take(len).map(_.toString).mkString(",")+",..."
   }
-  override def toString = {
+  override def toString: String = {
     "BasicLine(size="+size.toInt+", color="+Colors.toHexString(color)+", path=["+getShortPathString(2)+"])"
   }
-  def toDodJson = {
+  def toDodJson: String = {
     "{\"path\":["+coords.map{_.rounded(Magic.roundingAccuracy).toShortJsonString
     }.mkString(",")+"],\"size\":"+size.toInt+",\"color\":\""+Colors.toHexString(color)+"\"}"
   }
-  def selection = {
+  def selection: Some[BasicLine] = {
     val line = new BasicLine(Colors.inverse(this.color),1)
     line.setCoords(this.getCoords)
     Some(line)
   }
-  def toJson = {
+  def toJson: Some[JsonStroke] = {
     val json = new JsonStroke
     json.color = Colors.toHexString(color)
     json.size = size
@@ -165,18 +165,18 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     json.linetype = "basic"
     Some(json)
   }
-  def toJsonLine = {
+  def toJsonLine: Some[JsonLine] = {
     val json = new JsonLine
     json.color = Colors.toHexString(color)
     json.size = size
     json.path = this.coords.flatMap(_.rounded(Magic.roundingAccuracy).toArray).toArray
     Some(json)
   }
-  def toJsonString = {
+  def toJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"linetype\":\"basic\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.rounded(Magic.roundingAccuracy).toShortJsonString).mkString(",")+"]}")
   }
-  def toShortJsonString = {
+  def toShortJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"l\":\"n\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.rounded(Magic.roundingAccuracy).toShortJsonString).mkString(",")+"]}")
   }

@@ -18,7 +18,7 @@ abstract class NumConfigVariable[T](name:String,getValue:Unit=>T, setValue:T=>Un
   private val actualMinVal = if(reversed) maxVal else minVal
   private val actualMaxVal = if(reversed) minVal else maxVal
 
-  def getVal = {
+  def getVal: T = {
     getValue()
   }
 
@@ -40,16 +40,16 @@ class DoubleConfigVariable(name:String,getValue:Unit=>Double, setValue:Double=>U
 }
 
 class UnitConfigVariable(name:String,getValue:Unit=>Unit, setValue:Unit=>Unit) extends ConfigVariable(name) {
-  def getVal = getValue()
-  def setVal = setValue()
+  def getVal(): Unit = getValue()
+  def setVal(): Unit = setValue()
 }
 class BooleanConfigVariable(name:String,getValue:Unit=>Boolean, setValue:Boolean=>Unit) extends ConfigVariable(name) {
   def getVal = getValue()
-  def setVal(b:Boolean) = setValue(b)
+  def setVal(b:Boolean): Unit = setValue(b)
 }
 abstract class ConfigVariable(name:String) {
 
-  def getName = {
+  def getName: String = {
     name
   }
 /*

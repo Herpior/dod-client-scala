@@ -17,6 +17,6 @@ class JsonDoodle {
   def getStrokes:Array[JsonLine] = if(strokes.isEmpty)http.HttpHandler.getDoodle(url).getStrokes else strokes
   
   //def print = println(this)
-  override def toString ="version "+version+". doodle_id "+doodle_id+". user_id "+user_id+". date "+date+". time "+time+
+  override def toString: String ="version "+version+". doodle_id "+doodle_id+". user_id "+user_id+". date "+date+". time "+time+
       ". count "+count+". width "+width+". height "+height+". ext "+ext+". strookes "+strokes.take(10).mkString(", ")
 }
