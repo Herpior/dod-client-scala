@@ -105,7 +105,7 @@ object LocalStorage {
     str.headOption.foreach{ c=>
       if (c=='{'){
         val doodle = dmodel.JsonParse.parseSave(str)
-        return (doodle)
+        return doodle
       }
     }
     val parts = str.replaceAll("\"", "").split("\\\\r")
@@ -138,7 +138,7 @@ object LocalStorage {
       layer.strokes = doodle
       val save = new JsonSave
       save.layers = Array(layer)
-      if(!parts.headOption.isEmpty) save.doodle_id = parts.headOption.get
+      if(parts.nonEmpty) save.doodle_id = parts.headOption.get
       save.time = pt
       save
     /*} else {

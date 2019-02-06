@@ -6,8 +6,6 @@ import dmodel.Perspective
 import dmodel.dpart.{BasicLine, DoodlePart}
 
 import collection.mutable.Buffer
-import math.min
-import math.max
 
 class PerspectiveTool extends BasicTool {
   
@@ -30,7 +28,7 @@ class PerspectiveTool extends BasicTool {
     }
     
     if(vps.size == 1) { // cross at the vanishing point
-      val vp = vps(0)
+      val vp = vps.head
       val hori = new BasicLine(Magic.red, 1.0)
       hori.addCoord(Coord(vp.x, vp.y-Magic.y))
       hori.addCoord(Coord(vp.x, vp.y+Magic.y))
@@ -44,7 +42,7 @@ class PerspectiveTool extends BasicTool {
       val vp1 = vps(0)
       val vp2 = vps(1)
       val hori = new BasicLine(Magic.red, 1.0)
-      val difference = (vp1-vp2)
+      val difference = vp1-vp2
       hori.addCoord(vp1 + difference)
       hori.addCoord(vp2 - difference)
       buf += hori 
@@ -58,8 +56,8 @@ class PerspectiveTool extends BasicTool {
       }
       else if(vps.size > 2){ // add the connections to the third vanishing point
         val vp3 = vps(2)
-        val difference2 = (vp1-vp3)
-        val difference3 = (vp2-vp3)
+        val difference2 = vp1-vp3
+        val difference3 = vp2-vp3
         val line2 = new BasicLine(Magic.red, 1.0)
         line2.addCoord(vp1)
         line2.addCoord(vp3-difference2)
@@ -127,7 +125,7 @@ class PerspectiveTool extends BasicTool {
     val vps = Perspective.getVanishingPoints
     val dists = vps.map { vp => vp.dist(coord) }
     val distsWind = dists.zipWithIndex
-    val close = distsWind.sortBy(x=>x._1).head
+    val close = distsWind.minBy(x => x._1)
     val prev = closest
     if(close._1 < 50) closest = Some(close._2 +1)
     else closest = None

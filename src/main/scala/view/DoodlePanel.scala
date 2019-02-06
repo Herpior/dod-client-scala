@@ -78,7 +78,7 @@ class DoodlePanel extends Panel {
     
     //val invert = dmodel.Colors.inverse(col)
     g.setColor(col)
-    val bsize = max(2,(SizeModel.getSize*zoom)).toInt
+    val bsize = max(2, SizeModel.getSize*zoom).toInt
     g.drawOval(cursorX-bsize/2, cursorY-bsize/2, bsize, bsize)
     /*
     g.setColor(Color.black)

@@ -66,8 +66,10 @@ object DoodleWindow extends SimpleSwingApplication {
         screen.repaint()
       case e:WindowClosing =>  //println(e.getClass)
         try{
-          if(screen.isInstanceOf[DoodlingPanel]){
-            screen.asInstanceOf[DoodlingPanel].save
+          screen match {
+            case panel: DoodlingPanel =>
+              panel.save
+            case _ =>
           }
         }
         finally{

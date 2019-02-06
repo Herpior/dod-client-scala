@@ -68,7 +68,7 @@ object Matrix/*(magicX:Int,magicY:Int)*/ {
       for(row <- as.drop(i+1)){
         println(row.mkString(", "))
         val coeff = row(i)
-        for(j <- i until row.size){
+        for(j <- i until row.length){
           row(j) -= coeff * as(i)(j)
         }
         println(row.mkString(", "))
@@ -86,7 +86,7 @@ object Matrix/*(magicX:Int,magicY:Int)*/ {
       }
       for(row <- as.take(i)){
         val coeff = row(i)
-        for(j <- i until row.size){
+        for(j <- i until row.length){
           row(j) -= coeff * as(i)(j)
         }
         println(row.mkString(", "))
@@ -119,26 +119,26 @@ gaussian (arr)
     def inner(c:Coord) = {
         
       var ADDING = 0.001; // to avoid dividing by zero
-  
-      var xA = source(0).x;
-      var yA = source(0).y;
-  
-      var xC = source(2).x;
-      var yC = source(2).y;
-  
-      var xAu = destination(0).x;
-      var yAu = destination(0).y;
+
+      val xA = source(0).x;
+      val yA = source(0).y;
+
+      val xC = source(2).x;
+      val yC = source(2).y;
+
+      val xAu = destination(0).x;
+      val yAu = destination(0).y;
   
       var xBu = destination(1).x;
-      var yBu = destination(1).y;
+      val yBu = destination(1).y;
   
       var xCu = destination(2).x;
-      var yCu = destination(2).y;
+      val yCu = destination(2).y;
   
       var xDu = destination(3).x;
-      var yDu = destination(3).y;
+      val yDu = destination(3).y;
   
-      // Calcultations
+      // Calculations
       // if points are the same, have to add a ADDING to avoid dividing by zero
       if (xBu==xCu) xCu+=ADDING;
       if (xAu==xDu) xDu+=ADDING;
@@ -150,46 +150,46 @@ gaussian (arr)
       var kDC = (yDu-yCu)/(xDu-xCu);
   
       if (kBC==kAD) kAD+=ADDING;
-      var xE = (kBC*xBu - kAD*xAu + yAu - yBu) / (kBC-kAD);
-      var yE = kBC*(xE - xBu) + yBu;
+      val xE = (kBC * xBu - kAD * xAu + yAu - yBu) / (kBC - kAD);
+      val yE = kBC * (xE - xBu) + yBu;
   
       if (kAB==kDC) kDC+=ADDING;
       var xF = (kAB*xBu - kDC*xCu + yCu - yBu) / (kAB-kDC);
-      var yF = kAB*(xF - xBu) + yBu;
+      val yF = kAB * (xF - xBu) + yBu;
   
       if (xE==xF) xF+=ADDING;
-      var kEF = (yE-yF) / (xE-xF);
+      val kEF = (yE - yF) / (xE - xF);
   
       if (kEF==kAB) kAB+=ADDING;
-      var xG = (kEF*xDu - kAB*xAu + yAu - yDu) / (kEF-kAB);
-      var yG = kEF*(xG - xDu) + yDu;
+      val xG = (kEF * xDu - kAB * xAu + yAu - yDu) / (kEF - kAB);
+      val yG = kEF * (xG - xDu) + yDu;
   
       if (kEF==kBC) kBC+=ADDING;
-      var xH = (kEF*xDu - kBC*xBu + yBu - yDu) / (kEF-kBC);
-      var yH = kEF*(xH - xDu) + yDu;
+      val xH = (kEF * xDu - kBC * xBu + yBu - yDu) / (kEF - kBC);
+      val yH = kEF * (xH - xDu) + yDu;
 
       
       val xI = c.x
       val yI = c.y
-        
-      var rG = (yC-yI)/(yC-yA);
-      var rH = (xI-xA)/(xC-xA);
+
+      val rG = (yC - yI) / (yC - yA);
+      val rH = (xI - xA) / (xC - xA);
   
       var xJ = (xG-xDu)*rG + xDu;
-      var yJ = (yG-yDu)*rG + yDu;
+      val yJ = (yG - yDu) * rG + yDu;
   
       var xK = (xH-xDu)*rH + xDu;
-      var yK = (yH-yDu)*rH + yDu;
+      val yK = (yH - yDu) * rH + yDu;
   
       if (xF==xJ) xJ+=ADDING;
       if (xE==xK) xK+=ADDING;
-      var kJF = (yF-yJ) / (xF-xJ); //23
+      val kJF = (yF - yJ) / (xF - xJ); //23
       var kKE = (yE-yK) / (xE-xK); //12
   
       //var xKE;
       if (kJF==kKE) kKE+=ADDING;
-      var xIu = (kJF*xF - kKE*xE + yE - yF) / (kJF-kKE);
-      var yIu = kJF * (xIu - xJ) + yJ;
+      val xIu = (kJF * xF - kKE * xE + yE - yF) / (kJF - kKE);
+      val yIu = kJF * (xIu - xJ) + yJ;
       
       Coord(xIu, yIu)
 

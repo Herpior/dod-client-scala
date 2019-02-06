@@ -14,7 +14,7 @@ object Bezier {
 
     def pointAt(t:Double,c1:Coord,c2:Coord,c3:Coord,c4:Coord)={
         val nt = 1-t
-        val c12   = (c1*t + c2*nt) 
+        val c12   = c1*t + c2*nt
         val c23   = (c2*t + c3*nt) 
         val c34   = (c3*t + c4*nt) 
         val c123  = (c12*t + c23*nt)

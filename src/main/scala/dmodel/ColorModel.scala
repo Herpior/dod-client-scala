@@ -97,7 +97,7 @@ object ColorModel {
       colors(colorpicker)=Colors.toColor(col)
       io.LocalStorage.storeArray(colors.map(color=>Colors.toHexRGBA(color)), "colours")
     }catch{
-      case e=>e.printStackTrace
+      case e:Throwable=>e.printStackTrace
     }
   }
   def setColor(color:Color){

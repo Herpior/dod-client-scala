@@ -18,7 +18,7 @@ class HandTool extends BasicTool { //(Array())
     //db.prepareMove(coord)
     //db.move(coord)
     //previousCoord = coord
-    val moved = (tmp-coord)
+    val moved = tmp-coord
     if (Magic.fasterPan)
       db.prepareMove(moved)
     else {

@@ -15,7 +15,7 @@ class MultiLine extends DoodlePart{
   }
   def distFrom(point:Coord)={
     val sorted = lines.map(_.distFrom(point)).sorted
-    if(sorted.length>0)sorted.head
+    if(sorted.nonEmpty)sorted.head
     else Double.MaxValue // this multiline is empty
   }
   def apply(index:Int)={
@@ -40,8 +40,7 @@ class MultiLine extends DoodlePart{
     lines.toArray
   }
   def getLast={
-    if(lines.isEmpty)None
-    else Some(lines.last)
+    lines.lastOption
   }
   /*def lineType={
     "multi"
@@ -56,7 +55,7 @@ class MultiLine extends DoodlePart{
     val res = Buffer[BasicLine]()
     val nonempty = lines.filter { !_.getCoords.isEmpty }
     if(nonempty.isEmpty)return
-    var curr = nonempty(0)
+    var curr = nonempty.head
     var cc = curr.getCoords.map(_.rounded(Magic.roundingAccuracy))
     for(st<-nonempty.drop(1)){
       val sc = st.getCoords.map(_.rounded(Magic.roundingAccuracy))

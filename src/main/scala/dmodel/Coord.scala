@@ -11,7 +11,7 @@ object Coord{
   }
 }
 
-case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
+case class Coord(x:Double, y:Double) extends Metric[Coord] {
 
   def unary_- ={
     this.map(-_)
@@ -148,7 +148,7 @@ case class Coord(val x:Double,val y:Double) extends Metric[Coord] {
     xx + "," + yy
   }
   def toCleanStrings = {
-    val xx = if(x%1==0)(x).toInt.toString else x.toString
+    val xx = if(x%1==0) x.toInt.toString else x.toString
     val yy = if(y%1==0)(y).toInt.toString else y.toString
     (xx,yy)
   }

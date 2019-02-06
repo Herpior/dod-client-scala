@@ -16,7 +16,7 @@ object KeystoreLoader {
     // in case the cacerts file needs to be recreated issued to users without a full update
     var sslcontext:SSLContext = null
     try{
-      val url = (cacertPath).dropWhile(p => p=='/') //drop the first "/" in the path
+      val url = cacertPath.dropWhile(p => p=='/') //drop the first "/" in the path
       val keystore = new File(url)
       sslcontext = SSLContexts.custom()
         .loadTrustMaterial(keystore, cacertPass,

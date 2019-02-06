@@ -24,7 +24,7 @@ class ConfigSlider(config: DoubleConfigVariable) extends Panel{
   val maxVal = config.maxVal.getOrElse(1.0)
   val logOffset = config.logOffset
   val logScale = config.logScale
-  val reversed = (minVal>maxVal)
+  val reversed = minVal>maxVal
 
 
   private val width = 200

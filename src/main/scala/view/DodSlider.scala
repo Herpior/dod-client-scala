@@ -16,7 +16,7 @@ import scala.swing.event.{MouseDragged, MousePressed}
  * isInteger tells if the values should be shown as integers or floating point numbers
  */
 class DodSlider(getValue:Unit=>Double, setValue:Double=>Unit,/*getString:Unit=>String, */ minVal:Double=0, maxVal:Double=1, logOffset:Double = 1, logScale:Boolean = true, isInteger:Boolean = false) extends Panel{
-  val reversed = (minVal>maxVal)
+  val reversed = minVal>maxVal
 
 
   private val width = 200

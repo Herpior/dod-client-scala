@@ -42,7 +42,7 @@ object Fonts {
   }
   
 }
-case class letter(val xs:Array[Array[Double]],val ys:Array[Array[Double]]) {
+case class letter(xs:Array[Array[Double]], ys:Array[Array[Double]]) {
   def length = {
     val sort = xs.flatten.sorted
     sort.head-sort.last

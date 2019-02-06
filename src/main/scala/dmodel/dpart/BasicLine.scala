@@ -9,7 +9,7 @@ import scala.collection.mutable.Buffer
 
 class BasicLine(var color:Color, var size:Double) extends DoodlePart {
   override def length2:Double = {
-    if(coords.length==0) return 0.0
+    if(coords.isEmpty) return 0.0
     var last = coords.head
     var len = 0.0
     for(c<-coords.drop(1)){
@@ -25,8 +25,8 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     Some(next)
   }
   def distFrom(point:Coord)={
-    if(this.coords.length==0){500}
-    else {this.getCoords.map(_.dist(point)).sorted.head}
+    if(this.coords.isEmpty){500}
+    else this.getCoords.map(_.dist(point)).min
   }
   def setCoords(buf:Buffer[Coord]){ coords = buf }
   def setCoords(arr:Array[Coord]){ coords = arr.toBuffer }
@@ -97,8 +97,8 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
   }*/
 
   def compress : Array[BasicLine] = { //TODO: check that the compress methods in multiline and basicline make sense and are used
-    if (coords.length == 0) return Array()
-    var pc = coords(0).rounded(Magic.roundingAccuracy)
+    if (coords.isEmpty) return Array()
+    var pc = coords.head.rounded(Magic.roundingAccuracy)
     val lines = Buffer[BasicLine]()
     var tc = new BasicLine(this.color,this.size)//Buffer[Coord](pc)
     tc.addCoord(pc)
@@ -132,7 +132,7 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
       }
       pc = c
     }
-    if(tc.getLastOption != Some(pc)){
+    if(!tc.getLastOption.contains(pc)){
       tc.addCoord(pc)
     }
     //this.setCoords(tc)

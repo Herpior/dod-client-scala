@@ -18,7 +18,7 @@ class DoodleModel {
   //private val currentLines:Buffer[DoodlePart] = Buffer()
   
   private def currentTool:BasicTool = tools.getTool
-  private def currentLines:Buffer[DoodlePart] = currentTool.getLines
+  private def currentLines:Buffer[DoodlePart] = currentTool.getLines()
   private def matrix:Boolean = this.layers.getCurrent.isInstanceOf[MatrixLayer]
   //private var textLine:Option[TextLine] = None
   
@@ -212,7 +212,7 @@ class DoodleModel {
   }
   //---------\\
   def toLocalStorage{
-    io.LocalStorage.printFile(layers.toArray.flatMap(_.getVisibleStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime.toInt, "backup."+HttpHandler.getGroup+".txt")
+    io.LocalStorage.printFile(layers.toArray.flatMap(_.getVisibleStrokes(true).flatMap(_.getLines)),HttpHandler.getChain,this.getPaintTime, "backup."+HttpHandler.getGroup+".txt")
   }
 
   def toDodPostJsonStrokes: String = {

@@ -82,10 +82,12 @@ class LayerList {
     layerUp
     }
   def finaliseMatrix{
-    if(this.getCurrent.isInstanceOf[MatrixLayer]){
-      val res = this.getCurrent.asInstanceOf[MatrixLayer].normal
-      removeLayer
-      addLayer(res)
+    this.getCurrent match {
+      case layer: MatrixLayer =>
+        val res = layer.normal
+        removeLayer
+        addLayer(res)
+      case _ =>
     }
   }
   def addLayer(added:Layer){

@@ -54,21 +54,21 @@ class Layer() {
     redos.clear()
   }
   def undo {
-    if(strokes.length>0){
+    if(strokes.nonEmpty){
       strokes.last.onUndo(this)
       redos += strokes.last
       strokes -= strokes.last
     }
   }
   def redo {
-    if(redos.length>0){
+    if(redos.nonEmpty){
       redos.last.onRedo(this)
       strokes += redos.last
       redos -= redos.last
     }
   }
   def redoOrReturnLineOnFailure:Option[DoodlePart] = { //used for splitting layer
-    if(redos.length>0){
+    if(redos.nonEmpty){
       if(redos.last.onRedo(this)){
         strokes += redos.last
         redos -= redos.last
@@ -81,18 +81,18 @@ class Layer() {
     } else None
   }
   def burn {
-    while (strokes.length>0){
+    while (strokes.nonEmpty){
       undo
     }
   }
   def revive {
-    while(redos.length>0){
+    while(redos.nonEmpty){
       redo
     }
   }
   def reviveAndReturnFailedEditLines= { //used for splitting layer
     val returning = Buffer[DoodlePart]()
-    while(redos.length>0){
+    while(redos.nonEmpty){
       redoOrReturnLineOnFailure.foreach(returning += _)
     }
     returning.reverse
@@ -129,14 +129,16 @@ class Layer() {
 class MatrixLayer(private val orig:Layer) extends Layer {
   
   private var points = Array(Coord(0,0),Coord(Magic.doodleSize.x,0),Magic.doodleSize,Coord(0,Magic.doodleSize.y))
-  private var edges = new BasicLine(Magic.red,1){this.setCoords(points++Array(points.head))}
+  private val edges = new BasicLine(Magic.red, 1) {
+    this.setCoords(points ++ Array(points.head))
+  }
   private var ind = -1
   
   override def isMatrix = true
   
   override def pressPoint(coord:Coord) {
     val pts = points.map(c=>c.dist(coord)).zipWithIndex
-    val res = pts.sortBy(_._1).head
+    val res = pts.minBy(_._1)
     if (res._1<50){
       ind = res._2
     } else ind = -1

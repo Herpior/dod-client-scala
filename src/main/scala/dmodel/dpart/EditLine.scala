@@ -1,6 +1,6 @@
 package dmodel.dpart
 
-import dmodel.{Layer}
+import dmodel.Layer
 
 
 class EditLine(val editedLine:DoodlePart, val originalLine:DoodlePart) extends EmptyLine {

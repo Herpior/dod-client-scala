@@ -107,7 +107,7 @@ class JsonStroke {
         tmp.toDoodlePart
     }
     } catch {
-      case e => 
+      case e:Throwable =>
         e.printStackTrace()
         new MultiLine
     }

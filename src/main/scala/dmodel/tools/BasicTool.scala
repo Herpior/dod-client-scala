@@ -14,7 +14,7 @@ trait BasicTool {
   def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean) {}
   def onMouseMove(db:DoodleBufferer, coord:Coord, control:Boolean, alt:Boolean, shift:Boolean) {}
   def getLines():Buffer[DoodlePart] = {collection.mutable.Buffer()} //for drawing the stroke or informational graphics, not for adding strokes to layer
-  def getLastLine():Option[DoodlePart] = {None} // for drawing one segment of the stroke
+  def getLastLine():Option[DoodlePart] = None // for drawing one segment of the stroke
   // for configuring from the ui
   def getConfigVariables():Vector[ConfigVariable] = Vector()
 

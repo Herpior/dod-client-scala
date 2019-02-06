@@ -48,22 +48,22 @@ class BezierInterpolationTool extends SelectTool {
     for(i<-0 to len.toInt){
       val t = 1.0/i
       val dist = first.getCoordAt(t).dist(second.getCoordAt(t)).toInt
-      if(dist>max)max = dist
+      if(dist>max) max = dist
     }
     var tmp = 0.0
     val mid = (math.abs(first.size+second.size)/2).toInt
-    val n = (2*max/mid).toInt
-    val colors = if(alt)Colors.linearcolor(n,true,first.color,second.color) else Colors.linearcolor(n,false,first.color,second.color)
+    val n = (2.0*max/mid).toInt
+    val colors = Colors.linearcolor(n,alt,first.color,second.color)
     for(i<- 1 until n){
       val in = i*1.0/n//tmp/max
       val nin = 1-in
       val color = colors(i)
       val size = mid//(in*first.size + nin*second.size).toInt
       //tmp += size/2
-      val c0 = (first.getCoord(0)*in+second.getCoord(0)*nin)
-      val c1 = (first.getCoord(1)*in+second.getCoord(1)*nin)
-      val c2 = (first.getCoord(2)*in+second.getCoord(2)*nin)
-      val c3 = (first.getCoord(3)*in+second.getCoord(3)*nin)
+      val c0 = first.getCoord(0) * in + second.getCoord(0) * nin
+      val c1 = first.getCoord(1) * in + second.getCoord(1) * nin
+      val c2 = first.getCoord(2) * in + second.getCoord(2) * nin
+      val c3 = first.getCoord(3) * in + second.getCoord(3) * nin
       val bez = new BezierLine(color,size)
       bez.setCoord(0, c0)
       bez.setCoord(1, c1)

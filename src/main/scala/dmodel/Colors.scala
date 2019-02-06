@@ -56,7 +56,7 @@ object Colors {
     if(string==null){return Color.black}
     var str = string.toLowerCase
     //println(string.take(4))
-    if(string.headOption.exists { _=='#' }){
+    if(string.headOption.contains('#')){
       str = str.tail
     } else if(str.take(4)=="rgba"){
       val txt = str.drop(5).dropRight(1)

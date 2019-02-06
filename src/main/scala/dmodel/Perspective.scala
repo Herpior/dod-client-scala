@@ -66,14 +66,14 @@ object Perspective {
     val angle = orig.direction(cursor)
     val length = orig.dist(cursor)
     val ang = orig.direction(pers)//Angle.direction(orig.x-pers.x, orig.y-pers.y)
-    val ang2 = if(!pers2.isEmpty){
+    val ang2 = if(pers2.isDefined){
       val p = pers2.get
       orig.direction(p)//Angle.direction(orig.x-p.x,orig.y-p.y)
     } else 0.0
-    val ang3 = if(!pers3.isEmpty){
+    val ang3 = if(pers3.isDefined){
       val p = pers3.get
       orig.direction(p)//Angle.angle(orig.x-p.x,orig.y-p.y)
-    } else if(!pers2.isEmpty) {
+    } else if(pers2.isDefined) {
       val difference = pers - pers2.get
       val slope = difference.perpendiculated
       //Angle.angle(slope.x, slope.y)
@@ -93,7 +93,7 @@ object Perspective {
     }
     val resultante = buf.zipWithIndex
 
-    Coord.fromAngle(angs(resultante.sortBy(f=>f._1).head._2), length)
+    Coord.fromAngle(angs(resultante.minBy(f => f._1)._2), length)
   }
 }
 

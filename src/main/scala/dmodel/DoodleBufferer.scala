@@ -180,7 +180,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
 
   def getCoord(x:Double,y:Double)={
     //val middle = Coord (getWidth,getHeight)/2
-    val coord = (Coord(x,y)-(offset))/getZoom//(Coord(x,y)-middle)/zoom + (Magic.doodleSize - point)
+    val coord = (Coord(x,y)- offset)/getZoom//(Coord(x,y)-middle)/zoom + (Magic.doodleSize - point)
     //println(coord.x+", "+coord.y)
     coord
   }

@@ -106,7 +106,7 @@ class FillTool extends LineTool{
           }
         }
       
-        if(!que.isEmpty){
+        if(que.nonEmpty){
           val xy = que.dequeue
           inner(xy._1,xy._2,que)
         }
@@ -131,7 +131,7 @@ class FillTool extends LineTool{
     val flooded = flood._1
     //println(flooded.getHeight+" -|- "+flooded.getWidth)
     val color = flooded.getRGB((2*place.x).toInt,(2*place.y).toInt)
-    val n = if(vertical) (dc.y.toInt+1)/(size) else (dc.x.toInt+1)/(size)
+    val n = if(vertical) (dc.y.toInt+1)/ size else (dc.x.toInt+1)/(size)
     val interval = if(size>32)if(vertical) dc.y.toInt/(n) else dc.x.toInt/(n)else size
     //println("n: "+n)
     //next = new nextLinee

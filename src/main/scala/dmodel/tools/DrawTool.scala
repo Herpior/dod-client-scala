@@ -74,7 +74,7 @@ class DrawTool extends LineTool {
     //val dcutConfig = new DoubleConfigVariable("dcutoff", _=>getDCutoff, setDCutoff, Some(100), Some(1e-3), true)
     //val unitConfig = new UnitConfigVariable("button test", _=>println("getter"), _=>println("setter"))
     val smoothingConfig = new BooleanConfigVariable("use smoothing", _=>this.smoothing, smoothing=_)
-    Vector(smoothingConfig, mincutConfig).asInstanceOf[Vector[ConfigVariable]]
+    Vector(smoothingConfig, mincutConfig)//.asInstanceOf[Vector[ConfigVariable]]
   }
 
   //---------\\

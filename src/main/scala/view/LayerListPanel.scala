@@ -79,7 +79,7 @@ class LayerListPanel(model:LayerList) extends Panel{
   this.reactions += {
     case e:event.MousePressed=>
       val y=e.point.getY
-      val ht = (Magic.thumbY+5)
+      val ht = Magic.thumbY+5
       val index = model.size-1-y.toInt/ht
       last = index
     case e:event.MouseReleased=>

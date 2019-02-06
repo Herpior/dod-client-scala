@@ -72,9 +72,9 @@ object HttpHandler {
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
     val str = Buffer[String]()
     while(in.hasNext){
-      str+=(in.nextLine())
+      str += in.nextLine()
     }
-    EntityUtils.consume(response.getEntity());
+    EntityUtils.consume(response.getEntity)
     str.toArray
   }
 
@@ -87,20 +87,20 @@ object HttpHandler {
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
     val str = Buffer[String]()
     while(in.hasNext){
-      str+=(in.nextLine())
+      str += in.nextLine()
     }
-    EntityUtils.consume(response.getEntity());
+    EntityUtils.consume(response.getEntity)
     str.toArray
   }
 
   private def addDodCookie(name:String,value:String){
     val cookie = new BasicClientCookie(name,value)
-    cookie.setDomain("doodleordie.com");
+    cookie.setDomain("doodleordie.com")
     cookie.setPath("/")
-    val calendar = Calendar.getInstance();
-    calendar.add(Calendar.DAY_OF_YEAR, 300);
-    val date = calendar.getTime();
-    cookie.setExpiryDate(date);
+    val calendar = Calendar.getInstance()
+    calendar.add(Calendar.DAY_OF_YEAR, 300)
+    val date = calendar.getTime()
+    cookie.setExpiryDate(date)
     cookie.setAttribute(ClientCookie.DOMAIN_ATTR, "true");
     httpCookieStore.addCookie(cookie)
   }
@@ -141,7 +141,7 @@ object HttpHandler {
       case e:NullPointerException =>
         println("the cert is not working so can't connect to the site")
     }
-    !cid.isEmpty
+    cid.isDefined
   }
   def skip{
     val post = new SkipPost(chain)
@@ -178,7 +178,7 @@ object HttpHandler {
     val in2 = getHttp(get)
     setUsername(in2)
     
-    !cid.isEmpty
+    cid.isDefined
   }
   def debugGet(ext:String,ref:String)={
     val get = new DefaultGet(ext,ref)

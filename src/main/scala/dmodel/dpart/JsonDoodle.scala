@@ -2,17 +2,17 @@ package dmodel.dpart
 
 // the doodle format for doodles on doodleordie servers? I think..
 class JsonDoodle {
-  var version:Int = _
-  var doodle_id:String = _
-  var user_id:String = _
-  var date:String = _
-  var time:Int = _
-  var count:Int = _
-  var width:Int = _
-  var height:Int = _
-  var ext:String = _
-  var url:String =_
-  var strokes:Array[JsonLine] = Array()
+  val version: Int = _
+  val doodle_id: String = _
+  val user_id: String = _
+  val date: String = _
+  val time: Int = _
+  val count: Int = _
+  val width: Int = _
+  val height: Int = _
+  val ext: String = _
+  val url: String = _
+  val strokes: Array[JsonLine] = Array()
   
   def getStrokes:Array[JsonLine] = if(strokes.isEmpty)http.HttpHandler.getDoodle(url).getStrokes else strokes
   

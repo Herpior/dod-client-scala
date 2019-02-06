@@ -706,7 +706,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     true
   }*/
   controller.Timer(100,false){
-    tools.sizeP.contents(0).requestFocusInWindow()
+    tools.sizeP.contents.head.requestFocusInWindow()
   }.start
   
   this.focusable = true
