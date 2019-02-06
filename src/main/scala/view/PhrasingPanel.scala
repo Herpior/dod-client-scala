@@ -68,15 +68,16 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
     this.minimumSize = new Dimension(Magic.x,Magic.y)
     this.maximumSize = new Dimension(Magic.x,Magic.y)
   }
+  val real = new TextArea
   val f = Future{
   doodleP.model.load(doodle)
   //println(doodle.getStrokes.mkString(","))
   //println(doodleP.model.layers.head.getStrokes.length)
   doodleP.bufferer.redrawAll
   doodleP.repaint()
-  real.requestFocusInWindow()}
-  val real = new TextArea
-  val limit = new Label("140"){
+  real.requestFocusInWindow()
+  }
+  val limit = new Label(Magic.maxChars.toString){
     this.foreground = Magic.buttColor
     this.font = Magic.font20
   }
@@ -89,10 +90,10 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
       if(!pinged){
         ping
       }
-      if(real.text.length()>140){
-        real.text = real.text.dropRight(real.text.length-140)
+      if(real.text.length()>Magic.maxChars){
+        real.text = real.text.dropRight(real.text.length-Magic.maxChars)
         }
-      limit.text = (140-real.text.length).toString
+      limit.text = (Magic.maxChars-real.text.length).toString
       
   }
   
