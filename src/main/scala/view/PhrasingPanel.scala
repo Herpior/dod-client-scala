@@ -63,19 +63,18 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
   describe.setPhrase(desc)
   
   
-  val doodleP = new DoodlePanel{
+  val doodleP = new DoodlePanel{ //TODO: the drawing is placed in the corner
     this.preferredSize = new Dimension(Magic.x,Magic.y)
     this.minimumSize = new Dimension(Magic.x,Magic.y)
     this.maximumSize = new Dimension(Magic.x,Magic.y)
+    this.bufferer.setBounds(Magic.x,Magic.y)
   }
   val real = new TextArea
   val f = Future{
-  doodleP.model.load(doodle)
-  //println(doodle.getStrokes.mkString(","))
-  //println(doodleP.model.layers.head.getStrokes.length)
-  doodleP.bufferer.redrawAll
-  doodleP.repaint()
-  real.requestFocusInWindow()
+    doodleP.model.load(doodle)
+    doodleP.bufferer.redrawAll
+    doodleP.repaint()
+    real.requestFocusInWindow()
   }
   val limit = new Label(Magic.maxChars.toString){
     this.foreground = Magic.buttColor
