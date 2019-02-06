@@ -40,22 +40,6 @@ class JsonState {
   def getDoodle: JsonDoodle = {
     if(doodle!=null)doodle else new JsonDoodle
   }
-  def toPlayPanel: Panel with PlayPanel ={
-    //println(activeState+" - "+private_id+"/"+staleChain_id+" - "+group_id)
-    activeState match{
-      case "draw"=>
-        require(group_id!=null &&group_id.length>0)
-        require(private_id!=null &&private_id.length>0)
-        if(starting)phrase = "Start a new chain! Draw anything you want!"
-        new DoodlingPanel(group_id,private_id,getPhrase,finishing)
-      case "phrase"=>
-        require(group_id!=null &&group_id.length>0)
-        require(private_id!=null &&private_id.length>0)
-        new PhrasingPanel(group_id,private_id,getDoodle,starting,finishing,randomizer)
-      case _ =>
-        new StalingPanel
-    }
-  }
 }
 /*
 class JsonSkipInfo{

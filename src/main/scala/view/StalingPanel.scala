@@ -35,7 +35,7 @@ class StalingPanel extends BoxPanel(Orientation.Vertical) with PlayPanel{
         new LoadingPanel(
           Future{
             if(HttpHandler.resume){
-              HttpHandler.state.toPlayPanel
+              PlayPanel(HttpHandler.state)
             } else {
               //println("failed to resume")
               this

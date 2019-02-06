@@ -12,9 +12,9 @@ import concurrent.ExecutionContext.Implicits.global
 import javax.swing.UIManager
 
 object DoodleWindow extends SimpleSwingApplication {
-  
-  val ver = "v0.499"
-  val version = 499
+
+  val version = dmodel.Magic.version
+  val ver = "v0."+version
   
    try {
     UIManager.setLookAndFeel( UIManager.getCrossPlatformLookAndFeelClassName )
@@ -34,7 +34,7 @@ object DoodleWindow extends SimpleSwingApplication {
         //http.HttpHandler.getSkips
         val state = http.HttpHandler.state
         if(http.HttpHandler.loggedIn){
-          val playpanel = state.toPlayPanel
+          val playpanel = PlayPanel(state)
           val usernameFuture = Future(http.HttpHandler.getAndSetUsername())
           usernameFuture.onComplete { x => playpanel.refreshLogoutButt }
           playpanel

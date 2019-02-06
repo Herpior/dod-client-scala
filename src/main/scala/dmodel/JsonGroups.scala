@@ -1,9 +1,9 @@
 package dmodel
 
 class JsonGroups {
-  val groups: Array[JsonGroup] = _
+  var groups: Array[JsonGroup] = _
   var staleChain_id:String = _
-  val activeGroup: JsonGroup = _
+  var activeGroup: JsonGroup = _
   var isPartial:Boolean = _
   var layout:Boolean = _
   var html:String = _

@@ -6,6 +6,7 @@ object Magic {
 
   private val loadedConf = try { io.LocalStorage.loadConfig("config") } catch { case e:Throwable => Map[String, String]()}
   def authorized: Boolean = http.HttpHandler.getAuth || offline
+  val version = 500
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
   val fasterPan: Boolean = try {loadedConf.getOrElse("fasterPan","true").toBoolean} catch {case e:Throwable => true} //if true will move only the images when dragging, rather than drawing everything again every pixel
   val readyDefault: Boolean = try {loadedConf.getOrElse("readyDefault","false").toBoolean} catch {case e:Throwable => false} //default for ready checkbox

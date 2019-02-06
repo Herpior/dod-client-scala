@@ -18,7 +18,7 @@ class DoodleModel {
   //private val currentLines:Buffer[DoodlePart] = Buffer()
   
   private def currentTool:BasicTool = tools.getTool
-  private def currentLines:Buffer[DoodlePart] = currentTool.getLines()
+  private def currentLines:Buffer[DoodlePart] = currentTool.getLines
   private def matrix:Boolean = this.layers.getCurrent.isInstanceOf[MatrixLayer]
   //private var textLine:Option[TextLine] = None
   
@@ -38,7 +38,7 @@ class DoodleModel {
   //private var color2 = "#000000"
   
   //def isWriting = textLine.isDefined
-  def isDrawing = tools.getTool.isBusy() //currentLines.length>0/*multiLine.isDefined*/ || hoveringLine2.isDefined
+  def isDrawing = tools.getTool.isBusy //currentLines.length>0/*multiLine.isDefined*/ || hoveringLine2.isDefined
   //def isBezier = bezier && bezierLine.isDefined
   def isMatrix: Boolean = {
     matrix
@@ -82,7 +82,7 @@ class DoodleModel {
   }
   def getLast = {
   //  multiLine.flatMap(_.getLast.flatMap(_.getLastLine))
-    currentTool.getLastLine()
+    currentTool.getLastLine
   }
   def getLastMid: Option[DoodlePart] = {
     val strokes = layers.getCurrent.getVisibleStrokes(false)//(current).getStrokes

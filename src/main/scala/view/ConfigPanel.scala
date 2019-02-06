@@ -9,7 +9,7 @@ import scala.swing.{Action, BoxPanel, Component, Dimension, Label, Orientation, 
 
 class ConfigPanel(tool:BasicTool) extends BoxPanel(Orientation.Vertical) {
 
-  val configs: ConfigVariable = tool.getConfigVariables()
+  val configs: Vector[ConfigVariable] = tool.getConfigVariables
   val configContentsThatLikeToStealFocus: mutable.Buffer[Component] = mutable.Buffer[swing.Component]()
 
   this.preferredSize = new Dimension(200, 50 * configs.length)

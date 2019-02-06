@@ -198,7 +198,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
               new view.LoadingPanel(
                   Future{
                       if(doodle.submit)
-                        http.HttpHandler.state.toPlayPanel
+                        PlayPanel(http.HttpHandler.state)
                       else {
                         controller.Timer(100, false) {
                           skipButt.requestFocusInWindow()
@@ -562,7 +562,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       //val altgr = e.peer.isAltGraphDown()
       //val meta = e.peer.isMetaDown()
       if(doodle.bufferer.canDraw){
-        tools.model.mouseMoved(doodle, place, ctrl, alt, shift)
+        tools.model.mouseMoved(doodle.bufferer, place, ctrl, alt, shift)
       }
       
       doodle.setCursor(e.point.getX, e.point.getY)
@@ -608,7 +608,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         }*/
       }
       else if(doodle.bufferer.canDraw){
-        tools.model.mousePressed(doodle, place, button, ctrl, alt, shift)
+        tools.model.mousePressed(doodle.bufferer, place, button, ctrl, alt, shift)
       }
       check = System.nanoTime()
       doodle.repaint()
@@ -649,7 +649,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         tools.model.handTool.onMouseUp(doodle.bufferer, place, button, ctrl, alt, shift)
       }
       else if(doodle.bufferer.canDraw){
-        tools.model.mouseReleased(doodle, place, button, ctrl, alt, shift)
+        tools.model.mouseReleased(doodle.bufferer, place, button, ctrl, alt, shift)
       }
 
       doodle.model.addTime(((System.nanoTime()-check)/100000).toInt)
@@ -678,7 +678,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         tools.model.handTool.onMouseDrag(doodle.bufferer, place, left, middle, right, ctrl, alt, shift)
       }
       else if(doodle.bufferer.canDraw){
-        tools.model.mouseDragged(doodle, place, left, middle, right, ctrl, alt, shift)
+        tools.model.mouseDragged(doodle.bufferer, place, left, middle, right, ctrl, alt, shift)
       }
 
       doodle.setCursor(e.point.getX, e.point.getY)

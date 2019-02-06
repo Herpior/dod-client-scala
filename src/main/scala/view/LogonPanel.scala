@@ -276,7 +276,7 @@ class SignonPanel(owner:WindowPanel) extends BoxPanel(Orientation.Vertical){
             HttpHandler.saveCid
           }
           val state = HttpHandler.state
-          state.toPlayPanel
+          PlayPanel(state)
         } else {
           Dialog.showMessage(owner, "most likely an error in username or password", "failed to login", Dialog.Message.Warning, null)
           owner

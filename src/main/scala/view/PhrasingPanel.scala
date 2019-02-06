@@ -154,7 +154,7 @@ class PhrasingPanel(group_id:String,private_id:String,doodle:JsonDoodle,start:Bo
               new view.LoadingPanel(
                   Future{
                       if(http.HttpHandler.submitDesc(real.text)){
-                        http.HttpHandler.state.toPlayPanel
+                        PlayPanel(http.HttpHandler.state)
                       }
                       else {
                         this_phrasing_panel
