@@ -5,6 +5,7 @@ import java.awt.Color
 import java.awt.Graphics2D
 import java.awt.RenderingHints
 import java.awt.BasicStroke
+import java.awt.geom.AffineTransform
 
 import dmodel.dpart.{BasicLine, DoodlePart}
 
@@ -69,24 +70,36 @@ object LineDrawer {
     if(antialiasing)g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON)
     else g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF)
     for(st<-dp.getLines){
-        g.setStroke(new BasicStroke((st.size*czoom).toFloat,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND))
-        g.setColor(st.color)
-        //if(last != -1)
-        //val path = st.path.map(x=>math.round(x*2)/2.0*czoom)//(_*czoom)
-        //val len2 = path.length/2
-        val off = offs//*czoom//if(czoom<=2) Coord(0,0) else (offs*czoom)
-        //val ox = if(czoom<2) 0 else (offsetX*czoom)
-        //val oy = if(czoom<2) 0 else (offsetY*czoom)
-        val coords = st.getCoords.map(c=>c.rounded(Magic.roundingAccuracy)*czoom+off)
-        //if(!antialiasing)println(czoom)//(coords.mkString(", "))
-        //val xs = st.xs.map(x=>(math.round(x*2)/2.0*czoom-ox).toInt)
-        //val ys = st.ys.map(y=>(math.round(y*2)/2.0*czoom-oy).toInt)
-        //println(xs.mkString(", "))
-        //if(len2==1) g.drawLine((path(0)-ox).toInt, (path(1)-oy).toInt, (path(0)-ox).toInt, (path(1)-oy).toInt)
-        //else for(index<-0 until len2-1){
-          g.drawPolyline(coords.map(_.x.toInt), coords.map(_.y.toInt), coords.length)  
-          //g.drawLine((path(2*index)-ox).toInt, (path(2*index+1)-oy).toInt, (path(2*index+2)-ox).toInt, (path(2*index+3)-oy).toInt)
-          //}
-      }
+      g.setStroke(new BasicStroke((st.size*czoom).toFloat,BasicStroke.CAP_ROUND,BasicStroke.JOIN_ROUND))
+      g.setColor(st.color)
+      //if(last != -1)
+      //val path = st.path.map(x=>math.round(x*2)/2.0*czoom)//(_*czoom)
+      //val len2 = path.length/2
+      val off = offs//*czoom//if(czoom<=2) Coord(0,0) else (offs*czoom)
+      //val ox = if(czoom<2) 0 else (offsetX*czoom)
+      //val oy = if(czoom<2) 0 else (offsetY*czoom)
+      val path = st.getPath
+      val at = getAffineTransform(czoom, off)
+      path.transform(at)
+      g.draw(path)
+      path.transform(at.createInverse())
+
+        //val coords = st.getCoords.map(c=>c.rounded(Magic.roundingAccuracy)*czoom+off)
+      //if(!antialiasing)println(czoom)//(coords.mkString(", "))
+      //val xs = st.xs.map(x=>(math.round(x*2)/2.0*czoom-ox).toInt)
+      //val ys = st.ys.map(y=>(math.round(y*2)/2.0*czoom-oy).toInt)
+      //println(xs.mkString(", "))
+      //if(len2==1) g.drawLine((path(0)-ox).toInt, (path(1)-oy).toInt, (path(0)-ox).toInt, (path(1)-oy).toInt)
+      //else for(index<-0 until len2-1){
+        //g.drawPolyline(coords.map(_.x.toInt), coords.map(_.y.toInt), coords.length)
+      //g.drawLine((path(2*index)-ox).toInt, (path(2*index+1)-oy).toInt, (path(2*index+2)-ox).toInt, (path(2*index+3)-oy).toInt)
+      //}
+    }
+  }
+  def getAffineTransform(zoom:Double, offset:Coord) = {
+    val at = new AffineTransform()
+    at.translate(offset.x, offset.y)
+    at.scale(zoom, zoom)
+    at
   }
 }

@@ -1,11 +1,14 @@
 package dmodel.dpart
 
+import java.awt.geom.Path2D
+
 import dmodel.{Coord, JsonStroke, Layer}
 
 
 trait DoodlePart{
   def distFrom(point:Coord):Double // used to select closest line to a point
   def getLines:Array[BasicLine] // used to draw the lines
+  //def getPath:Array[Path2D] // testing for drawing the lines
   def transform(transformation:Coord=>Coord):Option[DoodlePart] // used for perspective transform, etc
   def length2:Double = getLines.foldLeft(0.0)(_+_.length2) //FIXME: this won't give comparable lengths, x^2+x^2 != (2x)^2
   def selection:Option[DoodlePart] // used for visualizing the selected line

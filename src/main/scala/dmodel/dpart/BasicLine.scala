@@ -1,6 +1,7 @@
 package dmodel.dpart
 
 import java.awt.Color
+import java.awt.geom.{AffineTransform, Path2D, PathIterator, Rectangle2D}
 
 import dmodel._
 
@@ -19,6 +20,7 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     len
   }
   private var coords = Buffer[Coord]()
+  private var path = new Path2D.Double()
   def transform (transformation:Coord=>Coord): Some[BasicLine] = {
     val next = new BasicLine(this.color,this.size)
     next.setCoords(this.coords.map(c=>transformation(c)))
@@ -28,20 +30,37 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     if(this.coords.isEmpty){500}
     else this.getCoords.map(_.dist(point)).min
   }
-  def setCoords(buf:Buffer[Coord]){ coords = buf }
-  def setCoords(arr:Array[Coord]){ coords = arr.toBuffer }
+  def setCoords(buf:Buffer[Coord]){
+    coords = buf
+    resetPath()
+  }
+  def setCoords(arr:Array[Coord]){ setCoords(arr.toBuffer) }
   def getCoords: Array[Coord] = coords.toArray
-  def addCoord(c:Coord){ coords += c }
+  def addCoord(c:Coord){
+    if(coords.isEmpty) path.moveTo(c.x, c.y)
+    coords += c
+    path.lineTo(c.x, c.y)
+  }
   def getLines = Array(this)
-  def getLast: Coord ={this.coords.last}
-  def getLastOption: Option[Coord] ={this.coords.lastOption}
+  def getPath = this.path
+  def getLast: Coord = {this.coords.last}
+  def getLastOption: Option[Coord] = {this.coords.lastOption}
   def getLastLine: Option[BasicLine] = {if(coords.length>1) Some(new BasicLine(color,size){this.setCoords(coords.takeRight(2))}) else None}
   def setLast(coord:Coord){
-    this.coords(coords.length-1) = coord
+    if(this.coords.nonEmpty) this.coords(coords.length-1) = coord
+    else this.addCoord(coord)
+    resetPath()
   }
   def setCoord(ind:Int,coord:Coord){
-    if(ind>=0&&ind<coords.length)
-      coords(ind)=coord
+    if(ind>=0 && ind<coords.length) {
+      coords(ind) = coord
+      resetPath()
+    }
+  }
+  private def resetPath(): Unit ={
+    path = new Path2D.Double()
+    coords.headOption.foreach(c => path.moveTo(c.x, c.y))
+    coords.foreach(c => path.lineTo(c.x, c.y))
   }
   /*
   //clips off parts of line outside the canvas

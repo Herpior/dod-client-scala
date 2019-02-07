@@ -56,6 +56,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // redraws the layers below the current layer
   // pretty slow if there are a lot of things below
   def redrawBot(){
+    //println("redrawBot")
     val img = createImg  //or graphics.setComposite(AlphaComposite.Clear); graphics.fillRect(0, 0, SIZE, SIZE); graphics.setComposite(AlphaComposite.SrcOver);
     val g = img.createGraphics()
     g.setColor(Magic.bgColor)
@@ -72,6 +73,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // redraws the current layer
   // bit slow it there are a lot of things on the layer
   def redrawMid(){
+    //println("redrawMid")
     val img = createImg
     val g = img.createGraphics()
     //LineDrawer.redraw(img, model.getMid)
@@ -83,6 +85,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // redraws the layers on top of the current layer
   // pretty slow if there are a lot of things on top
   def redrawTop(){
+    //println("redrawTop")
     val img = createImg
     val g = img.createGraphics()
     //LineDrawer.redraw(img, model.getTop)
@@ -96,6 +99,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // that is, on bezier lines and semitransparent lines
   // it will also clear the drawing layer but there should be a better way to clear it somewhere?
   def redrawDrawing(){
+    //println("redrawDrawing")
     val img = createImg
     val g = img.createGraphics()
     model.getDrawing.foreach{dp=>
@@ -106,6 +110,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // redraws image when moving up in the layers
   // that is, it merges the current layer on top of the bottom layer and redraws the current layer and the top layer
   def redrawLayerUp(){
+    //println("redrawLayerUp")
     val g = botImg.createGraphics
     g.drawImage(midImg, 0, 0, null)
     redrawTop
@@ -114,6 +119,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // redraws image when moving down in the layers
   // that is, it merges the current and the top layers and redraws the new current layer and bottom layers
   def redrawLayerDown(){
+    //println("redrawLayerDown")
     val g = midImg.createGraphics
     g.drawImage(topImg, 0, 0, null)
     topImg = midImg
@@ -124,6 +130,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // that is, the current layer and bottom layer are redrawn
   // as an optimization this might be trying to draw the bottom part of the merged layer first, before it's merged and paste the previously current layer on top, but now I'm not sure if this actually does that
   def redrawMergeDown(){
+    //println("redrawMergeDown")
     val img = midImg
     redrawMid
     val g = midImg.createGraphics()
@@ -134,6 +141,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // used when a new segment is added to current line
   // does not work with semitransparent lines or beziers
   def redrawLast(){
+    //println("redrawLast")
     val g = drawImg.createGraphics()
     model.getLast.foreach{dp=>
       LineDrawer.drawDoodlePartLast(g,dp,getZoom,offset,true)
@@ -142,7 +150,9 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   // draw the last line in current layer
   // used when everything else in the layer is drawn
   // that is, when a new line is finished
+  // TODO: make version that just moves the drawing onto mid and clears drawing to save tiny bit of time?
   def redrawLastMid(){
+    //println("redrawLastMid")
     val g = midImg.createGraphics()
     model.getLastMid.foreach{dp=>
       LineDrawer.drawDoodlePart(g,dp,getZoom,offset,true)

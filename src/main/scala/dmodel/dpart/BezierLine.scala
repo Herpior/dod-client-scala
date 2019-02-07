@@ -46,7 +46,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     }
   }
   def distFrom(point:Coord): Double =(this.coords ++ this.getLine(color, size).getCoords).map(_.dist(point)).min
-  def getLine(color1:Color,size1:Double):BasicLine={
+  def getLine(color1:Color,size1:Double):BasicLine = {
     if(coords.forall(_==coords(0))){ //if the bezier line is a point, return a point
       val st = new BasicLine(color1,size1)
       st.setCoords( Array(coords(0)) )
