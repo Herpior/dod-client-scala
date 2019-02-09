@@ -9,6 +9,8 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
   //var size = 1.0
   //var color = "#000"
   private val coords = Array.fill(4)(Coord(0,0))
+  private var basicline:BasicLine = _
+  private var changed = true // true when basicline needs to be recomputed
   require (coords.length==4)
   //val xs = Array(0.0,0.0,0.0,0.0)
   //val ys = Array(0.0,0.0,0.0,0.0)
@@ -36,16 +38,22 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
       coords
   }
   def setCoord(ind:Int,place:Coord){
-    if(ind>=0&&ind<4)
+    if(ind>=0&&ind<4) {
       coords(ind) = place
+      changed = true
+    }
   }
   def setCoords(places:Array[Coord]){
     val maxi = math.min( places.length,4)
     for(i<-0 until maxi){
       coords(i) = places(i)
     }
+    changed = true
   }
-  def distFrom(point:Coord): Double =(this.coords ++ this.getLine(color, size).getCoords).map(_.dist(point)).min
+  def distFrom(point:Coord): Double =(this.coords ++ this.getLine.getCoords).map(_.dist(point)).min
+  def getLine:BasicLine = {
+    if(changed)this.getLine(color,size) else basicline
+  }
   def getLine(color1:Color,size1:Double):BasicLine = {
     if(coords.forall(_==coords(0))){ //if the bezier line is a point, return a point
       val st = new BasicLine(color1,size1)
@@ -55,10 +63,12 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     val cs = Bezier.curve(coords(0),coords(1),coords(2),coords(3))
     val res = new BasicLine(color1,size1)
     res.setCoords (cs.map { c => c.rounded(Magic.roundingAccuracy) })
+    basicline = res
+    changed = false
     res
   }
   def getLines : Array[BasicLine]= {
-    val res = this.getLine(color,size)
+    val res = getLine
     //res.xs = xys._1.map(x=>math.round(2*x)/2.0)
     //res.ys = xys._2.map(y=>math.round(2*y)/2.0)
     Array(res)

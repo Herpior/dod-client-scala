@@ -1,7 +1,7 @@
 package dmodel
 import java.awt.Color
 
-object Smudge {
+class Smudge {
   
   private var tmp_color = Color.WHITE
   
