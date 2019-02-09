@@ -1,5 +1,13 @@
 package dmodel
 
+/**
+  * A class that contains the current state of the doodle, a LayerList.
+  * acts kind of as an interface between the view classes and dmodel classes but not that well.
+  *
+
+  * @author Qazhax
+  */
+
 import dmodel.dpart.{BasicLine, DoodlePart, JsonDoodle}
 
 import collection.mutable.Buffer

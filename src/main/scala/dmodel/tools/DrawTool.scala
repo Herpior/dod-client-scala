@@ -1,5 +1,11 @@
 package dmodel.tools
 
+/**
+  * A tool that can be used to draw freehand lines, smoothed by 1€ filter.
+
+  * @author Qazhax
+  */
+
 import dmodel._
 import dmodel.filters.OneEuroFilter
 

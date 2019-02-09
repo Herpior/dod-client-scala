@@ -1,5 +1,13 @@
 package dmodel
 
+/**
+  * An object that translates colors between string representations and java.awt.Color objects,
+  * can be also used to invert colours or to create gradients.
+  *
+
+  * @author Qazhax
+  */
+
 import java.awt.Color
 import collection.mutable.Buffer
 

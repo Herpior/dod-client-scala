@@ -1,5 +1,11 @@
 package dmodel.tools
 
+/**
+  * A tool that can be used to fill closed areas or the whole drawing area, with gradients or solid colour.
+
+  * @author Qazhax
+  */
+
 import java.awt.image.BufferedImage
 import java.awt.Color
 

@@ -1,13 +1,15 @@
 package dmodel.dpart
 import dmodel.{Coord, JsonStroke}
+/**
+  * Class for deleted lines, or lines that don't have any inherent line-ness, but that are necessary in the undo stack
+  * used as an anchor in the line stack for undoing the deletion.
+  * should only equal itself, not other deletedlines.
+  * not saved onto disk, as other programs don't seem to record deletions in saves either,
+  * and it would be more difficult to keep track of the deleted lines in saves.
+  * (an unique identifier might work, but it'd need to stay unique across multiple save and reload loops and stored)
 
-/* Class for deleted lines, or lines that don't have any inherent line-ness, but that are necessary in the undo stack
- * used as an anchor in the line stack for undoing the deletion.
- * should only equal itself and no other deletedlines.
- * not saved onto disk, as other programs don't seem to record deletions in saves either,
- * and it would be more difficult to keep track of the deleted lines in saves .
- * (an unique identifier might work, but it'd need to stay unique across multiple save and reload loops and stored)
- */
+  * @author Qazhax
+  */
 class EmptyLine extends DoodlePart {
   def distFrom(point:Coord): Double = Double.MaxValue // return maxValue so the line can't be selected accidentally
 

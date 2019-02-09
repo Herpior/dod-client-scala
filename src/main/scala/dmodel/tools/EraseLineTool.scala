@@ -1,5 +1,11 @@
 package dmodel.tools
 
+/**
+  * A tool that can be used to erase entire lines
+
+  * @author Qazhax
+  */
+
 import dmodel._
 import dmodel.dpart._
 

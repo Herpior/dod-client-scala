@@ -1,5 +1,11 @@
 package dmodel.dpart
 
+/**
+  * A class representing a single polyline with colour and size.
+
+  * @author Qazhax
+  */
+
 import java.awt.Color
 import java.awt.geom.{AffineTransform, Path2D, PathIterator, Rectangle2D}
 

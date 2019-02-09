@@ -1,4 +1,12 @@
 package dmodel.tools
+
+/**
+  * A trait for tools, superclass of every tool.
+  * Has methods that all tools share.
+
+  * @author Qazhax
+  */
+
 import dmodel.{Coord, DoodleBufferer}
 import dmodel.dpart.DoodlePart
 

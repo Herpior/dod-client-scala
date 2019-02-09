@@ -1,11 +1,17 @@
 package dmodel.dpart
 
+/**
+  * A class representing multiple grouped lines.
+  * Used as a method to group multiple lines together, e.x. when filling, so they act as a single item in undo stack.
+  * also an easy intermediate format between the original line format and the doodleordie export/upload format
+  *
+  * @author Qazhax
+  */
+
 import dmodel.{Colors, Coord, JsonStroke, Magic}
 
 import scala.collection.mutable.Buffer
 
-// Used as a method to group multiple lines together, e.x. when filling, so they act as a single item in undo stack.
-// also an easy intermediate format between the original line format and the doodleordie export/upload format
 class MultiLine extends DoodlePart{
   private var lines = Buffer[BasicLine]()
   def transform (transformation:Coord=>Coord): Some[MultiLine] = {

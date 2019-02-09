@@ -1,6 +1,12 @@
 package dmodel.dpart
 
-// the doodle format for doodles on doodleordie servers? I think..
+/**
+  * Json class for gson to load doodles from the server.
+  * the doodle format for doodles on doodleordie servers.
+  *
+  * @author Qazhax
+  */
+//TODO: move jsondoodle to json
 class JsonDoodle {
   var version: Int = _
   var doodle_id: String = _

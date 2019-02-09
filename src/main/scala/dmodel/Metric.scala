@@ -1,4 +1,4 @@
-package dmodel
+/*package dmodel
 
 trait Metric[X] {
   def +(x:X):X
@@ -8,4 +8,4 @@ trait Metric[X] {
   def unary_- :X
   def abs :X
   def length :Double
-}
+}*/

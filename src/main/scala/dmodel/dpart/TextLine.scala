@@ -1,10 +1,16 @@
 package dmodel.dpart
 
+/**
+  * An unused class representing one line of text.
+  * old half-implemented line format for a text tool.
+  *
+  * @author Qazhax
+  */
+
 import java.awt.Color
 
 import dmodel.{Coord, Fonts}
 
-// old half-implemented line format for a text tool
 /*
 class TextLine(cornerx:Double,cornery:Double,val color:Color,val size:Double) extends DoodlePart{
   //var cornerx = 0.0

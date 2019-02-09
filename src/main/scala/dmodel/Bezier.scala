@@ -1,29 +1,30 @@
 package dmodel
+/**
+  * An object that can be used to compute polyline representations of bezier curves.
+  *
+  * code translated from http://www.antigrain.com/research/adaptive_bezier/index.html
 
+  */
 import math._
-import collection.mutable.Buffer
 import scala.collection.mutable
 
 object Bezier {
 
   val m_distance_tolerance = 0.25
   
-  
-  //code translated from http://www.antigrain.com/research/adaptive_bezier/index.html
-  
 
 
     def pointAt(t:Double,c1:Coord,c2:Coord,c3:Coord,c4:Coord): Coord ={
         val nt = 1-t
         val c12   = c1*t + c2*nt
-        val c23   = (c2*t + c3*nt) 
+        val c23   = c2*t + c3*nt
         val c34   = c3*t + c4*nt
-        val c123  = (c12*t + c23*nt)
-        val c234  = (c23*t + c34*nt)
-        (c123*t + c234*nt) 
+        val c123  = c12*t + c23*nt
+        val c234  = c23*t + c34*nt
+        c123*t + c234*nt
   }
     def curve (coord1:Coord,coord2:Coord,coord3:Coord,coord4:Coord): mutable.Buffer[Coord] = {
-      val cbuf = Buffer[Coord]()
+      val cbuf = mutable.Buffer[Coord]()
       add_point(coord1)
        recursive_bezier(coord1,coord2,coord3,coord4)
       add_point(coord4)
@@ -49,8 +50,8 @@ object Bezier {
         //------------------
         val dc = c4-c1
     
-        val d2 = abs(((c2.x - c4.x) * dc.y - (c2.y - c4.y) * dc.x))
-        val d3 = abs(((c3.x - c4.x) * dc.y - (c3.y - c4.y) * dc.x))
+        val d2 = abs((c2.x - c4.x) * dc.y - (c2.y - c4.y) * dc.x)
+        val d3 = abs((c3.x - c4.x) * dc.y - (c3.y - c4.y) * dc.x)
     
         if((d2 + d3)*(d2 + d3) < m_distance_tolerance * (dc.x*dc.x + dc.y*dc.y)){
           add_point(c1234)

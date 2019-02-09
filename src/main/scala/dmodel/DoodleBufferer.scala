@@ -1,10 +1,20 @@
 package dmodel
 
+/**
+  * A class that contains all the buffered images in a doodle.
+  * handles zoom and offset to convert coordinates between screen space and image space.
+  *
+
+  * @author Qazhax
+  */
+
 import java.awt.Color
 import java.awt.image.BufferedImage
 
 class DoodleBufferer(val model:DoodleModel, private var width:Int, private var height:Int) {
 
+  // possible zoom values are set in an array to avoid losing accuracy when repeatedly zooming in and out
+  // TODO: find a translation between integers from 0 to 32 and the values in the array
   private val zooms=Array(
     0.25, 0.3,  0.35, 0.42,
     0.5,  0.59, 0.7,  0.84,

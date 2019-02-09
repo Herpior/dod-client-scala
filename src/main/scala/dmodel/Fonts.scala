@@ -1,4 +1,13 @@
 package dmodel
+
+/**
+  * Unused stuff related to text rendering, probably needs quite a lot of rework
+  * if I want to make it possible for people to use text properly.
+  *
+
+  * @author Qazhax
+  */
+
 import scala.collection.immutable
 
 object Fonts {

@@ -1,5 +1,12 @@
 package dmodel
 
+/**
+  * An object using gson to parse data from the servers.
+  *
+
+  * @author Qazhax
+  */
+
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import java.io.StringReader
@@ -103,13 +110,5 @@ object JsonParse {
     //after = System.nanoTime
     //print("tojson "+(after-before))
     //res
-  }
-}
-
-class JsonOk{
-  var ok:Boolean = _
-  var valid:Boolean = true
-  def isOk: Boolean = {
-    ok && valid
   }
 }

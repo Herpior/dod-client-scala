@@ -1,5 +1,11 @@
 package dmodel.tools
 
+/**
+  * A tool that can be used to draw straight lines
+
+  * @author Qazhax
+  */
+
 import math.Pi
 import java.awt.Color
 

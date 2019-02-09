@@ -1,10 +1,17 @@
 package dmodel
 
+/**
+  * An object that stores the possible sizes and current size of the brush.
+  *
+
+  * @author Qazhax
+  */
+
 import math.max
 import math.min
 
 object SizeModel {
-  
+  //TODO make sizemodel a class
   val sizes = Vector(1,3,5,10,25,50,100,400)
   private var currentSize = 25
   private var slider = false

@@ -1,9 +1,17 @@
 package dmodel
 
+/**
+  * An object that stores the vanishing points
+  * and can compute a line towards the closest vanishing point.
+  *
+
+  * @author Qazhax
+  */
+
 import collection.mutable.Buffer
 import math.{Pi, abs}
 import scala.collection.mutable
-
+//TODO: make perspective a class
 object Perspective {
   private var pers = Magic.doodleSize/2
   private var pers2 :Option[Coord] = None

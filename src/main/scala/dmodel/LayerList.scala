@@ -1,8 +1,12 @@
 package dmodel
 
 /**
- * @author Herpior
- */
+  * A class that contains all the Layers in a doodle and the index of the current layer.
+  * handles tasks relating to the layer buffer.
+  *
+
+  * @author Qazhax
+  */
 
 import collection.mutable.Buffer
 

@@ -1,5 +1,13 @@
 package dmodel.tools
 
+/**
+  * A tool that can take two bezier lines and fill the area between them with interpolated bezier lines,
+  * creating a gradient that can be controlled more freely.
+  *
+
+  * @author Qazhax
+  */
+
 import dmodel.{Colors, Coord, DoodleBufferer}
 import dmodel.dpart.{BezierLine, DoodlePart, MultiLine}
 

@@ -1,5 +1,11 @@
 package dmodel.tools
 
+/**
+  * A tool that can be used to edit the size or colour of lines
+
+  * @author Qazhax
+  */
+
 import dmodel._
 import dmodel.dpart._
 

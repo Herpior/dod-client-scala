@@ -1,5 +1,11 @@
 package dmodel.dpart
 
+/**
+  * A class representing a single bezier curve with colour and size.
+
+  * @author Qazhax
+  */
+
 import java.awt.Color
 
 import dmodel._

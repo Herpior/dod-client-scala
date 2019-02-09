@@ -1,5 +1,12 @@
 package dmodel.tools
 
+/**
+  * A tool that can be used to select lines.
+  * Base for tools that need to select lines, useless on it's own.
+
+  * @author Qazhax
+  */
+
 import collection.mutable.Buffer
 import dmodel.{Coord, DoodleBufferer}
 import dmodel.dpart.DoodlePart
@@ -7,7 +14,6 @@ import dmodel.dpart.DoodlePart
 import scala.collection.mutable
 
 
-//base for tools that need to select lines
 class SelectTool extends BasicTool {
   
   protected var selected:Option[DoodlePart] = None//Array() // selected line after clicking

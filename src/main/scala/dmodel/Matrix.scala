@@ -1,5 +1,11 @@
 package dmodel
 
+/**
+  * An object that takes two arrays of 4 points and returns a function for mapping coordinates from
+  * the source quadrangle into the destination quadrangle.
+  *
+
+  */
 
 object Matrix/*(magicX:Int,magicY:Int)*/ {
   /*var m0x = 0.0
@@ -115,7 +121,7 @@ gaussian (arr)
   
   def transferPoint (source:Array[Coord], destination:Array[Coord]) : Coord=>Coord =
 {
-    
+    //TODO: check that source and destination have 4 coordinates both
     def inner(c:Coord) = {
         
       var ADDING = 0.001; // to avoid dividing by zero

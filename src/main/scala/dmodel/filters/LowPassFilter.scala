@@ -1,5 +1,11 @@
 package dmodel.filters
 
+/**
+  * A low pass filter used by OneEuroFilter.
+
+  * @author Qazhax
+  */
+
 import dmodel.Coord
 
 

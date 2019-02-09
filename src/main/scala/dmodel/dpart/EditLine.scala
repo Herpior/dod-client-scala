@@ -1,5 +1,11 @@
 package dmodel.dpart
 
+/**
+  * A class representing a single edit in the undo stack.
+
+  * @author Qazhax
+  */
+
 import dmodel.Layer
 
 

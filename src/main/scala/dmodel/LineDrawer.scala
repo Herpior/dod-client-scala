@@ -1,5 +1,13 @@
 package dmodel
 
+/**
+  * An object that is used to draw the stokes onto the Graphics2D instance given to it.
+  * translates and scales the lines and draws them.
+  *
+
+  * @author Qazhax
+  */
+
 import java.awt.image.BufferedImage
 import java.awt.Color
 import java.awt.Graphics2D

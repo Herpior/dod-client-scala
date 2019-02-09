@@ -1,5 +1,12 @@
 package dmodel
 
+/**
+  * A class that represents a point/vector in 2D space.
+  * Has a lot of methods.
+
+  * @author Qazhax
+  */
+
 import math.{hypot,round}
 
 object Coord{
@@ -11,7 +18,7 @@ object Coord{
   }
 }
 
-case class Coord(x:Double, y:Double) extends Metric[Coord] {
+case class Coord(x:Double, y:Double) {
 
   def unary_- : Coord ={
     this.map(-_)

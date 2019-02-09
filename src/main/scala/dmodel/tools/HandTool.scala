@@ -1,5 +1,11 @@
 package dmodel.tools
 
+/**
+  * A tool that can be used to pan the doodle
+
+  * @author Qazhax
+  */
+
 import dmodel.DoodleBufferer
 import dmodel.{Coord, DoodleBufferer, Magic}
 

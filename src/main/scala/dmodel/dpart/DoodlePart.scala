@@ -1,5 +1,11 @@
 package dmodel.dpart
 
+/**
+  * Trait for all possible line types.
+
+  * @author Qazhax
+  */
+
 import java.awt.geom.Path2D
 
 import dmodel.{Coord, JsonStroke, Layer}

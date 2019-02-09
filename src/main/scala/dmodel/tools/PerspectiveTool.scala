@@ -1,4 +1,11 @@
 package dmodel.tools
+
+/**
+  * A tool that can be used to move the vanishing points around
+
+  * @author Qazhax
+  */
+
 import dmodel.DoodleBufferer
 import dmodel.Coord
 import dmodel.Magic

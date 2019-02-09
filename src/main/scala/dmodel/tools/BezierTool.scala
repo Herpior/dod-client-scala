@@ -1,4 +1,11 @@
 package dmodel.tools
+
+/**
+  * A tool that can be used to draw bezier lines consisting of start and end points, and two guide points.
+
+  * @author Qazhax
+  */
+
 //import dmodel.Angle
 import dmodel._
 import dmodel.dpart.{BasicLine, BezierLine, DoodlePart, MultiLine}

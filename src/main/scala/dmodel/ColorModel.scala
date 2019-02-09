@@ -1,8 +1,14 @@
 package dmodel
 
+/**
+  * An object that contains the palette of colours and the indices of the selected colours.
+  *
+
+  * @author Qazhax
+  */
+
 import java.awt.Color
 import math.min
-//import collection.mutable.Buffer
 
 object ColorModel {
 

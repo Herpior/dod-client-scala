@@ -1,16 +1,23 @@
 package dmodel.tools
+/**
+  * A class that represents a point/vector in 2D space.
+  * Has a lot of methods.
 
-// name: name of the variable to be shown in the gui
-// getValue: getter function for the value
-// setValue: setter function for the value
-// minValue: minimum value for values that can have a minimum value and are orderable
-// maxValue: maximum value for values that can have a maximum value and are orderable
-// logScale: boolean telling whether the scale should be linear or logarithmic for numeric values
+  * @author Qazhax
+  *
+  * @param name: name of the variable to be shown in the gui
+  * @param getValue: getter function for the value
+  * @param setValue: setter function for the value
+  * @param minVal: minimum value for values that can have a minimum value and are orderable
+  * @param maxVal: maximum value for values that can have a maximum value and are orderable
+  * @param logScale: boolean telling whether the scale should be linear or logarithmic for numeric values
+  * @param logOffset: number telling where the logarithmic scale should start, making it closer to a linear scale if necessary
 
-// if T = Unit, this can be used to create a button
-// if T = Boolean, this can be used to create a checkbox
-// if T = Double, this can be used to create a slider
-// if T = Int, this can be used to create a slider
+  * if T = Unit, this can be used to create a button
+  * if T = Boolean, this can be used to create a checkbox
+  * if T = Double, this can be used to create a slider
+  * if T = Int, this can be used to create a slider
+  */
 //class NumberConfigVariable(name:String,getValue:Unit=>Int, setValue:Int=>Unit, val minVal:Option[Int]=None, val maxVal:Option[Int]=None, val logScale:Boolean=false, val logOffset:Double = 1e-100)(implicit ord: Ordering[Int]) extends ConfigVariable(name) {
 abstract class NumConfigVariable[T](name:String,getValue:Unit=>T, setValue:T=>Unit, val minVal:Option[T]=None, val maxVal:Option[T]=None, val logScale:Boolean=false, val logOffset:Double = 1e-100)(implicit ord: Ordering[T]) extends ConfigVariable(name) {
 

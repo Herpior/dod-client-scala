@@ -1,8 +1,16 @@
 package dmodel
+
+/**
+  * An object that contains all the tools and keeps track which of them is currently in use..
+  *
+
+  * @author Qazhax
+  */
+
 import dmodel.tools._
 
 object ToolModel {
-
+//TODO: make toolmodel a class
 
   val handTool = new HandTool
   val drawTool = new DrawTool
@@ -85,6 +93,7 @@ object ToolModel {
       // right = 4096
       // shift = 64
       // ctrl = 128
+      // cmd = 256
       // alt =  512
       // alr gr = 640 = alt + ctrl
      */

@@ -1,5 +1,12 @@
 package dmodel.dpart
 
+/**
+  * Json class for gson to load doodles from the server.
+  * A single line from a doodle.
+  *
+  * @author Qazhax
+  */
+
 import dmodel.{Colors, Coord, JsonStroke}
 
 import scala.collection.mutable.Buffer

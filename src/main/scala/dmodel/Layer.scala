@@ -1,10 +1,19 @@
 package dmodel
 
+/**
+  * A class that represents a single layer.
+  * Each layer has its own undo and redo stacks, and can be made invisible.
+  * Regular layers contain all their
+
+  * @author Qazhax
+  */
+
 import dmodel.dpart._
 
 import collection.mutable.Buffer
 import scala.collection.mutable
 
+//TODO: split Layer class into abstract Layer class and VectorLayer class that inherits from it.
 class Layer() {
   protected val redos: mutable.Buffer[DoodlePart] = Buffer[DoodlePart]()
   //var img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB)
@@ -68,7 +77,7 @@ class Layer() {
       redos -= redos.last
     }
   }
-  def redoOrReturnLineOnFailure:Option[DoodlePart] = { //used for splitting layer
+  def redoOrReturnLineOnFailure():Option[DoodlePart] = { //used for splitting layer
     if(redos.nonEmpty){
       if(redos.last.onRedo(this)){
         strokes += redos.last
@@ -83,18 +92,18 @@ class Layer() {
   }
   def burn() {
     while (strokes.nonEmpty){
-      undo
+      undo()
     }
   }
   def revive() {
     while(redos.nonEmpty){
-      redo
+      redo()
     }
   }
-  def reviveAndReturnFailedEditLines: mutable.Buffer[DoodlePart] = { //used for splitting layer
+  def reviveAndReturnFailedEditLines(): mutable.Buffer[DoodlePart] = { //used for splitting layer
     val returning = Buffer[DoodlePart]()
     while(redos.nonEmpty){
-      redoOrReturnLineOnFailure.foreach(returning += _)
+      redoOrReturnLineOnFailure().foreach(returning += _)
     }
     returning.reverse
   }
@@ -104,9 +113,9 @@ class Layer() {
     //val editlines = this.redos.filter(dp => dp.isInstanceOf[EditLine] && !this.redos.contains(dp.asInstanceOf[EditLine].originalLine))
     upper.redos ++= this.redos//.filter(!editlines.contains(_))
     this.redos.clear
-    val returnedLines = upper.reviveAndReturnFailedEditLines
+    val returnedLines = upper.reviveAndReturnFailedEditLines()
     this.redos ++= returnedLines
-    this.revive
+    this.revive()
     upper.setVisibility(true)
     upper
   }

@@ -1,9 +1,16 @@
 package dmodel
 
+/**
+  * An object that stores the config values and magic numbers used all over the application.
+  *
+
+  * @author Qazhax
+  */
+
 import java.awt.{Color, Font}
 
 object Magic {
-
+//TODO: move io.localstorage.loadConfig into the main window?
   private val loadedConf = try { io.LocalStorage.loadConfig("config") } catch { case e:Throwable => Map[String, String]()}
   def authorized: Boolean = http.HttpHandler.getAuth || offline
   val version = 500

@@ -1,6 +1,5 @@
 package view
 
-import java.awt.Toolkit
 
 import scala.swing._
 import scala.swing.event._
@@ -10,9 +9,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import controller._
 import dmodel.Magic
 import dmodel.SizeModel
-import dmodel.ColorModel
-import io.Icons
-import javax.swing.SwingUtilities
 
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean) extends BorderPanel with PlayPanel{
 

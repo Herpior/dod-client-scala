@@ -1,5 +1,12 @@
 package dmodel
 
+/**
+  * Json class for gson to load doodle data from the servers
+  *
+
+  * @author Qazhax
+  */
+
 import dmodel.dpart._
 
 import scala.collection.mutable

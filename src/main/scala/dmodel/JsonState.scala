@@ -1,5 +1,13 @@
 package dmodel
 
+/**
+  * Json class for gson to load state data from the servers.
+  * That is, whether the chain has expired, is drawing prompt or is a doodle to be described,
+  * along with some related data.
+
+  * @author Qazhax
+  */
+
 import dmodel.dpart.JsonDoodle
 import view.{DoodlingPanel, PhrasingPanel, PlayPanel, StalingPanel}
 

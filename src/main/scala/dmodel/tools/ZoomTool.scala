@@ -1,4 +1,11 @@
 package dmodel.tools
+
+/**
+  * A tool that can be used to zoom in and out the doodle.
+
+  * @author Qazhax
+  */
+
 import dmodel.DoodleBufferer
 import dmodel.Coord
 import dmodel.dpart.DoodlePart

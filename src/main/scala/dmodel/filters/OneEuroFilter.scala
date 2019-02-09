@@ -1,8 +1,14 @@
 package dmodel.filters
 
+/**
+  * 1€ filter, for smoothing strokes, or other noisy data.
+  * Based on http://cristal.univ-lille.fr/~casiez/1euro/
+
+  * @author Qazhax
+  */
+
 import dmodel.Coord
 
-// based on http://cristal.univ-lille.fr/~casiez/1euro/
 class OneEuroFilter() {
   var beta = 1e-12 //increase to reduce lag
   var mincutoff = 4.0 //decrease to reduce jitter but increase lag
@@ -59,8 +65,8 @@ class OneEuroFilter() {
 
   def reset(): Unit ={
     this.initialized = false
-    this.xfilt.reset
-    this.dxfilt.reset
+    this.xfilt.reset()
+    this.dxfilt.reset()
   }
 
 
