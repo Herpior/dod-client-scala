@@ -1,5 +1,13 @@
 package http
 
+/**
+  * A Superclass for post requests
+  * subclasses often contain the static urls so the urls don't need to be defined elsewhere
+  *
+
+  * @author Qazhax
+  */
+
 import collection.mutable.Map
 import java.util.ArrayList
 
@@ -18,6 +26,13 @@ class DefaultPost(url:String,ref:String) extends HttpPost(url){
     this.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.103 Safari/537.36")
   
 }
+
+/** A class for post requests
+  *
+  * @param s either empty string or string containing "s". used for accessing https://doodleordie.com, ie. when logging in.
+  * @param ext the target path on doodleordie.com domain, e.g. "play" if target is "http://doodleordie.com/play"
+  * @param ref the ref path in on doodleordie.com domain, e.g. "play"
+  */
 class DodPost(s:String,ext:String,ref:String) extends DefaultPost("http"+s+"://doodleordie.com/"+ext,"http"+s+"://doodleordie.com/"+ref){
     this.addHeader("Origin","http://doodleordie.com")
     this.addHeader("x-js-ver","7f183e22")
@@ -44,6 +59,7 @@ class FacePost(username:String,password:Array[Char],input:Map[String,String])ext
   nameValuePairs.add(new BasicNameValuePair("pass", password.mkString))
   this.setEntity(new UrlEncodedFormEntity(nameValuePairs))
 }*/
+/*
 class TwitterPost(username:String,password:Array[Char],input:Map[String,String]) extends DefaultPost("https://api.twitter.com/oauth/authorize","https://api.twitter.com/oauth/authorize?oauth_token="+input("oauth_token")){
   val nameValuePairs = new ArrayList[NameValuePair](1)
   nameValuePairs.add(new BasicNameValuePair("authenticity_token", input("authenticity_token")))
@@ -52,7 +68,7 @@ class TwitterPost(username:String,password:Array[Char],input:Map[String,String])
   nameValuePairs.add(new BasicNameValuePair("session[username_or_email]", username))
   nameValuePairs.add(new BasicNameValuePair("session[password]", password.mkString))
   this.setEntity(new UrlEncodedFormEntity(nameValuePairs))
-}
+}*/
 class PlayPost(ext:String) extends DodPost("",ext,"play"){
   this.addHeader("Accept","*/*")
   this.addHeader("Content-Type","application/json")

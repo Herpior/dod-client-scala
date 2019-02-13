@@ -1,5 +1,14 @@
 package http
 
+
+/**
+  * A Superclass for get requests
+  * subclasses often contain the static urls so the urls don't need to be defined elsewhere
+  *
+
+  * @author Qazhax
+  */
+
 import org.apache.http.client.methods.HttpGet
 
 class DefaultGet(url:String,ref:String) extends HttpGet(url){
@@ -22,23 +31,26 @@ class MainGet() extends DodGet("",""){
 }
 class PlayGet() extends DodGet("play",""){
 }
-class DoodleGet(url:String) extends HttpGet(url){
-    this.addHeader("Accept-Encoding","gzip,deflate")//,sdch?
-    this.addHeader("User-Agent","Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2062.103 Safari/537.36")
+
+/** get for loading doodles from the aws.
+  *
+  * @param url, url gotten in StateGet request when state is phrasing.
+  */
+
+class DoodleGet(url:String) extends DefaultGet(url, "http://doodleordie.com/play"){
     this.addHeader("Content-Type","application/json")
-    this.addHeader("Accept","*/*")
     this.addHeader("X-Requested-With","XMLHttpRequest")
     this.addHeader("Connection","keep-alive")
     
     //this.addHeader("Cookie")
     
 }
-/*!brief
+/**!brief
  * value player: player username in url form
  * value steps: type of steps, either "doodles" or "descriptions"(?)
  * value sort: sort type, either "date" or likes"(?)
  * value page: profile page number
- * value cookie: cookie with cid and __conn I guess
+ * value cookie: cookie with cid and _conn I guess
  */
 class ProfileGet(player:String,steps:String,sort:String,page:Int) extends DodGet("api/players/"+player+"/steps/"+steps+"?sort="+sort+"&page="+page+"&format=html","profile/"+player){
 }

@@ -1,5 +1,12 @@
 package http
 
+/**
+  * An object for setting up the keystore from a cacerts file,
+  * or if no external file is found, from the cacerts file bundled in with the jar.
+
+  * @author Qazhax
+  */
+
 import java.io.File
 
 import javax.net.ssl.SSLContext

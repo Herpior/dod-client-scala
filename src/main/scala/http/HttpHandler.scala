@@ -1,5 +1,11 @@
 package http
 
+/**
+  * An object handling all http connections, and maintaining the state between the server and client, e.g. login status.
+
+  * @author Qazhax
+  */
+
 import java.io.FileNotFoundException
 
 import org.apache.http.impl.client.{CloseableHttpClient, HttpClients}
@@ -57,7 +63,7 @@ object HttpHandler {
   def getChain: String = chain
   def getGroup: String = room
   def getAuth: Boolean = auth.isSuper
-  def loggedIn: Boolean = auth.skipsPerDuration>0 //very weird way to figure out if logged in
+  def loggedIn: Boolean = auth.isLoggedIn
 
   def saveCid() {
   cid.foreach { x => io.Crypt.encipherTo(x, "login") }
@@ -66,7 +72,7 @@ object HttpHandler {
   private def postHttp(post:HttpPost)={
     val response = client.execute(post)
     val in = 
-        if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding)){
+        if (response.getEntity.getContentEncoding.getElements.exists(codec=>codec.getName.equalsIgnoreCase(GZIP_CONTENT_TYPE))){
           new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
@@ -80,8 +86,8 @@ object HttpHandler {
 
   def getHttp(get:HttpGet): Array[String] ={
     val response = client.execute(get)
-    val in = 
-        if (GZIP_CONTENT_TYPE.equals(response.getEntity.getContentEncoding)){
+    val in =
+      if (response.getEntity.getContentEncoding.getElements.exists(codec=>codec.getName.equalsIgnoreCase(GZIP_CONTENT_TYPE))){
           new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
