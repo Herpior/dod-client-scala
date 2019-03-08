@@ -7,8 +7,9 @@ import scala.swing.BorderPanel.Position._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import controller._
-import dmodel.Magic
-import dmodel.SizeModel
+import dmodel.{DoodleBufferer, DoodleModel, Magic, SizeModel}
+import dmodel.json.JsonProfile
+import http.HttpHandler
 
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean) extends BorderPanel with PlayPanel{
 
@@ -224,8 +225,8 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
     if (res != FileChooser.Result.Approve) return
     val file = fc.selectedFile
     doodle.model.decryptFrom(file.getAbsolutePath)
-    doodle.bufferer.redrawAll
-    layers.reset
+    doodle.bufferer.redrawAll()
+    layers.reset()
     if(savename == "offline"){
       val yesNo = Dialog.showConfirmation(doodle, "Do you want to use this file as save location?", "Set as save location")
       if(yesNo == Dialog.Result.Yes){
@@ -234,14 +235,49 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       }
     }
   }
+  def downloadProfile(user:String, percent:Double, start_page:Int=1): Unit ={
+    println("downloading profile "+user+" at "+ percent+"% zoom starting at page "+start_page)
+    var i = start_page
+    var prof_data:JsonProfile = new JsonProfile
+    do{
+      prof_data = HttpHandler.getProfileData(user, i)
+      i+=1
+      prof_data.collection.foreach{ steps =>
+        steps.playerStep.state match{
+          case "draw" =>
+            try {
+              if (steps.playerStep.content.version >= 2) {
+                val dm = new DoodleModel
+                val db = new DoodleBufferer(dm, steps.playerStep.content.width, steps.playerStep.content.height)
+                val jsdoodle = HttpHandler.getDoodle(steps.playerStep.content.url)
+                dm.load(jsdoodle)
+                val desc = if (steps.previousStep != null && steps.previousStep.state == "phrase") steps.previousStep.content.phrase else "new chain"
+                val path = "./downloads/" + steps.playerStep.player_id + "/" + steps.playerStep.date + steps.playerStep.content.doodle_id + desc + ".png"
+                db.exportImage(percent, path)
+              }
+              else {
+                println("sth else happened")
+                //TODO:add support for downloading and saving png files
+              }
+            } catch {
+              case e:NullPointerException =>
+            }
+          case e =>
+            println("not doodle: "+e)
+
+        }
+      }
+    } while (prof_data!= null && prof_data.collection!= null && prof_data.collection.nonEmpty)
+    Dialog.showMessage(this, "Done downloading")
+  }
   
-  override def logout {
+  override def logout() {
     save
     this.publish(
           new ReplaceEvent(
               new view.LoadingPanel(
                   Future{
-                      http.HttpHandler.logout
+                      http.HttpHandler.logout()
                       new LogonPanel
                   },this
               ),this
@@ -409,7 +445,23 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.K =>
           tools.setTool(6)//->hand
         case Key.L =>
-          tools.setTool(7)//->undefined
+          //tools.setTool(7)//->undefined
+          if(ctrl) {
+            val user_opt = Dialog.showInput(doodle, "input username whose profile will be downloaded", "username", Dialog.Message.Question, null, List[String](), "")
+            user_opt.foreach { user =>
+              val wid_opt = Dialog.showInput(doodle, "input preferred image width in pixels", "width", Dialog.Message.Question, null, List[String](), "520")
+              wid_opt.foreach { wid =>
+                try {
+                  val ind = Dialog.showInput(doodle, "input starting index or leave it at 1", "index", Dialog.Message.Question, null, List[String](), "1")
+                  val percent = wid.toInt / 520.0
+                  this.downloadProfile(user, percent, ind.getOrElse("1").toInt)
+                }
+                catch {
+                  case err: Throwable => err.printStackTrace()
+                }
+              }
+            }
+          }
           
         case Key.C =>
           if(ctrl){
@@ -433,7 +485,7 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.O =>
           if(Magic.authorized){
             if(ctrl){
-              load
+              load()
             }
             else {
               tools.setTool(3)//->fill

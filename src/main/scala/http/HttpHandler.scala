@@ -86,8 +86,10 @@ object HttpHandler {
 
   def getHttp(get:HttpGet): Array[String] ={
     val response = client.execute(get)
+    val enc = response.getEntity.getContentEncoding
+    val isGzip = enc != null && enc.getElements.exists(codec=>codec.getName.equalsIgnoreCase(GZIP_CONTENT_TYPE))
     val in =
-      if (response.getEntity.getContentEncoding.getElements.exists(codec=>codec.getName.equalsIgnoreCase(GZIP_CONTENT_TYPE))){
+      if (isGzip){
           new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
@@ -172,6 +174,11 @@ object HttpHandler {
     val get = new DoodleGet(url)
     val in = getHttp(get)
     JsonParse.parseDoodle(in.mkString("\n").dropWhile(_!='{').dropRight(2))
+  }
+  def getProfileData(player:String,page:Int,per_page:Int=12,steps:String="doodles",sort:String="date") ={
+    val get = new ProfileGet(player, steps, sort, page, per_page)
+    val in = getHttp(get)
+    JsonParse.parseProfile(in.mkString("\n"))
   }
   def changeGroup(group_id:String): Boolean ={
     val post = new ChangeGroupPost(group_id)

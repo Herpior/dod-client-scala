@@ -13,32 +13,24 @@ import java.io.StringReader
 import java.io.BufferedReader
 
 import dmodel.dpart.JsonDoodle
+import dmodel.json.JsonProfile
 
 object JsonParse {
     val gson = new Gson
 
   def parseDoodle(jsfile:String): JsonDoodle ={
-    //val gson = new Gson
-    //println(jsfile)
-    //val red = new JsonParser
     val reader = new BufferedReader(new StringReader(jsfile))
-    //reader.setLenient(true)
     val targ = gson.fromJson(reader,classOf[JsonDoodle])
-    //targ.print
-    //println("end")
-    //doodle.print
+    targ
+  }
+  def parseProfile(jsfile:String): JsonProfile ={
+    val reader = new BufferedReader(new StringReader(jsfile))
+    val targ = gson.fromJson(reader,classOf[JsonProfile])
     targ
   }
   def parseSave(jsfile:String): JsonSave ={
-    //val gson = new Gson
-    //println(jsfile)
-    //val red = new JsonParser
     val reader = new BufferedReader(new StringReader(jsfile))
-    //reader.setLenient(true)
     val targ = gson.fromJson(reader,classOf[JsonSave])
-    //targ.print
-    //println("end")
-    //doodle.print
     targ
   }
   def parseState(jsfile:String): JsonState ={

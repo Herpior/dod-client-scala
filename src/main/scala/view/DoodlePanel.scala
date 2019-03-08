@@ -2,12 +2,9 @@ package view
 
 import scala.swing._
 import java.awt.{Dialog => _, Dimension => _, Graphics2D => _, Panel => _, _}
-import java.awt.image.BufferedImage
-import java.io.File
 
 import controller.FullscreenEvent
 import dmodel._
-import dmodel.dpart.DoodlePart
 
 import scala.swing.event.UIElementResized
 //import java.awt.Cursor
@@ -104,32 +101,7 @@ class DoodlePanel extends Panel {
 
 
   def exportImage(percent:Double, path:String){
-    val img = new BufferedImage((percent*Magic.x).toInt,(percent*Magic.y).toInt, BufferedImage.TYPE_INT_ARGB)
-    val g = img.createGraphics()
-    model.getLayers.foreach{
-      lay=>
-        lay.getVisibleStrokes(true).foreach {
-          stro =>
-            LineDrawer.drawDoodlePart(g,stro,percent,Coord(0,0),true)
-        }
-    }
-    //var out: java.io.OutputStream = null
-    try{
-      //val localfile = "sample2.png"
-      //out = new java.io.BufferedOutputStream(new java.io.FileOutputStream(localfile))
-      //out.write(img.)
-      //val path = Dialog.showInput(this, "save location", "save", Dialog.Message.Question, null, List(), "exported.png")
-      //path.foreach{
-      //p=>
-      val outputfile = new File(path)
-      val check = if(outputfile.exists())Dialog.showConfirmation(this, "this file already exists, overwrite?", "overwrite?", Dialog.Options.YesNo, Dialog.Message.Question, null)==Dialog.Result.Yes else true
-      if(check)javax.imageio.ImageIO.write(img, "png", outputfile)
-      //}
-    } catch {
-      case e:Throwable => e.printStackTrace()
-    } finally {
-      //out.close
-    }
+    bufferer.exportImage(percent, path)
   }
 
   def submit:Boolean={

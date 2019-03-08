@@ -115,7 +115,9 @@ class DoodleModel {
   def loadSave(chain:String){
     try{
       val loaded = io.LocalStorage.loadSave(chain)//.decryptFrom(path,chain)
-      load(loaded)
+      if (loaded.getLayers.nonEmpty) {
+        load(loaded)
+      }
     }
     catch{
       case e:java.io.FileNotFoundException=>

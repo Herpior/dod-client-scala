@@ -50,9 +50,10 @@ class DoodleGet(url:String) extends DefaultGet(url, "http://doodleordie.com/play
  * value steps: type of steps, either "doodles" or "descriptions"(?)
  * value sort: sort type, either "date" or likes"(?)
  * value page: profile page number
- * value cookie: cookie with cid and _conn I guess
+ * value per_page: number of steps loaded per page
  */
-class ProfileGet(player:String,steps:String,sort:String,page:Int) extends DodGet("api/players/"+player+"/steps/"+steps+"?sort="+sort+"&page="+page+"&format=html","profile/"+player){
+class ProfileGet(player:String,steps:String,sort:String,page:Int,per_page:Int) extends DodGet("api/players/"+player+"/steps/"+steps+"?sort="+sort+"&page="+page+"&per_page="+per_page,"profile/"+player){
+  //+"&format=html"
 }
 class ChainGet() extends DodGet("",""){
 }
