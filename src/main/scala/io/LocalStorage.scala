@@ -104,8 +104,16 @@ object LocalStorage {
   def decrypt(str:String):JsonSave={
     str.headOption.foreach{ c=>
       if (c=='{'){
-        val doodle = dmodel.JsonParse.parseSave(str)
-        return doodle
+        val save = dmodel.JsonParse.parseSave(str)
+        if (save.getLayers.isEmpty && save.version == 2){ //a dod-generated save that has already been cleaned
+          val doodle = dmodel.JsonParse.parseDoodle(str)
+          return doodle.toJsonSave
+        }
+        return save
+      }
+      else if (c=='/'){
+        val doodle = dmodel.JsonParse.parseDoodle(str.dropWhile(_!='{').dropRight(2))
+        return doodle.toJsonSave
       }
     }
     val parts = str.replaceAll("\"", "").split("\\\\r")

@@ -1,5 +1,7 @@
 package dmodel.dpart
 
+import dmodel.{JsonLayer, JsonSave}
+
 /**
   * Json class for gson to load doodles from the server.
   * the doodle format for doodles on doodleordie servers.
@@ -21,6 +23,19 @@ class JsonDoodle {
   var strokes: Array[JsonLine] = Array()
   
   def getStrokes:Array[JsonLine] = if(strokes.isEmpty)http.HttpHandler.getDoodle(url).getStrokes else strokes
+
+  def toJsonSave = {
+    val save = new JsonSave
+    save.version = this.version
+    save.doodle_id = this.doodle_id
+    save.user_id = this.user_id
+    save.time = this.time
+    save.date = this.date
+    val layer = new JsonLayer
+    layer.strokes = this.getStrokes.flatMap(_.toJson)
+    save.layers = Array(layer)
+    save
+  }
   
   //def print = println(this)
   override def toString: String ="version "+version+". doodle_id "+doodle_id+". user_id "+user_id+". date "+date+". time "+time+

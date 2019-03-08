@@ -1,7 +1,7 @@
 package dmodel
 
 /**
-  * Json class for gson to load doodle data from the servers
+  * Json class for gson to load doodle data from the save file
   *
 
   * @author Qazhax
@@ -15,6 +15,8 @@ class JsonSave {
   var version:Int = _
   var doodle_id:String = _
   var time:Int = _
+  var date: String = _
+  var user_id: String = _
   var layers:Array[JsonLayer] = Array()
   var v:Int = _
   var d:String = _

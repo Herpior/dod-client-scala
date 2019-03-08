@@ -17,10 +17,11 @@ class PngFilter extends FileFilter {
 class TxtFilter extends FileFilter {
 
   def accept(file:File): Boolean = {
-    if(file.getName.toLowerCase().endsWith("txt") && file.canRead) {
+    if(file.getName.toLowerCase().endsWith(".txt") || file.getName.toLowerCase().endsWith(".js") && file.canRead) {
       val ensource = scala.io.Source.fromFile(file)("UTF-8")
       try{
-        ensource.take(3).mkString == "{\"v" //the save files should all start like this so this will hide most of the other files
+        ensource.take(3).mkString == "{\"v" || ensource.take(18).mkString == "DoodleOrDie.com */"
+        //the save files should all start like this so this will hide most of the other files
       } catch {
         case e:Throwable => false
       }
