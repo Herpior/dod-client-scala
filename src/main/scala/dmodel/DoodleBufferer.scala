@@ -246,9 +246,13 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
   }
 
 
-  def exportImage(percent:Double, path:String){
-    val img = new BufferedImage((percent*Magic.x).toInt,(percent*Magic.y).toInt, BufferedImage.TYPE_INT_ARGB)
+  def exportImage(percent:Double, path:String, whiteBackground:Boolean=false, overwrite:Boolean=false){
+    val wid = (percent*Magic.x).toInt
+    val hei = (percent*Magic.y).toInt
+    val img = new BufferedImage(wid, hei, BufferedImage.TYPE_INT_ARGB)
     val g = img.createGraphics()
+    g.setColor(Color.white)
+    if(whiteBackground) g.drawRect(0,0,wid,hei)
     model.getLayers.foreach{
       lay=>
         lay.getVisibleStrokes(true).foreach {
@@ -265,7 +269,7 @@ class DoodleBufferer(val model:DoodleModel, private var width:Int, private var h
       //path.foreach{
       //p=>
       val outputfile = new File(path)
-      val check = if(outputfile.exists())Dialog.showConfirmation(null, "this file already exists, overwrite?", "overwrite?", Dialog.Options.YesNo, Dialog.Message.Question, null)==Dialog.Result.Yes else true
+      val check = if(!overwrite && outputfile.exists())Dialog.showConfirmation(null, "this file already exists, overwrite?", "overwrite?", Dialog.Options.YesNo, Dialog.Message.Question, null)==Dialog.Result.Yes else true
       if(check){
         try{outputfile.getParentFile.mkdirs()}catch{case e:Throwable=>}
         javax.imageio.ImageIO.write(img, "png", outputfile)

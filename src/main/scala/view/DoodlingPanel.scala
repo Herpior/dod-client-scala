@@ -11,6 +11,8 @@ import dmodel.{DoodleBufferer, DoodleModel, Magic, SizeModel}
 import dmodel.json.JsonProfile
 import http.HttpHandler
 
+import scala.swing.Dialog.Message
+
 class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boolean) extends BorderPanel with PlayPanel{
 
   //val derpPath = Magic..class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -235,32 +237,42 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
       }
     }
   }
-  def downloadProfile(user:String, percent:Double, start_page:Int=1): Unit ={
+  def downloadProfile(user:String, percent:Double, start_page:Int=1, png:Boolean, svg:Boolean, js:Boolean): Unit ={
+    if (!png && !svg && !js) return
     println("downloading profile "+user+" at "+ percent+"% zoom starting at page "+start_page)
     var i = start_page
+    val per_page = 64
     var prof_data:JsonProfile = new JsonProfile
     do{
-      prof_data = HttpHandler.getProfileData(user, i)
+      prof_data = HttpHandler.getProfileData(user, i, per_page = per_page)
+      println("downloading page "+i+" at "+per_page+" steps per page")
       i+=1
       prof_data.collection.foreach{ steps =>
         steps.playerStep.state match{
           case "draw" =>
             try {
               if (steps.playerStep.content.version >= 2) {
-                val dm = new DoodleModel
-                val db = new DoodleBufferer(dm, steps.playerStep.content.width, steps.playerStep.content.height)
-                val jsdoodle = HttpHandler.getDoodle(steps.playerStep.content.url)
-                dm.load(jsdoodle)
+                val (jsfile,jsdoodle) = HttpHandler.getDoodleAndResponse(steps.playerStep.content.url)
                 val desc = if (steps.previousStep != null && steps.previousStep.state == "phrase") steps.previousStep.content.phrase else "new chain"
-                val path = "./downloads/" + steps.playerStep.player_id + "/" + steps.playerStep.date + steps.playerStep.content.doodle_id + desc + ".png"
-                db.exportImage(percent, path)
+                val path = "./downloads/" + steps.playerStep.player_id + "/" + steps.playerStep.date + steps.playerStep.content.doodle_id + desc
+                if(js) io.LocalStorage.saveToPath(jsfile, path+".js")
+                if(png || svg) {
+                  val dm = new DoodleModel
+                  dm.load(jsdoodle)
+                  if(svg) dm.saveSVG(path+".svg")
+                  if(png) {
+                    val db = new DoodleBufferer(dm, steps.playerStep.content.width, steps.playerStep.content.height)
+                    if(png) db.exportImage(percent, path+".png", true, true)
+                  }
+                }
               }
               else {
                 println("sth else happened")
                 //TODO:add support for downloading and saving png files
               }
             } catch {
-              case e:NullPointerException =>
+              case e:NullPointerException=> //the missing doodles
+              case e:Throwable=>e.printStackTrace()
             }
           case e =>
             println("not doodle: "+e)
@@ -449,16 +461,18 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           if(ctrl) {
             val user_opt = Dialog.showInput(doodle, "input username whose profile will be downloaded", "username", Dialog.Message.Question, null, List[String](), "")
             user_opt.foreach { user =>
-              val wid_opt = Dialog.showInput(doodle, "input preferred image width in pixels", "width", Dialog.Message.Question, null, List[String](), "520")
-              wid_opt.foreach { wid =>
-                try {
-                  val ind = Dialog.showInput(doodle, "input starting index or leave it at 1", "index", Dialog.Message.Question, null, List[String](), "1")
-                  val percent = wid.toInt / 520.0
-                  this.downloadProfile(user, percent, ind.getOrElse("1").toInt)
-                }
-                catch {
-                  case err: Throwable => err.printStackTrace()
-                }
+              try {
+                val ind = Dialog.showInput(doodle, "input starting index or leave it at 1", "index", Dialog.Message.Question, null, List[String](), "1")
+                val png = Dialog.Result.Yes == Dialog.showOptions(doodle, "save the downloaded files as png?", "select save formats", Dialog.Options.YesNo, Message.Question, null, List("yes", "no"), 0)
+                val wid = if(png) Dialog.showInput(doodle, "input preferred image width in pixels, height will be scaled to keep the aspect ratio", "width", Dialog.Message.Question, null, List[String](), "520").getOrElse("520") else "520"
+                val svg = Dialog.Result.Yes == Dialog.showOptions(doodle, "save the downloaded files as svg?", "select save formats", Dialog.Options.YesNo, Message.Question, null, List("yes", "no"), 0)
+                val js = Dialog.Result.Yes == Dialog.showOptions(doodle, "save the downloaded files as js?", "select save formats", Dialog.Options.YesNo, Message.Question, null, List("yes", "no"), 0)
+                val percent = wid.toInt / 520.0
+                this.downloadProfile(user, percent, ind.getOrElse("1").toInt, png, svg, js)
+              }
+              catch {
+                case nume: NumberFormatException =>
+                case err: Throwable => err.printStackTrace()
               }
             }
           }

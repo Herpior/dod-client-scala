@@ -21,6 +21,7 @@ trait DoodlePart{
   def toJson:Option[JsonStroke]   // not used!!
   def toJsonString:Option[String] // not used!!
   def toShortJsonString:Option[String]
+  def toSVGString:String // the strokes are joined with empty string and 3 empty strings is still empty string, so "" is ok if the lines are not visible
   def onUndo(layer: Layer):Boolean = {true} // used for edit lines to undo the edit, return true if successful, return false if edited line is not in he layer
   def onRedo(layer: Layer):Boolean = {true}
 }

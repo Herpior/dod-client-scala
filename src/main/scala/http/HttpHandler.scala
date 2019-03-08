@@ -175,6 +175,11 @@ object HttpHandler {
     val in = getHttp(get)
     JsonParse.parseDoodle(in.mkString("\n").dropWhile(_!='{').dropRight(2))
   }
+  def getDoodleAndResponse(url:String) ={
+    val get = new DoodleGet(url)
+    val in = getHttp(get)
+    (in.mkString("\n"), JsonParse.parseDoodle(in.mkString("\n").dropWhile(_!='{').dropRight(2)))
+  }
   def getProfileData(player:String,page:Int,per_page:Int=12,steps:String="doodles",sort:String="date") ={
     val get = new ProfileGet(player, steps, sort, page, per_page)
     val in = getHttp(get)

@@ -154,6 +154,10 @@ case class Coord(x:Double, y:Double) {
     val (xx, yy) = this.toCleanStrings
     xx + "," + yy
   }
+  def toSVGPathString: String = {
+    val (xx, yy) = this.toCleanStrings
+    xx + " " + yy
+  }
   def toCleanStrings: (String, String) = {
     val xx = if(x%1==0) x.toInt.toString else x.toString
     val yy = if(y%1==0) y.toInt.toString else y.toString

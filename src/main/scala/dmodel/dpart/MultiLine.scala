@@ -115,4 +115,7 @@ class MultiLine extends DoodlePart{
       Some("{\"l\":\"m\",\"ss\":["+lines.flatMap(_.toShortJsonString).mkString(",")+"]}") //TODO: consider changing "ss" into something with only one character? also "l" into "t" for all lines?
     }
   }
+  def toSVGString: String = {
+    this.getLines.map(_.toSVGString).mkString("")
+  }
 }

@@ -134,6 +134,9 @@ class Layer() {
   def toShortJsonString: String = {
     "{\"s\":["+this.strokes.flatMap(_.toShortJsonString).mkString(",")+"],\"v\":"+visible+"}"
   }
+  def toSVGString: String = {
+    if(visible) this.strokes.map(_.toSVGString).mkString("") else ""
+  }
 }
 
 class MatrixLayer(private val orig:Layer) extends Layer {

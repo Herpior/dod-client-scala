@@ -137,5 +137,13 @@ class LayerList {
   def toShortJsonString(time:Int, chain:String): String = {
     "{\"v\":"+Magic.version+",\"d\":\""+chain+"\",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
    }
+  def toSVGString(): String = {
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>"+
+    "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" height=\""+Magic.y+"\" width=\""+Magic.x+"\" fill=\"#fff\">"+
+    "<g stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\">" +
+    this.layers.map(_.toSVGString).mkString("") +
+    "</g>" +
+    "</svg>"
+  }
   
 }

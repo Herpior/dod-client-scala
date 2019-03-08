@@ -52,10 +52,13 @@ object LocalStorage {
     p.write(st)}
   }
   def saveTo(json:String,chain:String){
-    printToFile(new File("saves/save."+chain+".txt"))
-  {p=>
-    val st = json
-    p.write(st)}
+    saveToPath(json,"saves/save."+chain+".txt" )
+  }
+  def saveToPath(json:String,path:String){
+    printToFile(new File(path))
+    {p=>
+      val st = json
+      p.write(st)}
   }
   def decryptFrom(path:String): JsonSave ={
     val encrypted = loadFrom(path)

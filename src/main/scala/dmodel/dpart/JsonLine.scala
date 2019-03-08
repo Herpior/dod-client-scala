@@ -57,4 +57,7 @@ class JsonLine extends DoodlePart {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"l\":\"j\",\"c\":"+color+",\"s\":"+sizestr+",\"p\":["+path.mkString(",")+"]}")
   }
+  def toSVGString: String = {
+    this.toBasicLine.toSVGString
+  }
 }

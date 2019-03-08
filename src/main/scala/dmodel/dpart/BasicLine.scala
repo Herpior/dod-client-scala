@@ -205,4 +205,16 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"l\":\"n\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.rounded(Magic.roundingAccuracy).toShortJsonString).mkString(",")+"]}")
   }
+  def toSVGString: String = {
+    coords.length match {
+      case 0 => ""
+      case 1 =>
+        val r = size/2.0
+        val sizeStr = if(r.toInt == r) r.toInt.toString else r.toString
+        "<circle cx=\""+coords.head.toCleanStrings._1+"\" cy=\""+coords.head.toCleanStrings._2+"\" r=\""+sizeStr+"\" fill=\""+Colors.toHexString(color)+"\" stroke=\"none\" />"
+      case _ =>
+        val sizeStr = if(size.toInt == size) size.toInt.toString else size.toString
+        "<path d=\"M"+coords.head.toSVGPathString+" L"+coords.tail.map(_.toSVGPathString).mkString(" L")+"\" style=\"stroke:"+Colors.toHexString(color)+";stroke-width:"+sizeStr+"\" />"
+    }
+  }
 }

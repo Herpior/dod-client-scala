@@ -139,6 +139,9 @@ class DoodleModel {
   def save(chain:String): Unit ={
     LocalStorage.saveTo(layers.toShortJsonString(this.getPaintTime, chain), chain)
   }
+  def saveSVG(path:String): Unit ={
+    LocalStorage.saveToPath(layers.toSVGString, path)
+  }
   //---------\\
   def getPaintPercentage: Int ={
     //println("pp "+LineDrawer.paintPercentage(layers.toArray))

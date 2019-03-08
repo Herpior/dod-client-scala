@@ -103,4 +103,7 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
     Some("{\"l\":\"b\",\"c\":\""+Colors.toHexRGBA(color)+"\",\"s\":"+sizestr+",\"p\":["+coords.map(_.toShortJsonString).mkString(",")+"]}")
   }
+  def toSVGString: String = {
+    this.getLine.toSVGString
+  }
 }
