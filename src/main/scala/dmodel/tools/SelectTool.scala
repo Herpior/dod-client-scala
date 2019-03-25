@@ -47,18 +47,18 @@ class SelectTool extends BasicTool {
     }
     else*/
     if(strokes.length<1) return false
-    var curr = strokes(0)
-    var best = curr.distFrom(place)
+    var currentbest = strokes(0)
+    var best = currentbest.distFrom(place)
     for(s<-strokes){
       val dist = s.distFrom(place)
       if(dist<best){
         best = dist
-        curr = s
+        currentbest = s
       }
     }
     val prev = hovering
     if(best<20){
-     hovering = Some(curr)
+     hovering = Some(currentbest)
     } else {
       hovering = None
     }
