@@ -83,13 +83,12 @@ class LayerList {
   def addLayer(){addLayer(new Layer)}
   def addMatrixLayer(orig:Layer){
     addLayer(new MatrixLayer(orig))
-    layerUp
     }
   def finaliseMatrix(){
     this.getCurrent match {
       case layer: MatrixLayer =>
         val res = layer.normal
-        removeLayer
+        removeLayer()
         addLayer(res)
       case _ =>
     }
@@ -100,7 +99,10 @@ class LayerList {
     layers = layers.take(ind+1)
     layers += added
     layers ++= risky
-    current += 1
+    layerUp()
+  }
+  def duplicateCurrent(): Unit ={
+    addLayer(layers(ind).duplicate)
   }
   def addLayers(adding:Buffer[Layer]){
     adding.foreach { l => addLayer(l) }

@@ -480,6 +480,11 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
         case Key.C =>
           if(ctrl){
             //doodle.model.copy
+            doodle.model.layers.duplicateCurrent()
+            doodle.bufferer.redrawBot()
+            doodle.bufferer.redrawMid()
+            doodle.repaint()
+            layers.reset()
           }
           else {
             ConfigDrawingPanel.activate

@@ -41,7 +41,12 @@ class Layer() {
   def toggleVisibility(): Unit = visible = !visible
   
   def setVisibility(next:Boolean) {visible = next}
-  
+
+  def duplicate = {
+    val copy = new Layer
+    copy.addStrokes(this.getStrokes)
+    copy
+  }
   def load(doodle:JsonDoodle){
     this.strokes ++= doodle.getStrokes.map(_.toBasicLine)
   }
