@@ -40,6 +40,7 @@ class EditLineTool extends SelectTool { //(Array())
     doodlepart match {
       case Some(line:BasicLine)=>Some(line.color)
       case Some(line:BezierLine)=>Some(line.color)
+      case Some(line:MultiLine)=>line.getLast.map(_.color)
       case _ => None
     }
   }
@@ -60,6 +61,7 @@ class EditLineTool extends SelectTool { //(Array())
             }
             else subline
         }
+        println("editlinetool found: " + found)
         if(found){
           edited.setLines(lines)
           Some(line, edited)
