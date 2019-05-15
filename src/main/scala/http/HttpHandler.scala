@@ -71,8 +71,10 @@ object HttpHandler {
     
   private def postHttp(post:HttpPost)={
     val response = client.execute(post)
+    val enc = response.getEntity.getContentEncoding
+    val isGzip = enc != null && enc.getElements.exists(codec=>codec.getName.equalsIgnoreCase(GZIP_CONTENT_TYPE))
     val in = 
-        if (response.getEntity.getContentEncoding.getElements.exists(codec=>codec.getName.equalsIgnoreCase(GZIP_CONTENT_TYPE))){
+        if (isGzip){
           new java.util.Scanner(new GZIPInputStream(response.getEntity.getContent), "utf-8")
         }
         else new java.util.Scanner(response.getEntity.getContent, "utf-8")
