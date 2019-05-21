@@ -125,6 +125,11 @@ case class Coord(x:Double, y:Double) {
     Coord(-this.y, this.x)
   }
 
+  def reassembleAABBCorners(other:Coord) ={
+    (this.mapWith((a,b) => math.min(a,b), other),
+     this.mapWith((a,b) => math.max(a,b), other))
+  }
+
   def map(func:Double=>Double): Coord ={
     Coord(func(this.x), func(this.y))
   }

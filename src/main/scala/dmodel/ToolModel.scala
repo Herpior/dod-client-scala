@@ -22,6 +22,7 @@ object ToolModel {
   val bezierInterpolationTool = new BezierInterpolationTool
   val editLineTool = new EditLineTool
   val eraseLineTool = new EraseLineTool
+  val rectTool = new RectangleTool
 
   private var mini = false
   private var state = 0

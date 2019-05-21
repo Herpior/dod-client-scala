@@ -60,7 +60,7 @@ class LineTool extends BasicTool {
   override def getLines(): mutable.Buffer[DoodlePart] = {
     multiLine.getLines.toBuffer
   }
-  override def getLastLine(): Option[BasicLine] = {
+  override def getLastLine(): Option[DoodlePart] = {
     multiLine.getLast.flatMap (_.getLastLine)
   } //  MultiLine.getLast.flatMap()
   
@@ -99,17 +99,9 @@ class LineTool extends BasicTool {
         //}
       } else {
         if(control){
-          val c0 = last(len-2)
-          val dc = place-c0
-          //println(place+" - "+c0+" = "+dc)
-          val dlen = math.sqrt(dc.x*dc.x+dc.y*dc.y)//place.dist(c0)
-          //println(dlen+" <- "+place.dist(c0))
-          val xy = 
-              if (shift) Perspective.getDisplacement(c0, place)//Angle.angle(dc.x,dc.y),dlen)
-              else Coord.fromAngle(math.round(dc.toAngle/Pi*4)*Pi/4,dlen)
-              //println("coord: "+xy+" mods ="+mods)
-          val c2 = c0+xy
           //if(c2>=Coord(0)&&c2<=Magic.doodleSize)
+          val c0 = last(len-2)
+          val c2 = useRuler(c0, place, shift)
           next.setLast(c2)
         } else {
           //if(place.x>=0 && place.x <= Magic.x && place.y >= 0 && place.y <= Magic.y){
@@ -122,6 +114,19 @@ class LineTool extends BasicTool {
       //next.change(side.bcolor, side.bsize, last.xs.last, last.ys.last, x/zoom, y/zoom)
       //restroke
     }
+  }
+
+  // uses either 8 directional ruler or perspective ruler if perspectiveRuler is true
+  def useRuler(startPoint:Coord, endPoint:Coord, perspectiveRuler:Boolean)={
+    val dc = endPoint-startPoint
+    //println(place+" - "+c0+" = "+dc)
+    val dlen = math.sqrt(dc.x*dc.x+dc.y*dc.y)//place.dist(c0)
+    //println(dlen+" <- "+place.dist(c0))
+    val xy =
+    if (perspectiveRuler) Perspective.getDisplacement(startPoint, endPoint)//Angle.angle(dc.x,dc.y),dlen)
+    else Coord.fromAngle(math.round(dc.toAngle/Pi*4)*Pi/4,dlen)
+    //println("coord: "+xy+" mods ="+mods)
+    startPoint+xy
   }
   /*
   def addLinePoint(next:MultiLine){

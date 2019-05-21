@@ -177,6 +177,11 @@ object HttpHandler {
     val in = getHttp(get)
     JsonParse.parseDoodle(in.mkString("\n").dropWhile(_!='{').dropRight(2))
   }
+  /*def getOldDoodle(url:String) ={
+    val get = new DoodleGet(url)
+    val in = getHttp(get)
+    in.mkString("")
+  }*/
   def getDoodleAndResponse(url:String) ={
     val get = new DoodleGet(url)
     val in = getHttp(get)

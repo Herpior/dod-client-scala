@@ -252,9 +252,9 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
           case "draw" =>
             try {
               if (steps.playerStep.content.version >= 2) {
+                val path = "./downloads/" + steps.playerStep.player_id + "/" + steps.playerStep.date.filter(_!=':') +"-"+ steps.playerStep.content.doodle_id
                 val (jsfile,jsdoodle) = HttpHandler.getDoodleAndResponse(steps.playerStep.content.url)
                 val desc = if (steps.previousStep != null && steps.previousStep.state == "phrase") steps.previousStep.content.phrase else "new chain"
-                val path = "./downloads/" + steps.playerStep.player_id + "/" + steps.playerStep.date.filter(_!=':') +"-"+ steps.playerStep.content.doodle_id
                 if(js) io.LocalStorage.saveToPath(jsfile, path+".js")
                 if(png || svg) {
                   val dm = new DoodleModel
@@ -267,8 +267,10 @@ class DoodlingPanel(group_id:String,private_id:String,phrase:String,finish:Boole
                 }
               }
               else {
-                println("sth else happened")
-                //TODO:add support for downloading and saving png files
+                //val path = "./downloads/" + steps.playerStep.player_id + "/" + steps.playerStep.date.filter(_!=':')
+                //val file = HttpHandler.getOldDoodle(steps.playerStep.content.url)
+                //io.LocalStorage.saveToPath(file, path+".png")
+                println("old doodles that are saved as png can't be saved using this yet")
               }
             } catch {
               case e:NullPointerException=> //the missing doodles
