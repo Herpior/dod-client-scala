@@ -37,7 +37,6 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
       this.borderPainted = false
 
       override def paintComponent(g:Graphics2D){
-        super.paintComponent(g)
         this.background = ColorModel.getColors(i)
         //if color is not opaque, draw checkerboards
         if(this.background.getAlpha<255){
@@ -49,6 +48,7 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
           g.fillRect(0, halfh, halfw, halfh)
           g.fillRect(halfw, 0, halfw, halfh)
         }
+        super.paintComponent(g)
       }
       this.listenTo(mouse.clicks)
       this.reactions += {
@@ -97,7 +97,9 @@ class ColorPanel extends GridPanel(ColorModel.rows, ColorModel.rowl) {
   }
   def changeColor(func:Unit=>Unit): Unit = {
     val orig = model.colorIndex
+    val orig2 = model.colorIndex2
     buttons(orig).borderPainted = false
+    buttons(orig2).borderPainted = false
     func()
     val next = model.colorIndex
     buttons(next).border = primaryBorder
