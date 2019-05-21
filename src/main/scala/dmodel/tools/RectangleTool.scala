@@ -30,7 +30,7 @@ class RectangleTool extends LineTool {
   private var fill = true
   private var macaronBugMode = true
 
-  override def getConfigVariables(): Vector[ConfigVariable] = {
+  override def getConfigVariables: Vector[ConfigVariable] = {
     val fillConfig = new BooleanConfigVariable("use fill", _=>this.fill, fill=_)
     val roundedConfig = new BooleanConfigVariable("rounded corners", _=>this.roundedOutlines, roundedOutlines=_)
     Vector(fillConfig, roundedConfig).asInstanceOf[Vector[ConfigVariable]]
@@ -113,14 +113,14 @@ class RectangleTool extends LineTool {
         multiLine.addLine(getRectLine(startPoint, endPoint, size, outlineColor))
         size = (size *1.0 / scaleFactor).ceil.toInt
       }
-      multiLine.addLine(getRectLine(startPoint, endPoint, 1, outlineColor))
+      multiLine.addLine(getRectLine(startPoint, endPoint, 1, outlineColor, true))
     }
   }
 
   // creates rectangle inside the area between start and end points
   // both x and y in startpoint are smaller than x and y in endpoint
   def getRectLine(startPoint:Coord, endPoint:Coord, size:Double, color: Color, lastLine:Boolean=false): BasicLine ={
-    val extraSpace = if(size>1 && !lastLine) (math.max(size*0.1, 0.5)*2).floor*0.5 else 0
+    val extraSpace = if(!lastLine) (math.max(size*0.1, 0.5)*2).floor*0.5 else 0
     var lineStart = startPoint + Coord(size*0.5+extraSpace)
     var lineEnd = endPoint - Coord(size*0.5+extraSpace)
     val pointDelta = endPoint - startPoint
