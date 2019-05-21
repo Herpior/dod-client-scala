@@ -30,7 +30,7 @@ object ToolModel {
   val toolList:Vector[BasicTool] = Vector(
     drawTool,        lineTool,    bezierTool,   fillTool,
     perspectiveTool, zoomTool,    handTool,     bezierInterpolationTool,
-    editLineTool, eraseLineTool)
+    editLineTool, eraseLineTool, rectTool)
   private var tool:BasicTool = toolList(0)
   
   def isReady: Boolean = this.ready

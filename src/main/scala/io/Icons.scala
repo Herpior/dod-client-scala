@@ -22,6 +22,7 @@ object Icons {
   val bezierfill: Image = tk.getImage(getClass.getResource("/images/bezierfill.png"))
   val colorpicker: Image = tk.getImage(getClass.getResource("/images/colorpicker.png"))
   val colorinjector: Image = tk.getImage(getClass.getResource("/images/colorinjector.png"))
+  val rect: Image = tk.getImage(getClass.getResource("/images/rectangle.png"))
   val eraser: Image = tk.getImage(getClass.getResource("/images/eraser.png"))
   val hand: Image = tk.getImage(getClass.getResource("/images/hand6.png"))
   val zoom: Image = tk.getImage(getClass.getResource("/images/zoom2.png"))
@@ -100,6 +101,7 @@ object Icons {
   def getColorPicker: Image = colorpicker//this.persIcon
   def getColorInjector: Image = colorinjector//this.persIcon
   def getEraser: Image = eraser//this.persIcon
+  def getRect: Image = rect// get rekt
   //def getSkip = skip//this.skipIcon
   def getVisible: Image = eye//this.eyeIcon
   def getCheck: Image = check//this.checkIcon

@@ -22,7 +22,7 @@ class ToolPickerPanel extends GridPanel(2, 4) {
   
   val icons = Array(Icons.getPen, Icons.getLine, Icons.getBez, Icons.getFill, 
                     Icons.getPers, Icons.getZoom, Icons.getDrag, Icons.getBezFill,
-                    Icons.getColorInjector, Icons.getEraser)
+                    Icons.getColorInjector, Icons.getEraser, Icons.getRect)
   val toolcount: Int = icons.length
   val buttons: Array[ToolButton] = Array.ofDim[ToolButton](toolcount)
   for(i<-0 until toolcount){
