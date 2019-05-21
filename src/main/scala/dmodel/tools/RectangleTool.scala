@@ -30,6 +30,12 @@ class RectangleTool extends LineTool {
   private var fill = true
   private var macaronBugMode = true
 
+  override def getConfigVariables(): Vector[ConfigVariable] = {
+    val fillConfig = new BooleanConfigVariable("use fill", _=>this.fill, fill=_)
+    val roundedConfig = new BooleanConfigVariable("rounded corners", _=>this.roundedOutlines, roundedOutlines=_)
+    Vector(fillConfig, roundedConfig).asInstanceOf[Vector[ConfigVariable]]
+  }
+
   override def isBusy: Boolean = start.isDefined
 
   override def onMouseDown(db:DoodleBufferer, coord:Coord, button:Int, control:Boolean, alt:Boolean, shift:Boolean){
@@ -99,9 +105,10 @@ class RectangleTool extends LineTool {
     }
     size = outlineSize
     if(roundedOutlines){
-      multiLine.addLine(getRectLine(startPoint, endPoint, size, outlineColor))
+      multiLine.addLine(getRectLine(startPoint, endPoint, size, outlineColor, true))
     }
     else {
+      size = (size*0.9).ceil.toInt
       while (size >= 2){
         multiLine.addLine(getRectLine(startPoint, endPoint, size, outlineColor))
         size = (size *1.0 / scaleFactor).ceil.toInt
@@ -112,8 +119,8 @@ class RectangleTool extends LineTool {
 
   // creates rectangle inside the area between start and end points
   // both x and y in startpoint are smaller than x and y in endpoint
-  def getRectLine(startPoint:Coord, endPoint:Coord, size:Double, color: Color): BasicLine ={
-    val extraSpace = if(size>1) math.max(size*0.1, 0.5) else 0
+  def getRectLine(startPoint:Coord, endPoint:Coord, size:Double, color: Color, lastLine:Boolean=false): BasicLine ={
+    val extraSpace = if(size>1 && !lastLine) (math.max(size*0.1, 0.5)*2).floor*0.5 else 0
     var lineStart = startPoint + Coord(size*0.5+extraSpace)
     var lineEnd = endPoint - Coord(size*0.5+extraSpace)
     val pointDelta = endPoint - startPoint
