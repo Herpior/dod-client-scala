@@ -9,6 +9,7 @@ package dmodel.tools
 import math.Pi
 import java.awt.Color
 
+import dmodel.Colors
 import dmodel.dpart.DoodlePart
 
 import scala.collection.mutable
@@ -26,6 +27,7 @@ import dmodel.DoodleBufferer
 class LineTool extends BasicTool {
   
   private var drawing = false
+  protected var transparency = 0.0
   
   override def isBusy(): Boolean = drawing
   
@@ -51,7 +53,7 @@ class LineTool extends BasicTool {
       //db.repaint
     }
     else if(button == 3 && isBusy){
-      addLine(ColorModel.getColor, SizeModel.getSize, coord)
+      addLine(getColor, SizeModel.getSize, coord)
       //doodle.model.dragLine(place,mods)
       db.redrawDrawing
       //db.repaint
@@ -80,7 +82,7 @@ class LineTool extends BasicTool {
   }
   
   def startLine(place:Coord){
-    startLine(ColorModel.getColor, SizeModel.getSize, place)
+    startLine(getColor, SizeModel.getSize, place)
   }
   /*def addLine(e:MouseEvent){
     
@@ -114,6 +116,10 @@ class LineTool extends BasicTool {
       //next.change(side.bcolor, side.bsize, last.xs.last, last.ys.last, x/zoom, y/zoom)
       //restroke
     }
+  }
+
+  def getColor ={
+    Colors.reduceOpacity(ColorModel.getColor, transparency)
   }
 
   // uses either 8 directional ruler or perspective ruler if perspectiveRuler is true
@@ -176,4 +182,11 @@ class LineTool extends BasicTool {
     model.layers.getCurrent.add(multiLine)
     multiLine = new MultiLine
   }
+
+
+  override def getConfigVariables(): Vector[ConfigVariable] = {
+    val transparencyConfig = new DoubleConfigVariable("transparency", _=>transparency, transparency=_, Some(0.0), Some(1.0), false)
+    Vector(transparencyConfig)//.asInstanceOf[Vector[ConfigVariable]]
+  }
+
 }

@@ -25,8 +25,8 @@ class DrawTool extends LineTool {
       else {
         val processedCoord = updateCoord(coord)
         if((processedCoord-prev).abs.max >= 0.4){
-          addLine(ColorModel.getColor, SizeModel.getSize, processedCoord)
-          if(ColorModel.getColor.getAlpha==255 || Magic.faster) db.redrawLast
+          addLine(getColor, SizeModel.getSize, processedCoord)
+          if(getColor.getAlpha==255 || Magic.faster) db.redrawLast
           else db.redrawDrawing
         }
       }
@@ -80,7 +80,8 @@ class DrawTool extends LineTool {
     //val dcutConfig = new DoubleConfigVariable("dcutoff", _=>getDCutoff, setDCutoff, Some(100), Some(1e-3), true)
     //val unitConfig = new UnitConfigVariable("button test", _=>println("getter"), _=>println("setter"))
     val smoothingConfig = new BooleanConfigVariable("use smoothing", _=>this.smoothing, smoothing=_)
-    Vector(smoothingConfig, mincutConfig)//.asInstanceOf[Vector[ConfigVariable]]
+    val transparencyConfig = new DoubleConfigVariable("transparency", _=>transparency, transparency=_, Some(0.0), Some(1.0), false)
+    Vector(smoothingConfig, mincutConfig, transparencyConfig)//.asInstanceOf[Vector[ConfigVariable]]
   }
 
   //---------\\

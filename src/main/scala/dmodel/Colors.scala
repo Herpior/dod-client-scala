@@ -104,7 +104,14 @@ object Colors {
     val b = (paintColor.getBlue*255).toInt
     new Color(r, g, b)
   }*/
-  
+
+  def reduceOpacity(color:Color, transparency:Double)={
+    val r = color.getRed
+    val g = color.getGreen
+    val b = color.getBlue
+    val a = (color.getAlpha * (1-transparency)).toInt
+    new Color(r,g,b,a)
+  }
   def inverse(colorstr:String):String={
     toHexString( inverse(toColor(colorstr)) )
   }
