@@ -1,19 +1,9 @@
-package dmodel
+package dmodel.json
 
-/**
-  * An object using gson to parse data from the servers.
-  *
-
-  * @author Qazhax
-  */
+import java.io.{BufferedReader, StringReader}
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import java.io.StringReader
-import java.io.BufferedReader
-
-import dmodel.dpart.JsonDoodle
-import dmodel.json.JsonProfile
+import dmodel._
 
 object JsonParse {
     val gson = new Gson
@@ -77,7 +67,7 @@ object JsonParse {
   }
   def writeSave(layers:Array[Layer], time:Int): String ={
     //Don't use, too slow and adds useless extra values
-    
+
     //val gson = new Gson
     //var before = System.nanoTime
     val save = new JsonSave
@@ -95,9 +85,9 @@ object JsonParse {
     save.doodle_id = http.HttpHandler.state.private_id
     //var after = System.nanoTime
     //print("other "+(after-before))
-    
+
     //before = System.nanoTime
-    //val res = 
+    //val res =
     gson.toJson(save)//, new java.io.FileWriter("layersfile.json"))
     //after = System.nanoTime
     //print("tojson "+(after-before))

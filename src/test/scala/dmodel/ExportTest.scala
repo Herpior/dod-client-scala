@@ -3,6 +3,7 @@ package dmodel
 import java.awt.Color
 
 import dmodel.dpart.{BasicLine, BezierLine, EditLine, MultiLine}
+import dmodel.json.JsonParse
 //import org.junit.runner.RunWith
 import org.scalatest.{FlatSpec, Matchers}
 //import org.scalatest.junit.JUnitRunner

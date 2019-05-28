@@ -1,6 +1,6 @@
-package dmodel.dpart
+package dmodel.json
 
-import dmodel.{JsonLayer, JsonSave}
+import dmodel.dpart.JsonLine
 
 /**
   * Json class for gson to load doodles from the server.

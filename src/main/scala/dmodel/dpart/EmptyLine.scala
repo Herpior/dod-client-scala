@@ -1,5 +1,6 @@
 package dmodel.dpart
-import dmodel.{Coord, JsonStroke}
+import dmodel.Coord
+import dmodel.json.JsonStroke
 /**
   * Class for deleted lines, or lines that don't have any inherent line-ness, but that are necessary in the undo stack
   * used as an anchor in the line stack for undoing the deletion.
@@ -11,7 +12,8 @@ import dmodel.{Coord, JsonStroke}
   * @author Qazhax
   */
 class EmptyLine extends DoodlePart {
-  def distFrom(point:Coord): Double = Double.MaxValue // return maxValue so the line can't be selected accidentally
+  def distFromEdge(point:Coord): Double = Double.MaxValue // return maxValue so the line can't be selected accidentally
+  def distFromCenter(point:Coord): Double = Double.MaxValue // return maxValue so the line can't be selected accidentally
 
   // these lines are not exactly lines that could be drawn, transformed, selected, or saved, as told before
   override def getLines = Array()

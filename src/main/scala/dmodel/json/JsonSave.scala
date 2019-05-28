@@ -1,4 +1,4 @@
-package dmodel
+package dmodel.json
 
 /**
   * Json class for gson to load doodle data from the save file
@@ -8,6 +8,7 @@ package dmodel
   */
 
 import dmodel.dpart._
+import dmodel.{Colors, Coord, Layer}
 
 import scala.collection.mutable
 

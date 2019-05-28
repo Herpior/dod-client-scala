@@ -5,7 +5,7 @@ import controller.ReplaceEvent
 import scala.swing._
 import BorderPanel.Position._
 import dmodel.Magic
-import dmodel.dpart.JsonDoodle
+import dmodel.json.JsonDoodle
 
 import concurrent.Future
 import concurrent.ExecutionContext.Implicits.global

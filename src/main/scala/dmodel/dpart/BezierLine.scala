@@ -9,6 +9,7 @@ package dmodel.dpart
 import java.awt.Color
 
 import dmodel._
+import dmodel.json.JsonStroke
 
 
 class BezierLine(var color:Color, var size:Double) extends DoodlePart {
@@ -56,9 +57,19 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     }
     changed = true
   }
-  def distFrom(point:Coord): Double =(this.coords ++ this.getLine.getCoords).map(_.dist(point)).min
+  def distFromHandles(point:Coord): Double = (this.coords ++ this.getLine.getCoords).map(_.dist(point)).min
+  def distFromCenter(point:Coord): Double ={
+    math.min(this.getLine.distFromCenter(point), distFromHandles(point))
+  }
+  def distFromEdge(point:Coord): Double ={
+    math.min(this.getLine.distFromEdge(point), distFromHandles(point)-1)
+  }
   def getLine:BasicLine = {
-    if(changed)this.getLine(color,size) else basicline
+    if(changed){
+      basicline = this.getLine(color,size)
+      changed = false
+    }
+    basicline
   }
   def getLine(color1:Color,size1:Double):BasicLine = {
     if(coords.forall(_==coords(0))){ //if the bezier line is a point, return a point
@@ -69,8 +80,6 @@ class BezierLine(var color:Color, var size:Double) extends DoodlePart {
     val cs = Bezier.curve(coords(0),coords(1),coords(2),coords(3))
     val res = new BasicLine(color1,size1)
     res.setCoords (cs.map { c => c.rounded(Magic.roundingAccuracy) })
-    basicline = res
-    changed = false
     res
   }
   def getLines : Array[BasicLine]= {

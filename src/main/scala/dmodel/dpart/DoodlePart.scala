@@ -8,11 +8,13 @@ package dmodel.dpart
 
 import java.awt.geom.Path2D
 
-import dmodel.{Coord, JsonStroke, Layer}
+import dmodel.json.JsonStroke
+import dmodel.{Coord, Layer}
 
 
 trait DoodlePart{
-  def distFrom(point:Coord):Double // used to select closest line to a point
+  def distFromEdge(point:Coord):Double // used to select closest line to a point, returns distance from rendered line (center of line - linesize), <0 if within the rendered line, inf is no line
+  def distFromCenter(point:Coord):Double // returns distance from center of the line
   def getLines:Array[BasicLine] // used to draw the lines
   //def getPath:Array[Path2D] // testing for drawing the lines
   def transform(transformation:Coord=>Coord):Option[DoodlePart] // used for perspective transform, etc

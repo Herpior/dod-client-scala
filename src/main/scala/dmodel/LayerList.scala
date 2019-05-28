@@ -8,6 +8,8 @@ package dmodel
   * @author Qazhax
   */
 
+import dmodel.json.{JsonParse, JsonSave}
+
 import collection.mutable.Buffer
 
 class LayerList {

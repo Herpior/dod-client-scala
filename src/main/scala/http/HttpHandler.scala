@@ -15,7 +15,6 @@ import org.apache.http.client.methods.HttpGet
 import collection.mutable.Buffer
 import scala.collection.JavaConversions._
 import org.apache.http.util.EntityUtils
-import dmodel.{JsonGroups, JsonParse, JsonSkips, JsonState}
 import java.util.zip.GZIPInputStream
 
 import org.apache.http.impl.client.BasicCookieStore
@@ -23,7 +22,8 @@ import org.apache.http.impl.cookie.BasicClientCookie
 import org.apache.http.cookie.ClientCookie
 import java.util.Calendar
 
-import dmodel.dpart.{BasicLine, JsonDoodle}
+import dmodel.dpart.BasicLine
+import dmodel.json._
 
 
 object HttpHandler {
@@ -57,7 +57,7 @@ object HttpHandler {
 
   private var chain = ""
   private var room = "global"
-  private var auth = new dmodel.JsonSkips
+  private var auth = new JsonSkips
   
   val GZIP_CONTENT_TYPE = "gzip"
   def getChain: String = chain
@@ -132,7 +132,7 @@ object HttpHandler {
     getHttp(get)
     room = "global"
     chain = ""
-    auth = new dmodel.JsonSkips
+    auth = new JsonSkips
     val get3 = new MainGet()
     val in =  getHttp(get3)
     dmodel.Magic.user = ""

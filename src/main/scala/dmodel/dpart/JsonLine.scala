@@ -7,7 +7,8 @@ package dmodel.dpart
   * @author Qazhax
   */
 
-import dmodel.{Colors, Coord, JsonStroke}
+import dmodel.json.JsonStroke
+import dmodel.{Colors, Coord}
 
 import scala.collection.mutable.Buffer
 
@@ -22,8 +23,11 @@ class JsonLine extends DoodlePart {
     val next = this.toBasicLine
     next.transform(transformation)
   }
-  def distFrom(point:Coord): Double ={
-    this.toBasicLine.distFrom(point)
+  def distFromEdge(point:Coord): Double ={
+    this.toBasicLine.distFromEdge(point)
+  }
+  def distFromCenter(point:Coord): Double ={
+    this.toBasicLine.distFromCenter(point)
   }
   def getLines: Array[BasicLine] = {
     Array(this.toBasicLine)

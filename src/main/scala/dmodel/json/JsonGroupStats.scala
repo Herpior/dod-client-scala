@@ -1,4 +1,4 @@
-package dmodel
+package dmodel.json
 
 /**
   * Json class for gson to load group data from the servers

@@ -1,4 +1,4 @@
-package dmodel
+package dmodel.json
 
 /**
   * Json class for gson to load response data from the servers.

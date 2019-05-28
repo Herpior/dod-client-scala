@@ -1,4 +1,4 @@
-package dmodel
+package dmodel.json
 
 /**
   * Json class for gson to load state data from the servers.
@@ -7,11 +7,6 @@ package dmodel
 
   * @author Qazhax
   */
-
-import dmodel.dpart.JsonDoodle
-import view.{DoodlingPanel, PhrasingPanel, PlayPanel, StalingPanel}
-
-import scala.swing.Panel
 
 class JsonState {
   var activeState:String = _

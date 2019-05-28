@@ -7,7 +7,9 @@ package dmodel
   * @author Qazhax
   */
 
-import math.{hypot,round}
+import dmodel.json.JsonCoord
+
+import math.{hypot, round}
 
 object Coord{
   def apply(c:Double) :Coord =Coord(c,c)
@@ -109,6 +111,12 @@ case class Coord(x:Double, y:Double) {
     val t = math.max(0, math.min(1, (this-pointA).dot(delta)/l2))
     val proj = pointA + delta*t
     this.dist(proj)
+  }
+  def distFromLine(line:Array[Coord]):Double ={
+    if(line.length==2)this.distFromLine(line.head, line.last)
+    else if(line.length==1)this.dist(line.head)
+    else if(line.length==0)Double.MaxValue
+    else line.sliding(2).map(x=>this.distFromLine(x)).min
   }
 
   def rounded(accuracy:Int): Coord ={

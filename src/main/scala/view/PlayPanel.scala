@@ -1,7 +1,8 @@
 package view
 
 import controller.ReplaceEvent
-import dmodel.{JsonGroup, JsonState, Magic}
+import dmodel.json.{JsonGroup, JsonState}
+import dmodel.Magic
 
 import scala.concurrent.Future
 import concurrent.ExecutionContext.Implicits.global

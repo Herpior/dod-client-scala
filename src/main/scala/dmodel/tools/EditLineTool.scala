@@ -21,10 +21,10 @@ class EditLineTool extends SelectTool { //(Array())
     if(changeColour||changeSize) {
       if (control){
         val colour = getColourFromDP(selected) //TODO: change to color picking from color picker tool once that is also a tool
-        println("editlinetool colour: " + colour)
+        //println("editlinetool colour: " + colour)
         if(colour.isDefined) {
           val editedlines = db.model.layers.getCurrent.getStrokes.flatMap(s=>editOneLine(db,Some(s),colour))
-          println("editlinetool editedlines.length: " + editedlines.length)
+          //println("editlinetool editedlines.length: " + editedlines.length)
           if(editedlines.length != 0) swap(db, editedlines)
         }
       }

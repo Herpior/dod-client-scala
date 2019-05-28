@@ -10,6 +10,7 @@ import java.awt.Color
 import java.awt.geom.{AffineTransform, Path2D, PathIterator, Rectangle2D}
 
 import dmodel._
+import dmodel.json.JsonStroke
 
 import scala.collection.mutable.Buffer
 
@@ -32,9 +33,12 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
     next.setCoords(this.coords.map(c=>transformation(c)))
     Some(next)
   }
-  def distFrom(point:Coord): Double ={
-    if(this.coords.isEmpty){500}
-    else this.getCoords.map(_.dist(point)).min
+  def distFromCenter(point:Coord): Double ={
+    if(this.coords.isEmpty){Double.PositiveInfinity}
+    else point.distFromLine(this.getCoords)
+  }
+  def distFromEdge(point:Coord): Double ={
+    distFromCenter(point) - this.size/2
   }
   def setCoords(buf:Buffer[Coord]){
     coords = buf

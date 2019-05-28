@@ -2,10 +2,9 @@ package io
 
 import java.io.File
 
-import dmodel.JsonSave
-import dmodel.JsonStroke
 import dmodel.Colors
 import dmodel.dpart.BasicLine
+import dmodel.json.{JsonLayer, JsonParse, JsonSave, JsonStroke}
 
 object LocalStorage {
 
@@ -76,7 +75,7 @@ object LocalStorage {
   }
   def loadSave(chain:String): JsonSave ={
     val loaded = loadFrom("saves/save."+chain+".txt")
-    dmodel.JsonParse.parseSave(loaded)
+    JsonParse.parseSave(loaded)
   }
   def loadFrom(path:String): String ={
     val ensource = scala.io.Source.fromFile(path)("UTF-8")
@@ -107,15 +106,15 @@ object LocalStorage {
   def decrypt(str:String):JsonSave={
     str.headOption.foreach{ c=>
       if (c=='{'){
-        val save = dmodel.JsonParse.parseSave(str)
+        val save = JsonParse.parseSave(str)
         if (save.getLayers.isEmpty && save.version == 2){ //a dod-generated save that has already been cleaned
-          val doodle = dmodel.JsonParse.parseDoodle(str)
+          val doodle = JsonParse.parseDoodle(str)
           return doodle.toJsonSave
         }
         return save
       }
       else if (c=='/'){
-        val doodle = dmodel.JsonParse.parseDoodle(str.dropWhile(_!='{').dropRight(2))
+        val doodle = JsonParse.parseDoodle(str.dropWhile(_!='{').dropRight(2))
         return doodle.toJsonSave
       }
     }
@@ -145,7 +144,7 @@ object LocalStorage {
               parts(2).trim()
               )
       catch{case e:Throwable=>e.printStackTrace()}
-      val layer = new dmodel.JsonLayer
+      val layer = new JsonLayer
       layer.strokes = doodle
       val save = new JsonSave
       save.layers = Array(layer)

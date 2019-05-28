@@ -9,6 +9,7 @@ package dmodel
   */
 
 import dmodel.dpart._
+import dmodel.json.JsonDoodle
 
 import collection.mutable.Buffer
 import scala.collection.mutable

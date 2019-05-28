@@ -8,7 +8,8 @@ package dmodel
   * @author Qazhax
   */
 
-import dmodel.dpart.{BasicLine, DoodlePart, JsonDoodle}
+import dmodel.dpart.{BasicLine, DoodlePart}
+import dmodel.json.{JsonDoodle, JsonSave}
 
 import collection.mutable.Buffer
 import http.HttpHandler

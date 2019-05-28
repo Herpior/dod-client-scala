@@ -8,7 +8,8 @@ package dmodel.dpart
   * @author Qazhax
   */
 
-import dmodel.{Colors, Coord, JsonStroke, Magic}
+import dmodel.json.JsonStroke
+import dmodel.{Colors, Coord, Magic}
 
 import scala.collection.mutable.Buffer
 
@@ -19,10 +20,13 @@ class MultiLine extends DoodlePart{
     next.setLines(this.lines.flatMap ( line => line.transform(transformation)))
     Some(next)
   }
-  def distFrom(point:Coord): Double ={
-    val sorted = lines.map(_.distFrom(point)).sorted
-    if(sorted.nonEmpty)sorted.head
-    else Double.MaxValue // this multiline is empty
+  def distFromEdge(point:Coord): Double ={
+    if(lines.isEmpty) return Double.MaxValue // this multiline is empty so it can't have distance
+    lines.map(_.distFromEdge(point)).min
+  }
+  def distFromCenter(point:Coord): Double ={
+    if(lines.isEmpty) return Double.MaxValue // this multiline is empty so it can't have distance
+    lines.map(_.distFromCenter(point)).min
   }
   def apply(index:Int): BasicLine ={
     lines(index)
