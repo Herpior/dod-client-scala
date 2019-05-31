@@ -15,8 +15,8 @@ object Magic {
   def authorized: Boolean = true//http.HttpHandler.getAuth || offline
   val version = 501
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
-  val fasterPan: Boolean = try {loadedConf.getOrElse("fasterPan","true").toBoolean} catch {case e:Throwable => true} //if true will move only the images when dragging, rather than drawing everything again every pixel
-  val readyDefault: Boolean = try {loadedConf.getOrElse("readyDefault","false").toBoolean} catch {case e:Throwable => false} //default for ready checkbox
+  val fasterPan: Boolean = getBooleanFromConfOrElse("fasterPan",true) //if true will move only the images when dragging, rather than drawing everything again every pixel
+  val readyDefault: Boolean = getBooleanFromConfOrElse("readyDefault",false) //default for ready checkbox
   var x = 520
   var y = 390
   val rows = 16
@@ -36,12 +36,23 @@ object Magic {
   val font20: Font = new swing.Label(" ").font.deriveFont(java.awt.Font.BOLD,20)
   var offline = false
   var user = ""
-  var roundingAccuracy:Int = try {math.max(1,math.min(10, loadedConf.getOrElse("accuracy","2").toInt))} catch {case e:Throwable => 2} //determines how accurately the lines are drawn, saved and uploaded. 2 => 0, 0.5, 1, ... 10 => 0, 0.1, 0.2, ...
-  val namira: Boolean = try {loadedConf.getOrElse("namira","false").toBoolean} catch {case e:Throwable => false} //changes skincolor to beige
+  val roundingAccuracy:Int = getAccuracyFromConfOrElse("accuracy", 2) //determines how accurately the lines are drawn, saved and uploaded. 2 => 0, 0.5, 1, ... 10 => 0, 0.1, 0.2, ...
+  val namira: Boolean = getBooleanFromConfOrElse("namira", false) //changes skincolor to beige
 
   def setXY(nx:Int, ny:Int) {
     x = nx
     y = ny
     doodleSize = Coord(x, y)
+  }
+  private def getBooleanFromConfOrElse(name:String, fallback:Boolean):Boolean={
+    try {loadedConf(name).toBoolean} catch {case e:Throwable => fallback}
+  }
+  private def getIntFromConfOrElse(name:String, fallback:Int):Int={
+    try {loadedConf(name).toInt} catch {case e:Throwable => fallback}
+  }
+  private def getAccuracyFromConfOrElse(name:String, fallback:Int):Int={
+    val res = getIntFromConfOrElse(name, fallback)
+    val okay = Array(1, 2, 5, 10, 20, 50, 100).contains(res)
+    if (okay) res else fallback
   }
 }
