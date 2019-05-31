@@ -125,6 +125,7 @@ class ExportTest extends FlatSpec with Matchers {
   }
 
   "LayerList.toJsonString" should "return correctly formatted string for saving as json" in {
+    val ver = view.DoodleWindow.version
     val doodleModel = new DoodleModel
     val layerList = doodleModel.layers
 
@@ -160,14 +161,13 @@ class ExportTest extends FlatSpec with Matchers {
 
     val chain = "chain name"
     def expected_start(t:Int) = {
-      val ver = view.DoodleWindow.version
       val di = chain
       "{\"version\":"+ver+",\"doodle_id\":\""+di+"\",\"time\":"+t+",\"layers\":["
     }
 
     doodleModel.layers.getCurrent.add(stroke)
     val expected_stroke = "{\"linetype\":\"basic\",\"color\":\"#f90\",\"size\":5,\"path\":[0,0,1,1,1,11,2,22.5,3,389.5]}"
-    var expected = "{\"version\":499,\"doodle_id\":\""+chain+"\",\"time\":1,\"layers\":[{\"strokes\":["+expected_stroke+"],\"visible\":true}]}"
+    var expected = "{\"version\":"+ver+",\"doodle_id\":\""+chain+"\",\"time\":1,\"layers\":[{\"strokes\":["+expected_stroke+"],\"visible\":true}]}"
     var testing = layerList.toJsonString(1, chain)
     assert (testing.equals(expected), "doodle with one BasicLine not correctly formatted when saving it.\nFound:   "+testing+"\nExpected:"+expected)
 
@@ -221,6 +221,7 @@ class ExportTest extends FlatSpec with Matchers {
 
   }
   "LayerList.toJsonString" should "return correctly rounded string with 0.5 accuracy" in {
+    val ver = view.DoodleWindow.version
     val doodleModel = new DoodleModel
     val layerList = doodleModel.layers
     Magic.roundingAccuracy = 2
@@ -257,14 +258,13 @@ class ExportTest extends FlatSpec with Matchers {
 
     val chain = "chain name"
     def expected_start(t:Int) = {
-      val ver = view.DoodleWindow.version
       val di = chain
       "{\"version\":"+ver+",\"doodle_id\":\""+di+"\",\"time\":"+t+",\"layers\":["
     }
 
     doodleModel.layers.getCurrent.add(stroke)
     val expected_stroke = "{\"linetype\":\"basic\",\"color\":\"#f90\",\"size\":5,\"path\":[0,0,1,1,1,11,2,22.5,3,389.5]}"
-    var expected = "{\"version\":499,\"doodle_id\":\""+chain+"\",\"time\":1,\"layers\":[{\"strokes\":["+expected_stroke+"],\"visible\":true}]}"
+    var expected = "{\"version\":"+ver+",\"doodle_id\":\""+chain+"\",\"time\":1,\"layers\":[{\"strokes\":["+expected_stroke+"],\"visible\":true}]}"
     var testing = layerList.toJsonString(1, chain)
     assert (testing.equals(expected), "doodle with one BasicLine not correctly formatted when saving it.\nFound:   "+testing+"\nExpected:"+expected)
 
@@ -318,6 +318,7 @@ class ExportTest extends FlatSpec with Matchers {
 
   }
   "LayerList.toJsonString" should "return correctly rounded string with 0.1 accuracy" in {
+    val ver = view.DoodleWindow.version
     val doodleModel = new DoodleModel
     val layerList = doodleModel.layers
     Magic.roundingAccuracy = 10
@@ -354,14 +355,13 @@ class ExportTest extends FlatSpec with Matchers {
 
     val chain = "chain name"
     def expected_start(t:Int) = {
-      val ver = view.DoodleWindow.version
       val di = chain
       "{\"version\":"+ver+",\"doodle_id\":\""+di+"\",\"time\":"+t+",\"layers\":["
     }
 
     doodleModel.layers.getCurrent.add(stroke)
     val expected_stroke = "{\"linetype\":\"basic\",\"color\":\"#f90\",\"size\":5,\"path\":[0,0.1,1,1.1,1,11.1,2,22.3,3,389.5]}"
-    var expected = "{\"version\":499,\"doodle_id\":\""+chain+"\",\"time\":1,\"layers\":[{\"strokes\":["+expected_stroke+"],\"visible\":true}]}"
+    var expected = "{\"version\":"+ver+",\"doodle_id\":\""+chain+"\",\"time\":1,\"layers\":[{\"strokes\":["+expected_stroke+"],\"visible\":true}]}"
     var testing = layerList.toJsonString(1, chain)
     assert (testing.equals(expected), "doodle with one BasicLine not correctly formatted when saving it.\nFound:   "+testing+"\nExpected:"+expected)
 
@@ -416,6 +416,7 @@ class ExportTest extends FlatSpec with Matchers {
   }
 
   "LayerList.toShortJsonString" should "return correctly formatted string for saving as json" in {
+    val ver = view.DoodleWindow.version
     val doodleModel = new DoodleModel
     val layerList = doodleModel.layers
 
@@ -451,14 +452,13 @@ class ExportTest extends FlatSpec with Matchers {
 
     val chain = "chain name"
     def expected_start(t:Int) = {
-      val ver = view.DoodleWindow.version
       val di = chain
       "{\"v\":"+ver+",\"d\":\""+di+"\",\"t\":"+t+",\"l\":["
     }
 
     doodleModel.layers.getCurrent.add(stroke)
     val expected_stroke = "{\"l\":\"n\",\"c\":\"#f90\",\"s\":5,\"p\":[0,0,1,1,1,11,2,22.5,3,389.5]}"
-    var expected = "{\"v\":499,\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":["+expected_stroke+"],\"v\":true}]}"
+    var expected = "{\"v\":"+ver+",\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":["+expected_stroke+"],\"v\":true}]}"
     var testing = layerList.toShortJsonString(1,chain)
     assert (testing.equals(expected), "doodle with one BasicLine not correctly formatted when saving it.\nFound:   "+testing+"\nExpected:"+expected)
 
@@ -512,6 +512,7 @@ class ExportTest extends FlatSpec with Matchers {
 
   }
   "LayerList.toShortJsonString" should "return correctly rounded string with 0.5 accuracy" in {
+    val ver = view.DoodleWindow.version
     val doodleModel = new DoodleModel
     val layerList = doodleModel.layers
     Magic.roundingAccuracy = 2
@@ -547,14 +548,13 @@ class ExportTest extends FlatSpec with Matchers {
 
     val chain = "chain name"
     def expected_start(t:Int) = {
-      val ver = view.DoodleWindow.version
       val di = chain
       "{\"v\":"+ver+",\"d\":\""+di+"\",\"t\":"+t+",\"l\":["
     }
 
     doodleModel.layers.getCurrent.add(stroke)
     val expected_stroke = "{\"l\":\"n\",\"c\":\"#f90\",\"s\":5,\"p\":[0,0,1,1,1,11,2,22.5,3,389.5]}"
-    var expected = "{\"v\":499,\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":["+expected_stroke+"],\"v\":true}]}"
+    var expected = "{\"v\":"+ver+",\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":["+expected_stroke+"],\"v\":true}]}"
     var testing = layerList.toShortJsonString(1,chain)
     assert (testing.equals(expected), "doodle with one BasicLine not correctly formatted when saving it.\nFound:   "+testing+"\nExpected:"+expected)
 
@@ -608,6 +608,7 @@ class ExportTest extends FlatSpec with Matchers {
 
   }
   "LayerList.toShortJsonString" should "return correctly rounded string with 0.1 accuracy" in {
+    val ver = view.DoodleWindow.version
     val doodleModel = new DoodleModel
     val layerList = doodleModel.layers
     Magic.roundingAccuracy = 10
@@ -643,14 +644,13 @@ class ExportTest extends FlatSpec with Matchers {
 
     val chain = "chain name"
     def expected_start(t:Int) = {
-      val ver = view.DoodleWindow.version
       val di = chain
       "{\"v\":"+ver+",\"d\":\""+di+"\",\"t\":"+t+",\"l\":["
     }
 
     doodleModel.layers.getCurrent.add(stroke)
     val expected_stroke = "{\"l\":\"n\",\"c\":\"#f90\",\"s\":5,\"p\":[0,0.1,1,1.1,1,11.1,2,22.3,3,389.5]}"
-    var expected = "{\"v\":499,\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":["+expected_stroke+"],\"v\":true}]}"
+    var expected = "{\"v\":"+ver+",\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":["+expected_stroke+"],\"v\":true}]}"
     var testing = layerList.toShortJsonString(1,chain)
     assert (testing.equals(expected), "doodle with one BasicLine not correctly formatted when saving it.\nFound:   "+testing+"\nExpected:"+expected)
 
@@ -705,16 +705,17 @@ class ExportTest extends FlatSpec with Matchers {
   }
 
   "LayerList.toShortJsonString" should "return correct paint time and DoodleModel.load should load it" in {
+    val ver = view.DoodleWindow.version
     val doodleModel = new DoodleModel
     val layerList = doodleModel.layers
     var chain = "abcdefg"
     var testing = layerList.toShortJsonString(1,chain)
-    var expected = "{\"v\":499,\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":[],\"v\":true}]}"
+    var expected = "{\"v\":"+ver+",\"d\":\""+chain+"\",\"t\":1,\"l\":[{\"s\":[],\"v\":true}]}"
     assert (testing.equals(expected), "doodle with painttime 1 wrong: \nexpected "+expected+"\ngot      "+testing)
     doodleModel.load(JsonParse.parseSave(testing))
     assert(doodleModel.getPaintTime.equals(1), "save with painttime 1 loaded wrong: "+doodleModel.getPaintTime)
     testing = layerList.toShortJsonString(123586,chain)
-    expected = "{\"v\":499,\"d\":\""+chain+"\",\"t\":123586,\"l\":[{\"s\":[],\"v\":true}]}"
+    expected = "{\"v\":"+ver+",\"d\":\""+chain+"\",\"t\":123586,\"l\":[{\"s\":[],\"v\":true}]}"
     assert (testing.equals(expected), "doodle with painttime 123586 wrong: \nexpected "+expected+"\ngot      "+testing)
     doodleModel.load(JsonParse.parseSave(testing))
     assert(doodleModel.getPaintTime.equals(1+123586), "save with painttime 123586 loaded wrong: "+doodleModel.getPaintTime)

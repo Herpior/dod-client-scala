@@ -36,7 +36,7 @@ object Magic {
   val font20: Font = new swing.Label(" ").font.deriveFont(java.awt.Font.BOLD,20)
   var offline = false
   var user = ""
-  val roundingAccuracy:Int = getAccuracyFromConfOrElse("accuracy", 2) //determines how accurately the lines are drawn, saved and uploaded. 2 => 0, 0.5, 1, ... 10 => 0, 0.1, 0.2, ...
+  var roundingAccuracy:Int = getAccuracyFromConfOrElse("accuracy", 2) //determines how accurately the lines are drawn, saved and uploaded. 2 => 0, 0.5, 1, ... 10 => 0, 0.1, 0.2, ...
   val namira: Boolean = getBooleanFromConfOrElse("namira", false) //changes skincolor to beige
 
   def setXY(nx:Int, ny:Int) {

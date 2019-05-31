@@ -10,6 +10,7 @@ import java.awt.Color
 class StrokeTest extends FlatSpec with Matchers {
 
   "BasicLine.toDodJson" should "return correctly formatted string" in {
+    Magic.roundingAccuracy = 2
     val stroke = new BasicLine(Color.decode("#ff9900"),5)
     stroke.addCoord(Coord(0,0))
     stroke.addCoord(Coord(1,1))
@@ -40,7 +41,9 @@ class StrokeTest extends FlatSpec with Matchers {
     assert(coords.last.equals(Coord(1.5,11)), "last coordinate wrong: "+coords.last)
 
     Magic.roundingAccuracy = 10
-    val coords10 = stroke.getLines.head.getCoords
+    val stroke10 = new BezierLine(Color.decode("#ff9900"),5)
+    stroke10.setCoords(Array(Coord(0.2,-0.22), Coord(0), Coord(5), Coord(1.314, 10.7865375)))
+    val coords10 = stroke10.getLines.head.getCoords
     assert(coords10.head.equals(Coord(0.2,-0.2)), "first coordinate wrong: "+coords10.head)
     assert(coords10.last.equals(Coord(1.3,10.8)), "last coordinate wrong: "+coords10.last)
   }
