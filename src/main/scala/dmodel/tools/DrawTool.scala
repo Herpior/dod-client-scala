@@ -15,6 +15,7 @@ class DrawTool extends LineTool {
   private var smoothing = true
   private val oneEuroFilter = new OneEuroFilter
   private var prev = Coord(0)
+  private var minAddEpsilon = 0.4
 
   override def onMouseDrag(db:DoodleBufferer, coord:Coord, left:Boolean, middle:Boolean, right:Boolean, control:Boolean, alt:Boolean, shift:Boolean){
     if(left){
@@ -24,7 +25,7 @@ class DrawTool extends LineTool {
       }
       else {
         val processedCoord = updateCoord(coord)
-        if((processedCoord-prev).abs.max >= 0.4){
+        if((processedCoord-prev).abs.max >= minAddEpsilon){
           addLine(getColor, SizeModel.getSize, processedCoord)
           if(getColor.getAlpha==255 || Magic.faster) db.redrawLast
           else db.redrawDrawing
@@ -77,11 +78,12 @@ class DrawTool extends LineTool {
   override def getConfigVariables(): Vector[ConfigVariable] = {
     //val betaConfig = new DoubleConfigVariable("reduce lag", _=>getBeta, setBeta, Some(1e-50), Some(1), true)
     val mincutConfig = new DoubleConfigVariable("reduce lag", _=>getMinCutoff, setMinCutoff, Some(1e-1), Some(16), true)
+    val minaddConfig = new DoubleConfigVariable("minimum line segment length", _=>this.minAddEpsilon, minAddEpsilon=_, Some(1e-1), Some(1), true)
     //val dcutConfig = new DoubleConfigVariable("dcutoff", _=>getDCutoff, setDCutoff, Some(100), Some(1e-3), true)
     //val unitConfig = new UnitConfigVariable("button test", _=>println("getter"), _=>println("setter"))
     val smoothingConfig = new BooleanConfigVariable("use smoothing", _=>this.smoothing, smoothing=_)
     val transparencyConfig = new DoubleConfigVariable("transparency", _=>transparency, transparency=_, Some(0.0), Some(1.0), false)
-    Vector(smoothingConfig, mincutConfig, transparencyConfig)//.asInstanceOf[Vector[ConfigVariable]]
+    Vector(smoothingConfig, mincutConfig, transparencyConfig, minaddConfig)//.asInstanceOf[Vector[ConfigVariable]]
   }
 
   //---------\\
