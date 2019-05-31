@@ -12,8 +12,8 @@ import java.awt.{Color, Font}
 object Magic {
 //TODO: move io.localstorage.loadConfig into the main window?
   private val loadedConf = try { io.LocalStorage.loadConfig("config") } catch { case e:Throwable => Map[String, String]()}
-  def authorized: Boolean = http.HttpHandler.getAuth || offline
-  val version = 500
+  def authorized: Boolean = true//http.HttpHandler.getAuth || offline
+  val version = 501
   val faster = false // if true will make semitransparent lines faster but look worse when drawing
   val fasterPan: Boolean = try {loadedConf.getOrElse("fasterPan","true").toBoolean} catch {case e:Throwable => true} //if true will move only the images when dragging, rather than drawing everything again every pixel
   val readyDefault: Boolean = try {loadedConf.getOrElse("readyDefault","false").toBoolean} catch {case e:Throwable => false} //default for ready checkbox
@@ -36,7 +36,7 @@ object Magic {
   val font20: Font = new swing.Label(" ").font.deriveFont(java.awt.Font.BOLD,20)
   var offline = false
   var user = ""
-  var roundingAccuracy = 10 //determines how accurately the lines are drawn, saved and uploaded. 2 => 0, 0.5, 1, ... 10 => 0, 0.1, 0.2, ...
+  var roundingAccuracy:Int = try {math.max(1,math.min(10, loadedConf.getOrElse("accuracy","2").toInt))} catch {case e:Throwable => 2} //determines how accurately the lines are drawn, saved and uploaded. 2 => 0, 0.5, 1, ... 10 => 0, 0.1, 0.2, ...
   val namira: Boolean = try {loadedConf.getOrElse("namira","false").toBoolean} catch {case e:Throwable => false} //changes skincolor to beige
 
   def setXY(nx:Int, ny:Int) {
