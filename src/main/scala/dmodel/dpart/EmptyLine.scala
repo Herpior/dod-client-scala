@@ -19,7 +19,7 @@ class EmptyLine extends DoodlePart {
   override def getLines = Array()
   override def transform(transformation: Coord => Coord): None.type = None
   override def selection: None.type = None
-  override def toJson:Option[JsonStroke] = None
+  //override def toJson:Option[JsonStroke] = None
   override def toJsonString:Option[String] = None
   override def toShortJsonString:Option[String] = None
   override def toSVGString:String = ""

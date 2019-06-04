@@ -65,6 +65,7 @@ object JsonParse {
     val targ = gson.fromJson(reader,classOf[JsonGroups])
     targ
   }
+  /*
   def writeSave(layers:Array[Layer], time:Int): String ={
     //Don't use, too slow and adds useless extra values
 
@@ -92,5 +93,5 @@ object JsonParse {
     //after = System.nanoTime
     //print("tojson "+(after-before))
     //res
-  }
+  }*/
 }

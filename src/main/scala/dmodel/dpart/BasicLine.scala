@@ -203,7 +203,7 @@ class BasicLine(var color:Color, var size:Double) extends DoodlePart {
   }
   def toJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString
-    Some("{\"linetype\":\"basic\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.rounded(Magic.roundingAccuracy).toShortJsonString).mkString(",")+"]}")
+    Some("{\"linetype\":\"normal\",\"color\":\""+Colors.toHexRGBA(color)+"\",\"size\":"+sizestr+",\"path\":["+coords.map(_.rounded(Magic.roundingAccuracy).toShortJsonString).mkString(",")+"]}")
   }
   def toShortJsonString: Some[String] = {
     val sizestr = if(size%1==0)size.toInt.toString else size.toString

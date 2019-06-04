@@ -72,16 +72,20 @@ class JsonLayer {
 }
 class JsonStroke {
   var linetype:String=_
+  var l:String=_
   var strokes:Array[JsonStroke] = _
+  var ss:Array[JsonStroke]=_
   var coords:Array[JsonCoord] = Array()
   var path:Array[Double] = _
-  var color:String = _
-  var size:Double = _
-  var l:String=_
-  var ss:Array[JsonStroke]=_
   var p:Array[Double] = _
+  var color:String = _
   var c:String = _
+  var size:Double = _
   var s:Double = _
+  var text:String=_
+  var t:String=_
+  var font:String = _
+  var f:String = _
   
   def getLines: Array[BasicLine] = {
     toDoodlePart.getLines
@@ -89,14 +93,37 @@ class JsonStroke {
   def toDoodlePart:DoodlePart = {
     try{
     linetype = linetype match { case ""|null => l case x => x }
+    text = text match { case ""|null => t case x => x }
+    font = font match { case ""|null => f case x => x }
     color = color match { case ""|null => if(c!=null)c else "#000" case x => x }
     size = size match { case x if x<=0 => if(s>0)s else 1 case x => x }
     path = path match { case Array()|null => if(p!=null)p else Array() case x => x }
+    coords = coords match {
+      case Array()|null =>
+        val buf = collection.mutable.Buffer[JsonCoord]()
+        for (i <- 0 until path.length/2){
+          buf += new JsonCoord{
+            x = path(2*i)
+            y = path(2*i+1)}
+        }
+        buf.toArray
+      case x => x
+    }
     strokes = strokes match { case Array()|null => if(ss!=null)ss else Array() case x => x }
     linetype match {
       case "multi"|"m" =>
         val res = new MultiLine
         res.setLines(strokes.flatMap(_.getLines))
+        res
+
+      case "text"|"t" =>
+        val javacolor = Colors.toColor(color)
+        var newcoords = coords.map(x=>x.toCoord)
+        val res = new TextLine(javacolor,size)
+        res.setFont(font)
+        res.text = text
+        if (newcoords.length>=1) res.startCorner = newcoords(0)
+        if (newcoords.length>=2) res.endCorner = newcoords(1)
         res
       case "bezier"|"b" =>
         val javacolor = Colors.toColor(color)
@@ -111,7 +138,7 @@ class JsonStroke {
         }
         res.setCoords(newcoords)
         res
-      case default =>
+      case default => //"n"/"normal"
         val tmp = new JsonLine
         tmp.color = color
         tmp.path = path
@@ -121,7 +148,7 @@ class JsonStroke {
     } catch {
       case e:Throwable =>
         e.printStackTrace()
-        new MultiLine
+        new EmptyLine
     }
   }
 }/*

@@ -131,17 +131,17 @@ class LayerList {
     if(size==1 && layers.head.getStrokes.length==0) layers = save.getDoodleLayers
     else layers ++= save.getDoodleLayers
     current = size-1
-  }
+  }/*
   def toJson(time:Int): String = {
     JsonParse.writeSave(this.toArray, time)
-  }
+  }*/
   def toJsonString(time:Int, chain:String): String = {
     "{\"version\":"+Magic.version+",\"doodle_id\":\""+chain+"\",\"time\":"+time+",\"layers\":["+this.layers.map(_.toJsonString).mkString(",")+"]}"
    }
   def toShortJsonString(time:Int, chain:String): String = {
     "{\"v\":"+Magic.version+",\"d\":\""+chain+"\",\"t\":"+time+",\"l\":["+this.layers.map(_.toShortJsonString).mkString(",")+"]}"
    }
-  def toSVGString(): String = {
+  def toSVGString: String = {
     "<?xml version=\"1.0\" encoding=\"utf-8\"?>"+
     "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" height=\""+Magic.y+"\" width=\""+Magic.x+"\" fill=\"#fff\">"+
     "<g stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\">" +

@@ -12,6 +12,15 @@ import scala.collection.immutable
 
 object Fonts {
 
+  /**
+    *
+    * @param fontName name of the font as a String
+    * @return Font object determined by the font name, or a default font if font by that name is not found
+    */
+  def getFont(fontName:String)={
+    new Font("default", 0) //TODO:implement this
+  }
+
   val letters: Map[Char, monospace] = Map(
       (' ',new monospace(25,Array(),Array())),
       ('A',new monospace(20,Array(Array(0.0,8.0,15.5),Array(4.0,12.0)),Array(Array(19.5,0.0,19.5),Array(11.0,11.0)))),
@@ -67,3 +76,5 @@ case class letter(xs:Array[Array[Double]], ys:Array[Array[Double]]) {
 class monospace(val l:Double,xs:Array[Array[Double]],ys:Array[Array[Double]])extends letter(xs,ys){
   override def length: Double = l
 }
+
+class Font(val name:String, val index:Int)
